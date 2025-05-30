@@ -13,10 +13,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(RoleAndPermissionSeeder::class);
         User::create([
             "name" => "Super Admin",
             "email" => "admin@hosbadurian.com",
+            "phone" => "0123456789",
             "password" => bcrypt("hosbadurian"),
-        ]);
+        ])->assignRole("Super-Admin");
+       
     }
 }
