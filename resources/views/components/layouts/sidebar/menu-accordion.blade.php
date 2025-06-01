@@ -4,7 +4,7 @@
     'icon',
 ])
 
-<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+<div data-kt-menu-trigger="click" {{ $attributes->merge(['class' => 'menu-item','menu-accordian']) }}>
     <span class="menu-link">
         <span class="menu-icon">
             <i class="{{ $icon }} fs-2">

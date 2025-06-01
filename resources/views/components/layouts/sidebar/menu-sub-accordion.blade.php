@@ -1,8 +1,8 @@
-@props(['title'])
+@props(['title','route'])
 
-<span class="menu-link">
+<a href="{{ route($route) }}" class="menu-link{{ request()->routeIs($route) ? ' active' : '' }}" wire:navigate>
     <span class="menu-bullet">
         <span class="bullet bullet-dot"></span>
     </span>
     <span class="menu-title">{{$title}}</span>
-</span>
+</a>

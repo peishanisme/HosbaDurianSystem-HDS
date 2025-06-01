@@ -11,9 +11,13 @@
             </div>
         </div>
 
-        <x-layouts.sidebar.menu-accordion title="Users" icon="ki-outline ki-users fs-2" class="active">
-            <x-layouts.sidebar.menu-sub-accordion title="All Users" route="dashboard" />
-            <x-layouts.sidebar.menu-sub-accordion title="All Users" route="dashboard" />
+        <x-layouts.sidebar.menu-accordion title="User Management" icon="ki-duotone ki-security-user"
+            @class([
+                'show active' => Route::is([
+                    'user.users.index',
+                ]),
+            ])>
+            <x-layouts.sidebar.menu-sub-accordion title="Users Lising" route="user.users.index" />
         </x-layouts.sidebar.menu-accordion>
 
     </div>

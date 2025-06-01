@@ -4,23 +4,7 @@
     <!--begin::Header container-->
     <div class="app-container container-fluid d-flex align-items-stretch justify-content-between"
         id="kt_app_header_container">
-        <!--begin::Sidebar mobile toggle-->
-        <div class="d-flex align-items-center d-lg-none ms-n3 me-1 me-md-2" title="Show sidebar menu">
-            <div class="btn btn-icon btn-active-color-primary w-35px h-35px" id="kt_app_sidebar_mobile_toggle">
-                <i class="ki-duotone ki-abstract-14 fs-2 fs-md-1">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                </i>
-            </div>
-        </div>
-        <!--end::Sidebar mobile toggle-->
-        <!--begin::Mobile logo-->
-        <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-            <a href="index.html" class="d-lg-none">
-                <img alt="Logo" src="assets/media/logos/default-small.svg" class="h-30px" />
-            </a>
-        </div>
-        <!--end::Mobile logo-->
+
         <!--begin::Header wrapper-->
         <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1" id="kt_app_header_wrapper">
             <!--begin::Menu wrapper-->
@@ -37,12 +21,12 @@
                     <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start"
                         class="menu-item here show menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
                         <!--begin:Menu link-->
-                        <span class="menu-link">
+                        <a href="{{ route('dashboard') }}" class="menu-link">
                             <span class="menu-title">Dashboards</span>
                             <span class="menu-arrow d-lg-none"></span>
-                        </span>
+                        </a>
                         <!--end:Menu link-->
-                        
+
                     </div>
                     <!--end:Menu item-->
                 </div>
@@ -128,8 +112,7 @@
                                 <div class="menu-item px-3">
                                     <a href="account/statements.html"
                                         class="menu-link d-flex flex-stack px-5">Statements
-                                        <span class="ms-2 lh-0" data-bs-toggle="tooltip"
-                                            title="View your statements">
+                                        <span class="ms-2 lh-0" data-bs-toggle="tooltip" title="View your statements">
                                             <i class="ki-duotone ki-information-5 fs-5">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
@@ -145,8 +128,8 @@
                                 <div class="menu-item px-3">
                                     <div class="menu-content px-3">
                                         <label class="form-check form-switch form-check-custom form-check-solid">
-                                            <input class="form-check-input w-30px h-20px" type="checkbox"
-                                                value="1" checked="checked" name="notifications" />
+                                            <input class="form-check-input w-30px h-20px" type="checkbox" value="1"
+                                                checked="checked" name="notifications" />
                                             <span class="form-check-label text-muted fs-7">Notifications</span>
                                         </label>
                                     </div>
@@ -255,8 +238,7 @@
                                     <span
                                         class="fs-8 rounded bg-light px-3 py-2 position-absolute translate-middle-y top-50 end-0">English
                                         <img class="w-15px h-15px rounded-1 ms-2"
-                                            src="assets/media/flags/united-states.svg"
-                                            alt="" /></span></span>
+                                            src="assets/media/flags/united-states.svg" alt="" /></span></span>
                             </a>
                             <!--begin::Menu sub-->
                             <div class="menu-sub menu-sub-dropdown w-175px py-4">
@@ -335,8 +317,6 @@
                         </i>
                     </div>
                 </div>
-                <!--end::Header menu toggle-->
-                <!--begin::Aside toggle-->
                 <!--end::Header menu toggle-->
             </div>
             <!--end::Navbar-->
