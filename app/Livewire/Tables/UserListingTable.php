@@ -12,14 +12,24 @@ class UserListingTable extends DataTableComponent
 
     public function configure(): void
     {
-        $this->setPrimaryKey('id');
+        $this->setPrimaryKey('id')
+            ->setSearchPlaceholder('Search Member')
+            ->setEmptyMessage('No results found')
+            ->setConfigurableAreas([
+                'toolbar-right-end' => [
+                    'livewire.components.modal-button',
+                    [
+                        'label' => 'Create User',
+                        // 'dispatch' => 'reset-user',
+                        'target' => 'userModalLivewire'
+                    ]
+                ]
+            ]);;
     }
 
     public function columns(): array
     {
         return [
-            Column::make("Id", "id")
-                ->sortable(),
             Column::make("Name", "name")
                 ->sortable(),
             Column::make("Email", "email")
@@ -27,8 +37,6 @@ class UserListingTable extends DataTableComponent
             Column::make("Phone", "phone")
                 ->sortable(),
             Column::make("Created at", "created_at")
-                ->sortable(),
-            Column::make("Updated at", "updated_at")
                 ->sortable(),
         ];
     }
