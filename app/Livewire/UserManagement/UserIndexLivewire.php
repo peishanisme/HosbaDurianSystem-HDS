@@ -8,6 +8,8 @@ use Livewire\Attributes\Title;
 #[Title('User Management')]
 class UserIndexLivewire extends Component
 {
+    public $listeners = ['reset-component' => '$refresh'];
+
     public function render()
     {
         return view('livewire.user-management.user-index-livewire');

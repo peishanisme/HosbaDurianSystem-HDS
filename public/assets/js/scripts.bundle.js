@@ -17,7 +17,9 @@ var KTComponents = function () {
 			KTScrolltop.init();
 			KTDialer.init();	
 			KTImageInput.init();
-			KTPasswordMeter.init();	
+			KTPasswordMeter.init();
+        
+            
         }
     }	
 }();

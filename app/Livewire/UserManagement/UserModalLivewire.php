@@ -2,6 +2,7 @@
 
 namespace App\Livewire\UserManagement;
 
+use App\Traits\SweetAlert;
 use Exception;
 use App\Models\User;
 use Livewire\Component;
@@ -11,6 +12,7 @@ use Spatie\Permission\Models\Role;
 
 class UserModalLivewire extends Component
 {
+    use SweetAlert;
     public UserForm $form;
     public string $modalID = 'userModalLivewire', $modalTitle = 'User Details';
     public array $roleOptions = [];
@@ -29,12 +31,10 @@ class UserModalLivewire extends Component
         $this->form->reset();
     }
 
-     #[On('edit-user')]
+    #[On('edit-user')]
     public function edit(User $user): void
     {
-        $this->authorizeRoleOrPermission(['edit-admin'], 'admin');
-
-        $this->resetInputs();
+        $this->resetInput();
         $this->form->edit($user);
     }
 
@@ -45,12 +45,29 @@ class UserModalLivewire extends Component
         try {
 
             $this->form->create($validatedData);
-            // $this->alertSuccess('User has been created successfully.', $this->modalID);
+            $this->alertSuccess('User has been created successfully.', $this->modalID);
 
         
         } catch (Exception $error) {
 
-            // $this->alertError($error->getMessage(), $this->modalID);
+            $this->alertError($error->getMessage(), $this->modalID);
+        
+        }
+    }
+
+    public function update(): void
+    {
+        $validatedData = $this->form->validate();
+        
+        try {
+
+            $this->form->update($validatedData);
+            $this->alertSuccess('User has been updated successfully.', $this->modalID);
+
+        
+        } catch (Exception $error) {
+
+            $this->alertError($error->getMessage(), $this->modalID);
         
         }
     }

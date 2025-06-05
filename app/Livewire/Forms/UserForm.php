@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use App\Actions\UserManagement\CreateUserAction;
+use App\Actions\UserManagement\UpdateUserAction;
 use App\DataTransferObject\UserDTO;
 
 class UserForm extends Form
@@ -32,13 +33,18 @@ class UserForm extends Form
         $this->name = $user->name;
         $this->email = $user->email;
         $this->phone = $user->phone;
-        $this->role = $user->getRoleNames()->first();
+        $this->role = $user->roles->first()->id ?? null;
         $this->is_active = $user->is_active;
     }
 
-     public function create(array $validatedData): void
+    public function create(array $validatedData): void
     {
         app(CreateUserAction::class)->handle(UserDTO::fromArray($validatedData));
+    }
+
+    public function update($validatedData): void
+    {
+        app(UpdateUserAction::class)->handle($this->user,UserDTO::fromArray($validatedData));
     }
 
     

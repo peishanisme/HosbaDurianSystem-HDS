@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Tables;
 
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\User;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
 
 class UserListingTable extends DataTableComponent
 {
@@ -30,14 +31,31 @@ class UserListingTable extends DataTableComponent
     public function columns(): array
     {
         return [
+            Column::make("ID", "id")
+                ->hideIf(true),
             Column::make("Name", "name")
                 ->sortable(),
             Column::make("Email", "email")
                 ->sortable(),
             Column::make("Phone", "phone")
                 ->sortable(),
+            ViewComponentColumn::make('Status', 'is_active')
+                ->component('table-badge')
+                ->attributes(fn($value, $row, Column $column) => [
+                    'badge' => $row->is_active ?  'badge-light-success' : 'badge-light-danger',
+                    'label' => $row->is_active ? 'Active' : 'Suspended',
+                ]),
             Column::make("Created at", "created_at")
                 ->sortable(),
+            Column::make('Actions')
+                ->label(fn($row, Column $column) => view('components.table-button', [
+                    'modal' => 'userModalLivewire',
+                    'dispatch' => 'edit-user',
+                    'dataField' => 'user',
+                    'data' => $row->id,
+                    'permission' => 'edit-user',
+                ]))->html()
+                ->excludeFromColumnSelect(),
         ];
     }
 }
