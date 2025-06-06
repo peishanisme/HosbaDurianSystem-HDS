@@ -3,9 +3,7 @@
 namespace App\Livewire\Tables;
 
 use App\Models\Species;
-use Rappasoft\LaravelLivewireTables\Views\Column;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
+use Rappasoft\LaravelLivewireTables\{Views\Column, DataTableComponent, Views\Columns\ViewComponentColumn};
 
 class TreeSpeciesTable extends DataTableComponent
 {
@@ -34,9 +32,12 @@ class TreeSpeciesTable extends DataTableComponent
             Column::make("ID", "id")
                 ->hideIf(true),
             Column::make("Name", "name")
-                ->sortable(),
-            Column::make("Description", "description")
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
+            Column::make("Code", "code")
+                ->sortable()
+                ->searchable(),
+            Column::make("Description", "description"),
             ViewComponentColumn::make('Status', 'is_active')
                 ->component('table-badge')
                 ->attributes(fn($value, $row, Column $column) => [

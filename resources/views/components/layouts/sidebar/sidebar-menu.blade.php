@@ -16,9 +16,11 @@
             @class([
                 'show active' => Route::is([
                     'tree.species.index',
+                    'tree.trees.index',
                 ]),
             ])>
             <x-layouts.sidebar.menu-sub-accordion title="Species Lising" route="tree.species.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="Trees Listing" route="tree.trees.index" />
         </x-layouts.sidebar.menu-accordion>
 
         {{-- user management --}}
