@@ -11,6 +11,17 @@
             </div>
         </div>
 
+        {{-- tree management --}}
+        <x-layouts.sidebar.menu-accordion title="Tree Management" icon="ki-duotone ki-tree"
+            @class([
+                'show active' => Route::is([
+                    'tree.species.index',
+                ]),
+            ])>
+            <x-layouts.sidebar.menu-sub-accordion title="Species Lising" route="tree.species.index" />
+        </x-layouts.sidebar.menu-accordion>
+
+        {{-- user management --}}
         <x-layouts.sidebar.menu-accordion title="User Management" icon="ki-duotone ki-security-user"
             @class([
                 'show active' => Route::is([

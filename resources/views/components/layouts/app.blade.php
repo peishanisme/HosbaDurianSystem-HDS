@@ -37,14 +37,14 @@
 
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
-            
+
             <!--begin::Header-->
             <x-layouts.header />
             <!--end::Header-->
 
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
-                
+
                 <!--begin::Sidebar-->
                 <x-layouts.sidebar.sidebar />
                 <!--end::Sidebar-->
@@ -53,9 +53,9 @@
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
                     <!--begin::Content wrapper-->
                     <div class="d-flex flex-column flex-column-fluid">
-                        
+
                         <!--begin::Toolbar-->
-                        <x-layouts.toolbar />
+                        <x-layouts.toolbar :title=" $title " />
                         <!--end::Toolbar-->
 
                         <!--begin::Content-->
@@ -74,7 +74,7 @@
                     <!--begin::Footer-->
                     <x-layouts.footer />
                     <!--end::Footer-->
-                    
+
                 </div>
             </div>
         </div>

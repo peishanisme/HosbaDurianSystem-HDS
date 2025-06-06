@@ -9,7 +9,7 @@ trait SweetAlert
         $this->dispatch('alert-success', message: $message, modalId: $modalId);
         // $this->dispatch('refreshDatatable');
         // $this->dispatch('reset-form');
-        $this->dispatch('reset-component');
+        $this->dispatch('refreshDatatable');
     }
 
 
@@ -32,8 +32,7 @@ trait SweetAlert
 
     public function alertConfirm($message, $action): void
     {
-        $this->dispatch('alert-warning', message: $message, action:$action);
+        $this->dispatch('alert-warning', message: $message, action: $action);
         $this->dispatch('refreshDatatable');
-
     }
 }

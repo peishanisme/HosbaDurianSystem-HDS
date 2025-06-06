@@ -1,41 +1,33 @@
 <?php
 
-namespace App\Livewire\UserManagement;
+namespace App\Livewire\Module\TreeManagement;
 
-use App\Traits\SweetAlert;
 use Exception;
-use App\Models\User;
+use App\Models\Species;
 use Livewire\Component;
+use App\Traits\SweetAlert;
 use Livewire\Attributes\On;
-use App\Livewire\Forms\UserForm;
-use Spatie\Permission\Models\Role;
+use App\Livewire\Forms\SpeciesForm;
 
-class UserModalLivewire extends Component
+class SpeciesModalLivewire extends Component
 {
     use SweetAlert;
-    public UserForm $form;
-    public string $modalID = 'userModalLivewire', $modalTitle = 'User Details';
-    public array $roleOptions = [];
+    public SpeciesForm $form;
 
-    public function mount(): void
-    {
-        $this->roleOptions = Role::whereNotIn('name', ['Super-Admin'])
-            ->pluck('name', 'id')
-            ->toArray();
-    }
+    public string $modalID = 'speciesModalLivewire', $modalTitle = 'Species Details';
 
-    #[On('reset-user')]
+    #[On('reset-species')]
     public function resetInput()
     {
         $this->form->resetValidation();
         $this->form->reset();
     }
 
-    #[On('edit-user')]
-    public function edit(User $user): void
+    #[On('edit-species')]
+    public function edit(Species $species): void
     {
         $this->resetInput();
-        $this->form->edit($user);
+        $this->form->edit($species);
     }
 
     public function create(): void
@@ -45,7 +37,7 @@ class UserModalLivewire extends Component
         try {
 
             $this->form->create($validatedData);
-            $this->alertSuccess('User has been created successfully.', $this->modalID);
+            $this->alertSuccess('Species has been created successfully.', $this->modalID);
 
         
         } catch (Exception $error) {
@@ -62,7 +54,7 @@ class UserModalLivewire extends Component
         try {
 
             $this->form->update($validatedData);
-            $this->alertSuccess('User has been updated successfully.', $this->modalID);
+            $this->alertSuccess('Species has been updated successfully.', $this->modalID);
 
         
         } catch (Exception $error) {
@@ -74,6 +66,6 @@ class UserModalLivewire extends Component
 
     public function render()
     {
-        return view('livewire.user-management.user-modal-livewire');
+        return view('livewire.tree-management.species-modal-livewire');
     }
 }

@@ -46,6 +46,5 @@ class UserForm extends Form
     {
         app(UpdateUserAction::class)->handle($this->user,UserDTO::fromArray($validatedData));
     }
-
     
 }

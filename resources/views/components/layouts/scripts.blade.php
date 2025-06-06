@@ -38,12 +38,17 @@
 
 <script>
     function hideModal(modalId) {
-        var modalElement = document.getElementById(modalId);
-        var modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+        const modalElement = document.getElementById(modalId);
+        if (!modalElement) return;
 
-        if (modalElement && modal) {
-            bootstrap.Modal.getInstance(document.getElementById(modalId)).hide();
-        }
+        const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+        modalInstance.hide();
+
+        setTimeout(() => {
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style = '';
+        }, 500);
     }
 
     document.addEventListener('livewire:init', () => {
@@ -143,5 +148,5 @@
                 }
             });
         });
-    });    
+    });
 </script>

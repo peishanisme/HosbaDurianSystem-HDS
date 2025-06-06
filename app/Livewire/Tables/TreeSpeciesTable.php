@@ -2,27 +2,27 @@
 
 namespace App\Livewire\Tables;
 
-use App\Models\User;
+use App\Models\Species;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
 
-class UserListingTable extends DataTableComponent
+class TreeSpeciesTable extends DataTableComponent
 {
-    protected $model = User::class;
+    protected $model = Species::class;
 
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setSearchPlaceholder('Search User')
+            ->setSearchPlaceholder('Search Species')
             ->setEmptyMessage('No results found')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'livewire.components.modal-button',
                     [
-                        'label' => 'Create User',
-                        'dispatch' => 'reset-user',
-                        'target' => 'userModalLivewire'
+                        'label' => 'Create Species',
+                        'dispatch' => 'reset-species',
+                        'target' => 'speciesModalLivewire'
                     ]
                 ]
             ]);
@@ -35,9 +35,7 @@ class UserListingTable extends DataTableComponent
                 ->hideIf(true),
             Column::make("Name", "name")
                 ->sortable(),
-            Column::make("Email", "email")
-                ->sortable(),
-            Column::make("Phone", "phone")
+            Column::make("Description", "description")
                 ->sortable(),
             ViewComponentColumn::make('Status', 'is_active')
                 ->component('table-badge')
@@ -49,11 +47,11 @@ class UserListingTable extends DataTableComponent
                 ->sortable(),
             Column::make('Actions')
                 ->label(fn($row, Column $column) => view('components.table-button', [
-                    'modal' => 'userModalLivewire',
-                    'dispatch' => 'edit-user',
-                    'dataField' => 'user',
+                    'modal' => 'speciesModalLivewire',
+                    'dispatch' => 'edit-species',
+                    'dataField' => 'species',
                     'data' => $row->id,
-                    'permission' => 'edit-user',
+                    'permission' => 'edit-species'
                 ]))->html()
                 ->excludeFromColumnSelect(),
         ];

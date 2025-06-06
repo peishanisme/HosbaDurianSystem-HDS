@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\UserManagement;
+namespace App\Livewire\Module\UserManagement;
 
 use Livewire\Component;
 use Livewire\Attributes\Title;
@@ -8,8 +8,6 @@ use Livewire\Attributes\Title;
 #[Title('User Management')]
 class UserIndexLivewire extends Component
 {
-    public $listeners = ['reset-component' => '$refresh'];
-
     public function render()
     {
         return view('livewire.user-management.user-index-livewire');
