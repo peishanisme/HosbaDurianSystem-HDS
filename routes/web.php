@@ -6,7 +6,7 @@ use App\Livewire\Module\DashboardLivewire;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Module\UserManagement\UserIndexLivewire;
 use App\Livewire\Module\TreeManagement\SpeciesIndexLivewire;
-use App\Livewire\TreeManagement\TreeIndexLivewire;
+use App\Livewire\Module\TreeManagement\TreeIndexLivewire;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardLivewire::class)->name('dashboard');

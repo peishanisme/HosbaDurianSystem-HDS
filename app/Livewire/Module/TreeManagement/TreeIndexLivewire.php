@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\TreeManagement;
+namespace App\Livewire\Module\TreeManagement;
 
 use Livewire\Component;
 use Livewire\Attributes\Title;

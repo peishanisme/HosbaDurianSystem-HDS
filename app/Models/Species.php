@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Species extends Model
 {
     protected $fillable = [
         'name',
+        'code',
         'description',
         'is_active',
     ];
@@ -21,6 +23,11 @@ class Species extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function trees(): HasMany
+    {
+        return $this->hasMany(Tree::class);
     }
 
     //get Tree Count

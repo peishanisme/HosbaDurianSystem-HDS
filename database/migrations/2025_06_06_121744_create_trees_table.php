@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('trees', function (Blueprint $table) {
-            $table->uuid();
+            $table->id();
             $table->string('tree_tag')->unique();
             $table->foreignId('species_id')
-                ->constrained('species')
-                ->onDelete('cascade');
+                ->constrained('species');
             $table->date('planted_at');
             $table->string('thumbnail')->nullable();
             $table->decimal('latitude', 9, 6)->nullable();  
             $table->decimal('longitude', 9, 6)->nullable();
+            $table->integer('flowering_period')->default(0);
             $table->timestamps();
         });
     }

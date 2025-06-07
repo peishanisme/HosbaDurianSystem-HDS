@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Livewire\Tables;
+
+use App\Models\Tree;
+use Illuminate\Database\Eloquent\Builder;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
+
+class TreeListingTable extends DataTableComponent
+{
+    public function builder(): Builder
+{
+    return Tree::query()
+        ->with(['species', 'latestGrowthLog']);
+}
+
+
+
+    public function configure(): void
+    {
+        $this->setPrimaryKey('id')
+            ->setSearchPlaceholder('Search Tree')
+            ->setEmptyMessage('No results found')
+            ->setConfigurableAreas([
+                'toolbar-right-end' => [
+                    'livewire.components.modal-button',
+                    [
+                        'label' => 'Create Tree',
+                        'dispatch' => 'reset-tree',
+                        'target' => 'treeModalLivewire'
+                    ]
+                ]
+            ]);
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::make("ID", "id")
+                ->hideIf(true),
+            Column::make("Tree Tag", "tree_tag")
+                ->sortable()
+                ->searchable(),
+            ViewComponentColumn::make('Species', 'species.name')
+                ->component('table-badge')
+                ->attributes(fn($value, $row, Column $column) => [
+                    'badge' => 'badge-light-success' ,
+                    'label' => $value,
+                ]),
+            Column::make("Height (m)")
+                ->label(fn($row) => optional($row->latestGrowthLog)->height ?? '-'),
+            Column::make("Diameter (m)")
+                ->label(fn($row) => optional($row->latestGrowthLog)->diameter ?? '-'),
+            Column::make("Planted At", "planted_at")
+                ->sortable(),
+            Column::make('Actions')
+                ->label(fn($row, Column $column) => view('components.table-button', [
+                    'modal' => 'treeModalLivewire',
+                    'dispatch' => 'edit-tree',
+                    'dataField' => 'tree',
+                    'data' =>   $row->id,
+                    'permission' => 'edit-tree'
+                ]))->html()
+                ->excludeFromColumnSelect(),
+        ];
+    }
+}

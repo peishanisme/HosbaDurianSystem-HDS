@@ -6,6 +6,12 @@
     </div>
 
     <div class="fv-row mb-8">
+        <x-input-label for="code" class="required mb-2" :value="__('Code')" />
+        <x-input-text id="code" placeholder="Code" wire:model="form.code" />
+        <x-input-error :messages="$errors->get('form.code')" />
+    </div>
+
+    <div class="fv-row mb-8">
         <x-input-label for="description" class="mb-2" :value="__('Description')" />
         <x-input-textarea id="description" placeholder="Description" wire:model="form.description"></x-input-textarea>
         <x-input-error :messages="$errors->get('form.description')" />

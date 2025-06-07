@@ -1,3 +1,7 @@
 <div>
-    {{-- If your happiness depends on money, you will never be happy with yourself. --}}
+    <div>
+        <livewire:tables.tree-listing-table />
+    </div>
+
+    <livewire:module.tree-management.tree-modal-livewire />
 </div>

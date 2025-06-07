@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('species', function (Blueprint $table) {
+        Schema::create('tree_growth_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('code')->unique();
-            $table->string('description')->nullable();
-            $table->boolean('is_active')->default(false);
+            $table->foreignId('tree_id')
+                ->constrained('trees')
+                ->onDelete('cascade');
+            $table->decimal('height', 8, 2);
+            $table->decimal('diameter', 8, 2);
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('species');
+        Schema::dropIfExists('tree_growth_logs');
     }
 };
