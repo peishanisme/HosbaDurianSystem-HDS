@@ -10,6 +10,9 @@
             ->class([
                 'form-control' => $isBootstrap4 && $this->getPerPageFieldAttributes()['default-styling'],
                 'form-select' => $isBootstrap5 && $this->getPerPageFieldAttributes()['default-styling'],
+                'mr-2' => $isTailwind, // Add margin-right for Tailwind
+                'mr-2' => $isBootstrap5, // Add margin-end (right) for Bootstrap 5
+                'mr-2' => $isBootstrap4, // Add margin-right for Bootstrap 4
                 'block w-full rounded-md shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:ring focus:ring-opacity-50' => $isTailwind && $this->getPerPageFieldAttributes()['default-styling'],
                 'border-gray-300 focus:border-indigo-300 focus:ring-indigo-200 dark:bg-gray-700 dark:text-white dark:border-gray-600' => $isTailwind && $this->getPerPageFieldAttributes()['default-colors'],
             ])

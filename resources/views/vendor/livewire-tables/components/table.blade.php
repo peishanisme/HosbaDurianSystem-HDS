@@ -59,7 +59,7 @@
 @elseif ($isBootstrap)
     <div wire:key="{{ $tableName }}-twrap"
         {{ $attributes->merge($customAttributes['wrapper'])
-            ->class(['table-responsive' => $customAttributes['wrapper']['default'] ?? true])
+            ->class(['table-responsive ' => $customAttributes['wrapper']['default'] ?? true])
             ->except(['default','default-styling','default-colors']) }}
     >
         <table

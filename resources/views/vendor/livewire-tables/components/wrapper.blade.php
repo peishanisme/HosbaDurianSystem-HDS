@@ -1,5 +1,5 @@
 @props(['component', 'tableName', 'primaryKey', 'isTailwind', 'isBootstrap','isBootstrap4', 'isBootstrap5'])
-<div wire:key="{{ $tableName }}-wrapper" >
+<div wire:key="{{ $tableName }}-wrapper" class="shadow-sm rounded overflow-hidden py-7 {{ $isTailwind ? 'bg-white dark:bg-gray-800' : '' }}">
     <div {{ $attributes->merge($this->getComponentWrapperAttributes()) }}
         @if ($this->hasRefresh()) wire:poll{{ $this->getRefreshOptions() }} @endif
         @if ($this->isFilterLayoutSlideDown()) wire:ignore.self @endif>

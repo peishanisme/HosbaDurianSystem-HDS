@@ -49,9 +49,9 @@ class TreeListingTable extends DataTableComponent
                     'badge' => 'badge-light-success' ,
                     'label' => $value,
                 ]),
-            Column::make("Height (m)")
+            Column::make("Current Height (m)")
                 ->label(fn($row) => optional($row->latestGrowthLog)->height ?? '-'),
-            Column::make("Diameter (m)")
+            Column::make("Current Diameter (m)")
                 ->label(fn($row) => optional($row->latestGrowthLog)->diameter ?? '-'),
             Column::make("Planted At", "planted_at")
                 ->sortable(),

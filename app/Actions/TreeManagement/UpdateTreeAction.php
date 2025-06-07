@@ -10,24 +10,23 @@ class UpdateTreeAction
 {
     public function handle(Tree $tree, TreeDTO $dto): Tree
     {
-        
-         return DB::transaction(function () use ($tree, $dto) {
+        return DB::transaction(function () use ($tree, $dto) {
             $tree->update([
                 'species_id' => $dto->species_id,
                 'planted_at' => $dto->planted_at,
                 'thumbnail'  => $dto->thumbnail,
                 'flowering_period' => $dto->flowering_period,
             ]);
-            
-            $tree->growthLogs()->updateOrCreate(
-                ['tree_id' => $tree->id],
-                [
+
+            $firstGrowthLog = $tree->growthLogs()->orderBy('id')->first();
+            if ($firstGrowthLog) {
+                $firstGrowthLog->update([
                     'height' => $dto->height,
                     'diameter' => $dto->diameter,
-                    'photo' => $dto->thumbnail,
-                ]
-            );
-            
+                ]);
+            }
+
+            return $tree->fresh();
         });
     }
 }

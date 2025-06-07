@@ -16,7 +16,7 @@ class TreeModalLivewire extends Component
 
     public string $modalID = 'treeModalLivewire', $modalTitle = 'Tree Details';
     public array $speciesOptions = [];
-        public bool $isThumbnailValid = true;
+    public bool $isThumbnailValid = true;
 
 
     public function mount(): void
@@ -29,8 +29,7 @@ class TreeModalLivewire extends Component
     {
         $this->form->resetValidation();
         $this->form->reset();
-                $this->dispatch('reset-thumbnail');
-
+        $this->dispatch('reset-thumbnail');
     }
 
     #[On('thumbnail-updated')]
@@ -51,8 +50,7 @@ class TreeModalLivewire extends Component
     {
         $this->resetInput();
         $this->form->edit($tree);
-                $this->dispatch('edit-thumbnail', $tree->thumbnail);
-
+        $this->dispatch('edit-thumbnail', $tree->thumbnail);
     }
 
     public function create(): void
@@ -62,17 +60,14 @@ class TreeModalLivewire extends Component
         }
 
         $validatedData = $this->form->validate();
-        
+
         try {
 
             $this->form->create($validatedData);
             $this->alertSuccess('Tree has been created successfully.', $this->modalID);
-
-        
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);
-        
         }
     }
 
@@ -83,17 +78,14 @@ class TreeModalLivewire extends Component
         }
 
         $validatedData = $this->form->validate();
-        
+
         try {
 
             $this->form->update($validatedData);
             $this->alertSuccess('Tree has been updated successfully.', $this->modalID);
-
-        
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);
-        
         }
     }
     public function render()

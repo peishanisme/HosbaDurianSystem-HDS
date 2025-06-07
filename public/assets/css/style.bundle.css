@@ -37430,9 +37430,11 @@ code:not([class*=language-]).code-dark {
   height: inherit;
   min-height: inherit;
 }
+
 .table:not(.table-bordered) tr:first-child, .table:not(.table-bordered) th:first-child, .table:not(.table-bordered) td:first-child {
-  padding-left: 0;
+  padding-left: 2.0rem;
 }
+
 .table:not(.table-bordered) tr:last-child, .table:not(.table-bordered) th:last-child, .table:not(.table-bordered) td:last-child {
   padding-right: 0;
 }
@@ -37600,9 +37602,6 @@ code:not([class*=language-]).code-dark {
   padding-left: 0rem !important;
 }
 
-.table.gs-0 th:first-child, .table.gs-0 td:first-child {
-  padding-left: 0rem;
-}
 .table.gs-0 th:last-child, .table.gs-0 td:last-child {
   padding-right: 0rem;
 }
@@ -38504,9 +38503,7 @@ code:not([class*=language-]).code-dark {
   .table.gx-lg-0 th.dtr-control, .table.gx-lg-0 td.dtr-control {
     padding-left: 0rem !important;
   }
-  .table.gs-lg-0 th:first-child, .table.gs-lg-0 td:first-child {
-    padding-left: 0rem;
-  }
+
   .table.gs-lg-0 th:last-child, .table.gs-lg-0 td:last-child {
     padding-right: 0rem;
   }
@@ -38792,9 +38789,6 @@ code:not([class*=language-]).code-dark {
   .table.gx-xl-0 th.dtr-control, .table.gx-xl-0 td.dtr-control {
     padding-left: 0rem !important;
   }
-  .table.gs-xl-0 th:first-child, .table.gs-xl-0 td:first-child {
-    padding-left: 0rem;
-  }
   .table.gs-xl-0 th:last-child, .table.gs-xl-0 td:last-child {
     padding-right: 0rem;
   }
@@ -39079,9 +39073,6 @@ code:not([class*=language-]).code-dark {
   }
   .table.gx-xxl-0 th.dtr-control, .table.gx-xxl-0 td.dtr-control {
     padding-left: 0rem !important;
-  }
-  .table.gs-xxl-0 th:first-child, .table.gs-xxl-0 td:first-child {
-    padding-left: 0rem;
   }
   .table.gs-xxl-0 th:last-child, .table.gs-xxl-0 td:last-child {
     padding-right: 0rem;

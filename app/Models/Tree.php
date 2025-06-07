@@ -3,8 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\{HasMany, BelongsTo};
 
 class Tree extends Model
 {
@@ -15,6 +14,7 @@ class Tree extends Model
         'thumbnail',
         'latitude',
         'longitude',
+        'flowering_period',
     ];
 
     protected static function boot()
@@ -22,10 +22,35 @@ class Tree extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            // Count existing trees for the same species
-            $count = static::where('species_id', $model->species_id)->count() + 1;
-            $model->tree_tag = $model->species->code . '-' . str_pad($count, 3, '0', STR_PAD_LEFT);
+            $model->tree_tag = static::generateTreeTag($model->species_id);
         });
+
+        static::updating(function ($model) {
+            if ($model->isDirty('species_id')) {
+                $model->tree_tag = static::generateTreeTag($model->species_id, $model->id);
+            }
+        });
+    }
+
+    public static function generateTreeTag($speciesId, $excludeId = null): string
+    {
+        $species = Species::findOrFail($speciesId);
+        $speciesCode = $species->code;
+
+        $query = static::where('species_id', $speciesId)
+            ->where('tree_tag', 'like', "$speciesCode-%");
+
+        if ($excludeId) {
+            $query->where('id', '!=', $excludeId);
+        }
+
+        $latestTag = $query->orderByDesc('tree_tag')->value('tree_tag');
+
+        $newNumber = $latestTag
+            ? (int) substr($latestTag, strlen($speciesCode) + 1) + 1
+            : 1;
+
+        return $speciesCode . '-' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
     }
 
     public function scopeActive($query)
@@ -43,6 +68,11 @@ class Tree extends Model
     public function growthLogs(): HasMany
     {
         return $this->hasMany(TreeGrowthLog::class);
+    }
+
+    public function firstGrowthLog()
+    {
+        return $this->hasOne(TreeGrowthLog::class)->oldestOfMany();
     }
 
     public function latestGrowthLog()

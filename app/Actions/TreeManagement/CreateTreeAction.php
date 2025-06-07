@@ -17,6 +17,8 @@ class CreateTreeAction
                     'species_id' => $dto->species_id,
                     'planted_at' => $dto->planted_at,
                     'thumbnail'  => $dto->thumbnail,
+                    'latitude'  => $dto->latitude,
+                    'longitude' => $dto->longitude,
                     'flowering_period' => $dto->flowering_period,
                 ]
             );
@@ -24,7 +26,6 @@ class CreateTreeAction
             $tree->growthLogs()->create([
                 'height' => $dto->height,
                 'diameter' => $dto->diameter,
-                'photo' => $dto->thumbnail,
             ]);
 
             return $tree;

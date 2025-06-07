@@ -5,6 +5,13 @@
         <livewire:components.thumbnail-input />
     </div>
 
+    @if ($form->tree)
+        <div class="fv-row mb-8">
+            <x-input-label for="tree_tag" class="mb-2" :value="__('Tree Tag')" />
+            <x-input-text id="tree_tag" wire:model="form.tree_tag" disabled="true" />
+        </div>
+    @endif
+
     <div class="fv-row mb-8">
         <x-input-label for="species" class="required mb-4" :value="__('Species')" />
         <x-input-select id="species" placeholder="Select Species" wire:model="form.species_id" :options="$speciesOptions" />
@@ -20,13 +27,13 @@
     <div class="fv-row mb-8">
         <div class="d-flex w-100 gap-5">
             <div class="flex-fill">
-            <x-input-label for="height" class="required mb-4" :value="__('Height(m)')" />
-            <x-input-text id="height" type="number" placeholder="Height(m)" wire:model="form.height" />
+                <x-input-label for="height" class="required mb-4" :value="__('Initial Height(m)')" />
+                <x-input-text id="height" type="number" placeholder="Height(m)" wire:model="form.height" />
             </div>
 
             <div class="flex-fill">
-            <x-input-label for="diameter" class="required mb-4" :value="__('Diameter(m)')" />
-            <x-input-text id="diameter" type="number" placeholder="Diameter(m)" wire:model="form.diameter" />
+                <x-input-label for="diameter" class="required mb-4" :value="__('Initial Diameter(m)')" />
+                <x-input-text id="diameter" type="number" placeholder="Diameter(m)" wire:model="form.diameter" />
             </div>
         </div>
         <x-input-error :messages="$errors->get('form.height')" />
@@ -34,8 +41,9 @@
     </div>
 
     <div class="fv-row mb-8">
-        <x-input-label for="flowering_period" class="required mb-2" :value="__('Flowering Period')" />
-        <x-input-text id="flowering_period" type="number" placeholder="Flowering_period" wire:model="form.flowering_period" />
+        <x-input-label for="flowering_period" class="required mb-2" :value="__('Initial Flowering Period')" />
+        <x-input-text id="flowering_period" type="number" placeholder="Flowering period"
+            wire:model="form.flowering_period" />
         <x-input-error :messages="$errors->get('form.flowering_period')" />
     </div>
 
