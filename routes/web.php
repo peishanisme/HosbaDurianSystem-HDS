@@ -6,6 +6,7 @@ use App\Livewire\Module\DashboardLivewire;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Module\UserManagement\UserIndexLivewire;
 use App\Livewire\Module\TreeManagement\SpeciesIndexLivewire;
+use App\Livewire\Module\TreeManagement\TreeDetailsLivewire;
 use App\Livewire\Module\TreeManagement\TreeIndexLivewire;
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -18,6 +19,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['prefix' => 'tree', 'as' => 'tree.'], function () {
         Route::get('/species', SpeciesIndexLivewire::class)->name('species.index');
         Route::get('/all', TreeIndexLivewire::class)->name('trees.index');
+        Route::get('details/{tree:id}', TreeDetailsLivewire::class)->name('trees.show');
 
     });
 

@@ -38,6 +38,10 @@ class TreeSpeciesTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             Column::make("Description", "description"),
+            Column::make("Tree Count")
+                ->label(fn($row) => $row->trees()->count() ?? 0)
+                ->sortable()
+                ->searchable(),
             ViewComponentColumn::make('Status', 'is_active')
                 ->component('table-badge')
                 ->attributes(fn($value, $row, Column $column) => [

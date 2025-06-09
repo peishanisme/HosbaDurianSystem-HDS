@@ -3,6 +3,7 @@
 namespace App\Livewire\Tables;
 
 use App\Models\Tree;
+use Illuminate\Support\HtmlString;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -11,10 +12,10 @@ use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
 class TreeListingTable extends DataTableComponent
 {
     public function builder(): Builder
-{
-    return Tree::query()
-        ->with(['species', 'latestGrowthLog']);
-}
+    {
+        return Tree::query()
+            ->with(['species', 'latestGrowthLog']);
+    }
 
 
 
@@ -40,21 +41,31 @@ class TreeListingTable extends DataTableComponent
         return [
             Column::make("ID", "id")
                 ->hideIf(true),
-            Column::make("Tree Tag", "tree_tag")
-                ->sortable()
-                ->searchable(),
+
+            ViewComponentColumn::make('Tree Tag', 'tree_tag')
+                ->component('components.table-primary-column')
+                ->attributes(fn($value, $row, Column $column) => [
+                    'title' => $value,
+                    'route' => route('tree.trees.show', $row->id),
+                ])->searchable()
+                ->sortable(),
+
             ViewComponentColumn::make('Species', 'species.name')
                 ->component('table-badge')
                 ->attributes(fn($value, $row, Column $column) => [
-                    'badge' => 'badge-light-success' ,
+                    'badge' => 'badge-light-success',
                     'label' => $value,
                 ]),
+
             Column::make("Current Height (m)")
                 ->label(fn($row) => optional($row->latestGrowthLog)->height ?? '-'),
+                
             Column::make("Current Diameter (m)")
                 ->label(fn($row) => optional($row->latestGrowthLog)->diameter ?? '-'),
+
             Column::make("Planted At", "planted_at")
                 ->sortable(),
+                
             Column::make('Actions')
                 ->label(fn($row, Column $column) => view('components.table-button', [
                     'modal' => 'treeModalLivewire',

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('trees', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->string('tree_tag')->unique();
             $table->foreignId('species_id')
                 ->constrained('species');

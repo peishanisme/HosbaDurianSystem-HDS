@@ -8,7 +8,7 @@
                 alt="Thumbnail Preview" class="w-100 h-100 object-fit-cover">
 
             {{-- Delete Icon --}}
-            
+
             <button type="button"
                 class="position-absolute bottom-0 end-0 m-1 d-flex align-items-center justify-content-center bg-danger text-white border-0 rounded-circle"
                 style="width: 32px; height: 32px;" wire:click="removeThumbnail">
@@ -36,7 +36,11 @@
     <small class="text-muted d-block mt-2">Allowed file types: png, jpg, jpeg.</small>
 
     {{-- Validation Error --}}
-    @error('thumbnail')
-        <div class="text-danger small mt-1">{{ $message }}</div>
-    @enderror
+    @if ($thumbnailError)
+        <br>
+        <span class="text-danger text-2xs mt-1">
+            {{ $thumbnailError }}
+        </span>
+    @endif
+
 </div>

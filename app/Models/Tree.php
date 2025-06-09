@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\{HasMany, BelongsTo};
+use Illuminate\Database\Eloquent\Relations\{HasMany, BelongsTo,HasOne};
 
 class Tree extends Model
 {
@@ -23,6 +24,7 @@ class Tree extends Model
 
         static::creating(function ($model) {
             $model->tree_tag = static::generateTreeTag($model->species_id);
+            $model->uuid = (string) Str::uuid();
         });
 
         static::updating(function ($model) {
@@ -70,12 +72,12 @@ class Tree extends Model
         return $this->hasMany(TreeGrowthLog::class);
     }
 
-    public function firstGrowthLog()
+    public function firstGrowthLog(): HasOne
     {
         return $this->hasOne(TreeGrowthLog::class)->oldestOfMany();
     }
 
-    public function latestGrowthLog()
+    public function latestGrowthLog(): HasOne
     {
         return $this->hasOne(TreeGrowthLog::class)->latestOfMany();
     }

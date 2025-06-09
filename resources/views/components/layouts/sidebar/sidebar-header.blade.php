@@ -1,8 +1,7 @@
 <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
     <!--begin::Logo image-->
-    <a href="index.html">
-        <img alt="Logo" src="assets/media/logos/default-dark.svg" class="h-25px app-sidebar-logo-default" />
-        <img alt="Logo" src="assets/media/logos/default-small.svg" class="h-20px app-sidebar-logo-minimize" />
+    <a href="{{ route('dashboard') }}" class="d-flex align-items-center py-5">
+        <img alt="Logo" src="{{ secure_asset('assets/media/logos/system-logo.png') }}" class="app-sidebar-logo-default mt-5" style="height: 170px;" />
     </a>
 
     <div id="kt_app_sidebar_toggle"

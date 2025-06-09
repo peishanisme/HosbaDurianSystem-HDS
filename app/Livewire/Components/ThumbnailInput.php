@@ -25,7 +25,7 @@ class ThumbnailInput extends Component
     {
         try {
 
-            $this->validate(['thumbnail' => 'image']);
+            $this->validate(['thumbnail' => 'image|mimes:png,jpg,jpeg']);
 
             $thumbnailName = $this->thumbnail->getClientOriginalName();
             $thumbnailPath = $this->thumbnail->storeAs('images', $thumbnailName, 'public');

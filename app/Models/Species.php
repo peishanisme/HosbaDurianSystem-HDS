@@ -30,5 +30,5 @@ class Species extends Model
         return $this->hasMany(Tree::class);
     }
 
-    //get Tree Count
+
 }
