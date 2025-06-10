@@ -82,7 +82,7 @@
                         {{
                             $attributes->merge($this->getSortingPillsItemAttributes())
                             ->class([
-                                'badge badge-pill badge-info d-inline-flex align-items-center' => $this->getSortingPillsItemAttributes()['default-styling'],
+                                'badge badge-pill badge-light-success d-inline-flex align-items-center' => $this->getSortingPillsItemAttributes()['default-styling'],
                             ])
                             ->except(['default-styling', 'default-colors'])
                         }}
@@ -140,7 +140,7 @@
                         {{
                             $attributes->merge($this->getSortingPillsItemAttributes())
                             ->class([
-                                'badge rounded-pill bg-info d-inline-flex align-items-center' => $this->getSortingPillsItemAttributes()['default-styling'],
+                                'badge rounded-pill badge-light-info d-inline-flex align-items-center' => $this->getSortingPillsItemAttributes()['default-styling'],
                             ])
                             ->except(['default-styling', 'default-colors'])
                         }}

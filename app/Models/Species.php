@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Species extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'name',
         'code',
@@ -19,6 +22,15 @@ class Species extends Model
      *
      * @return string
      */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('species')
+            ->setDescriptionForEvent(fn(string $eventName) => "A species has been $eventName.")
+            ->dontSubmitEmptyLogs();
+    }
     
     public function scopeActive($query)
     {

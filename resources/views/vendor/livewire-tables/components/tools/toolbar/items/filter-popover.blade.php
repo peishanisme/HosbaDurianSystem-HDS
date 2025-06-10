@@ -4,12 +4,12 @@
             ->merge($this->getFilterPopoverAttributes)
             ->merge(['role' => 'menu'])
             ->class([
-                'w-100' => $this->getFilterPopoverAttributes['default-width'] ?? true,
+                'w-100 ' => $this->getFilterPopoverAttributes['default-width'] ?? true,
                 'dropdown-menu mt-md-5' => $this->isBootstrap4,
                 'dropdown-menu' => $this->isBootstrap5,
             ]) }} x-bind:class="{ 'show': filterPopoverOpen }">
         @foreach ($this->getVisibleFilters() as $filter)
-            <div id="{{ $tableName }}-filter-{{ $filter->getKey() }}-wrapper" wire:key="{{ $tableName }}-filter-{{ $filter->getKey() }}-toolbar" class="p-2">
+            <div id="{{ $tableName }}-filter-{{ $filter->getKey() }}-wrapper" wire:key="{{ $tableName }}-filter-{{ $filter->getKey() }}-toolbar" class="p-5">
                 {{ $filter->setGenericDisplayData($this->getFilterGenericData)->render() }}
             </div>
         @endforeach

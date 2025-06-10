@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tree_growth_logs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('tree_id')
-                ->constrained('trees')
-                ->onDelete('cascade');
-            $table->decimal('height', 8, 2);
-            $table->decimal('diameter', 8, 2);
-            $table->string('photo')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('tree_growth_logs')) {
+            Schema::create('tree_growth_logs', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('tree_id')
+                    ->constrained('trees')
+                    ->onDelete('cascade');
+                $table->decimal('height', 8, 2);
+                $table->decimal('diameter', 8, 2);
+                $table->string('photo')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

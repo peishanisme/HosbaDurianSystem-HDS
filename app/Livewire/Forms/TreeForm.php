@@ -45,6 +45,7 @@ class TreeForm extends Form
     public function getSpeciesOptions(): array
     {
         return Species::pluck('name', 'id')->toArray();
+        //scope active
     }
 
     public function create(array $validatedData): void

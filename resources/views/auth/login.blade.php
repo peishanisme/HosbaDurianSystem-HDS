@@ -1,4 +1,4 @@
-<x-guest-layout>
+<div>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -8,7 +8,7 @@
         <!-- Phone -->
         <div>
             <x-input-label for="phone" :value="__('Phone Number')" />
-            <x-text-input id="phone" class="block mt-1 w-full" type="tel" name="phone" :value="old('phone')" required
+            <x-input-text id="phone" class="block mt-1 w-full" type="tel" name="phone" :value="old('phone')" required
                 autofocus autocomplete="tel" />
             <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>
@@ -17,7 +17,7 @@
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
+            <x-input-text id="password" class="block mt-1 w-full" type="password" name="password" required
                 autocomplete="current-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
@@ -45,4 +45,4 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+</div>

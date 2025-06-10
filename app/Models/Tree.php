@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\{HasMany, BelongsTo,HasOne};
 
 class Tree extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'tree_tag',
         'species_id',
@@ -53,6 +56,16 @@ class Tree extends Model
             : 1;
 
         return $speciesCode . '-' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('tree')
+            ->setDescriptionForEvent(fn(string $eventName) => "A tree has been $eventName.")
+            ->dontSubmitEmptyLogs();
     }
 
     public function scopeActive($query)

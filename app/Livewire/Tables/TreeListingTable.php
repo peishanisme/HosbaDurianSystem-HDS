@@ -7,6 +7,7 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
 
 class TreeListingTable extends DataTableComponent
@@ -34,6 +35,15 @@ class TreeListingTable extends DataTableComponent
                     ]
                 ]
             ]);
+    }
+
+    public function filters(): array
+    {
+        return [
+            'species' => SelectFilter::make('Species')
+                ->options(['' => 'Any'] + Tree::with('species')->get()->pluck('species.name', 'species.id')->toArray())
+                ->filter(fn(Builder $query, $value) => $query->whereHas('species', fn($query) => $query->where('id', $value))),
+        ];
     }
 
     public function columns(): array

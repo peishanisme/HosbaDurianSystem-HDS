@@ -12,6 +12,7 @@
         "livewire/livewire": "^3.6",
         "rappasoft/laravel-livewire-tables": "^3.7",
         "simplesoftwareio/simple-qrcode": "^4.2",
+        "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-permission": "^6.18",
         "sweetalert2/laravel": "^0.1.0"
     },

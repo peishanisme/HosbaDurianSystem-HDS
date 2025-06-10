@@ -42,11 +42,23 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('phone', 'password'), $this->boolean('remember'))) {
+        if (!Auth::attempt($this->only('phone', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
                 'phone' => trans('auth.failed'),
+            ]);
+        }
+
+        $user = Auth::user();
+
+        if (!$user->is_active) {
+            Auth::logout(); 
+
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'phone' => __('Your account is not active.'),
             ]);
         }
 
@@ -81,6 +93,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('phone')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('phone')) . '|' . $this->ip());
     }
 }

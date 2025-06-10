@@ -13,7 +13,7 @@
 
     <div class="d-flex flex-column gap-1">
         <div class="d-flex align-items-center gap-2">
-            <a href="{{ $route }}" class="text-dark text-decoration-none fw-semibold" wire:navigate>
+            <a href="{{ $route }}" class="text-dark text-decoration-none fw-semibold text-hover-primary" wire:navigate>
                 {{ $title }}
             </a>
             @if ($bracket)
