@@ -84,7 +84,7 @@
                         </div>
 
                         <!--begin::Menu-->
-                        <div class="me-0">
+                        {{-- <div class="me-0">
                             <button class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
                                 data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                 <i class="ki-solid ki-dots-horizontal fs-2x"></i>
@@ -100,11 +100,11 @@
                                 <!--end::Heading-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Create Invoice</a>
+                                    <a href="#" class="menu-link px-3">Delete Tree</a>
                                 </div>
                                 <!--end::Menu item-->
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="d-flex flex-wrap flex-stack">

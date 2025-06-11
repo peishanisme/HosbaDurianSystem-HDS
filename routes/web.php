@@ -3,6 +3,7 @@
 // use App\Http\Controllers\ProfileController;
 
 use App\Livewire\Module\DashboardLivewire;
+use App\Livewire\Module\SalesAndTransactions\BuyerIndexLivewire;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Module\UserManagement\UserIndexLivewire;
 use App\Livewire\Module\TreeManagement\SpeciesIndexLivewire;
@@ -28,13 +29,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('details/{tree:id}', TreeDetailsLivewire::class)->name('trees.show');
     });
 
+    Route::group(['prefix' => 'sales', 'as' => 'sales.'], function () {
+        Route::group(['prefix' => 'buyer'], function () {
+            Route::get('/all', BuyerIndexLivewire::class)->name('buyers.index');
+        });
+    });
+
     Route::group(['prefix' => 'log', 'as' => 'log.'], function () {
         Route::get('/all', ActivityLogIndexLivewire::class)->name('logs.index');
     });
 
     Route::view('/welcome', 'welcome')->name('welcome');
-
 });
 
-require __DIR__.'/auth.php';
-
+require __DIR__ . '/auth.php';

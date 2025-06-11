@@ -33,6 +33,16 @@
             <x-layouts.sidebar.menu-sub-accordion title="Users Lising" route="user.users.index" />
         </x-layouts.sidebar.menu-accordion>
 
+        {{-- sales & transactions --}}
+        <x-layouts.sidebar.menu-accordion title="Sales & Transactions" icon="ki-duotone ki-dollar"
+            @class([
+                'show active' => Route::is([
+                    'sales.buyers.index',
+                ]),
+            ])>
+            <x-layouts.sidebar.menu-sub-accordion title="Buyers Lising" route="sales.buyers.index" />
+        </x-layouts.sidebar.menu-accordion>
+
         {{-- activity log --}}
         <x-layouts.sidebar.menu-accordion title="Activity Log" icon="ki-duotone ki-bookmark-2"
             @class([

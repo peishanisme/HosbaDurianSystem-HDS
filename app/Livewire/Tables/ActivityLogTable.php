@@ -18,7 +18,8 @@ class ActivityLogTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-        ->setEmptyMessage('No results found');
+        ->setEmptyMessage('No results found')
+        ->setDefaultSort('created_at', 'desc');
     }
 
 
