@@ -1,7 +1,7 @@
 @props(['title', 'route'])
 
 <div>
-    <a href="{{ route($route) }}" class="menu-link menu-link {{ Route::is($route) ? ' active' : '' }}" wire:navigate>
+    <a href="{{ route($route) }}" class="menu-link menu-link {{ Route::is($route) ? ' active' : '' }}">
         <span class="menu-icon">
             <i class="ki-duotone ki-element-11 fs-2">
                 <span class="path1"></span>

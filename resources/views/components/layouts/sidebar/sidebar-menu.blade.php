@@ -33,5 +33,15 @@
             <x-layouts.sidebar.menu-sub-accordion title="Users Lising" route="user.users.index" />
         </x-layouts.sidebar.menu-accordion>
 
+        {{-- activity log --}}
+        <x-layouts.sidebar.menu-accordion title="Activity Log" icon="ki-duotone ki-bookmark-2"
+            @class([
+                'show active' => Route::is([
+                    'log.logs.index',
+                ]),
+            ])>
+            <x-layouts.sidebar.menu-sub-accordion title="Logs" route="log.logs.index" />
+        </x-layouts.sidebar.menu-accordion>
+
     </div>
 </div>

@@ -42,18 +42,16 @@ class Tree extends Model
         $species = Species::findOrFail($speciesId);
         $speciesCode = $species->code;
 
-        $query = static::where('species_id', $speciesId)
-            ->where('tree_tag', 'like', "$speciesCode-%");
+        $latestTag = static::when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))
+            ->orderByDesc('tree_tag')
+            ->value('tree_tag');
 
-        if ($excludeId) {
-            $query->where('id', '!=', $excludeId);
+        if ($latestTag && preg_match('/-(\d+)$/', $latestTag, $matches)) {
+            $latestNumber = (int) $matches[1];
+            $newNumber = $latestNumber + 1;
+        } else {
+            $newNumber = 1;
         }
-
-        $latestTag = $query->orderByDesc('tree_tag')->value('tree_tag');
-
-        $newNumber = $latestTag
-            ? (int) substr($latestTag, strlen($speciesCode) + 1) + 1
-            : 1;
 
         return $speciesCode . '-' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
     }
