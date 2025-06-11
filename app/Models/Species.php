@@ -6,15 +6,15 @@ use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Species extends Model
 {
-    use LogsActivity;
+    use LogsActivity, SoftDeletes;
     protected $fillable = [
         'name',
         'code',
         'description',
-        'is_active',
     ];
 
     /**
@@ -30,11 +30,6 @@ class Species extends Model
             ->useLogName('species')
             ->setDescriptionForEvent(fn(string $eventName) => "A species has been $eventName.")
             ->dontSubmitEmptyLogs();
-    }
-    
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
     }
 
     public function trees(): HasMany

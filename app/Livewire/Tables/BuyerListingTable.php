@@ -2,25 +2,26 @@
 
 namespace App\Livewire\Tables;
 
-use App\Models\Species;
-use Rappasoft\LaravelLivewireTables\{Views\Column, DataTableComponent, Views\Columns\ViewComponentColumn};
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+use App\Models\Buyer;
 
-class TreeSpeciesTable extends DataTableComponent
+class BuyerListingTable extends DataTableComponent
 {
-    protected $model = Species::class;
+    protected $model = Buyer::class;
 
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setSearchPlaceholder('Search Species')
+            ->setSearchPlaceholder('Search Buyer')
             ->setEmptyMessage('No results found')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'livewire.components.modal-button',
                     [
-                        'label' => 'Create Species',
-                        'dispatch' => 'reset-species',
-                        'target' => 'speciesModalLivewire'
+                        'label' => 'Create Buyer',
+                        'dispatch' => 'reset-buyer',
+                        'target' => 'buyerModalLivewire'
                     ]
                 ]
             ]);
@@ -29,28 +30,17 @@ class TreeSpeciesTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make("ID", "id")
+            Column::make("Id", "id")
+                ->sortable()
                 ->hideIf(true),
-
-            Column::make("Name", "name")
-                ->sortable()
-                ->searchable(),
-
-            Column::make("Code", "code")
-                ->sortable()
-                ->searchable(),
-
-            Column::make("Description", "description"),
-
-            Column::make("Tree Count")
-                ->label(fn($row) => $row->trees()->count() ?? 0)
-                ->sortable(function ($query, $direction) {
-                    return $query->withCount('trees')->orderBy('trees_count', $direction);
-                }),
-
+            Column::make("Company name", "company_name")
+                ->sortable(),
+            Column::make("Contact name", "contact_name")
+                ->sortable(),
+            Column::make("Contact number", "contact_number")
+                ->sortable(),
             Column::make("Created at", "created_at")
                 ->sortable(),
-
             Column::make('Actions')
                 ->label(fn($row, Column $column) => view('components.table-com-button', [
                     'modal'     => 'speciesModalLivewire',

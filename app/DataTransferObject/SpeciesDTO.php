@@ -15,7 +15,6 @@ class SpeciesDTO
         public string $name,
         public string $code,
         public ?string $description = null,
-        public bool $is_active
     ) {}
 
     public static function fromArray(array $data): self
@@ -24,7 +23,6 @@ class SpeciesDTO
             name: $data['name'],
             code: $data['code'],
             description: $data['description'] ?? null,
-            is_active: $data['is_active']
         );
     }
 }
