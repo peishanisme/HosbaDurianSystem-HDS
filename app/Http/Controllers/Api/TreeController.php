@@ -15,8 +15,8 @@ class TreeController extends Controller
             'species_id' => 'required|exists:species,id',
             'planted_at' => 'required|date',
             'thumbnail' => 'nullable|string',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
             'flowering_period' => 'nullable|string',
         ]);
 
@@ -41,4 +41,16 @@ class TreeController extends Controller
             'data' => $tree
         ], 201);
     }
+
+    public function index()
+{
+    $trees = Tree::with('species')
+                 ->orderBy('created_at', 'desc')
+                 ->get();
+
+    return response()->json([
+        'success' => true,
+        'data' => $trees
+    ]);
+}
 }

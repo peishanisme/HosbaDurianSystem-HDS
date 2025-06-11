@@ -32,4 +32,14 @@ class SpeciesController extends Controller
             'data'    => $species
         ], 201);
     }
+
+    public function index() 
+    {
+        $species = Species::active()->get(); // only active species
+        return response()->json([
+            'message' => 'Species fetched successfully',
+            'data'    => $species
+        ], 200);
+    }
+
 }
