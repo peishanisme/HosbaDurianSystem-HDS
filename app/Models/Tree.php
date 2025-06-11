@@ -6,11 +6,12 @@ use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\{HasMany, BelongsTo,HasOne};
+use Illuminate\Database\Eloquent\Relations\{HasMany, BelongsTo, HasOne};
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tree extends Model
 {
-    use LogsActivity;
+    use LogsActivity, SoftDeletes;
     protected $fillable = [
         'tree_tag',
         'species_id',
@@ -42,18 +43,17 @@ class Tree extends Model
         $species = Species::findOrFail($speciesId);
         $speciesCode = $species->code;
 
-        $query = static::where('species_id', $speciesId)
-            ->where('tree_tag', 'like', "$speciesCode-%");
+        $latestTag = static::when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))
+            ->withTrashed() // include soft-deleted trees to keep numbering consistent
+            ->orderByDesc('id') // assuming trees are inserted in order
+            ->value('tree_tag');
 
-        if ($excludeId) {
-            $query->where('id', '!=', $excludeId);
+        if ($latestTag && preg_match('/-(\d+)$/', $latestTag, $matches)) {
+            $latestNumber = (int) $matches[1];
+            $newNumber = $latestNumber + 1;
+        } else {
+            $newNumber = 1;
         }
-
-        $latestTag = $query->orderByDesc('tree_tag')->value('tree_tag');
-
-        $newNumber = $latestTag
-            ? (int) substr($latestTag, strlen($speciesCode) + 1) + 1
-            : 1;
 
         return $speciesCode . '-' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
     }

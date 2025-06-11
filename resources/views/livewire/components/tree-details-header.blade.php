@@ -84,7 +84,7 @@
                         </div>
 
                         <!--begin::Menu-->
-                        <div class="me-0">
+                        {{-- <div class="me-0">
                             <button class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
                                 data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                 <i class="ki-solid ki-dots-horizontal fs-2x"></i>
@@ -100,26 +100,16 @@
                                 <!--end::Heading-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Create Invoice</a>
+                                    <a href="#" class="menu-link px-3">Delete Tree</a>
                                 </div>
                                 <!--end::Menu item-->
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="d-flex flex-wrap flex-stack">
                     <div class="d-flex flex-column flex-grow-1 pe-8">
                         <div class="d-flex flex-wrap">
-                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
-                                <!--begin::Zone-->
-                                <div class="d-flex align-items-center">
-                                    <div class="fs-2 fw-bold">B1</div>
-                                </div>
-
-                                <!--begin::Width-->
-                                <div class="fw-semibold fs-6 text-gray-500">Zone</div>
-
-                            </div>
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">

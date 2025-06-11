@@ -65,6 +65,7 @@ class TreeModalLivewire extends Component
 
             $this->form->create($validatedData);
             $this->alertSuccess('Tree has been created successfully.', $this->modalID);
+            $this->resetInput();
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);
@@ -83,6 +84,8 @@ class TreeModalLivewire extends Component
 
             $this->form->update($validatedData);
             $this->alertSuccess('Tree has been updated successfully.', $this->modalID);
+            $this->resetInput();
+            
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);

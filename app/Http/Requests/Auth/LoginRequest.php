@@ -53,7 +53,7 @@ class LoginRequest extends FormRequest
         $user = Auth::user();
 
         if (!$user->is_active) {
-            Auth::logout(); 
+            Auth::logout();
 
             RateLimiter::hit($this->throttleKey());
 
@@ -62,7 +62,22 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        if ($this->isWebLogin() && $user->getRoleNames()->contains('Worker')) {
+
+            Auth::logout();
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'phone' => __('Workers are not allowed to log in from this portal.'),
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
+    }
+
+    protected function isWebLogin(): bool
+    {
+        return !$this->expectsJson(); 
     }
 
     /**

@@ -44,27 +44,23 @@ class TreeSpeciesTable extends DataTableComponent
 
             Column::make("Tree Count")
                 ->label(fn($row) => $row->trees()->count() ?? 0)
-                ->sortable( function ($query, $direction) {
+                ->sortable(function ($query, $direction) {
                     return $query->withCount('trees')->orderBy('trees_count', $direction);
                 }),
 
-            ViewComponentColumn::make('Status', 'is_active')
-                ->component('table-badge')
-                ->attributes(fn($value, $row, Column $column) => [
-                    'badge' => $row->is_active ?  'badge-light-success' : 'badge-light-danger',
-                    'label' => $row->is_active ? 'Active' : 'Suspended',
-                ]),
-
             Column::make("Created at", "created_at")
                 ->sortable(),
-                
+
             Column::make('Actions')
-                ->label(fn($row, Column $column) => view('components.table-button', [
-                    'modal' => 'speciesModalLivewire',
-                    'dispatch' => 'edit-species',
+                ->label(fn($row, Column $column) => view('components.table-com-button', [
+                    'modal'     => 'speciesModalLivewire',
+                    'dispatch1' => 'edit-species',
+                    'label1'    => 'Edit',
                     'dataField' => 'species',
-                    'data' => $row->id,
-                    'permission' => 'edit-species'
+                    'data'      =>  $row->id,
+                    'icon2'     => 'bi bi-trash3',
+                    'dispatch2' => 'delete-species',
+                    'label2'    => 'Delete',
                 ]))->html()
                 ->excludeFromColumnSelect(),
         ];

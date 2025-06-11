@@ -34,6 +34,8 @@
         <x-input-error :messages="$errors->get('form.is_active')" />
     </div>
 
+    <x-alert/>
+
     @slot('footer')
         <x-button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</x-button>
         <x-button type="submit" class="btn btn-primary" wire:click="{{ $form->user ? 'update' : 'create' }}">{{ $form->user ? 'Update' : 'Add' }}</x-button>

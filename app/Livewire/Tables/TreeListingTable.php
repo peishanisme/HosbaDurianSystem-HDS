@@ -77,12 +77,15 @@ class TreeListingTable extends DataTableComponent
                 ->sortable(),
                 
             Column::make('Actions')
-                ->label(fn($row, Column $column) => view('components.table-button', [
-                    'modal' => 'treeModalLivewire',
-                    'dispatch' => 'edit-tree',
+                ->label(fn($row, Column $column) => view('components.table-com-button', [
+                    'modal'     => 'treeModalLivewire',
+                    'dispatch1' => 'edit-tree',
+                    'label1'    => 'Edit',
                     'dataField' => 'tree',
-                    'data' =>   $row->id,
-                    'permission' => 'edit-tree'
+                    'data'      =>  $row->id,
+                    'icon2'     => 'bi bi-trash3',
+                    'dispatch2' => 'delete-tree',
+                    'label2'    => 'Delete',
                 ]))->html()
                 ->excludeFromColumnSelect(),
         ];
