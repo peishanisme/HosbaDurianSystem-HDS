@@ -35,7 +35,7 @@ class SpeciesController extends Controller
 
     public function index() 
     {
-        $species = Species::active()->get(); // only active species
+        $species = Species::all();
         return response()->json([
             'message' => 'Species fetched successfully',
             'data'    => $species
