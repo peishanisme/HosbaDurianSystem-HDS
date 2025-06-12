@@ -80,6 +80,7 @@ class UserListingTable extends DataTableComponent
             Column::make('Actions')
                 ->label(fn($row, Column $column) => view('components.table-button', [
                     'modal' => 'userModalLivewire',
+                    'disabled' => $row->roles->contains('name', 'Super-Admin'),
                     'dispatch' => 'edit-user',
                     'dataField' => 'user',
                     'data' => $row->id,
