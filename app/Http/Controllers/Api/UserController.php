@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -40,11 +41,18 @@ class UserController extends Controller
             'phone' => 'nullable|string|max:20',
             'password' => 'required|string|min:6',
             'is_active' => 'boolean',
+            'role_id' => 'required|integer',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
 
         $user = User::create($validated);
+
+        DB::table('model_has_roles')->insert([
+        'role_id' => $validated['role_id'],
+        'model_type' => User::class,
+        'model_id' => $user->id,
+    ]);
 
         return response()->json($user, 201);
     }

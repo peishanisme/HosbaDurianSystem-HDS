@@ -18,3 +18,5 @@ Route::post('/buyers', [BuyerController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/buyers', [BuyerController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/trees/{uuid}', [TreeController::class, 'show']);
+
