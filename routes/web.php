@@ -10,6 +10,8 @@ use App\Livewire\Module\TreeManagement\SpeciesIndexLivewire;
 use App\Livewire\Module\TreeManagement\TreeDetailsLivewire;
 use App\Livewire\Module\TreeManagement\TreeIndexLivewire;
 use App\Livewire\Module\UserManagement\ActivityLogIndexLivewire;
+use App\Livewire\Module\UserManagement\PermissionIndexLivewire;
+use App\Livewire\Module\UserManagement\RoleIndexLivewire;
 use App\Livewire\Module\UserManagement\UserProfileLivewire;
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -17,6 +19,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
         Route::get('/all', UserIndexLivewire::class)->name('users.index');
+        Route::group(['prefix' => 'role'], function () {
+            Route::get('/all', RoleIndexLivewire::class)->name('roles.index');
+        });
+        Route::group(['prefix' => 'permission'], function () {
+            Route::get('/all', PermissionIndexLivewire::class)->name('permissions.index');
+        });
     });
 
     Route::group(['prefix' => 'account', 'as' => 'account.'], function () {

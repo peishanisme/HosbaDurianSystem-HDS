@@ -28,9 +28,13 @@
             @class([
                 'show active' => Route::is([
                     'user.users.index',
+                    'user.roles.index',
+                    'user.permissions.index',
                 ]),
             ])>
             <x-layouts.sidebar.menu-sub-accordion title="Users Lising" route="user.users.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="Roles Lising" route="user.roles.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="Permissions Lising" route="user.permissions.index" />
         </x-layouts.sidebar.menu-accordion>
 
         {{-- sales & transactions --}}
