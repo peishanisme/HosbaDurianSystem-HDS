@@ -72,6 +72,12 @@ class RoleAndPermissionSeeder extends Seeder
             ['name' => 'edit-permissions'],
             ['name' => 'view-permissions'],
 
+            //manage species
+            ['name' => 'create-species'],
+            ['name' => 'edit-species'],
+            ['name' => 'view-species'],
+            ['name' => 'delete-species'],
+
             //manage trees
             ['name' => 'create-tree'],
             ['name' => 'edit-tree'],

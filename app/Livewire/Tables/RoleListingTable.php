@@ -42,7 +42,7 @@ class RoleListingTable extends DataTableComponent
                     'dataField' => 'role',
                     'data' => $row->id,
                     'disabled' => $row->name === 'Super-Admin',
-                    'permission' => 'edit-roles-permissions',
+                    'permission' => 'edit-permissions',
                 ]))->html()
                 ->excludeFromColumnSelect(),
         ];

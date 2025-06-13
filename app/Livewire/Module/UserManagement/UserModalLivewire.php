@@ -74,6 +74,6 @@ class UserModalLivewire extends Component
 
     public function render()
     {
-        return view('livewire.user-management.user-modal-livewire');
+        return view('livewire.module.user-management.user-modal-livewire');
     }
 }

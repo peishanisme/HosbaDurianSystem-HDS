@@ -7,16 +7,22 @@ use Livewire\Component;
 use App\Traits\SweetAlert;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
+use App\Traits\AuthorizesRoleOrPermission;
 
 #[Title('Tree Management')]
 class SpeciesIndexLivewire extends Component
 {
-    use SweetAlert;
+    use SweetAlert,AuthorizesRoleOrPermission;
 
     public Species $species;
 
+    public function mount(): void
+    {
+        $this->authorizeRoleOrPermission(['view-species']);
+    }
+
     #[On('delete-species')]
-    public function deleteTree(Species $species)
+    public function deleteSpecies(Species $species)
     {
         $this->species = $species;
         $this->alertConfirm('Are you sure you want to delete this species?', 'confirm-delete');
@@ -31,6 +37,6 @@ class SpeciesIndexLivewire extends Component
     
     public function render()
     {
-        return view('livewire.tree-management.species-index-livewire');
+        return view('livewire.module.tree-management.species-index-livewire');
     }
 }

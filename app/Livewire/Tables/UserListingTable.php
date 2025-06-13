@@ -26,7 +26,8 @@ class UserListingTable extends DataTableComponent
                     [
                         'label' => 'Create User',
                         'dispatch' => 'reset-user',
-                        'target' => 'userModalLivewire'
+                        'target' => 'userModalLivewire',
+                        'permission' => 'create-user',
                     ]
                 ]
             ]);

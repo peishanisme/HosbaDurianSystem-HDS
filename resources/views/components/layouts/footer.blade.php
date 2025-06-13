@@ -4,7 +4,7 @@
         <!--begin::Copyright-->
         <div class="text-gray-900 order-2 order-md-1">
             <span class="text-muted fw-semibold me-1">2025&copy;</span>
-            <a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">Hosba Durian Sdn bhd</a>
+            <a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">Hosba Durian Sdn Bhd</a>
         </div>
         <!--end::Copyright-->
         <!--begin::Menu-->
