@@ -18,5 +18,7 @@ Route::post('/buyers', [BuyerController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/buyers', [BuyerController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
-Route::middleware('auth:sanctum')->get('/trees/{uuid}', [TreeController::class, 'show']);
+Route::middleware('auth:sanctum')->get('/trees/{id}', [TreeController::class, 'show']);
+Route::middleware('auth:sanctum')->put('/species/{id}', [SpeciesController::class, 'update']);
+Route::middleware('auth:sanctum')->delete('/species/{id}', [SpeciesController::class, 'destroy']);
 

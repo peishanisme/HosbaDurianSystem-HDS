@@ -76,13 +76,25 @@ class TreeController extends Controller
         ]);
     }
 
-    public function show($uuid) {
+    public function show($id) {
         $tree = Tree::with('species')
-            ->where('uuid', $uuid)
+            ->where('id', $id)
             ->first();
 
         if (!$tree) {
             return response()->json(['message' => 'Tree not found'], 404);
+        }
+        $latestGrowth = $tree->growthLogs()
+        ->orderBy('created_at', 'desc')
+        ->first();
+
+        // Add latest height and diameter if available
+        if ($latestGrowth) {
+            $tree->height = $latestGrowth->height;
+            $tree->width = $latestGrowth->diameter; // assuming 'diameter' column
+        } else {
+            $tree->height = null;
+            $tree->width = null;
         }
 
         return response()->json($tree);
