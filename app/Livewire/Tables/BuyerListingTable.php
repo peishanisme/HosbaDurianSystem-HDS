@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Tables;
 
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Buyer;
+use Illuminate\Database\Eloquent\Builder;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
 
 class BuyerListingTable extends DataTableComponent
 {
@@ -21,7 +23,8 @@ class BuyerListingTable extends DataTableComponent
                     [
                         'label' => 'Create Buyer',
                         'dispatch' => 'reset-buyer',
-                        'target' => 'buyerModalLivewire'
+                        'target' => 'buyerModalLivewire',
+                        'permission' => 'create-buyer',
                     ]
                 ]
             ]);
@@ -33,26 +36,45 @@ class BuyerListingTable extends DataTableComponent
             Column::make("Id", "id")
                 ->sortable()
                 ->hideIf(true),
-            Column::make("Company name", "company_name")
-                ->sortable()
-                ->searchable(),
+            ViewComponentColumn::make('Company Name', 'company_name')
+                ->component('components.table-primary-column')
+                ->attributes(fn($value, $row, Column $column) => [
+                    'title' => $value,
+                    'route' => route('sales.buyers.show', $row->id),
+                ])->searchable()
+                ->sortable(),
             Column::make("Contact name", "contact_name")
                 ->sortable()
                 ->searchable(),
             Column::make("Contact number", "contact_number")
                 ->sortable(),
+            // Column::make("Total Sales (RM)")
+            //     ->label(fn($row, Column $column) => number_format(
+            //         $row->transactions->sum('amount'),
+            //         2
+            //     ))
+            //     ->sortable(
+            //         fn(Builder $query, string $direction) => $query->withSum(
+            //             ['transactions' => function ($query) {
+            //                 $query->where('type', 'sale');
+            //             }],
+            //             'deposit'
+            //         )->orderBy('transactions_sum_deposit', $direction)
+            //     ),
             Column::make("Created at", "created_at")
                 ->sortable(),
             Column::make('Actions')
                 ->label(fn($row, Column $column) => view('components.table-com-button', [
-                    'modal'     => 'speciesModalLivewire',
-                    'dispatch1' => 'edit-species',
+                    'modal'     => 'buyerModalLivewire',
+                    'dispatch1' => 'edit-buyer',
                     'label1'    => 'Edit',
-                    'dataField' => 'species',
+                    'dataField' => 'buyer',
                     'data'      =>  $row->id,
                     'icon2'     => 'bi bi-trash3',
-                    'dispatch2' => 'delete-species',
+                    'dispatch2' => 'delete-buyer',
                     'label2'    => 'Delete',
+                    'permission1' => 'edit-buyer',
+                    'permission2' => 'delete-buyer',
                 ]))->html()
                 ->excludeFromColumnSelect(),
         ];

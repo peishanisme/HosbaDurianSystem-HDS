@@ -69,7 +69,6 @@
                                     <div class="modal-body text-center">
 
                                         {!! QrCode::size(300)->generate($tree->uuid ?? 'No UUID') !!}
-
                                         
                                     </div>
 

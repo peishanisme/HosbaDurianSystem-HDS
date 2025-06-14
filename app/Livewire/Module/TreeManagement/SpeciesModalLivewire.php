@@ -66,6 +66,6 @@ class SpeciesModalLivewire extends Component
 
     public function render()
     {
-        return view('livewire.tree-management.species-modal-livewire');
+        return view('livewire.module.tree-management.species-modal-livewire');
     }
 }

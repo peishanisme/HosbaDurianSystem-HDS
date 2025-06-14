@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\UserManagement;
+namespace App\Actions\TreeManagement;
 
 use App\DataTransferObject\SpeciesDTO;
 use App\Models\Species;

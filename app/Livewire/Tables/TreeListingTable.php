@@ -18,8 +18,6 @@ class TreeListingTable extends DataTableComponent
             ->with(['species', 'latestGrowthLog']);
     }
 
-
-
     public function configure(): void
     {
         $this->setPrimaryKey('id')
@@ -31,7 +29,8 @@ class TreeListingTable extends DataTableComponent
                     [
                         'label' => 'Create Tree',
                         'dispatch' => 'reset-tree',
-                        'target' => 'treeModalLivewire'
+                        'target' => 'treeModalLivewire',
+                        'permission' => 'create-tree',
                     ]
                 ]
             ]);
@@ -86,6 +85,8 @@ class TreeListingTable extends DataTableComponent
                     'icon2'     => 'bi bi-trash3',
                     'dispatch2' => 'delete-tree',
                     'label2'    => 'Delete',
+                    'permission1' => 'edit-tree',
+                    'permission2' => 'delete-tree',
                 ]))->html()
                 ->excludeFromColumnSelect(),
         ];

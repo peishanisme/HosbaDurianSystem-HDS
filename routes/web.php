@@ -4,6 +4,7 @@
 
 use App\Livewire\Module\DashboardLivewire;
 use App\Livewire\Module\SalesAndTransactions\BuyerIndexLivewire;
+use App\Livewire\Module\SalesAndTransactions\BuyerOverviewLivewire;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Module\UserManagement\UserIndexLivewire;
 use App\Livewire\Module\TreeManagement\SpeciesIndexLivewire;
@@ -40,6 +41,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['prefix' => 'sales', 'as' => 'sales.'], function () {
         Route::group(['prefix' => 'buyer'], function () {
             Route::get('/all', BuyerIndexLivewire::class)->name('buyers.index');
+            Route::get('details/{buyer:id}', BuyerOverviewLivewire::class)->name('buyers.show');
         });
     });
 

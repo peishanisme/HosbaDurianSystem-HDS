@@ -9,7 +9,7 @@
     'permission' => null
 ])
 
-{{-- @can($permission) --}}
+@can($permission)
     <button 
         type="button"
         class="btn btn-sm btn-light-primary d-flex align-items-center gap-2"
@@ -21,4 +21,4 @@
         <i class="{{ $icon }}"></i>
         {{ $label }}
     </button>
-{{-- @endcan --}}
+@endcan
