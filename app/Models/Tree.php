@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Tree extends Model
 {
     use LogsActivity, SoftDeletes;
+    
     protected $fillable = [
         'tree_tag',
         'species_id',

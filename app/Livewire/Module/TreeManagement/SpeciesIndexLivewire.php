@@ -8,6 +8,7 @@ use App\Traits\SweetAlert;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use App\Traits\AuthorizesRoleOrPermission;
+use App\Actions\TreeManagement\DeleteSpeciesAction;
 
 #[Title('Tree Management')]
 class SpeciesIndexLivewire extends Component
@@ -31,7 +32,7 @@ class SpeciesIndexLivewire extends Component
     #[On('confirm-delete')]
     public function confirmDelete()
     {
-        $this->species->delete();
+        DeleteSpeciesAction::handle($this->species);
         $this->alertSuccess('Species deleted successfully.');
     }
     

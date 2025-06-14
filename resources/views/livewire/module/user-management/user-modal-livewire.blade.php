@@ -13,7 +13,7 @@
 
     <div class="fv-row mb-8">
         <x-input-label for="phone" class="required mb-2" :value="__('Phone Number')" />
-        <x-input-text type="tel" id="phone" placeholder="Phone Number" wire:model="form.phone" />
+        <x-input-text type="tel" id="phone" placeholder="Phone Number" wire:model="form.phone" maxlength="11" />
         <x-input-error :messages="$errors->get('form.phone')" />
     </div>
 

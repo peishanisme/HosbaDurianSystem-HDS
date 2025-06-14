@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <title>{{ config('app.name') }}</title>
+    <title>Hosba Durian System</title>
     <x-layouts.meta />
     <x-layouts.styles />
 

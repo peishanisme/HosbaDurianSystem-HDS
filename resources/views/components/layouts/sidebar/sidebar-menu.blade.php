@@ -20,7 +20,7 @@
                     'tree.trees.show',
                 ]),
             ])>
-            <x-layouts.sidebar.menu-sub-accordion title="Species Lising" route="tree.species.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="Species Listing" route="tree.species.index" />
             <x-layouts.sidebar.menu-sub-accordion title="Trees Listing" route="tree.trees.index" />
         </x-layouts.sidebar.menu-accordion>
 
@@ -32,7 +32,7 @@
                     'sales.buyers.show'
                 ]),
             ])>
-            <x-layouts.sidebar.menu-sub-accordion title="Buyers Lising" route="sales.buyers.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="Buyers Listing" route="sales.buyers.index" />
         </x-layouts.sidebar.menu-accordion>
         
         {{-- user management --}}
@@ -44,9 +44,9 @@
                     'user.permissions.index',
                 ]),
             ])>
-            <x-layouts.sidebar.menu-sub-accordion title="Users Lising" route="user.users.index" />
-            <x-layouts.sidebar.menu-sub-accordion title="Roles Lising" route="user.roles.index" />
-            <x-layouts.sidebar.menu-sub-accordion title="Permissions Lising" route="user.permissions.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="Users Listing" route="user.users.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="Roles Listing" route="user.roles.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="Permissions Listing" route="user.permissions.index" />
         </x-layouts.sidebar.menu-accordion>
 
         {{-- activity log --}}

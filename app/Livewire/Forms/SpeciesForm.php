@@ -7,7 +7,7 @@ use App\Models\Species;
 use Livewire\Attributes\Validate;
 use App\DataTransferObject\SpeciesDTO;
 use App\Actions\TreeManagement\CreateSpeciesAction;
-use App\Actions\UserManagement\UpdateSpeciesAction;
+use App\Actions\TreeManagement\UpdateSpeciesAction;
 
 class SpeciesForm extends Form
 {
