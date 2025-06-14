@@ -47,7 +47,6 @@ class SpeciesController extends Controller
     }
 
 
-    // Edit a species
     public function update(Request $request, $id)
 {
     $species = Species::findOrFail($id);
