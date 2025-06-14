@@ -34,9 +34,11 @@ class BuyerListingTable extends DataTableComponent
                 ->sortable()
                 ->hideIf(true),
             Column::make("Company name", "company_name")
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
             Column::make("Contact name", "contact_name")
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
             Column::make("Contact number", "contact_number")
                 ->sortable(),
             Column::make("Created at", "created_at")
