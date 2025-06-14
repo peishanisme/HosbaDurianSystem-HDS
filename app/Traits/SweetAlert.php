@@ -10,6 +10,7 @@ trait SweetAlert
         // $this->dispatch('refreshDatatable');
         // $this->dispatch('reset-form');
         $this->dispatch('refreshDatatable');
+        $this->dispatch('refreshComponent');
     }
 
 
