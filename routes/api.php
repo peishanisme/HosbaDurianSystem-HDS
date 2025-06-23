@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index'
 Route::middleware('auth:sanctum')->get('/trees/{id}', [TreeController::class, 'show']);
 Route::middleware('auth:sanctum')->put('/species/{id}', [SpeciesController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('/species/{id}', [SpeciesController::class, 'destroy']);
-
+Route::middleware('auth:sanctum')->put('/users/{id}', [UserController::class, 'update']);
+Route::middleware('auth:sanctum')->delete('/users/{id}', [UserController::class, 'destroy']);
