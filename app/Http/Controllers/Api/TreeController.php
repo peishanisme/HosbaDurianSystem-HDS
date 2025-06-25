@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\TreeGrowthLog;
+use App\Actions\TreeManagement\UpdateTreeAction;
+use App\DataTransferObject\TreeDTO;
 
 
 class TreeController extends Controller
@@ -88,16 +90,76 @@ class TreeController extends Controller
         ->orderBy('created_at', 'desc')
         ->first();
 
-        // Add latest height and diameter if available
         if ($latestGrowth) {
             $tree->height = $latestGrowth->height;
-            $tree->width = $latestGrowth->diameter; // assuming 'diameter' column
+            $tree->width = $latestGrowth->diameter;
         } else {
             $tree->height = null;
             $tree->width = null;
         }
 
         return response()->json($tree);
+    }
+
+    public function update(Request $request, $id) {
+    $tree = Tree::findOrFail($id);
+
+    $validator = Validator::make($request->all(), [
+        'species_id' => 'required|exists:species,id',
+        'planted_at' => 'required|date',
+        'thumbnail' => 'nullable|string',
+        'flowering_period' => 'nullable|string',
+        'height' => 'required|numeric',
+        'diameter' => 'required|numeric',
+        'latitude' => 'nullable|numeric',
+        'longitude' => 'nullable|numeric',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'message' => 'Validation failed',
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    try {
+        $dto = TreeDTO::fromRequest($request);
+
+        $updatedTree = (new UpdateTreeAction())->handle($tree, $dto);
+
+        return response()->json([
+            'message' => 'Tree updated successfully',
+            'data' => $updatedTree
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Failed to update tree',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+    }
+
+    public function destroy($id) {
+        $tree = Tree::findOrFail($id);
+
+        DB::beginTransaction();
+
+        try {
+            $tree->growthLogs()->delete();
+            $tree->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Tree deleted successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Failed to delete tree',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
 }

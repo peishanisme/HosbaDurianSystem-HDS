@@ -23,3 +23,5 @@ Route::middleware('auth:sanctum')->put('/species/{id}', [SpeciesController::clas
 Route::middleware('auth:sanctum')->delete('/species/{id}', [SpeciesController::class, 'destroy']);
 Route::middleware('auth:sanctum')->put('/users/{id}', [UserController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('/users/{id}', [UserController::class, 'destroy']);
+Route::middleware('auth:sanctum')->put('/trees/{id}', [TreeController::class, 'update']);
+Route::middleware('auth:sanctum')->delete('/trees/{id}', [TreeController::class, 'destroy']);

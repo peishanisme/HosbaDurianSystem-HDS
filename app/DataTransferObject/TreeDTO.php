@@ -35,4 +35,19 @@ class TreeDTO
             flowering_period: $data['flowering_period']
         );
     }
+
+    public static function fromRequest($request): self
+{
+    return self::fromArray($request->only([
+        'species_id',
+        'planted_at',
+        'thumbnail',
+        'flowering_period',
+        'latitude',
+        'longitude',
+        'height',
+        'diameter',
+    ]));
+}
+
 }
