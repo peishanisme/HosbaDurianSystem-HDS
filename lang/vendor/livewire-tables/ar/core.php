@@ -4,7 +4,7 @@ return [
     'All' => 'الجميع',
     'All Columns' => 'كافة الأعمدة',
     'Applied Filters' => 'المرشحات التطبيقية',
-    'Applied Sorting' => 'الفرز التطبيقي',
+    '' => 'الفرز التطبيقي',
     'Bulk Actions' => 'إجراءات جملة',
     'Clear' => 'واضح',
     'Columns' => 'الأعمدة',
