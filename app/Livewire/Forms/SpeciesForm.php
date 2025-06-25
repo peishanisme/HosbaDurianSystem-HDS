@@ -4,7 +4,7 @@ namespace App\Livewire\Forms;
 
 use Livewire\Form;
 use App\Models\Species;
-use Livewire\Attributes\Validate;
+use Illuminate\Validation\Rule;
 use App\DataTransferObject\SpeciesDTO;
 use App\Actions\TreeManagement\CreateSpeciesAction;
 use App\Actions\TreeManagement\UpdateSpeciesAction;
@@ -18,7 +18,14 @@ class SpeciesForm extends Form
     {
         return [
             'name'        => ['required', 'string', 'max:255'],
-            'code'        => ['required', 'string', 'max:50', 'unique:species,code,' . ($this->species->id ?? 'NULL')],
+            'code' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique('species', 'code')
+                    ->ignore($this->species->id ?? null)
+                    ->whereNull('deleted_at'),
+            ],
             'description' => ['nullable', 'string', 'max:255'],
         ];
     }
@@ -38,6 +45,6 @@ class SpeciesForm extends Form
 
     public function update($validatedData): void
     {
-        app(UpdateSpeciesAction::class)->handle($this->species,SpeciesDTO::fromArray($validatedData));
+        app(UpdateSpeciesAction::class)->handle($this->species, SpeciesDTO::fromArray($validatedData));
     }
 }
