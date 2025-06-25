@@ -162,4 +162,42 @@ class TreeController extends Controller
         }
     }
 
+    public function showByUuid($uuid){
+        $tree = Tree::with('species')->where('uuid', $uuid)->first();
+
+        if (!$tree) {
+            return response()->json(['message' => 'Tree not found'], 404);
+        }
+
+        $latestGrowth = $tree->growthLogs()->latest()->first();
+        $tree->height = $latestGrowth?->height;
+        $tree->width = $latestGrowth?->diameter;
+
+        return response()->json($tree);
+    }
+
+    public function getTreeTagList()
+{
+    $trees = Tree::with('species')
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    $treeTags = $trees->map(function ($tree) {
+        return [
+            'id' => $tree->id,
+            'uuid' => $tree->uuid,
+            'tree_tag' => $tree->tree_tag, // Add this line
+            'latitude' => $tree->latitude,
+            'longitude' => $tree->longitude,
+        ];
+    });
+
+    return response()->json([
+        'success' => true,
+        'data' => $treeTags
+    ]);
+}
+
+
+
 }

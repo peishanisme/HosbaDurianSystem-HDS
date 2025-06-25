@@ -25,3 +25,5 @@ Route::middleware('auth:sanctum')->put('/users/{id}', [UserController::class, 'u
 Route::middleware('auth:sanctum')->delete('/users/{id}', [UserController::class, 'destroy']);
 Route::middleware('auth:sanctum')->put('/trees/{id}', [TreeController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('/trees/{id}', [TreeController::class, 'destroy']);
+Route::middleware('auth:sanctum')->get('/trees/uuid/{uuid}', [TreeController::class, 'showByUuid']);
+// Route::middleware('auth:sanctum')->get('/trees/tree-tag-list', [TreeController::class, 'getTreeTagList']);
