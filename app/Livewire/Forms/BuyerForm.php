@@ -19,7 +19,7 @@ class BuyerForm extends Form
         return [
             'company_name'   => ['required', 'string', 'max:255'],
             'contact_name'   => ['nullable', 'string', 'max:255'],
-            'contact_number' => ['required', 'string', 'max:50'],
+            'contact_number' => ['required', 'string','numeric'],
             'email'          => ['nullable', 'email', 'max:255'],
             'address'        => ['nullable', 'string', 'max:255'],
         ];

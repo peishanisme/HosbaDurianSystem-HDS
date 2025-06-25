@@ -26,7 +26,8 @@ class UserListingTable extends DataTableComponent
                     [
                         'label' => 'Create User',
                         'dispatch' => 'reset-user',
-                        'target' => 'userModalLivewire'
+                        'target' => 'userModalLivewire',
+                        'permission' => 'create-user',
                     ]
                 ]
             ]);
@@ -55,13 +56,15 @@ class UserListingTable extends DataTableComponent
                 ->hideIf(true),
 
             Column::make("Name", "name")
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
 
             Column::make("Email", "email")
                 ->sortable(),
 
             Column::make("Phone", "phone")
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
 
             ArrayColumn::make('Roles')
                 ->data(fn($value, $row) => $row->roles)

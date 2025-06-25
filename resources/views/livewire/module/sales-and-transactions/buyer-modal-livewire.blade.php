@@ -13,7 +13,7 @@
 
     <div class="fv-row mb-8">
         <x-input-label for="name" class="required mb-2" :value="__('Contact Number')" />
-        <x-input-text id="contact_number" placeholder="Contact Number" wire:model="form.contact_number" />
+        <x-input-text id="contact_number" placeholder="Contact Number" wire:model="form.contact_number"  maxlength="11"/>
         <x-input-error :messages="$errors->get('form.contact_number')" />
     </div>
 

@@ -3,7 +3,7 @@
 namespace App\Livewire\Tables;
 
 use App\Models\Species;
-use Rappasoft\LaravelLivewireTables\{Views\Column, DataTableComponent, Views\Columns\ViewComponentColumn};
+use Rappasoft\LaravelLivewireTables\{Views\Column, DataTableComponent};
 
 class TreeSpeciesTable extends DataTableComponent
 {
@@ -20,7 +20,8 @@ class TreeSpeciesTable extends DataTableComponent
                     [
                         'label' => 'Create Species',
                         'dispatch' => 'reset-species',
-                        'target' => 'speciesModalLivewire'
+                        'target' => 'speciesModalLivewire',
+                        'permission' => 'create-species',
                     ]
                 ]
             ]);
@@ -61,6 +62,8 @@ class TreeSpeciesTable extends DataTableComponent
                     'icon2'     => 'bi bi-trash3',
                     'dispatch2' => 'delete-species',
                     'label2'    => 'Delete',
+                    'permission1' => 'edit-species',
+                    'permission2' => 'delete-species',  
                 ]))->html()
                 ->excludeFromColumnSelect(),
         ];

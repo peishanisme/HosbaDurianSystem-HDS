@@ -93,6 +93,6 @@ class TreeModalLivewire extends Component
     }
     public function render()
     {
-        return view('livewire.tree-management.tree-modal-livewire');
+        return view('livewire.module.tree-management.tree-modal-livewire');
     }
 }

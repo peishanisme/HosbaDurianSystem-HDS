@@ -3,6 +3,7 @@
 namespace App\Livewire\Module\TreeManagement;
 
 use App\Models\Tree;
+use App\Traits\AuthorizesRoleOrPermission;
 use App\Traits\SweetAlert;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -11,8 +12,13 @@ use Livewire\Attributes\Title;
 #[Title('Tree Management')]
 class TreeIndexLivewire extends Component
 {
-    use SweetAlert;
+    use SweetAlert, AuthorizesRoleOrPermission;
     public Tree $tree;
+
+    public function mount(): void
+    {
+        $this->authorizeRoleOrPermission(['view-tree']);
+    }
     
     #[On('delete-tree')]
     public function deleteTree(Tree $tree)
@@ -30,6 +36,6 @@ class TreeIndexLivewire extends Component
 
     public function render()
     {
-        return view('livewire.tree-management.tree-index-livewire');
+        return view('livewire.module.tree-management.tree-index-livewire');
     }
 }

@@ -2,17 +2,16 @@
 
 namespace App\Livewire\Components;
 
-use App\Models\Tree;
+use App\Models\Buyer;
 use Livewire\Component;
 
-class TreeDetailsHeader extends Component
+class BuyerHeaderLivewire extends Component
 {
-    public Tree $tree;
+    public Buyer $buyer;
     protected $listeners = ['refreshComponent' => '$refresh'];
 
-    
     public function render()
     {
-        return view('livewire.components.tree-details-header');
+        return view('livewire.components.buyer-header-livewire');
     }
 }
