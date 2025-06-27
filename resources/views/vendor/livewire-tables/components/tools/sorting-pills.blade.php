@@ -4,7 +4,7 @@
     <div>
         @if ($this->sortingPillsAreEnabled() && $this->hasSorts())
             <div class="mb-4 px-4 md:p-0" x-cloak x-show="!currentlyReorderingStatus">
-                <small class="text-gray-700 dark:text-white">{{ __($localisationPath.'Applied Sorting') }}:</small>
+                <small class="text-gray-700 dark:text-white ">{{ __($localisationPath.'Applied Sorting') }}:</small>
 
                 @foreach($this->getSorts() as $columnSelectName => $direction)
                     @php($column = $this->getColumnBySelectName($columnSelectName) ?? $this->getColumnBySlug($columnSelectName))
@@ -125,7 +125,7 @@
 @elseif ($isBootstrap5)
     <div>
         @if ($this->sortingPillsAreEnabled() && $this->hasSorts())
-            <div class="mb-3" x-cloak x-show="!currentlyReorderingStatus">
+            <div class="mb-3 px-5" x-cloak x-show="!currentlyReorderingStatus">
                 <small>{{ __($localisationPath.'Applied Sorting') }}:</small>
 
                 @foreach($this->getSorts() as $columnSelectName => $direction)
