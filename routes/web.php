@@ -18,6 +18,7 @@ use App\Livewire\Module\UserManagement\ActivityLogIndexLivewire;
 use App\Livewire\Module\SalesAndTransactions\BuyerOverviewLivewire;
 use App\Livewire\Module\SalesAndTransactions\TransactionIndexLivewire;
 use App\Livewire\Module\SalesAndTransactions\CreateTransactionLivewire;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardLivewire::class)->name('dashboard');

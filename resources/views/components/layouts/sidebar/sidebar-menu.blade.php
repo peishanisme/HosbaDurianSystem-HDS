@@ -28,7 +28,8 @@
         <x-layouts.sidebar.menu-accordion title="Agrochemicals" :svg="view('components.icons.agrochemical')" @class([
             'show active' => Route::is([
                 'agrochemical.agrochemicals.index',
-                'agrochemical.agrochemicals.show',
+                'agrochemical.show',
+                'agrochemical.purchase-history'
             ]),
         ])>
             <x-layouts.sidebar.menu-sub-accordion title="Agrochemicals Listing"

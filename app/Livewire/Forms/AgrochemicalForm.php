@@ -47,6 +47,4 @@ class AgrochemicalForm extends Form
         app(UpdateAgrochemicalAction::class)->handle($this->agrochemical,AgrochemicalDTO::fromArray($validatedData));
     }
 
-
-
 }

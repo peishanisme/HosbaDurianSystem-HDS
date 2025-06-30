@@ -6,7 +6,6 @@ use App\Enums\BlockchainStatus;
 use App\Models\Transaction;
 use App\Services\BlockchainService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class CreateTransactionAction

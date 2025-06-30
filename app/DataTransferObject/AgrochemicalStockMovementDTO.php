@@ -13,7 +13,7 @@ class AgrochemicalStockMovementDTO
 
     public function __construct(
         public string $agrochemical_uuid,
-        public string $type,
+        public string $movement_type,
         public int $quantity,
         public string $date,
         public ?string $description = null,
@@ -23,7 +23,7 @@ class AgrochemicalStockMovementDTO
     {
         return new self(
             agrochemical_uuid: $data['agrochemical_uuid'],
-            type: $data['type'],
+            movement_type: $data['movement_type'],
             quantity: $data['quantity'],
             date: $data['date'],
             description: $data['description'] ?? null,
