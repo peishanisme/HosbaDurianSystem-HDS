@@ -3,7 +3,6 @@
 namespace App\Livewire\Tables;
 
 use App\Models\Tree;
-use Illuminate\Support\HtmlString;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -50,10 +49,12 @@ class TreeListingTable extends DataTableComponent
         return [
             Column::make("ID", "id")
                 ->hideIf(true),
-
+            Column::make("Thumbnail", "thumbnail")
+                ->hideIf(true),
             ViewComponentColumn::make('Tree Tag', 'tree_tag')
                 ->component('components.table-primary-column')
                 ->attributes(fn($value, $row, Column $column) => [
+                    'thumbnail' => $row->thumbnail ?? 'default',
                     'title' => $value,
                     'route' => route('tree.trees.show', $row->id),
                 ])->searchable()

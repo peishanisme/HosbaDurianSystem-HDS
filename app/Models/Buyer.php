@@ -19,6 +19,7 @@ class Buyer extends Model
         'contact_number',
         'email',
         'address',
+        'reference_id',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -37,6 +38,7 @@ class Buyer extends Model
 
         static::creating(function ($model) {
             $model->uuid = (string) Str::uuid();
+            $model->reference_id = 'buyer-' . substr(Str::uuid()->toString(), 0, 25);
         });
     }
 
