@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Livewire\Forms;
+
+use App\Actions\SalesAndTransactions\CreateTransactionAction;
+use Livewire\Attributes\Validate;
+use Livewire\Form;
+
+class TransactionForm extends Form
+{
+    public ?string $date,$buyer_uuid;
+    public ?float $total_price;
+
+    protected function rules(): array
+    {
+        return [
+            'date' => ['required', 'date', 'before_or_equal:today'],
+            'total_price' => ['required', 'numeric', 'min:0'],
+            'buyer_uuid' => ['required', 'exists:buyers,uuid'],
+        ];
+    }
+
+    public function create(array $validatedData): void
+    {
+        app(CreateTransactionAction::class)->handle($validatedData);
+    }
+
+    
+}

@@ -40,10 +40,12 @@
             @class([
                 'show active' => Route::is([
                     'sales.buyers.index',
-                    'sales.buyers.show'
+                    'sales.buyers.show',
+                    'sales.transaction.index',
                 ]),
             ])>
             <x-layouts.sidebar.menu-sub-accordion title="Buyers Listing" route="sales.buyers.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="Transactions Listing" route="sales.transaction.index" />
         </x-layouts.sidebar.menu-accordion>
 
         {{-- user management --}}
