@@ -58,7 +58,7 @@
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="fs-2 fw-bold" data-kt-countup="true" data-kt-countup-value="12.5">0
+                                    <div class="fs-2 fw-bold" data-kt-countup="true" data-kt-countup-value=" {{ $agrochemical->getRemainingSTock() }}">0
                                     </div>
                                 </div>
                                 <div class="fw-semibold fs-6 text-gray-500">Remaining Quantity</div>
@@ -75,7 +75,7 @@
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="fs-2 fw-bold">13/7/2025</div>
+                                    <div class="fs-2 fw-bold">1/7/2025</div>
                                 </div>
                                 <div class="fw-semibold fs-6 text-gray-500">Latest Purchase Date</div>
                             </div>

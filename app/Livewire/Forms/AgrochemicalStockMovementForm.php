@@ -31,12 +31,11 @@ class AgrochemicalStockMovementForm extends Form
     public function edit(AgrochemicalStockMovement $stock): void
     {
         $this->stock = $stock;
-        $this->agrochemical = $stock->agrochemical;
-        $this->name = $stock->agrochemical->name;
-        $this->agrochemical_uuid = $stock->agrochemical->uuid;
+        $this->name = $this->agrochemical->name;
+        $this->agrochemical_uuid = $this->agrochemical->uuid;
         $this->movement_type = $stock->movement_type;
         $this->quantity = $stock->quantity;
-        $this->date = $stock->date?->format('Y-m-d');
+        $this->date = $stock->date;
         $this->description = $stock->description;
     }
 

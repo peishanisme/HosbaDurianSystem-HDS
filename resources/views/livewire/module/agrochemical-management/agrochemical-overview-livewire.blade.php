@@ -54,7 +54,7 @@
                 <label class="col-lg-4 fw-semibold text-muted">Latest Purchase Date</label>
 
                 <div class="col-lg-8 fv-row">
-                    <span class="fw-semibold text-gray-800 fs-6">17/5/2025</span>
+                    <span class="fw-semibold text-gray-800 fs-6">1/7/2025</span>
                 </div>
             </div>
 

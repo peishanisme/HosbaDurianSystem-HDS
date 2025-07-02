@@ -17,7 +17,7 @@ class AgrochemicalListingTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setSearchPlaceholder('Search User')
+            ->setSearchPlaceholder('Search Agrochemical')
             ->setEmptyMessage('No results found')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
@@ -35,7 +35,7 @@ class AgrochemicalListingTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            'type' => SelectFilter::make('Species')
+            'type' => SelectFilter::make('Type')
                 ->options(['' => 'Any'] + AgrochemicalType::keyValue())
                 ->filter(fn(Builder $query, $value) => $query->where('type', $value)),
         ];
@@ -57,7 +57,8 @@ class AgrochemicalListingTable extends DataTableComponent
                     'route' => route('agrochemical.show', $row->id),
                 ])->searchable()
                 ->sortable(),
-            Column::make("Quantity Per Unit", "quantity_per_unit"),
+            Column::make("Quantity Per Unit", "quantity_per_unit")
+                ->format(fn($value) => number_format($value, 2)),
             ViewComponentColumn::make('Type', 'type')
                 ->component('table-badge')
                 ->attributes(fn($value, $row, Column $column) => [

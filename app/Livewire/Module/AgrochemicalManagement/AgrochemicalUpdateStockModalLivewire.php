@@ -8,6 +8,7 @@ use App\Traits\SweetAlert;
 use Livewire\Attributes\On;
 use App\Models\Agrochemical;
 use App\Livewire\Forms\AgrochemicalStockMovementForm;
+use App\Models\AgrochemicalStockMovement;
 
 class AgrochemicalUpdateStockModalLivewire extends Component
 {
@@ -17,7 +18,8 @@ class AgrochemicalUpdateStockModalLivewire extends Component
     public AgrochemicalStockMovementForm $form;
     public ?Agrochemical $agrochemical = null;
 
-    public function mount(){
+    public function mount()
+    {
         $this->form->agrochemical = $this->agrochemical;
         $this->form->name = $this->agrochemical?->name;
         $this->form->agrochemical_uuid = $this->agrochemical?->uuid;
@@ -30,6 +32,13 @@ class AgrochemicalUpdateStockModalLivewire extends Component
         // $this->form->reset();
     }
 
+     #[On('edit-stock')]
+    public function edit(AgrochemicalStockMovement $stock): void
+    {
+        $this->resetInput();
+        $this->form->edit($stock);
+    }
+
     public function create(): void
     {
         $validatedData = $this->form->validate();
@@ -38,6 +47,9 @@ class AgrochemicalUpdateStockModalLivewire extends Component
 
             $this->form->create($validatedData);
             $this->alertSuccess('Inventory has been created successfully.', $this->modalID);
+            
+            $this->dispatch('refresh-header');
+
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);
