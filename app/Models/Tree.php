@@ -95,4 +95,10 @@ class Tree extends Model
     {
         return $this->hasOne(TreeGrowthLog::class)->latestOfMany();
     }
+
+    public function diseases()
+    {
+        return $this->hasMany(Disease::class, 'tree_uuid', 'uuid');
+    }
+
 }

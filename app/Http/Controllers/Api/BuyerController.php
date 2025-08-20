@@ -50,4 +50,57 @@ class BuyerController extends Controller
             'data' => $buyers,
         ], 200);
     }
+
+    public function update(Request $request, $id)
+    {
+        $buyer = Buyer::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'company_name'    => 'sometimes|required|string|max:255',
+            'contact_name'    => 'sometimes|required|string|max:255',
+            'contact_number'  => 'nullable|string|max:20',
+            'email'           => 'nullable|email|max:255|unique:buyers,email,' . $buyer->id,
+            'address'         => 'nullable|string|max:500',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $buyer->update($request->only([
+            'company_name',
+            'contact_name',
+            'contact_number',
+            'email',
+            'address',
+        ]));
+
+        return response()->json([
+            'message' => 'Buyer updated successfully.',
+            'data' => $buyer
+        ], 200);
+    }
+
+    public function destroy($id)
+    {
+        $buyer = Buyer::findOrFail($id);
+        $buyer->delete();
+
+        return response()->json([
+            'message' => 'Buyer deleted successfully.'
+        ], 200);
+    }
+
+    public function show($id)
+    {
+        $buyer = Buyer::findOrFail($id);
+
+        return response()->json([
+            'success' => true,
+            'data' => $buyer
+        ], 200);
+    }
 }

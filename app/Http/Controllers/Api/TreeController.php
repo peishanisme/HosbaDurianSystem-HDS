@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\TreeGrowthLog;
 use App\Actions\TreeManagement\UpdateTreeAction;
 use App\DataTransferObject\TreeDTO;
-
+use App\Actions\TreeManagement\UpdateTreeLocation;
 
 class TreeController extends Controller
 {
@@ -176,28 +176,54 @@ class TreeController extends Controller
         return response()->json($tree);
     }
 
-    public function getTreeTagList()
-{
-    $trees = Tree::with('species')
-        ->orderBy('created_at', 'desc')
-        ->get();
+    public function getTreeTagList() {
+        $trees = Tree::with('species')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    $treeTags = $trees->map(function ($tree) {
-        return [
-            'id' => $tree->id,
-            'uuid' => $tree->uuid,
-            'tree_tag' => $tree->tree_tag, // Add this line
-            'latitude' => $tree->latitude,
-            'longitude' => $tree->longitude,
-        ];
-    });
+        $treeTags = $trees->map(function ($tree) {
+            return [
+                'id' => $tree->id,
+                'uuid' => $tree->uuid,
+                'tree_tag' => $tree->tree_tag, // Add this line
+                'latitude' => $tree->latitude,
+                'longitude' => $tree->longitude,
+            ];
+        });
 
-    return response()->json([
-        'success' => true,
-        'data' => $treeTags
-    ]);
-}
+        return response()->json([
+            'success' => true,
+            'data' => $treeTags
+        ]);
+    }
 
+    public function updateTreeLocation(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
+        $tree = Tree::findOrFail($id);
+
+        try {
+            $tree = (new UpdateTreeLocation())->execute($tree, $request->latitude, $request->longitude);
+
+            return response()->json([
+                'message' => 'Tree location updated successfully',
+                'data' => $tree
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to update tree location',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
