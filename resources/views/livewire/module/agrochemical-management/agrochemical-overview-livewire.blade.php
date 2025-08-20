@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <livewire:components.agrochemical-details-header :agrochemical="$agrochemical" />
-    <livewire:module.agrochemical-management.agrochemical-update-stock-modal-livewire :agrochemical="$agrochemical"/>
+    <livewire:module.agrochemical-management.agrochemical-update-stock-modal-livewire :agrochemical="$agrochemical" />
 
     <div class="card mb-5 mb-xl-10" id="kt_profile_details_view">
         <div class="card-header cursor-pointer">
@@ -54,7 +54,7 @@
                 <label class="col-lg-4 fw-semibold text-muted">Latest Purchase Date</label>
 
                 <div class="col-lg-8 fv-row">
-                    <span class="fw-semibold text-gray-800 fs-6">1/7/2025</span>
+                    <span class="fw-semibold text-gray-800 fs-6">{{ $agrochemical->getLatestPurchaseDate() }}</span>
                 </div>
             </div>
 
