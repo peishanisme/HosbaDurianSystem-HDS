@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('health_records', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('disease_id');
-            $table->string('status');
-            $table->date('recorded_at')->nullable();
-            $table->text('treatment')->nullable();
-            $table->timestamps();
+        $table->id();
+        $table->uuid('tree_uuid');
+        $table->foreignId('disease_id')->constrained('diseases')->onDelete('cascade');
+        $table->string('status');
+        $table->date('recorded_at')->nullable();
+        $table->text('treatment')->nullable();
+        $table->timestamps();
+    });
 
-        $table->foreign('disease_id')->references('id')->on('diseases')->onDelete('cascade');
-        });
     }
 
     /**

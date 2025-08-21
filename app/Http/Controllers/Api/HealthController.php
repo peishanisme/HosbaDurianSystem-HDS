@@ -11,18 +11,24 @@ use App\DataTransferObject\HealthRecordDTO;
 
 class HealthController extends Controller
 {
-    // Create a new health record
     public function store(Request $request)
     {
- $record = HealthRecord::create([
-        'disease_id' => $diseaseId,
-        'status' => $request->status,
-        'recorded_at' => $request->recorded_at,
-        'treatment' => $request->treatment,
-    ]);
+        $validated = $request->validate([
+            'tree_uuid' => 'required|exists:trees,uuid',
+            'disease_id' => 'required|exists:diseases,id',
+            'status' => 'required|string|max:255',
+            'recorded_at' => 'nullable|date',
+            'treatment' => 'nullable|string',
+        ]);
 
-    return response()->json($record, 201);
+        $record = HealthRecord::create($validated);
+
+        return response()->json([
+            'message' => 'Health record created successfully',
+            'data' => $record
+        ], 201);
     }
+
 
     // Fetch all diseases
     public function index() 
@@ -57,7 +63,6 @@ class HealthController extends Controller
     ], 200);
 }
 
-    // Delete a health record
     public function destroy($id)
     {
         $healthRecord = HealthRecord::findOrFail($id);
@@ -65,6 +70,18 @@ class HealthController extends Controller
 
         return response()->json([
             'message' => 'Health record deleted successfully'
+        ], 200);
+    }
+
+    public function getByTree($uuid)
+    {
+        $records = HealthRecord::whereHas('tree', function ($query) use ($uuid) {
+            $query->where('uuid', $uuid);
+        })->with('disease')->get();
+
+        return response()->json([
+            'message' => 'Health records for tree fetched successfully',
+            'data'    => $records
         ], 200);
     }
 }

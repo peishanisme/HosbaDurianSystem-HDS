@@ -39,7 +39,9 @@ class Disease extends Model
 
     public function tree()
     {
-        return $this->belongsTo(Tree::class, 'tree_uuid', 'uuid');
+        return $this->belongsToMany(Tree::class, 'health_records')
+                    ->withPivot('status', 'recorded_at', 'treatment')
+                    ->withTimestamps();
     }
 
     public function healthRecords()

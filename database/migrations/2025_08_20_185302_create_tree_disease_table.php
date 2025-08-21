@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tree_disease', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('tree_id')->constrained()->onDelete('cascade');
+        $table->foreignId('tree_uuid')->constrained()->onDelete('cascade');
         $table->foreignId('disease_id')->constrained()->onDelete('cascade');
         $table->timestamps();
 
