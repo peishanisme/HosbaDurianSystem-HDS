@@ -36,6 +36,16 @@
                 route="agrochemical.agrochemicals.index" />
         </x-layouts.sidebar.menu-accordion>
 
+        {{-- post-harvest --}}
+        <x-layouts.sidebar.menu-accordion title="Post-Harvest" icon="ki-duotone ki-cube-2" @class([
+            'show active' => Route::is([
+                'harvest.events.index',
+            ]),
+        ])>
+            <x-layouts.sidebar.menu-sub-accordion title="Harvest Events Listing"
+                route="harvest.events.index" />
+        </x-layouts.sidebar.menu-accordion>
+
         {{-- sales & transactions --}}
         <x-layouts.sidebar.menu-accordion title="Sales & Transactions" icon="ki-duotone ki-dollar"
             @class([

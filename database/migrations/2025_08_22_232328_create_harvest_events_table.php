@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('agrochemical_stock_movements', function (Blueprint $table) {
+        Schema::create('harvest_events', function (Blueprint $table) {
             $table->id();
             $table->uuid()->unique();
-            $table->uuid('agrochemical_uuid');
-            $table->foreign('agrochemical_uuid')->references('uuid')->on('agrochemicals')->onDelete('cascade');
-            $table->string('movement_type');
-            $table->integer('quantity')->default(0);
-            $table->dateTime('date');
+            $table->string('event_name');
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
             $table->longText('description')->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('agrochemical_stock_movements');
+        Schema::dropIfExists('harvest_events');
     }
 };

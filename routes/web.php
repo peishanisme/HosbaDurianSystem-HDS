@@ -2,9 +2,7 @@
 
 // use App\Http\Controllers\ProfileController;
 
-use App\Livewire\Module\AgrochemicalManagement\AgrochemicalOverviewLivewire;
-use App\Livewire\Module\AgrochemicalManagement\AgrochemicalIndexLivewire;
-use App\Livewire\Module\AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire;
+use Illuminate\Support\Facades\Route;
 use App\Livewire\Module\DashboardLivewire;
 use App\Livewire\Module\TreeManagement\TreeIndexLivewire;
 use App\Livewire\Module\UserManagement\RoleIndexLivewire;
@@ -12,13 +10,16 @@ use App\Livewire\Module\UserManagement\UserIndexLivewire;
 use App\Livewire\Module\TreeManagement\TreeDetailsLivewire;
 use App\Livewire\Module\UserManagement\UserProfileLivewire;
 use App\Livewire\Module\TreeManagement\SpeciesIndexLivewire;
+use App\Livewire\Module\PostHarvest\HarvestEventIndexLivewire;
 use App\Livewire\Module\UserManagement\PermissionIndexLivewire;
 use App\Livewire\Module\SalesAndTransactions\BuyerIndexLivewire;
 use App\Livewire\Module\UserManagement\ActivityLogIndexLivewire;
 use App\Livewire\Module\SalesAndTransactions\BuyerOverviewLivewire;
 use App\Livewire\Module\SalesAndTransactions\TransactionIndexLivewire;
 use App\Livewire\Module\SalesAndTransactions\CreateTransactionLivewire;
-use Illuminate\Support\Facades\Route;
+use App\Livewire\Module\AgrochemicalManagement\AgrochemicalIndexLivewire;
+use App\Livewire\Module\AgrochemicalManagement\AgrochemicalOverviewLivewire;
+use App\Livewire\Module\AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardLivewire::class)->name('dashboard');
@@ -49,6 +50,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('overview', AgrochemicalOverviewLivewire::class)->name('show'),
             Route::get('purchase-history', AgrochemicalPurchaseHistoryLivewire::class)->name('purchase-history'),
         ]);
+    });
+
+    Route::group(['prefix' => 'harvest', 'as' => 'harvest.'], function () {
+        Route::get('/all', HarvestEventIndexLivewire::class)->name('events.index');
     });
 
     Route::group(['prefix' => 'sales', 'as' => 'sales.'], function () {
