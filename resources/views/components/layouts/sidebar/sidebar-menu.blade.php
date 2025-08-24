@@ -24,6 +24,28 @@
             <x-layouts.sidebar.menu-sub-accordion title="Trees Listing" route="tree.trees.index" />
         </x-layouts.sidebar.menu-accordion>
 
+        {{-- agrochemical --}}
+        <x-layouts.sidebar.menu-accordion title="Agrochemicals" :svg="view('components.icons.agrochemical')" @class([
+            'show active' => Route::is([
+                'agrochemical.agrochemicals.index',
+                'agrochemical.show',
+                'agrochemical.purchase-history'
+            ]),
+        ])>
+            <x-layouts.sidebar.menu-sub-accordion title="Agrochemicals Listing"
+                route="agrochemical.agrochemicals.index" />
+        </x-layouts.sidebar.menu-accordion>
+
+        {{-- post-harvest --}}
+        <x-layouts.sidebar.menu-accordion title="Post-Harvest" icon="ki-duotone ki-cube-2" @class([
+            'show active' => Route::is([
+                'harvest.events.index',
+            ]),
+        ])>
+            <x-layouts.sidebar.menu-sub-accordion title="Harvest Events Listing"
+                route="harvest.events.index" />
+        </x-layouts.sidebar.menu-accordion>
+
         {{-- sales & transactions --}}
         <x-layouts.sidebar.menu-accordion title="Sales & Transactions" icon="ki-duotone ki-dollar"
             @class([
@@ -36,7 +58,7 @@
             <x-layouts.sidebar.menu-sub-accordion title="Buyers Listing" route="sales.buyers.index" />
             <x-layouts.sidebar.menu-sub-accordion title="Transactions Listing" route="sales.transaction.index" />
         </x-layouts.sidebar.menu-accordion>
-        
+
         {{-- user management --}}
         <x-layouts.sidebar.menu-accordion title="User Management" icon="ki-duotone ki-security-user"
             @class([
@@ -54,9 +76,7 @@
         {{-- activity log --}}
         <x-layouts.sidebar.menu-accordion title="Activity Log" icon="ki-duotone ki-bookmark-2"
             @class([
-                'show active' => Route::is([
-                    'log.logs.index',
-                ]),
+                'show active' => Route::is(['log.logs.index']),
             ])>
             <x-layouts.sidebar.menu-sub-accordion title="Logs" route="log.logs.index" />
         </x-layouts.sidebar.menu-accordion>

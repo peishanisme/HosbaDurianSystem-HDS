@@ -24,7 +24,7 @@
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                     <span class="path3"></span>
-                                </i>{{ $buyer->uuid }}</span>
+                                </i>{{ $buyer->reference_id }}</span>
                             <span class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
                                 <i class="bi bi-telephone-fill me-1"></i>
                                 {{ $buyer->contact_number }}</span>

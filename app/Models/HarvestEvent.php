@@ -7,20 +7,17 @@ use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Buyer extends Model
+class HarvestEvent extends Model
 {
     use SoftDeletes, LogsActivity;
 
     protected $fillable = [
         'uuid',
-        'company_name',
-        'contact_name',
-        'contact_number',
-        'email',
-        'address',
-        'reference_id',
+        'event_name',
+        'start_date',
+        'end_date',
+        'description',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -28,8 +25,13 @@ class Buyer extends Model
         return LogOptions::defaults()
             ->logFillable()
             ->logOnlyDirty()
-            ->useLogName('buyer')
-            ->setDescriptionForEvent(fn(string $eventName) => "A buyer has been $eventName.")
+            ->useLogName('harvest_event')
+            ->setDescriptionForEvent(function (string $eventName) {
+                if ($eventName === 'updated' && $this->isDirty('end_date')) {
+                    return "A harvest event has been closed.";
+                }
+                return "A harvest event has been $eventName.";
+            })
             ->dontSubmitEmptyLogs();
     }
 
@@ -39,14 +41,6 @@ class Buyer extends Model
 
         static::creating(function ($model) {
             $model->uuid = (string) Str::uuid();
-            $model->reference_id = 'buyer-' . substr(Str::uuid()->toString(), 0, 25);
         });
     }
-
-    public function transactions(): HasMany
-    {
-        return $this->hasMany(Transaction::class, 'buyer_uuid', 'uuid');
-    }
-
-       
 }

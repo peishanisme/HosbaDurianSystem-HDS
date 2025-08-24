@@ -7,7 +7,7 @@
         </div>
     @elseif ($thumbnail && $thumbnail == 'default')
         <div class="me-3">
-            <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;" src="{{ asset('assets/admin/media/placeholder/placeholder-image.jpg') }}" alt="Placeholder">
+            <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;" src="{{ secure_asset('assets/media/placeholder/placeholder.svg') }}" alt="Placeholder">
         </div>
     @endif
 
