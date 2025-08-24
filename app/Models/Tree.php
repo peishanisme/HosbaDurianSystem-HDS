@@ -95,4 +95,17 @@ class Tree extends Model
     {
         return $this->hasOne(TreeGrowthLog::class)->latestOfMany();
     }
+
+    public function diseases()
+    {
+        return $this->belongsToMany(Disease::class, 'health_records')
+                    ->withPivot('status', 'recorded_at', 'treatment')
+                    ->withTimestamps();
+    }
+
+    public function healthRecords()
+    {
+        return $this->hasMany(HealthRecord::class);
+    }
+
 }
