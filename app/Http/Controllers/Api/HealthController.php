@@ -7,7 +7,8 @@ use App\Models\HealthRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\DataTransferObject\HealthRecordDTO;
-// use App\Actions\TreeManagement\Health\UpdateDiseaseAction;
+use Illuminate\Support\Str;
+use App\Actions\TreeManagement\Health\UpdateHealthAction;
 
 class HealthController extends Controller
 {
@@ -21,7 +22,10 @@ class HealthController extends Controller
             'treatment' => 'nullable|string',
         ]);
 
-        $record = HealthRecord::create($validated);
+        $record = HealthRecord::create([
+            'id' => Str::uuid(),
+            ...$validated
+        ]);
 
         return response()->json([
             'message' => 'Health record created successfully',
@@ -43,25 +47,34 @@ class HealthController extends Controller
 
 
     public function update(Request $request, $id)
-{
-    $healthRecord = HealthRecord::findOrFail($id);
+    {
+        $healthRecord = HealthRecord::findOrFail($id);
 
-    $validated = $request->validate([
-        'disease_id' => 'required|exists:diseases,id',
-        'status' => 'required|string|max:255',
-        'recorded_at' => 'nullable|date',
-        'treatment' => 'nullable|string',
-    ])->merge(['disease_id' => $healthRecord->disease_id]);
+        $validated = $request->validate([
+            'tree_uuid' => 'required|exists:trees,uuid',
+            'disease_id' => 'required|exists:diseases,id',
+            'status' => 'required|string|max:255',
+            'recorded_at' => 'nullable|date',
+            'treatment' => 'nullable|string',
+        ]);
 
-    $dto = new HealthRecordDTO($validated['disease_id'], $validated['status'], $validated['recorded_at'], $validated['treatment']);
+        // Create DTO
+        $dto = new HealthRecordDTO(
+        id: $healthRecord->id,
+        disease_id: (int) $validated['disease_id'],
+        status: $validated['status'],
+        recorded_at: $validated['recorded_at'] ?? null,
+        treatment: $validated['treatment'] ?? null
+    );
 
-    $updated = (new UpdateDiseaseAction())->handle($healthRecord, $dto);
+        $updated = (new UpdateHealthAction())->handle($healthRecord, $dto);
 
-    return response()->json([
-        'message' => 'Health record updated successfully',
-        'data' => $updated,
-    ], 200);
-}
+        return response()->json([
+            'message' => 'Health record updated successfully',
+            'data'    => $updated,
+        ], 200);
+    }
+
 
     public function destroy($id)
     {

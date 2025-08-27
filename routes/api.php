@@ -48,6 +48,7 @@ Route::middleware('auth:sanctum')->put('/health-records/{id}', [HealthController
 Route::middleware('auth:sanctum')->delete('/health-records/{id}', [HealthController::class, 'destroy']);
 Route::get('/trees/{uuid}/health-records', [HealthController::class, 'getByTree']);
 
+
 // // Buyer Controller
 // Route::middleware('auth:sanctum')->post('/buyers', [BuyerController::class, 'store']);
 // Route::middleware('auth:sanctum')->get('/buyers', [BuyerController::class, 'index']);
