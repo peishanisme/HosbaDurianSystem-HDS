@@ -11,6 +11,7 @@ trait SweetAlert
         // $this->dispatch('reset-form');
         $this->dispatch('refreshDatatable');
         $this->dispatch('refreshComponent');
+        $this->dispatch('redirect-to-index');
     }
 
 

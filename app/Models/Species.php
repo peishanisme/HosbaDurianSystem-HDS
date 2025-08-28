@@ -17,11 +17,30 @@ class Species extends Model
         'description',
     ];
 
-    /**
-     * Get the species name.
-     *
-     * @return string
-     */
+    protected static function booted()
+    {
+        static::updated(function ($model) {
+            if ($model->isDirty('code')) {
+                $oldCode = $model->getOriginal('code');
+                $newCode = $model->code;
+
+                $model->trees()
+                    ->get()
+                    ->each(function ($tree) use ($oldCode, $newCode) {
+                        // Extract the numeric part
+                        $parts = explode('-', $tree->tree_tag, 2);
+                        if (count($parts) === 2) {
+                            $tree->tree_tag = $newCode . '-' . $parts[1];
+
+                            // Only save if it's different and not empty
+                            if (!empty($tree->tree_tag) && $tree->tree_tag !== $tree->getOriginal('tree_tag')) {
+                                $tree->save();
+                            }
+                        }
+                    });
+            }
+        });
+    }
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -36,6 +55,4 @@ class Species extends Model
     {
         return $this->hasMany(Tree::class);
     }
-
-
 }

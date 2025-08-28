@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
     {{-- profile details --}}
     <div class="card shadow-sm">
         <div class="card-header">

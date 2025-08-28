@@ -35,7 +35,7 @@ class BuyerForm extends Form
         $this->address = $buyer->address;
     }
 
-     public function create(array $validatedData): void
+    public function create(array $validatedData): void
     {
         app(CreateBuyerAction::class)->handle(BuyerDTO::fromArray($validatedData));
     }

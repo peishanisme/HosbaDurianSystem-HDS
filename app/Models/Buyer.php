@@ -7,6 +7,7 @@ use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Buyer extends Model
 {
@@ -19,6 +20,7 @@ class Buyer extends Model
         'contact_number',
         'email',
         'address',
+        'reference_id',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -37,7 +39,13 @@ class Buyer extends Model
 
         static::creating(function ($model) {
             $model->uuid = (string) Str::uuid();
+            $model->reference_id = 'buyer-' . substr(Str::uuid()->toString(), 0, 25);
         });
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'buyer_uuid', 'uuid');
     }
 
        

@@ -2,18 +2,24 @@
 
 // use App\Http\Controllers\ProfileController;
 
-use App\Livewire\Module\DashboardLivewire;
-use App\Livewire\Module\SalesAndTransactions\BuyerIndexLivewire;
-use App\Livewire\Module\SalesAndTransactions\BuyerOverviewLivewire;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Module\UserManagement\UserIndexLivewire;
-use App\Livewire\Module\TreeManagement\SpeciesIndexLivewire;
-use App\Livewire\Module\TreeManagement\TreeDetailsLivewire;
+use App\Livewire\Module\DashboardLivewire;
 use App\Livewire\Module\TreeManagement\TreeIndexLivewire;
-use App\Livewire\Module\UserManagement\ActivityLogIndexLivewire;
-use App\Livewire\Module\UserManagement\PermissionIndexLivewire;
 use App\Livewire\Module\UserManagement\RoleIndexLivewire;
+use App\Livewire\Module\UserManagement\UserIndexLivewire;
+use App\Livewire\Module\TreeManagement\TreeDetailsLivewire;
 use App\Livewire\Module\UserManagement\UserProfileLivewire;
+use App\Livewire\Module\TreeManagement\SpeciesIndexLivewire;
+use App\Livewire\Module\PostHarvest\HarvestEventIndexLivewire;
+use App\Livewire\Module\UserManagement\PermissionIndexLivewire;
+use App\Livewire\Module\SalesAndTransactions\BuyerIndexLivewire;
+use App\Livewire\Module\UserManagement\ActivityLogIndexLivewire;
+use App\Livewire\Module\SalesAndTransactions\BuyerOverviewLivewire;
+use App\Livewire\Module\SalesAndTransactions\TransactionIndexLivewire;
+use App\Livewire\Module\SalesAndTransactions\CreateTransactionLivewire;
+use App\Livewire\Module\AgrochemicalManagement\AgrochemicalIndexLivewire;
+use App\Livewire\Module\AgrochemicalManagement\AgrochemicalOverviewLivewire;
+use App\Livewire\Module\AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardLivewire::class)->name('dashboard');
@@ -38,10 +44,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('details/{tree:id}', TreeDetailsLivewire::class)->name('trees.show');
     });
 
+    Route::group(['prefix' => 'agrochemical', 'as' => 'agrochemical.'], function () {
+        Route::get('/all', AgrochemicalIndexLivewire::class)->name('agrochemicals.index');
+        Route::group(['prefix' => 'details/{agrochemical:id}'], fn() => [
+            Route::get('overview', AgrochemicalOverviewLivewire::class)->name('show'),
+            Route::get('purchase-history', AgrochemicalPurchaseHistoryLivewire::class)->name('purchase-history'),
+        ]);
+    });
+
+    Route::group(['prefix' => 'harvest', 'as' => 'harvest.'], function () {
+        Route::get('/all', HarvestEventIndexLivewire::class)->name('events.index');
+    });
+
     Route::group(['prefix' => 'sales', 'as' => 'sales.'], function () {
         Route::group(['prefix' => 'buyer'], function () {
             Route::get('/all', BuyerIndexLivewire::class)->name('buyers.index');
             Route::get('details/{buyer:id}', BuyerOverviewLivewire::class)->name('buyers.show');
+        });
+
+        Route::group(['prefix' => 'transaction'], function () {
+            Route::get('/all', TransactionIndexLivewire::class)->name('transaction.index');
+            Route::get('create', CreateTransactionLivewire::class)->name('transaction.create');
         });
     });
 
