@@ -13,7 +13,6 @@ class Fruit extends Model
     protected $table = 'fruits';
     protected $primaryKey = 'id';
 
-    // Allow mass assignment for these fields
     protected $fillable = [
         'uuid',
         'tree_uuid',
@@ -21,14 +20,29 @@ class Fruit extends Model
         'weight',
         'grade',
         'harvested_at',
+        'transaction_uuid',
+        'is_spoiled',
+        'fruit_tag',
     ];
 
-    // Ensure UUID auto-generated when creating
     protected static function booted()
     {
         static::creating(function ($fruit) {
             if (empty($fruit->uuid)) {
                 $fruit->uuid = Str::uuid();
+            }
+
+            if (empty($fruit->fruit_tag)) {
+                $latestFruit = Fruit::orderBy('id', 'desc')->first();
+
+                if ($latestFruit && $latestFruit->fruit_tag) {
+                    $lastNumber = (int) substr($latestFruit->fruit_tag, 2);
+                    $newNumber = $lastNumber + 1;
+                } else {
+                    $newNumber = 1;
+                }
+
+                $fruit->fruit_tag = 'FR' . str_pad($newNumber, 6, '0', STR_PAD_LEFT);
             }
         });
     }
@@ -37,13 +51,11 @@ class Fruit extends Model
      * Relationships
      */
 
-    // Fruit belongs to a Tree
     public function tree()
     {
         return $this->belongsTo(Tree::class, 'tree_uuid', 'uuid');
     }
 
-    // Fruit belongs to a HarvestEvent
     public function harvestEvent()
     {
         return $this->belongsTo(HarvestEvent::class, 'harvest_uuid', 'uuid');

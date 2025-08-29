@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
 
+            $table->string('fruit_tag')->unique();
+
             $table->foreignUuid('tree_uuid')
                 ->constrained('trees', 'uuid')
                 ->onDelete('cascade');
@@ -23,9 +25,15 @@ return new class extends Migration
                 ->constrained('harvest_events', 'uuid')
                 ->onDelete('cascade');
 
+            $table->foreignUuid('transaction_uuid')
+                ->nullable()
+                ->constrained('transactions', 'uuid')
+                ->onDelete('set null');
+
             $table->double('weight');
             $table->string('grade');
             $table->date('harvested_at');
+            $table->boolean('is_spoiled')->default(false);
             $table->timestamps();
         });
     }

@@ -78,7 +78,7 @@ class Tree extends Model
 
     public function species(): BelongsTo
     {
-        return $this->belongsTo(Species::class);
+        return $this->belongsTo(Species::class, 'species_id', 'id');
     }
 
     public function growthLogs(): HasMany
