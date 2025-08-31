@@ -14,12 +14,16 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(RoleAndPermissionSeeder::class);
-        User::create([
+       User::firstOrCreate(
+        ["phone" => "0123456789"],
+        [
             "name" => "Super Admin",
             "email" => "admin@hosbadurian.com",
-            "phone" => "0123456789",
             "password" => bcrypt("hosbadurian"),
-        ])->assignRole("Super-Admin");
+        ]
+        )->assignRole("Super-Admin");
+
+
        
     }
 }
