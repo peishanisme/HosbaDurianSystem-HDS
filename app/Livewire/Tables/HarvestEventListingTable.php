@@ -15,6 +15,7 @@ class HarvestEventListingTable extends DataTableComponent
         $this->setPrimaryKey('id')
             ->setSearchPlaceholder('Search Harvest Event')
             ->setEmptyMessage('No results found')
+            ->setDefaultSort('start_date', 'desc')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'livewire.components.modal-button',

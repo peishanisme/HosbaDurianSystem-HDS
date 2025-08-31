@@ -1,7 +1,7 @@
 @props(['title' => null, 'subtitle' => null, 'thumbnail' => null, 'route' => null, 'bracket' => null])
 
 <div class="d-flex align-items-center">
-    @if ($thumbnail && $thumbnail != 'default')
+    {{-- @if ($thumbnail && $thumbnail != 'default')
         <div class="me-3">
             <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;" src="{{ secure_asset('storage/' . $thumbnail) }}" alt="Image">
         </div>
@@ -9,7 +9,11 @@
         <div class="me-3">
             <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;" src="{{ secure_asset('assets/media/placeholder/placeholder.svg') }}" alt="Placeholder">
         </div>
-    @endif
+    @endif --}}
+    <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;"
+     src="{{ $thumbnail && $thumbnail != 'default' ? app(\App\Services\MediaService::class)->get($thumbnail) : secure_asset('assets/media/placeholder/placeholder.svg') }}"
+     alt="Image">
+
 
     <div class="d-flex flex-column gap-1">
         <div class="d-flex align-items-center gap-2">

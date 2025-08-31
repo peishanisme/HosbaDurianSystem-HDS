@@ -24,17 +24,13 @@ class ThumbnailInput extends Component
     public function updatedThumbnail(): void
     {
         try {
-
             $this->validate(['thumbnail' => 'image|mimes:png,jpg,jpeg']);
 
-            $thumbnailName = $this->thumbnail->getClientOriginalName();
-            $thumbnailPath = $this->thumbnail->storeAs('images', $thumbnailName, 'public');
+            $this->dispatch('thumbnail-updated',  path: $this->thumbnail->getFilename());
 
             $this->thumbnailError = null;
-            $this->dispatch('thumbnail-updated', $thumbnailPath);
-            
-        } catch (ValidationException $e) {
 
+        } catch (ValidationException $e) {
             $this->thumbnailError = $e->validator->errors()->first('thumbnail');
             $this->dispatch('thumbnail-validation-failed');
         }

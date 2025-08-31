@@ -8,6 +8,7 @@ use App\Models\Tree;
 use Livewire\Component;
 use App\Traits\SweetAlert;
 use Livewire\Attributes\On;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class TreeModalLivewire extends Component
 {
@@ -33,10 +34,15 @@ class TreeModalLivewire extends Component
     }
 
     #[On('thumbnail-updated')]
-    public function setThumbnail($thumbnail): void
+    public function setThumbnail($path): void
     {
-        $this->form->thumbnail = $thumbnail;
-        $this->isThumbnailValid = true;
+        if ($path) {
+            $this->form->thumbnail = new TemporaryUploadedFile(
+                storage_path('app/livewire-tmp/' . $path),
+                'local'
+            );
+            $this->isThumbnailValid = true;
+        }
     }
 
     #[On('thumbnail-validation-failed')]
@@ -85,7 +91,6 @@ class TreeModalLivewire extends Component
             $this->form->update($validatedData);
             $this->alertSuccess('Tree has been updated successfully.', $this->modalID);
             $this->resetInput();
-            
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);
