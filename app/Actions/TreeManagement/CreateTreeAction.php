@@ -23,7 +23,6 @@ class CreateTreeAction
                     "trees/" . $dto->thumbnail->getClientOriginalExtension()
                 );
             } elseif (is_string($dto->thumbnail)) {
-                // Already stored path
                 $thumbnailPath = $dto->thumbnail;
             }
 

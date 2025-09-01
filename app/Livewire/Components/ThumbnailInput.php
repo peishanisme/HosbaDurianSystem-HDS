@@ -26,7 +26,7 @@ class ThumbnailInput extends Component
         try {
             $this->validate(['thumbnail' => 'image|mimes:png,jpg,jpeg']);
 
-            $this->dispatch('thumbnail-updated',  path: $this->thumbnail->getFilename());
+            $this->dispatch('thumbnail-updated',  $this->thumbnail->getFilename());
 
             $this->thumbnailError = null;
 

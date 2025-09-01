@@ -6,7 +6,7 @@
             <div class="me-7 mb-4">
                 <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
                     <img class="object-fit-cover border"
-                        src="{{ $tree->thumbnail ? secure_asset('storage/' . $tree->thumbnail) : secure_asset('assets/media/placeholder/placeholder.svg') }}"
+                        src="{{ $tree->thumbnail ? app(\App\Services\MediaService::class)->get($tree->thumbnail) : secure_asset('assets/media/placeholder/placeholder.svg') }}"
                         alt="image" />
                 </div>
             </div>

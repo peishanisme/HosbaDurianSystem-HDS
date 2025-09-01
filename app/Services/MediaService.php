@@ -22,19 +22,19 @@ class MediaService
      */
     public function put($file, string $path): ?string
     {
-        return Storage::disk($this->disk)->put($path, $file);
-        // if ($file instanceof TemporaryUploadedFile) {
-        //     // Let Laravel handle uploads
-        //     return $file->store($path, $this->disk);
-        // }
+        // return Storage::disk($this->disk)->put($path, $file);
+        if ($file instanceof TemporaryUploadedFile) {
+            // Let Laravel handle uploads
+            return $file->store($path, $this->disk);
+        }
 
-        // if (is_string($file)) {
-        //     // Raw contents (you must provide full path with extension)
-        //     Storage::disk($this->disk)->put($path, $file);
-        //     return $path;
-        // }
+        if (is_string($file)) {
+            // Raw contents (you must provide full path with extension)
+            Storage::disk($this->disk)->put($path, $file);
+            return $path;
+        }
 
-        // return null;
+        return null;
 
     }
 
@@ -43,10 +43,10 @@ class MediaService
      */
     public function get(string $path): ?string
     {
-        if (Storage::disk($this->disk)->exists($path)) {
-            return Storage::disk($this->disk)->get($path);
-        }
-        return null;
+        // if (Storage::disk($this->disk)->exists($path)) {
+        return "https://ltnvfdqfrmwrhovleudk.supabase.co/storage/v1/object/public/hds_media/" . $path;
+        // }
+        // return null;
     }
 
     /**
