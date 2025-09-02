@@ -2,19 +2,25 @@
 
 namespace App\Actions\TreeManagement;
 
+use App\Actions\MediaActions\UpdateMediaInStorage;
 use App\Models\Tree;
+use App\Services\MediaService;
 use Illuminate\Support\Facades\DB;
 use App\DataTransferObject\TreeDTO;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class UpdateTreeAction
 {
     public function handle(Tree $tree, TreeDTO $dto): Tree
     {
         return DB::transaction(function () use ($tree, $dto) {
+
+            $thumbnailPath = (new UpdateMediaInStorage(app(MediaService::class)))->handle($tree, $dto, 'trees');
+
             $tree->update([
                 'species_id' => $dto->species_id,
                 'planted_at' => $dto->planted_at,
-                'thumbnail'  => $dto->thumbnail,
+                'thumbnail'  => $thumbnailPath,
                 'flowering_period' => $dto->flowering_period,
             ]);
 

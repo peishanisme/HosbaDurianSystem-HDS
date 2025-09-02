@@ -4,7 +4,7 @@
         style="width: 12rem; height: 12rem;">
         @if ($thumbnail)
             {{-- Image Preview --}}
-            <img src="{{ is_string($thumbnail) ? secure_asset('storage/' . $thumbnail) : $thumbnail->temporaryUrl() }}"
+            <img src="{{ is_string($thumbnail) ? app(\App\Services\MediaService::class)->get($thumbnail) : $thumbnail->temporaryUrl() }}"
                 alt="Thumbnail Preview" class="w-100 h-100 object-fit-cover">
 
             {{-- Delete Icon --}}
@@ -16,7 +16,7 @@
             </button>
         @else
             {{-- Placeholder --}}
-            <img src="{{ secure_asset('assets/media/placeholder/placeholder.svg') }}" alt="Placeholder"
+            <img src="{{  app(\App\Services\MediaService::class)->get('logo/placeholder.svg')}}" alt="Placeholder"
                 class="w-100 h-100 object-fit-cover">
         @endif
 
