@@ -55,9 +55,9 @@ Route::get('/trees/{uuid}/health-records', [HealthController::class, 'getByTree'
 Route::middleware('auth:sanctum')->post('/fruit', [FruitController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/fruit', [FruitController::class, 'index']);
 
-
 // Event Controller
 Route::middleware('auth:sanctum')->get('/harvest-events', [EventController::class, 'index']);
+Route::get('/trees/{uuid}/harvest-events', [EventController::class, 'getTreeHarvestEvents']);
 
 // // Buyer Controller
 // Route::middleware('auth:sanctum')->post('/buyers', [BuyerController::class, 'store']);
