@@ -43,4 +43,9 @@ class HarvestEvent extends Model
             $model->uuid = (string) Str::uuid();
         });
     }
+
+    public function fruits()
+    {
+        return $this->hasMany(Fruit::class, 'harvest_uuid', 'uuid');
+    }
 }
