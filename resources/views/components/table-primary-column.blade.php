@@ -10,10 +10,10 @@
             <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;" src="{{ secure_asset('assets/media/placeholder/placeholder.svg') }}" alt="Placeholder">
         </div>
     @endif --}}
-    
+
     <div class="me-3">
         <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;"
-            src="{{ $thumbnail && $thumbnail != 'default' ? app(\App\Services\MediaService::class)->get($thumbnail) : secure_asset('assets/media/placeholder/placeholder.svg') }}"
+            src="{{ $thumbnail && $thumbnail != 'default' ? app(\App\Services\MediaService::class)->get($thumbnail) : app(\App\Services\MediaService::class)->get('logo/placeholder.svg') }}"
             alt="Image">
     </div>
 

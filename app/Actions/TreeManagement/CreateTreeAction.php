@@ -2,29 +2,19 @@
 
 namespace App\Actions\TreeManagement;
 
+use App\Actions\MediaActions\SaveMediaToStorageAction;
 use App\Models\Tree;
 use Illuminate\Support\Facades\DB;
 use App\DataTransferObject\TreeDTO;
 use App\Services\MediaService;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class CreateTreeAction
 {
-    public function __construct(protected MediaService $mediaService) {}
-
     public function handle(TreeDTO $dto): Tree
     {
         return DB::transaction(function () use ($dto) {
-            $thumbnailPath = null;
 
-            if ($dto->thumbnail instanceof TemporaryUploadedFile) {
-                $thumbnailPath = $this->mediaService->put(
-                    $dto->thumbnail,
-                    "trees/" . $dto->thumbnail->getClientOriginalExtension()
-                );
-            } elseif (is_string($dto->thumbnail)) {
-                $thumbnailPath = $dto->thumbnail;
-            }
+            $thumbnailPath = (new SaveMediaToStorageAction(app(MediaService::class)))->handle($dto, 'trees');
 
             $tree = Tree::create([
                 'species_id'        => $dto->species_id,

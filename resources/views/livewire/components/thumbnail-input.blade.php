@@ -16,7 +16,7 @@
             </button>
         @else
             {{-- Placeholder --}}
-            <img src="{{ secure_asset('assets/media/placeholder/placeholder.svg') }}" alt="Placeholder"
+            <img src="{{  app(\App\Services\MediaService::class)->get('logo/placeholder.svg')}}" alt="Placeholder"
                 class="w-100 h-100 object-fit-cover">
         @endif
 
