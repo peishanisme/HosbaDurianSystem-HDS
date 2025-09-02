@@ -51,4 +51,9 @@ class HarvestEvent extends Model
             $model->event_name = "HES{$sequence}-{$date}";
         });
     }
+
+    public function fruits()
+    {
+        return $this->hasMany(Fruit::class, 'harvest_uuid', 'uuid');
+    }
 }

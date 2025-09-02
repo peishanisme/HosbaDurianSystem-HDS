@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\BuyerController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\DiseaseController;
 use App\Http\Controllers\Api\HealthController;
+use App\Http\Controllers\Api\FruitController;
+use App\Http\Controllers\Api\EventController;
 
 // General
 Route::post('/login', [AuthController::class, 'login']);
@@ -35,6 +37,7 @@ Route::middleware('auth:sanctum')->delete('/trees/{id}', [TreeController::class,
 Route::middleware('auth:sanctum')->get('/trees/uuid/{uuid}', [TreeController::class, 'showByUuid']);
 Route::middleware('auth:sanctum')->put('/trees/location/{id}', [TreeController::class, 'updateTreeLocation']);
 
+
 // Disease Controller
 Route::middleware('auth:sanctum')->post('/diseases', [DiseaseController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/diseases', [DiseaseController::class, 'index']);
@@ -47,6 +50,14 @@ Route::middleware('auth:sanctum')->get('/health-records', [HealthController::cla
 Route::middleware('auth:sanctum')->put('/health-records/{id}', [HealthController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('/health-records/{id}', [HealthController::class, 'destroy']);
 Route::get('/trees/{uuid}/health-records', [HealthController::class, 'getByTree']);
+
+//Fruit Controller
+Route::middleware('auth:sanctum')->post('/fruit', [FruitController::class, 'store']);
+Route::middleware('auth:sanctum')->get('/fruit', [FruitController::class, 'index']);
+
+// Event Controller
+Route::middleware('auth:sanctum')->get('/harvest-events', [EventController::class, 'index']);
+Route::get('/trees/{uuid}/harvest-events', [EventController::class, 'getTreeHarvestEvents']);
 
 // // Buyer Controller
 // Route::middleware('auth:sanctum')->post('/buyers', [BuyerController::class, 'store']);

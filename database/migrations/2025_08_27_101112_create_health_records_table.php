@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -12,9 +13,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('health_records', function (Blueprint $table) {
-        $table->id();
-        $table->uuid('tree_uuid');
-        $table->foreignId('disease_id')->constrained('diseases')->onDelete('cascade');
+        $table->uuid('id')->primary();
+        $table->foreignUuid('tree_uuid')
+            ->constrained('trees', 'uuid')
+            ->onDelete('cascade');
+        $table->foreignId('disease_id')
+            ->constrained('diseases')
+            ->onDelete('cascade');
         $table->string('status');
         $table->date('recorded_at')->nullable();
         $table->text('treatment')->nullable();

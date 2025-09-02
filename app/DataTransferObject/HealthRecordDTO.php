@@ -4,21 +4,26 @@ namespace App\DataTransferObject;
 
 use App\Traits\ToArrayTrait;
 
-class DiseaseDTO
+class HealthRecordDTO
 {
-    /**
-     * Create a new class instance.
-     */
     use ToArrayTrait;
 
     public function __construct(
-        
+        public ?string $id = null,
+        public int $disease_id,
+        public string $status,
+        public ?string $recorded_at = null,
+        public ?string $treatment = null,
     ) {}
 
     public static function fromArray(array $data): self
     {
         return new self(
-           
+            id: $data['id'] ?? null,
+            disease_id: $data['disease_id'],
+            status: $data['status'],
+            recorded_at: $data['recorded_at'] ?? null,
+            treatment: $data['treatment'] ?? null
         );
     }
 }

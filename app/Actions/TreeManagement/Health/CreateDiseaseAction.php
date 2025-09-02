@@ -3,7 +3,7 @@
 namespace App\Actions\TreeManagement\Health;
 
 use App\DataTransferObject\DiseaseDTO;
-use App\Models\Species;
+use App\Models\Disease;
 
 class CreateDiseaseAction
 {
