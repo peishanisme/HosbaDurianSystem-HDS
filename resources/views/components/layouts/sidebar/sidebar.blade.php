@@ -5,7 +5,7 @@
 
     <x-layouts.sidebar.sidebar-header />
 
-    <div class="app-sidebar-menu overflow-hidden flex-column-fluid">
+    <div class="app-sidebar-menu overflow-hidden flex-column-fluid mt-3">
         <div id="kt_app_sidebar_menu_wrapper" class="app-sidebar-wrapper">
             <div id="kt_app_sidebar_menu_scroll" class="scroll-y my-5 mx-3" data-kt-scroll="true"
                 data-kt-scroll-activate="true" data-kt-scroll-height="auto"

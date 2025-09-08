@@ -1,7 +1,8 @@
-<div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
+<div class="app-sidebar-logo d-flex justify-content-center align-items-center" id="kt_app_sidebar_logo">
     <!--begin::Logo image-->
-    <a href="{{ route('dashboard') }}" class="d-flex align-items-center py-5">
-        <img alt="Logo" src="{{ secure_asset('assets/media/logos/system-logo.png') }}" class="app-sidebar-logo-default mt-5" style="height: 170px;" />
+    <a href="{{ route('dashboard') }}" class="d-flex justify-content-center align-items-center py-5">
+        <img alt="Logo" src="{{ app(\App\Services\MediaService::class)->get('logo/system-logo-v2.png') }}"
+            class="app-sidebar-logo-default mt-10" style="height: 108px;" />
     </a>
 
     <div id="kt_app_sidebar_toggle"

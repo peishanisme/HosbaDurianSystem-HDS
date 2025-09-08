@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -41,6 +42,13 @@ class HarvestEvent extends Model
 
         static::creating(function ($model) {
             $model->uuid = (string) Str::uuid();
+            $year = now()->year;
+            $date = Carbon::parse($model->start_date)->format('Ymd');
+
+            // Count how many harvest events already exist in this year
+            $sequence = static::whereYear('created_at', $year)->count() + 1;
+
+            $model->event_name = "HES{$sequence}-{$date}";
         });
     }
 

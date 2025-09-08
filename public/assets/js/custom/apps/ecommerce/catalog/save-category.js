@@ -69,7 +69,7 @@ var KTAppEcommerceSaveCategory = function () {
             initEmpty: false,
 
             defaultValues: {
-                'text-input': 'foo'
+                'input-text': 'foo'
             },
 
             show: function () {
