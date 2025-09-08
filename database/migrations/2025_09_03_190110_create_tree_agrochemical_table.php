@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('agrochemical', function (Blueprint $table) {
+        Schema::create('tree_agrochemicals', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
 
@@ -19,11 +19,14 @@ return new class extends Migration
                 ->constrained('agrochemicals', 'uuid')
                 ->onDelete('cascade');
 
+            
+            $table->date('applied_at');
+
             $table->foreignUuid('tree_uuid')
                 ->constrained('trees', 'uuid')
                 ->onDelete('cascade');
 
-            $table->string('description');
+            $table->string('description')->nullable();
 
             $table->timestamps();
         });
@@ -34,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('agrochemical');
+        Schema::dropIfExists('tree_agrochemicals');
     }
 };

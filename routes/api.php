@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\DiseaseController;
 use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\FruitController;
 use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\AgrochemicalController;
 
 // General
 Route::post('/login', [AuthController::class, 'login']);
@@ -58,6 +59,13 @@ Route::middleware('auth:sanctum')->get('/fruit', [FruitController::class, 'index
 // Event Controller
 Route::middleware('auth:sanctum')->get('/harvest-events', [EventController::class, 'index']);
 Route::get('/trees/{uuid}/harvest-events', [EventController::class, 'getTreeHarvestEvents']);
+
+// Agrochemical Controller
+Route::middleware('auth:sanctum')->post('/agrochemicals', [AgrochemicalController::class, 'store']);
+Route::middleware('auth:sanctum')->get('/trees/{uuid}/agrochemicals', [AgrochemicalController::class, 'getByTree']);
+Route::middleware('auth:sanctum')->get('/agrochemicals', [AgrochemicalController::class, 'index']);
+// Route::middleware('auth:sanctum')->put('/agrochemicals/{id}', [AgrochemicalController::class, 'update']);
+// Route::middleware('auth:sanctum')->delete('/agrochemicals/{id}', [AgrochemicalController::class, 'destroy']);
 
 // // Buyer Controller
 // Route::middleware('auth:sanctum')->post('/buyers', [BuyerController::class, 'store']);
