@@ -47,6 +47,8 @@ class TreeController extends Controller
             ]);
 
             $tree->growthLogs()->create([
+                'tree_id'   => $tree->id,
+                'tree_uuid' => $tree->uuid,
                 'height' => $request->height,
                 'diameter' => $request->diameter,
             ]);

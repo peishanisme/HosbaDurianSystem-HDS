@@ -11,6 +11,7 @@ class TreeGrowthLog extends Model
     use LogsActivity;
     
     protected $fillable = [
+        'tree_id',
         'tree_uuid',
         'height',
         'diameter',

@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\FruitController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\AgrochemicalController;
+use App\Http\Controllers\Api\TreeGrowthLogController;
 
 // General
 Route::post('/login', [AuthController::class, 'login']);
@@ -66,6 +67,10 @@ Route::middleware('auth:sanctum')->get('/trees/{uuid}/agrochemicals', [Agrochemi
 Route::middleware('auth:sanctum')->get('/agrochemicals', [AgrochemicalController::class, 'index']);
 // Route::middleware('auth:sanctum')->put('/agrochemicals/{id}', [AgrochemicalController::class, 'update']);
 // Route::middleware('auth:sanctum')->delete('/agrochemicals/{id}', [AgrochemicalController::class, 'destroy']);
+
+// Tree Growth Log Controller
+Route::middleware('auth:sanctum')->post('/tree-growth-logs', [TreeGrowthLogController::class, 'store']);
+Route::middleware('auth:sanctum')->get('/tree-growth-logs/{uuid}', [TreeGrowthLogController::class, 'getByTreeUuid']);
 
 // // Buyer Controller
 // Route::middleware('auth:sanctum')->post('/buyers', [BuyerController::class, 'store']);
