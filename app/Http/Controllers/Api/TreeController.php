@@ -72,7 +72,7 @@ class TreeController extends Controller
     public function index() {
         $trees = Tree::with('species')
                     ->orderBy('created_at', 'desc')
-                    ->get();
+                    ->paginate(10);
 
         return response()->json([
             'success' => true,
