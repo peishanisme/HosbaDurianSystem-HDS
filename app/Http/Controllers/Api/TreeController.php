@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use App\Models\Tree;
 use Illuminate\Http\Request;
@@ -11,63 +12,85 @@ use App\Models\TreeGrowthLog;
 use App\Actions\TreeManagement\UpdateTreeAction;
 use App\DataTransferObject\TreeDTO;
 use App\Actions\TreeManagement\UpdateTreeLocation;
+use Illuminate\Support\Str;
+
 
 class TreeController extends Controller
 {
-    public function store(Request $request)
+   public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'species_id' => 'required|exists:species,id',
-            'planted_at' => 'required|date',
-            'thumbnail' => 'nullable|string',
-            'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric',
+            'species_id'       => 'required|exists:species,id',
+            'planted_at'       => 'required|date',
+            'thumbnail'        => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // 5MB
+            'latitude'         => 'nullable|numeric',
+            'longitude'        => 'nullable|numeric',
             'flowering_period' => 'nullable|string',
-            'height' => 'required|numeric',
-            'diameter' => 'required|numeric',
+            'height'           => 'required|numeric',
+            'diameter'         => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validation failed',
-                'errors' => $validator->errors()
+                'errors'  => $validator->errors(),
             ], 422);
         }
 
         DB::beginTransaction();
 
         try {
+            $thumbnailUrl = null;
+
+            // ✅ Handle image upload
+            if ($request->hasFile('thumbnail')) {
+                $ext = $request->file('thumbnail')->getClientOriginalExtension();
+
+                // Generate a UUID-based filename
+                $uuidName = Str::uuid()->toString() . '.' . $ext;
+
+                // Save to Supabase bucket
+                $request->file('thumbnail')->storeAs('trees/jpg', $uuidName, 'supabase');
+
+                // Save relative path in DB
+                $thumbnailUrl = "trees/jpg/{$uuidName}";
+            }
+
+            // ✅ Create Tree record
             $tree = Tree::create([
-                'species_id' => $request->species_id,
-                'planted_at' => $request->planted_at,
-                'thumbnail' => $request->thumbnail,
-                'latitude' => $request->latitude,
-                'longitude' => $request->longitude,
+                'species_id'       => $request->species_id,
+                'planted_at'       => $request->planted_at,
+                'thumbnail'        => $thumbnailUrl,   // save the path in DB
+                'latitude'         => $request->latitude,
+                'longitude'        => $request->longitude,
                 'flowering_period' => $request->flowering_period,
             ]);
 
+            // ✅ Create growth log
             $tree->growthLogs()->create([
                 'tree_id'   => $tree->id,
                 'tree_uuid' => $tree->uuid,
-                'height' => $request->height,
-                'diameter' => $request->diameter,
+                'height'    => $request->height,
+                'diameter'  => $request->diameter,
             ]);
 
             DB::commit();
 
             return response()->json([
                 'message' => 'Tree created successfully with growth log',
-                'data' => $tree
+                'data'    => $tree
             ], 201);
 
         } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json([
                 'message' => 'Failed to create tree',
-                'error' => $e->getMessage()
+                'error'   => $e->getMessage(),
             ], 500);
         }
-}
+    }
+
 
     public function index() {
         $trees = Tree::with('species')
