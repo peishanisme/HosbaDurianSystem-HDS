@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->delete('/species/{id}', [SpeciesController::c
 // Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
 // Route::middleware('auth:sanctum')->put('/users/{id}', [UserController::class, 'update']);
 // Route::middleware('auth:sanctum')->delete('/users/{id}', [UserController::class, 'destroy']);
+Route::middleware('auth:sanctum')->get('/check-phone/{phone}', [UserController::class, 'checkPhone']);
 
 // Tree Controller
 Route::middleware('auth:sanctum')->post('/trees', [TreeController::class, 'store']);
@@ -37,7 +38,7 @@ Route::middleware('auth:sanctum')->get('/trees/{id}', [TreeController::class, 's
 Route::middleware('auth:sanctum')->put('/trees/{id}', [TreeController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('/trees/{id}', [TreeController::class, 'destroy']);
 Route::middleware('auth:sanctum')->get('/trees/uuid/{uuid}', [TreeController::class, 'showByUuid']);
-Route::middleware('auth:sanctum')->put('/trees/location/{id}', [TreeController::class, 'updateTreeLocation']);
+Route::middleware('auth:sanctum')->put('/trees/location/{uuid}', [TreeController::class, 'updateTreeLocation']);
 
 
 // Disease Controller

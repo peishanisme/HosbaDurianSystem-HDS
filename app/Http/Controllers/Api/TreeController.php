@@ -235,7 +235,7 @@ class TreeController extends Controller
             ], 422);
         }
 
-        $tree = Tree::findOrFail($id);
+        $tree = Tree::where('uuid', $id)->firstOrFail();
 
         try {
             $tree = (new UpdateTreeLocation())->execute($tree, $request->latitude, $request->longitude);

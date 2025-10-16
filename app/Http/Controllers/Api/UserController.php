@@ -100,4 +100,25 @@ public function update(Request $request, $id)
         return response()->json(['message' => 'User deleted successfully']);
     }
 
+    public function checkPhone($phone)
+    {
+        try {
+            // Trim whitespace or special chars
+            $phone = trim($phone);
+
+            // Check if user exists
+            $exists = User::where('phone', $phone)->exists();
+
+            return response()->json([
+                'exists' => $exists,
+                'message' => $exists ? 'Phone number is registered' : 'Phone number not found',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error checking phone number',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 }
