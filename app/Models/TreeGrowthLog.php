@@ -12,6 +12,7 @@ class TreeGrowthLog extends Model
     
     protected $fillable = [
         'tree_id',
+        'tree_uuid',
         'height',
         'diameter',
         'photo',
@@ -29,6 +30,6 @@ class TreeGrowthLog extends Model
 
     public function tree()
     {
-        return $this->belongsTo(Tree::class);
+        return $this->belongsTo(Tree::class, 'tree_uuid', 'uuid');
     }
 }

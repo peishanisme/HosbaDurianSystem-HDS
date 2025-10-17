@@ -17,6 +17,10 @@ return new class extends Migration
                 $table->foreignId('tree_id')
                     ->constrained('trees')
                     ->onDelete('cascade');
+                $table->uuid('tree_uuid');
+                $table->foreign('tree_uuid')
+                    ->references('uuid')->on('trees')
+                    ->onDelete('cascade');
                 $table->decimal('height', 8, 2);
                 $table->decimal('diameter', 8, 2);
                 $table->string('photo')->nullable();

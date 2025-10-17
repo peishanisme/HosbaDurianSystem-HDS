@@ -83,18 +83,19 @@ class Tree extends Model
 
     public function growthLogs(): HasMany
     {
-        return $this->hasMany(TreeGrowthLog::class);
+        return $this->hasMany(TreeGrowthLog::class, 'tree_uuid', 'uuid');
     }
 
     public function firstGrowthLog(): HasOne
     {
-        return $this->hasOne(TreeGrowthLog::class)->oldestOfMany();
+        return $this->hasOne(TreeGrowthLog::class, 'tree_uuid', 'uuid')->oldestOfMany();
     }
 
     public function latestGrowthLog(): HasOne
     {
-        return $this->hasOne(TreeGrowthLog::class)->latestOfMany();
+        return $this->hasOne(TreeGrowthLog::class, 'tree_uuid', 'uuid')->latestOfMany();
     }
+
 
     public function diseases()
     {
