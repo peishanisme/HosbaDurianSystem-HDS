@@ -12,7 +12,7 @@ class CreateTreeAction
 {
     public function handle(TreeDTO $dto): Tree
     {
-        return DB::transaction(function () use ($dto) {
+        return DB::transaction(function () use ($dto): Tree {
 
             $thumbnailPath = (new SaveMediaToStorageAction(app(MediaService::class)))->handle($dto, 'trees');
 

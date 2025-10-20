@@ -2,12 +2,11 @@
 
 namespace App\Actions\TreeManagement;
 
-use App\Actions\MediaActions\UpdateMediaInStorage;
 use App\Models\Tree;
 use App\Services\MediaService;
 use Illuminate\Support\Facades\DB;
 use App\DataTransferObject\TreeDTO;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use App\Actions\MediaActions\UpdateMediaInStorage;
 
 class UpdateTreeAction
 {
