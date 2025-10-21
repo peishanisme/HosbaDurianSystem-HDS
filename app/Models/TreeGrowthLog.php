@@ -32,4 +32,22 @@ class TreeGrowthLog extends Model
     {
         return $this->belongsTo(Tree::class, 'tree_uuid', 'uuid');
     }
+
+    public function getLatestHeight(): ?float
+    {
+        $latestLog = $this->where('tree_id', $this->tree_id)
+                          ->orderByDesc('created_at')
+                          ->first();
+
+        return $latestLog ? $latestLog->height : null;
+    }
+
+    public function getLatestDiameter(): ?float
+    {
+        $latestLog = $this->where('tree_id', $this->tree_id)
+                          ->orderByDesc('created_at')
+                          ->first();
+
+        return $latestLog ? $latestLog->diameter : null;
+    }
 }

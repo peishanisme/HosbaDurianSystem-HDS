@@ -53,8 +53,8 @@ class Agrochemical extends Model
     {
         return $this->stockMovements()
             ->selectRaw("
-            SUM(CASE WHEN movement_type = 'IN' THEN quantity ELSE 0 END) -
-            SUM(CASE WHEN movement_type = 'OUT' THEN quantity ELSE 0 END) AS stock_remaining
+            SUM(CASE WHEN movement_type = 'in' THEN quantity ELSE 0 END) -
+            SUM(CASE WHEN movement_type = 'out' THEN quantity ELSE 0 END) AS stock_remaining
         ")
             ->value('stock_remaining') ?? 0;
     }

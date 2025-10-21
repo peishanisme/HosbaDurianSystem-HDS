@@ -112,14 +112,14 @@
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="fs-2 fw-bold">{{ $tree->latestGrowthLog->height }} m</div>
+                                    <div class="fs-2 fw-bold">{{ $tree->latestGrowthLog->height ?? '-' }} m</div>
                                 </div>
                                 <div class="fw-semibold fs-6 text-gray-500">Height</div>
                             </div>
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="fs-2 fw-bold">{{ $tree->latestGrowthLog->diameter }} m</div>
+                                    <div class="fs-2 fw-bold">{{ $tree->latestGrowthLog->diameter ?? '-' }} m</div>
                                 </div>
                                 <div class="fw-semibold fs-6 text-gray-500">Diameter</div>
                             </div>
@@ -139,8 +139,8 @@
         <!--end::Details-->
         <!--begin::Navs-->
         <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
-            <x-show-navbar-navitem title="Overview" route="tree.trees.show" />
-            <x-show-navbar-navitem title="Growth Logs" />
+            <x-show-navbar-navitem title="Overview" :route="route('tree.show', $tree->id)" :active="request()->routeIs('tree.show')" />
+            <x-show-navbar-navitem title="Growth Logs" :route="route('tree.growth-log', $tree->id)" :active="request()->routeIs('tree.growth-log')" />
             <x-show-navbar-navitem title="Status History" />
             <x-show-navbar-navitem title="Health Records" />
             <x-show-navbar-navitem title="Fertilization" />
