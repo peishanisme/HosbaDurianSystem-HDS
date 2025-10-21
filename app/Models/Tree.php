@@ -109,4 +109,16 @@ class Tree extends Model
         return $this->hasMany(HealthRecord::class);
     }
 
+    public function fruits(): HasMany
+    {
+        return $this->hasMany(Fruit::class, 'tree_uuid', 'uuid');
+    }
+
+    public function fruitCountInHarvest($harvestUuid)
+    {
+        return $this->fruits()
+            ->where('harvest_uuid', $harvestUuid)
+            ->count();
+    }
+
 }

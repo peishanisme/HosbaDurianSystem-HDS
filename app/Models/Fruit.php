@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Fruit extends Model
 {
@@ -51,12 +52,12 @@ class Fruit extends Model
      * Relationships
      */
 
-    public function tree()
+    public function tree(): BelongsTo
     {
         return $this->belongsTo(Tree::class, 'tree_uuid', 'uuid');
     }
 
-    public function harvestEvent()
+    public function harvestEvent(): BelongsTo
     {
         return $this->belongsTo(HarvestEvent::class, 'harvest_uuid', 'uuid');
     }

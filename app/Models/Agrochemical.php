@@ -41,11 +41,12 @@ class Agrochemical extends Model
 
     public function getLatestPurchaseDate()
     {
-        return $this->stockMovements()
+        $latest = $this->stockMovements()
             ->where('movement_type', 'IN')
             ->latest('created_at')
-            ->value('created_at')
-            ->format('d/m/Y');
+            ->value('created_at');
+
+        return $latest ? $latest->format('d/m/Y') : '-';
     }
 
     public function getRemainingStock(): int

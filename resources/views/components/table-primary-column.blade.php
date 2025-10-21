@@ -11,11 +11,17 @@
         </div>
     @endif --}}
 
-    <div class="me-3">
+    @if ($thumbnail && $thumbnail != 'default')
+        <div class="me-3">
         <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;"
             src="{{ $thumbnail && $thumbnail != 'default' ? app(\App\Services\MediaService::class)->get($thumbnail) : app(\App\Services\MediaService::class)->get('logo/placeholder.svg') }}"
             alt="Image">
     </div>
+    @elseif ($thumbnail && $thumbnail == 'default')
+        <div class="me-3">
+            <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;" src="{{  app(\App\Services\MediaService::class)->get('logo/placeholder.svg')}}" alt="Placeholder">
+        </div>
+    @endif
 
     <div class="d-flex flex-column gap-1">
         <div class="d-flex align-items-center gap-2">

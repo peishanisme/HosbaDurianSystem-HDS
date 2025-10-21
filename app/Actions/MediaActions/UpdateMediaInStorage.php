@@ -9,30 +9,38 @@ class UpdateMediaInStorage
 {
     public function __construct(protected MediaService $mediaService) {}
 
-    public function handle($object, $dto, $path): string
+    public function handle($object, $dto, $path)
     {
-        $thumbnailPath = $object->thumbnail; 
+        $thumbnailPath = $dto->thumbnail;
+        $oldThumbnail = $object->thumbnail;
 
-        if ($dto->thumbnail instanceof TemporaryUploadedFile) {
-            // delete old if exists
-            if ($object->thumbnail) {
-                $this->mediaService->delete($object->thumbnail);
-                }
-
-                // upload new one
-                $thumbnailPath = $this->mediaService->put(
-                    $dto->thumbnail,
-                    $path . "/" . $dto->thumbnail->getClientOriginalExtension()
-                );
-            } elseif ($dto->thumbnail === null) {
-                // handle removal
-                if ($object->thumbnail) {
-                    $this->mediaService->delete($object->thumbnail);
-                }
-                $thumbnailPath = null;
+        // Handle removal
+        if ($dto->thumbnail === null) {
+            if ($oldThumbnail) {
+                $this->mediaService->delete($oldThumbnail);
             }
+            return null;
+        }
 
+        // Handle new upload
+        if ($dto->thumbnail instanceof TemporaryUploadedFile) {
+            if ($oldThumbnail) {
+                $this->mediaService->delete($oldThumbnail);
+            }
+            $thumbnailPath = $this->mediaService->put(
+                $dto->thumbnail,
+                $path . "/" . $dto->thumbnail->getClientOriginalExtension()
+            );
             return $thumbnailPath;
-            // else: if string, just keep it as-is
+        }
+
+        // Handle unchanged or string path
+        $newThumbnailPath = $path . "/" . $dto->thumbnail->getClientOriginalExtension() . "/" . $dto->thumbnail->getFilename();
+        if ($oldThumbnail === $newThumbnailPath) {
+            return $thumbnailPath;
+        }
+
+        // Default: just return as-is
+        return $thumbnailPath;
     }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Tables;
 
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\HarvestEvent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
 
 class HarvestEventListingTable extends DataTableComponent
 {
@@ -33,16 +34,23 @@ class HarvestEventListingTable extends DataTableComponent
     {
         return [
             Column::make("Id", "id")
-                ->sortable(),
+                ->sortable()
+                ->hideIf(true),
             Column::make("Uuid", "uuid")
+                ->sortable()
+                ->hideIf(true),
+            ViewComponentColumn::make('Event name', 'event_name')
+                ->component('components.table-primary-column')
+                ->attributes(fn($value, $row, Column $column) => [
+                    'title' => $value,
+                    'route' => route('harvest.show', $row->id),
+                ])->searchable()
                 ->sortable(),
-            Column::make("Event name", "event_name")
+            Column::make("Description", "description")
                 ->sortable(),
             Column::make("Start date", "start_date")
                 ->sortable(),
             Column::make("End date", "end_date")
-                ->sortable(),
-            Column::make("Description", "description")
                 ->sortable(),
             Column::make("Created at", "created_at")
                 ->sortable(),
