@@ -14,17 +14,17 @@
                     @csrf
 
                     <!-- Phone -->
-                    <div class="mb-4">
+                    <div class="mb-5">
                         <x-input-label for="phone" :value="__('Phone Number')" />
-                        <x-input-text id="phone" class="form-control" type="tel" name="phone"
+                        <x-input-text id="phone" class="form-control my-3" type="tel" name="phone"
                             placeholder="phone number" :value="old('phone')" required autofocus autocomplete="tel" />
                         <x-input-error :messages="$errors->get('phone')" class="text-danger mt-1" />
-                    </div>
+                    </div> 
 
                     <!-- Password -->
-                    <div class="mb-4">
+                    <div class="mb-5">
                         <x-input-label for="password" :value="__('Password')" />
-                        <x-input-text id="password" class="form-control" type="password" name="password" required
+                        <x-input-text id="password" class="form-control my-3" type="password" name="password" required
                             placeholder="password" autocomplete="current-password" />
                         <x-input-error :messages="$errors->get('password')" class="text-danger mt-1" />
                     </div>
@@ -38,8 +38,8 @@
                             </label>
                         </div>
 
-                        @if (Route::has('password.request'))
-                            <a class="text-decoration-none small text-muted" href="{{ route('password.request') }}">
+                        @if (Route::has('forgot.password'))
+                            <a class="text-decoration-none small text-muted" href="{{ route('forgot.password') }}">
                                 {{ __('Forgot your password?') }}
                             </a>
                         @endif
