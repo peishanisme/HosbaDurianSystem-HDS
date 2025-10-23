@@ -22,7 +22,7 @@ class TreeController extends Controller
         $validator = Validator::make($request->all(), [
             'species_id'       => 'required|exists:species,id',
             'planted_at'       => 'required|date',
-            'thumbnail'        => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // 5MB
+            'thumbnail'        => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
             'latitude'         => 'nullable|numeric',
             'longitude'        => 'nullable|numeric',
             'flowering_period' => 'nullable|string',
