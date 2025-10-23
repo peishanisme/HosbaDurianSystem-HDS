@@ -16,7 +16,7 @@ class HealthRecord extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['tree_uuid','disease_id', 'status', 'recorded_at', 'treatment'];
+    protected $fillable = ['tree_uuid','disease_id', 'status', 'recorded_at', 'treatment', 'thumbnail'];
 
     protected static function boot()
     {

@@ -52,55 +52,36 @@ class FruitController extends Controller
 
 
 
-    // public function update(Request $request, $id)
-    // {
-    //     $healthRecord = HealthRecord::findOrFail($id);
+    public function update(Request $request, $uuid)
+    {
+        $validated = $request->validate([
+            'tree_uuid' => 'required|exists:trees,uuid',
+            'harvest_uuid' => 'required|exists:harvest_events,uuid',
+            'transaction_uuid' => 'nullable|string',
+            'harvested_at' => 'nullable|date',
+            'weight' => 'required|numeric',
+            'grade' => 'required|string|max:255',
+            'is_spoiled' => 'nullable|boolean',
+        ]);
 
-    //     $validated = $request->validate([
-    //         'tree_uuid' => 'required|exists:trees,uuid',
-    //         'disease_id' => 'required|exists:diseases,id',
-    //         'status' => 'required|string|max:255',
-    //         'recorded_at' => 'nullable|date',
-    //         'treatment' => 'nullable|string',
-    //     ]);
+        $fruit = Fruit::where('uuid', $uuid)->firstOrFail();
 
-    //     // Create DTO
-    //     $dto = new HealthRecordDTO(
-    //     id: $healthRecord->id,
-    //     disease_id: (int) $validated['disease_id'],
-    //     status: $validated['status'],
-    //     recorded_at: $validated['recorded_at'] ?? null,
-    //     treatment: $validated['treatment'] ?? null
-    // );
+        $fruit->update($validated);
 
-    //     $updated = (new UpdateHealthAction())->handle($healthRecord, $dto);
-
-    //     return response()->json([
-    //         'message' => 'Health record updated successfully',
-    //         'data'    => $updated,
-    //     ], 200);
-    // }
+        return response()->json([
+            'message' => 'Fruit updated successfully',
+            'data' => $fruit
+        ], 200);
+    }
 
 
-    // public function destroy($id)
-    // {
-    //     $healthRecord = HealthRecord::findOrFail($id);
-    //     $healthRecord->delete();
+    public function destroy($id)
+    {
+        $fruit = Fruit::where('uuid', $id)->firstOrFail();
+        $fruit->delete();
 
-    //     return response()->json([
-    //         'message' => 'Health record deleted successfully'
-    //     ], 200);
-    // }
-
-    // public function getByTree($uuid)
-    // {
-    //     $records = HealthRecord::whereHas('tree', function ($query) use ($uuid) {
-    //         $query->where('uuid', $uuid);
-    //     })->with('disease')->get();
-
-    //     return response()->json([
-    //         'message' => 'Health records for tree fetched successfully',
-    //         'data'    => $records
-    //     ], 200);
-    // }
+        return response()->json([
+            'message' => 'Fruit deleted successfully'
+        ], 200);
+    }
 }

@@ -14,6 +14,8 @@ class HealthRecordDTO
         public string $status,
         public ?string $recorded_at = null,
         public ?string $treatment = null,
+        public TemporaryUploadedFile|string|null $thumbnail,
+
     ) {}
 
     public static function fromArray(array $data): self
@@ -23,7 +25,8 @@ class HealthRecordDTO
             disease_id: $data['disease_id'],
             status: $data['status'],
             recorded_at: $data['recorded_at'] ?? null,
-            treatment: $data['treatment'] ?? null
+            treatment: $data['treatment'] ?? null,
+            thumbnail: $data['thumbnail'] ?? null, 
         );
     }
 }

@@ -12,7 +12,7 @@ class TreeDTO
     public function __construct(
         public int $species_id,
         public string $planted_at,
-        public TemporaryUploadedFile|string|null $thumbnail, // allow both
+        public TemporaryUploadedFile|string|null $thumbnail,
         public ?float $latitude,
         public ?float $longitude,
         public float $height,
