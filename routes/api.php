@@ -57,6 +57,8 @@ Route::get('/trees/{uuid}/health-records', [HealthController::class, 'getByTree'
 //Fruit Controller
 Route::middleware('auth:sanctum')->post('/fruit', [FruitController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/fruit', [FruitController::class, 'index']);
+Route::middleware('auth:sanctum')->put('/fruit/{uuid}', [FruitController::class, 'update']);
+Route::middleware('auth:sanctum')->delete('/fruit/{uuid}', [FruitController::class, 'destroy']);
 
 // Event Controller
 Route::middleware('auth:sanctum')->get('/harvest-events', [EventController::class, 'index']);
@@ -66,8 +68,8 @@ Route::get('/trees/{uuid}/harvest-events', [EventController::class, 'getTreeHarv
 Route::middleware('auth:sanctum')->post('/agrochemicals', [AgrochemicalController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/trees/{uuid}/agrochemicals', [AgrochemicalController::class, 'getByTree']);
 Route::middleware('auth:sanctum')->get('/agrochemicals', [AgrochemicalController::class, 'index']);
-// Route::middleware('auth:sanctum')->put('/agrochemicals/{id}', [AgrochemicalController::class, 'update']);
-// Route::middleware('auth:sanctum')->delete('/agrochemicals/{id}', [AgrochemicalController::class, 'destroy']);
+Route::middleware('auth:sanctum')->put('/agrochemicals/{uuid}', [AgrochemicalController::class, 'update']);
+Route::middleware('auth:sanctum')->delete('/agrochemicals/{uuid}', [AgrochemicalController::class, 'destroy']);
 
 // Tree Growth Log Controller
 Route::middleware('auth:sanctum')->post('/tree-growth-logs', [TreeGrowthLogController::class, 'store']);

@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Actions\AgrochemicalManagement\CreateAgrochemicalRecordAction;
-use App\DataTransferObject\AgrochemicalDTO;
+use App\DataTransferObject\AgrochemicalRecordDTO;
+use App\Actions\AgrochemicalManagement\UpdateAgrochemicalRecordAction;
 
 class AgrochemicalController extends Controller
 {
@@ -49,31 +50,38 @@ class AgrochemicalController extends Controller
     }
 
 
-    public function update(Request $request, $id)
-{
-    $agrochemical = AgrochemicalRecord::findOrFail($id);
+   public function update(Request $request, $uuid)
+    {
+        // Find by UUID, not ID
+        $agrochemical = AgrochemicalRecord::where('uuid', $uuid)->firstOrFail();
 
-    $validated = $request->validate([
-        'agrochemical_uuid' => 'required|exists:agrochemicals,uuid',
-        'tree_uuid' => 'required|exists:trees,uuid',
-        'applied_at' => 'nullable|date',
-        'description' => 'nullable|string',
-    ]);
+        $validated = $request->validate([
+            'agrochemical_uuid' => 'required|exists:agrochemicals,uuid',
+            'tree_uuid' => 'required|exists:trees,uuid',
+            'applied_at' => 'nullable|date',
+            'description' => 'nullable|string',
+        ]);
 
-    $dto = new AgrochemicalDTO($validated['tree_uuid'], $validated['agrochemical_uuid'], $validated['description'], $validated['applied_at']);
+        $dto = new AgrochemicalRecordDTO(
+            tree_uuid: $validated['tree_uuid'],
+            agrochemical_uuid: $validated['agrochemical_uuid'],
+            description: $validated['description'] ?? null,
+            applied_at: $validated['applied_at'] ?? null,
+        );
 
-    $updated = (new UpdateAgrochemicalAction())->handle($agrochemical, $dto);
+        $updated = (new UpdateAgrochemicalRecordAction())->handle($agrochemical, $dto);
 
-    return response()->json([
-        'message' => 'Agrochemical updated successfully',
-        'data' => $updated,
-    ], 200);
+        return response()->json([
+            'message' => 'Agrochemical updated successfully',
+            'data' => $updated,
+        ], 200);
 }
 
+
     // Delete a agrochemical
-    public function destroy($id)
+    public function destroy($uuid)
     {
-        $agrochemical = AgrochemicalRecord::findOrFail($id);
+        $agrochemical = AgrochemicalRecord::where('uuid', $uuid)->firstOrFail();
         $agrochemical->delete();
 
         return response()->json([
