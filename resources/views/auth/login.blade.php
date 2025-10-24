@@ -3,7 +3,7 @@
         <div class="card shadow" style="max-width: 550px; width: 100%;">
             <div class="card-body">
                 <!-- Sign In Title -->
-                <h2 class="text-center mb-4">Sign In</h2>
+                <h1 class="text-center my-5">Sign In</h1>
                 <span class="d-block text-center fw-semibold mb-10">
                     Hosba Durian Farm Sdn Bhd Administrative Portal
                 </span>
@@ -17,7 +17,7 @@
                     <div class="mb-5">
                         <x-input-label for="phone" :value="__('Phone Number')" />
                         <x-input-text id="phone" class="form-control my-3" type="tel" name="phone"
-                            placeholder="phone number" :value="old('phone')" required autofocus autocomplete="tel" />
+                            placeholder="Phone number" :value="old('phone')" required autofocus autocomplete="tel" />
                         <x-input-error :messages="$errors->get('phone')" class="text-danger mt-1" />
                     </div> 
 
@@ -25,7 +25,7 @@
                     <div class="mb-5">
                         <x-input-label for="password" :value="__('Password')" />
                         <x-input-text id="password" class="form-control my-3" type="password" name="password" required
-                            placeholder="password" autocomplete="current-password" />
+                            placeholder="Password" autocomplete="current-password" />
                         <x-input-error :messages="$errors->get('password')" class="text-danger mt-1" />
                     </div>
 
@@ -46,7 +46,7 @@
 
                     </div>
 
-                    <div class="text-center mt-5">
+                    <div class="text-center my-5">
                         <x-primary-button class="btn btn-primary px-8 py-3">
                             {{ __('Log in') }}
                         </x-primary-button>
