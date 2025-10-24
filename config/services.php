@@ -39,6 +39,11 @@ return [
         'base_url' => env('BLOCKCHAIN_BASE_URL'),
     ],
 
+    'callmebot' => [
+        'api_key' => env('CALLMEBOT_API_KEY'),
+    ],
+
+
 
 
 ];

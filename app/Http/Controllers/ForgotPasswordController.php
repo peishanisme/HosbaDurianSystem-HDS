@@ -24,30 +24,6 @@ class ForgotPasswordController extends Controller
         return view('auth.forgot-password');
     }
 
-    // Step 1: Send OTP
-    // public function sendOtp(Request $request)
-    // {
-    //     $request->validate([
-    //         'phone' => 'required|exists:users,phone',
-    //     ]);
-
-    //     $otp = rand(100000, 999999);
-
-    //     DB::table('password_resets')->updateOrInsert(
-    //         ['phone' => $request->phone],
-    //         [
-    //             'otp' => $otp,
-    //             'expires_at' => Carbon::now()->addMinutes(5),
-    //             'updated_at' => now(),
-    //         ]
-    //     );
-
-    //     // 💡 Free option: show OTP directly (for dev)
-    //     file_get_contents("https://api.callmebot.com/whatsapp.php?phone=60126002335&text=Your+OTP+is+$otp&apikey=8199824");
-
-    //     return redirect()->route('forgot.password.verifyForm')->with('otp', $otp);
-    // }
-
     // Step 2: Show verify OTP form
     public function showVerifyForm()
     {
@@ -56,32 +32,6 @@ class ForgotPasswordController extends Controller
         }
         return view('auth.verify-otp');
     }
-
-    // Step 2: Verify OTP
-    // public function verifyOtp(Request $request)
-    // {
-    //     $request->validate([
-    //         'otp' => 'required|numeric',
-    //     ]);
-
-    //     $phone = session('otp_phone');
-
-    //     $record = DB::table('password_resets')
-    //         ->where('phone', $phone)
-    //         ->where('otp', $request->otp)
-    //         ->first();
-
-    //     if (!$record) {
-    //         return back()->withErrors(['otp' => 'Invalid OTP']);
-    //     }
-
-    //     if (Carbon::parse($record->expires_at)->isPast()) {
-    //         return back()->withErrors(['otp' => 'OTP expired']);
-    //     }
-
-    //     session(['reset_phone' => $phone]);
-    //     return redirect()->route('password.reset.form');
-    // }
 
     public function showResetForm()
     {
