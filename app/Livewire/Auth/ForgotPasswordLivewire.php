@@ -18,8 +18,8 @@ class ForgotPasswordLivewire extends Component
         'phone' => 'required|exists:users,phone',
     ];
 
-     protected $listeners = [
-        'setCountdown', 
+    protected $listeners = [
+        'setCountdown',
     ];
 
     /**
@@ -27,6 +27,8 @@ class ForgotPasswordLivewire extends Component
      */
     public function sendOtp(ForgotPasswordService $service)
     {
+        $this->phone = $this->formatPhone($this->phone);
+
         $this->validateOnly('phone');
 
         try {
@@ -65,7 +67,19 @@ class ForgotPasswordLivewire extends Component
             $this->addError('otp', 'Invalid or expired OTP.');
         }
     }
- 
+
+    private function formatPhone($phone)
+    {
+        $cleaned = preg_replace('/\D/', '', $phone);
+
+        if (str_starts_with($cleaned, '0')) {
+            $cleaned = '6' . substr($cleaned, 1); // 0123456789 → 60123456789
+        } elseif (!str_starts_with($cleaned, '6')) {
+            $cleaned = '60' . $cleaned; // 123456789 → 60123456789
+        }
+
+        return $cleaned;
+    }
 
     public function render()
     {

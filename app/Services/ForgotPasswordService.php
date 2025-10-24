@@ -37,10 +37,11 @@ class ForgotPasswordService
 
     protected function sendWhatsAppOtp($phone, $otp)
     {
+        $api_key = config('services.callmebot.api_key');
         // format phone as international (e.g. Malaysia: 60123456789)
         $message = urlencode("Your Hosba Durian Farm OTP is: {$otp}. It will expire in 5 minutes.");
 
-        $url = "https://api.callmebot.com/whatsapp.php?phone=60126002335&text={$message}&apikey=8199824";
+        $url = "https://api.callmebot.com/whatsapp.php?phone={$phone}&text={$message}&apikey={$api_key}";
 
         $response = Http::get($url);
 
