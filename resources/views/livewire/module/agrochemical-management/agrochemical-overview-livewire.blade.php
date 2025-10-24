@@ -46,7 +46,7 @@
                 <label class="col-lg-4 fw-semibold text-muted">Remaining Quantity (kg/litre)</label>
 
                 <div class="col-lg-8 fv-row">
-                    <span class="fw-semibold text-gray-800 fs-6">12.5</span>
+                    <span class="fw-semibold text-gray-800 fs-6">{{ $agrochemical->getRemainingStock() }}</span>
                 </div>
             </div>
 

@@ -11,13 +11,13 @@
         </div>
     @endif --}}
 
-    @if ($thumbnail && $thumbnail != 'default')
+    @if ($thumbnail != 'default')
         <div class="me-3">
         <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;"
             src="{{ $thumbnail && $thumbnail != 'default' ? app(\App\Services\MediaService::class)->get($thumbnail) : app(\App\Services\MediaService::class)->get('logo/placeholder.svg') }}"
             alt="Image">
     </div>
-    @elseif ($thumbnail && $thumbnail == 'default')
+    @elseif ($thumbnail == 'default')
         <div class="me-3">
             <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;" src="{{  app(\App\Services\MediaService::class)->get('logo/placeholder.svg')}}" alt="Placeholder">
         </div>

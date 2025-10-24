@@ -21,18 +21,18 @@ class TreeListingTable extends DataTableComponent
     {
         $this->setPrimaryKey('id')
             ->setSearchPlaceholder('Search Tree')
-            ->setEmptyMessage('No results found')
-            ->setConfigurableAreas([
-                'toolbar-right-end' => [
-                    'livewire.components.modal-button',
-                    [
-                        'label' => 'Create Tree',
-                        'dispatch' => 'reset-tree',
-                        'target' => 'treeModalLivewire',
-                        'permission' => 'create-tree',
-                    ]
-                ]
-            ]);
+            ->setEmptyMessage('No results found');
+            // ->setConfigurableAreas([
+            //     'toolbar-right-end' => [
+            //         'livewire.components.modal-button',
+            //         [
+            //             'label' => 'Create Tree',
+            //             'dispatch' => 'reset-tree',
+            //             'target' => 'treeModalLivewire',
+            //             'permission' => 'create-tree',
+            //         ]
+            //     ]
+            // ]);
     }
 
     public function filters(): array
@@ -56,7 +56,7 @@ class TreeListingTable extends DataTableComponent
                 ->attributes(fn($value, $row, Column $column) => [
                     'thumbnail' => $row->thumbnail ?? 'default',
                     'title' => $value,
-                    'route' => route('tree.trees.show', $row->id),
+                    'route' => route('tree.show', $row->id),
                 ])->searchable()
                 ->sortable(),
 

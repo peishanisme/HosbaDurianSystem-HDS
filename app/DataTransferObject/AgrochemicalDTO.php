@@ -3,6 +3,7 @@
 namespace App\DataTransferObject;
 
 use App\Traits\ToArrayTrait;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class AgrochemicalDTO
 {
@@ -17,7 +18,7 @@ class AgrochemicalDTO
         public float $price,
         public string $type,
         public ?string $description = null,
-        public ?string $thumbnail = null,
+        public TemporaryUploadedFile|string|null $thumbnail = null,
     ) {}
 
     public static function fromArray(array $data): self

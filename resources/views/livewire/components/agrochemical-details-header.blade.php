@@ -5,13 +5,9 @@
             <!--begin: Pic-->
             <div class="me-7 mb-4">
                 <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-                    @if (!empty($agrochemical->thumbnail))
-                        <img class="rounded object-fit-cover"
-                            src="{{ secure_asset('storage/' . $agrochemical->thumbnail) }}" alt="Image">
-                    @else
-                        <img class="object-fit-cover border"
-                            src="{{ secure_asset('assets/media/placeholder/placeholder.svg') }}" alt="image" />
-                    @endif
+                    <img class="object-fit-cover border"
+                        src="{{ $agrochemical->thumbnail ? app(\App\Services\MediaService::class)->get($agrochemical->thumbnail) : secure_asset('assets/media/placeholder/placeholder.svg') }}"
+                        alt="image" />
 
                 </div>
             </div>
@@ -59,7 +55,7 @@
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
                                     <div class="fs-2 fw-bold" data-kt-countup="true"
-                                        data-kt-countup-value=" {{ $agrochemical->getRemainingSTock() }}">0
+                                        data-kt-countup-value=" {{ $agrochemical->getRemainingStock() }}">0
                                     </div>
                                 </div>
                                 <div class="fw-semibold fs-6 text-gray-500">Remaining Quantity</div>

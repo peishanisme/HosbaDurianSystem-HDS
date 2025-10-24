@@ -14,17 +14,18 @@ class TreeSpeciesTable extends DataTableComponent
         $this->setPrimaryKey('id')
             ->setSearchPlaceholder('Search Species')
             ->setEmptyMessage('No results found')
-            ->setConfigurableAreas([
-                'toolbar-right-end' => [
-                    'livewire.components.modal-button',
-                    [
-                        'label' => 'Create Species',
-                        'dispatch' => 'reset-species',
-                        'target' => 'speciesModalLivewire',
-                        'permission' => 'create-species',
-                    ]
-                ]
-            ]);
+            // ->setConfigurableAreas([
+            //     'toolbar-right-end' => [
+            //         'livewire.components.modal-button',
+            //         [
+            //             'label' => 'Create Species',
+            //             'dispatch' => 'reset-species',
+            //             'target' => 'speciesModalLivewire',
+            //             'permission' => 'create-species',
+            //         ]
+            //     ]
+            //])
+            ;
     }
 
     public function columns(): array
@@ -49,23 +50,23 @@ class TreeSpeciesTable extends DataTableComponent
                     return $query->withCount('trees')->orderBy('trees_count', $direction);
                 }),
 
-            Column::make("Created at", "created_at")
-                ->sortable(),
+            // Column::make("Created at", "created_at")
+            //     ->sortable(),
 
-            Column::make('Actions')
-                ->label(fn($row, Column $column) => view('components.table-com-button', [
-                    'modal'     => 'speciesModalLivewire',
-                    'dispatch1' => 'edit-species',
-                    'label1'    => 'Edit',
-                    'dataField' => 'species',
-                    'data'      =>  $row->id,
-                    'icon2'     => 'bi bi-trash3',
-                    'dispatch2' => 'delete-species',
-                    'label2'    => 'Delete',
-                    'permission1' => 'edit-species',
-                    'permission2' => 'delete-species',  
-                ]))->html()
-                ->excludeFromColumnSelect(),
+            // Column::make('Actions')
+            //     ->label(fn($row, Column $column) => view('components.table-com-button', [
+            //         'modal'     => 'speciesModalLivewire',
+            //         'dispatch1' => 'edit-species',
+            //         'label1'    => 'Edit',
+            //         'dataField' => 'species',
+            //         'data'      =>  $row->id,
+            //         'icon2'     => 'bi bi-trash3',
+            //         'dispatch2' => 'delete-species',
+            //         'label2'    => 'Delete',
+            //         'permission1' => 'edit-species',
+            //         'permission2' => 'delete-species',  
+            //     ]))->html()
+            //     ->excludeFromColumnSelect(),
         ];
     }
 }
