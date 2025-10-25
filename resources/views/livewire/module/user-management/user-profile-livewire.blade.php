@@ -25,7 +25,11 @@
             <div class="mb-5 row">
                 <label class="col-sm-3 col-form-label">Phone Number</label>
                 <div class="col-sm-9">
-                    <input type="tel" class="form-control" placeholder="Phone Number" wire:model="form.phone">
+                    <div class="input-group mt-2">
+                        <span class="input-group-text bg-light border-end-0">+60</span>
+                        <input id="phone" class="form-control border-start-0" type="tel" name="phone"
+                            placeholder="1xxxxxxxxx" wire:model="phone" required autofocus autocomplete="tel" />
+                    </div>
                     <x-input-error :messages="$errors->get('form.phone')" />
                 </div>
             </div>
@@ -39,7 +43,7 @@
 
         </div>
         <div class="card-footer text-end">
-            <x-primary-button class="btn btn-primary px-8 py-3">
+            <x-primary-button class="btn btn-primary px-8 py-3" wire:click="update">
                 {{ __('Update Profile') }}
             </x-primary-button>
         </div>
@@ -47,40 +51,85 @@
 
     {{-- change password --}}
     <div class="card shadow-sm mt-10">
-        <div class="card-header">
-            <h3 class="card-title">Change Password</h3>
+    <div class="card-header">
+        <h3 class="card-title">Change Password</h3>
+    </div>
+    <div class="card-body">
+
+        {{-- Old Password --}}
+        <div class="mb-5 row">
+            <label class="col-sm-3 col-form-label required">Old Password</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <input id="old_password" type="password" class="form-control" placeholder="Old Password"
+                        wire:model.defer="old_password" />
+                    <span class="input-group-text bg-light border-start-0 toggle-password" data-target="old_password"
+                        style="cursor:pointer;">
+                        <i class="bi bi-eye-slash"></i>
+                    </span>
+                </div>
+                <x-input-error :messages="$errors->get('old_password')" class="mt-2" />
+            </div>
         </div>
-        <div class="card-body">
 
-            <div class="mb-5 row">
-                <label class="col-sm-3 col-form-label required">Old Password</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" placeholder="Old password" wire:model="">
-                    <x-input-error :messages="$errors->get('')" />
+        {{-- New Password --}}
+        <div class="mb-5 row">
+            <label class="col-sm-3 col-form-label required">New Password</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <input id="new_password" type="password" class="form-control" placeholder="New Password"
+                        wire:model.defer="new_password" />
+                    <span class="input-group-text bg-light border-start-0 toggle-password" data-target="new_password"
+                        style="cursor:pointer;">
+                        <i class="bi bi-eye-slash"></i>
+                    </span>
                 </div>
+                <x-input-error :messages="$errors->get('new_password')" class="mt-2" />
             </div>
-
-            <div class="mb-5 row">
-                <label class="col-sm-3 col-form-label required">New Password</label>
-                <div class="col-sm-9">
-                    <input type="email" class="form-control" placeholder="New password" wire:model="">
-                    <x-input-error :messages="$errors->get('')" />
-                </div>
-            </div>
-
-            <div class="mb-5 row">
-                <label class="col-sm-3 col-form-label required">Confirm Password</label>
-                <div class="col-sm-9">
-                    <input type="tel" class="form-control" placeholder="Confirm Password" wire:model="">
-                    <x-input-error :messages="$errors->get('')" />
-                </div>
-            </div>
-
         </div>
-        <div class="card-footer text-end">
-            <x-primary-button class="btn btn-primary px-8 py-3">
-                {{ __('Reset Password') }}
-            </x-primary-button>
+
+        {{-- Confirm Password --}}
+        <div class="mb-5 row">
+            <label class="col-sm-3 col-form-label required">Confirm Password</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <input id="confirm_password" type="password" class="form-control"
+                        placeholder="Confirm Password" wire:model.defer="confirm_password" />
+                    <span class="input-group-text bg-light border-start-0 toggle-password"
+                        data-target="confirm_password" style="cursor:pointer;">
+                        <i class="bi bi-eye-slash"></i>
+                    </span>
+                </div>
+                <x-input-error :messages="$errors->get('confirm_password')" class="mt-2" />
+            </div>
         </div>
     </div>
+
+    <div class="card-footer text-end">
+        <x-primary-button class="btn btn-primary px-8 py-3" wire:click="updatePassword">
+            {{ __('Change Password') }}
+        </x-primary-button>
+    </div>
 </div>
+
+@push('scripts')
+<script>
+    // Apply to all toggle-password icons
+    document.querySelectorAll('.toggle-password').forEach(function (element) {
+        element.addEventListener('click', function () {
+            const targetId = this.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            const icon = this.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('bi-eye-slash', 'bi-eye');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('bi-eye', 'bi-eye-slash');
+            }
+        });
+    });
+</script>
+@endpush
+
