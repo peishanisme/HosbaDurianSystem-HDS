@@ -17,15 +17,15 @@
 
                     <div class="mb-5">
                         <x-input-label for="new_password" :value="__('New Password')" />
-                        <x-input-text id="new_password" class="form-control my-3"
-                            type="password" name="new_password" required placeholder="Enter new password" />
+                        <x-input-text id="new_password" class="form-control my-3" type="password" name="new_password"
+                            required placeholder="Enter new password" />
                         <x-input-error :messages="$errors->get('new_password')" class="text-danger mt-1" />
                     </div>
 
-                     <div class="mb-5">
+                    <div class="mb-5">
                         <x-input-label for="new_password_confirmation" :value="__('Confirm Password')" />
-                        <x-input-text id="new_password_confirmation" class="form-control my-3"
-                            type="password" name="new_password_confirmation" required placeholder="Confirm new password" />
+                        <x-input-text id="new_password_confirmation" class="form-control my-3" type="password"
+                            name="new_password_confirmation" required placeholder="Confirm new password" />
                         <x-input-error :messages="$errors->get('new_password_confirmation')" class="text-danger mt-1" />
                     </div>
 
@@ -35,6 +35,9 @@
                         </x-primary-button>
                     </div>
                 </form>
+            </div>
+            <div class="text-center py-4 bg-light border-top small text-muted">
+                &copy; {{ date('Y') }} Hosba Durian Farm Sdn Bhd. All rights reserved.
             </div>
         </div>
     </div>

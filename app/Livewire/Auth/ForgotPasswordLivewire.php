@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Auth;
 
+use App\Actions\FormatPhoneNumberAction;
 use Livewire\Component;
 use App\Services\Auth\PasswordResetService;
 use App\Services\ForgotPasswordService;
 
 class ForgotPasswordLivewire extends Component
 {
+    public $phoneNum;
     public $phone;
     public $otp;
     public $otpSent = false;
@@ -27,8 +29,10 @@ class ForgotPasswordLivewire extends Component
      */
     public function sendOtp(ForgotPasswordService $service)
     {
-        $this->phone = $this->formatPhone($this->phone);
+        // keep raw input in phoneNum and write formatted value to a separate property
+        $this->phone = FormatPhoneNumberAction::handle($this->phoneNum);
 
+        // validate the formatted phone field only
         $this->validateOnly('phone');
 
         try {
@@ -66,19 +70,6 @@ class ForgotPasswordLivewire extends Component
         } else {
             $this->addError('otp', 'Invalid or expired OTP.');
         }
-    }
-
-    private function formatPhone($phone)
-    {
-        $cleaned = preg_replace('/\D/', '', $phone);
-
-        if (str_starts_with($cleaned, '0')) {
-            $cleaned = '6' . substr($cleaned, 1); // 0123456789 → 60123456789
-        } elseif (!str_starts_with($cleaned, '6')) {
-            $cleaned = '60' . $cleaned; // 123456789 → 60123456789
-        }
-
-        return $cleaned;
     }
 
     public function render()
