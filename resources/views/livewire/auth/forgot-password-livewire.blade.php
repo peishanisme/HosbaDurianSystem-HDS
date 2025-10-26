@@ -23,7 +23,8 @@
                 <div class="mb-5">
                     <x-input-label for="phone" :value="__('Phone Number')" />
                     <div class="input-group my-3">
-                        <input type="tel" id="phone" class="form-control" wire:model.defer="phone"
+                        <span class="input-group-text bg-light border-end-0">+60</span>
+                        <input type="tel" id="phone" class="form-control" wire:model.defer="phoneNum"
                             placeholder="Enter phone number" {{ $countdown > 0 ? 'disabled' : '' }} required>
 
                         <button id="sendOtpBtn" class="btn btn-primary" type="button" wire:click="sendOtp"
@@ -38,6 +39,7 @@
                         </button>
                     </div>
                     <x-input-error :messages="$errors->get('phone')" class="text-danger mt-1" />
+
                 </div>
 
                 {{-- OTP input --}}
@@ -55,6 +57,9 @@
                         </x-primary-button>
                     </div>
                 @endif
+            </div>
+            <div class="text-center py-4 bg-light border-top small text-muted">
+                &copy; {{ date('Y') }} Hosba Durian Farm Sdn Bhd. All rights reserved.
             </div>
         </div>
     </div>
@@ -79,7 +84,9 @@
                 if (phoneInput) phoneInput.disabled = true;
 
                 // send initial value to Livewire server so blade disables when it re-renders
-                Livewire.dispatch('setCountdown', { value: countdown });
+                Livewire.dispatch('setCountdown', {
+                    value: countdown
+                });
 
                 const timer = setInterval(() => {
                     // re-query elements (they might be replaced by Livewire)
@@ -89,13 +96,17 @@
                     if (countdown > 0) {
                         if (btnNow) btnNow.innerText = `Resend in ${countdown}s`;
                         // update server-side property so blade will render disabled attribute
-                        Livewire.dispatch('setCountdown', { value: countdown });
+                        Livewire.dispatch('setCountdown', {
+                            value: countdown
+                        });
 
                         countdown--;
                     } else {
                         clearInterval(timer);
                         // final update to server (0)
-                        Livewire.dispatch('setCountdown', { value: 0 });
+                        Livewire.dispatch('setCountdown', {
+                            value: 0
+                        });
 
 
                         // update UI one last time

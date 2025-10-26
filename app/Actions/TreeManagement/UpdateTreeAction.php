@@ -15,7 +15,6 @@ class UpdateTreeAction
         return DB::transaction(function () use ($tree, $dto) {
 
             $thumbnailPath = (new UpdateMediaInStorage(app(MediaService::class)))->handle($tree, $dto, 'trees');
-
             $tree->update([
                 'species_id' => $dto->species_id,
                 'planted_at' => $dto->planted_at,
@@ -26,6 +25,11 @@ class UpdateTreeAction
             $firstGrowthLog = $tree->growthLogs()->orderBy('id')->first();
             if ($firstGrowthLog) {
                 $firstGrowthLog->update([
+                    'height' => $dto->height,
+                    'diameter' => $dto->diameter,
+                ]);
+            } else {
+                $tree->growthLogs()->create([
                     'height' => $dto->height,
                     'diameter' => $dto->diameter,
                 ]);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Actions\FormatPhoneNumberAction;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,19 @@ class LoginRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    /**
+     * Normalize phone number before validation.
+     * This runs before `rules()` and `authenticate()`.
+     */
+    protected function prepareForValidation(): void
+    {
+        $phone = (string) $this->input('phone', '');
+
+        $this->merge([
+            'phone' => FormatPhoneNumberAction::handle($phone),
+        ]);
     }
 
     /**
