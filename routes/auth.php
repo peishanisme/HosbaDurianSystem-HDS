@@ -21,8 +21,7 @@ Route::middleware('guest')->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store'])
-        ->name('login');
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
     Route::get('/forgot-password', [ForgotPasswordController::class, 'showPhoneForm'])->name('forgot.password');
     Route::post('/forgot-password/send-otp', [ForgotPasswordController::class, 'sendOtp'])->name('forgot.password.sendOtp');

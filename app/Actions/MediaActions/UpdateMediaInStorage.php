@@ -14,33 +14,34 @@ class UpdateMediaInStorage
         $thumbnailPath = $dto->thumbnail;
         $oldThumbnail = $object->thumbnail;
 
-        // Handle removal
-        if ($dto->thumbnail === null) {
-            if ($oldThumbnail) {
-                $this->mediaService->delete($oldThumbnail);
-            }
-            return null;
+        if (empty($thumbnailPath)) {
+            return $oldThumbnail;
         }
 
-        // Handle new upload
         if ($dto->thumbnail instanceof TemporaryUploadedFile) {
-            if ($oldThumbnail) {
-                $this->mediaService->delete($oldThumbnail);
+            $newThumbnailPath = $path . "/" . $dto->thumbnail->getClientOriginalExtension() . "/" . $dto->thumbnail->getFilename();
+
+            // If the uploaded file would map to the same storage path, keep the old reference.
+            if ($oldThumbnail === $newThumbnailPath) {
+            return $oldThumbnail;
             }
+
             $thumbnailPath = $this->mediaService->put(
-                $dto->thumbnail,
-                $path . "/" . $dto->thumbnail->getClientOriginalExtension()
+            $dto->thumbnail,
+            $path . "/" . $dto->thumbnail->getClientOriginalExtension()
             );
+
             return $thumbnailPath;
         }
+
 
         // Handle unchanged or string path
-        $newThumbnailPath = $path . "/" . $dto->thumbnail->getClientOriginalExtension() . "/" . $dto->thumbnail->getFilename();
-        if ($oldThumbnail === $newThumbnailPath) {
-            return $thumbnailPath;
-        }
+        // $newThumbnailPath = $path . "/" . $dto->thumbnail->getClientOriginalExtension() . "/" . $dto->thumbnail->getFilename();
+        // if ($oldThumbnail === $newThumbnailPath) {
+        //     return $thumbnailPath;
+        // }
 
         // Default: just return as-is
-        return $thumbnailPath;
+        // return $thumbnailPath;
     }
 }

@@ -15,7 +15,7 @@ class TreeGrowthLogTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        return TreeGrowthLog::query()->where('tree_id', $this->tree->id);
+        return TreeGrowthLog::query()->where('tree_uuid', $this->tree->uuid);
     }
 
     public function configure(): void
@@ -35,8 +35,9 @@ class TreeGrowthLogTable extends DataTableComponent
                 ->hideIf(true),
             // Column::make("Tree id", "tree_id")
             //     ->sortable(),
-            // Column::make("Tree uuid", "tree_uuid")
-            //     ->sortable(),
+            Column::make("Tree uuid", "tree_uuid")
+                ->sortable()
+                ->hideIf(true),
             Column::make("Height", "height")
                 ->sortable(),
             Column::make("Diameter", "diameter")

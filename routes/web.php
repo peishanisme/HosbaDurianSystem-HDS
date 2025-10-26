@@ -22,6 +22,7 @@ use App\Livewire\Module\SalesAndTransactions\CreateTransactionLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalIndexLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalOverviewLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire;
+use App\Livewire\Module\PostHarvest\HarvestEventHarvestSummaryLivewire;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardLivewire::class)->name('dashboard');
@@ -61,6 +62,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/all', HarvestEventIndexLivewire::class)->name('events.index');
         Route::group(['prefix' => 'details/{harvestEvent:id}'], fn() => [
             Route::get('overview', HarvestEventOverviewLivewire::class)->name('show'),
+            Route::get('harvest-summary', HarvestEventHarvestSummaryLivewire::class)->name('harvest-summary'),
         ]);
     });
 

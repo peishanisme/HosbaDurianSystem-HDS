@@ -81,8 +81,8 @@
         <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
             <x-show-navbar-navitem title="Overview" route="{{ route('harvest.show', $harvestEvent->id) }}"
                 :active="request()->routeIs('harvest.show')" />
-            {{-- <x-show-navbar-navitem title="Purchase History"
-                route="{{ route('agrochemical.purchase-history', $agrochemical->id) }}" :active="request()->routeIs('agrochemical.purchase-history')" /> --}}
+            <x-show-navbar-navitem title="Harvest Summary"
+                route="{{ route('harvest.harvest-summary', $harvestEvent->id) }}" :active="request()->routeIs('harvest.harvest-summary')" />
         </ul>
     </div>
 </div>

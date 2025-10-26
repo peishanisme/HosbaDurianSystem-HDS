@@ -14,25 +14,26 @@ class TreeListingTable extends DataTableComponent
     public function builder(): Builder
     {
         return Tree::query()
-            ->with(['species', 'latestGrowthLog']);
+            ->with(['species', 'latestGrowthLog']); // no need to load all growthLogs
     }
+
 
     public function configure(): void
     {
         $this->setPrimaryKey('id')
             ->setSearchPlaceholder('Search Tree')
             ->setEmptyMessage('No results found');
-            // ->setConfigurableAreas([
-            //     'toolbar-right-end' => [
-            //         'livewire.components.modal-button',
-            //         [
-            //             'label' => 'Create Tree',
-            //             'dispatch' => 'reset-tree',
-            //             'target' => 'treeModalLivewire',
-            //             'permission' => 'create-tree',
-            //         ]
-            //     ]
-            // ]);
+        // ->setConfigurableAreas([
+        //     'toolbar-right-end' => [
+        //         'livewire.components.modal-button',
+        //         [
+        //             'label' => 'Create Tree',
+        //             'dispatch' => 'reset-tree',
+        //             'target' => 'treeModalLivewire',
+        //             'permission' => 'create-tree',
+        //         ]
+        //     ]
+        // ]);
     }
 
     public function filters(): array
@@ -49,8 +50,10 @@ class TreeListingTable extends DataTableComponent
         return [
             Column::make("ID", "id")
                 ->hideIf(true),
+
             Column::make("Thumbnail", "thumbnail")
                 ->hideIf(true),
+
             ViewComponentColumn::make('Tree Tag', 'tree_tag')
                 ->component('components.table-primary-column')
                 ->attributes(fn($value, $row, Column $column) => [
@@ -67,15 +70,15 @@ class TreeListingTable extends DataTableComponent
                     'label' => $value,
                 ]),
 
-            Column::make("Current Height (m)")
-                ->label(fn($row) => optional($row->latestGrowthLog)->height ?? '-'),
-                
-            Column::make("Current Diameter (m)")
-                ->label(fn($row) => optional($row->latestGrowthLog)->diameter ?? '-'),
+            // Column::make("Current Height (m)")
+            //     ->label(fn($row) => optional($row->latestGrowthLog)->height ?? '-'),
+
+            // Column::make("Current Diameter (m)")
+            //     ->label(fn($row) => optional($row->latestGrowthLog)->diameter ?? '-'),
 
             Column::make("Planted At", "planted_at")
                 ->sortable(),
-                
+
             Column::make('Actions')
                 ->label(fn($row, Column $column) => view('components.table-com-button', [
                     'modal'     => 'treeModalLivewire',
