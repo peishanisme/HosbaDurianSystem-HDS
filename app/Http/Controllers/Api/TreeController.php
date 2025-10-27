@@ -132,7 +132,7 @@ class TreeController extends Controller
     $validator = Validator::make($request->all(), [
         'species_id' => 'required|exists:species,id',
         'planted_at' => 'required|date',
-        'thumbnail' => 'nullable|string',
+        'thumbnail'   => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         'flowering_period' => 'nullable|string',
         'height' => 'required|numeric',
         'diameter' => 'required|numeric',
@@ -140,28 +140,65 @@ class TreeController extends Controller
         'longitude' => 'nullable|numeric',
     ]);
 
-    if ($validator->fails()) {
-        return response()->json([
-            'message' => 'Validation failed',
-            'errors' => $validator->errors()
-        ], 422);
-    }
+    DB::beginTransaction();
+    try{
+        $thumbnailUrl = $tree->thumbnail; // Keep existing thumbnail by default
+        
+        // ✅ If user uploads a new image, replace it
+        if ($request->hasFile('thumbnail')) {
+            $ext = $request->file('thumbnail')->getClientOriginalExtension();
+            $uuidName = Str::uuid()->toString() . '.' . $ext;
 
-    try {
-        $dto = TreeDTO::fromRequest($request);
+            // Store new image
+            $request->file('thumbnail')->storeAs('trees/jpg', $uuidName, 'supabase');
+            $thumbnailUrl = "trees/jpg/{$uuidName}";
+        }
 
-        $updatedTree = (new UpdateTreeAction())->handle($tree, $dto);
+        $tree->update([
+            'species_id'       => $request->species_id,
+                'planted_at'       => $request->planted_at,
+                'thumbnail'        => $thumbnailUrl,   // save the path in DB
+                'latitude'         => $request->latitude,
+                'longitude'        => $request->longitude,
+                'flowering_period' => $request->flowering_period,
+            ]);
+
+        DB::commit();
 
         return response()->json([
             'message' => 'Tree updated successfully',
-            'data' => $updatedTree
-        ]);
+            'data' => $tree
+        ], 200);
     } catch (\Exception $e) {
+        DB::rollBack();
         return response()->json([
             'message' => 'Failed to update tree',
             'error' => $e->getMessage()
         ], 500);
     }
+
+    // if ($validator->fails()) {
+    //     return response()->json([
+    //         'message' => 'Validation failed',
+    //         'errors' => $validator->errors()
+    //     ], 422);
+    // }
+
+    // try {
+    //     $dto = TreeDTO::fromRequest($request);
+
+    //     $updatedTree = (new UpdateTreeAction())->handle($tree, $dto);
+
+    //     return response()->json([
+    //         'message' => 'Tree updated successfully',
+    //         'data' => $updatedTree
+    //     ]);
+    // } catch (\Exception $e) {
+    //     return response()->json([
+    //         'message' => 'Failed to update tree',
+    //         'error' => $e->getMessage()
+    //     ], 500);
+    // }
     }
 
     public function destroy($id) {

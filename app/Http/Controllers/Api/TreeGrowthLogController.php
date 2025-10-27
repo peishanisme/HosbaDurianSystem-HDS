@@ -15,7 +15,7 @@ class TreeGrowthLogController extends Controller
     public function store(Request $request, UpdateGrowthLogAction $updateGrowthLogAction)
     {
         $validated = $request->validate([
-            'tree_id'   => 'required|exists:trees,id',
+            // 'tree_id'   => 'required|exists:trees,id',
             'tree_uuid' => 'required|exists:trees,uuid',
             'height'    => 'required|numeric|min:0',
             'diameter'  => 'required|numeric|min:0',
