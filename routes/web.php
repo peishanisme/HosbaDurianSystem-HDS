@@ -23,6 +23,7 @@ use App\Livewire\Module\AgrochemicalManagement\AgrochemicalIndexLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalOverviewLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire;
 use App\Livewire\Module\PostHarvest\HarvestEventHarvestSummaryLivewire;
+use App\Livewire\Module\TreeManagement\DiseaseIndexLivewire;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardLivewire::class)->name('dashboard');
@@ -42,6 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::group(['prefix' => 'tree', 'as' => 'tree.'], function () {
+        Route::get('/disease', DiseaseIndexLivewire::class)->name('disease.index');
         Route::get('/species', SpeciesIndexLivewire::class)->name('species.index');
         Route::get('/all', TreeIndexLivewire::class)->name('trees.index');
         Route::group(['prefix' => 'details/{tree:id}'], fn() => [

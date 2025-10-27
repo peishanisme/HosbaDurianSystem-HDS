@@ -13,7 +13,7 @@
             >
 
             <!-- Species Filter -->
-            <select wire:model="filterSpecies" class="form-select form-select-sm" style="width: 180px;">
+            <select wire:model.live="filterSpecies" class="form-select form-select-sm" style="width: 180px;">
                 <option value="">All Species</option>
                 @foreach($speciesList as $species)
                     <option value="{{ $species->id }}">{{ $species->name }}</option>
