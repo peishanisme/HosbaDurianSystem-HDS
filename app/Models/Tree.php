@@ -6,13 +6,14 @@ use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\{HasMany, BelongsTo, HasOne};
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\{HasMany, BelongsTo, HasOne};
 
 class Tree extends Model
 {
     use LogsActivity, SoftDeletes;
-    
+
     protected $fillable = [
         'tree_tag',
         'species_id',
@@ -96,12 +97,13 @@ class Tree extends Model
         return $this->hasOne(TreeGrowthLog::class, 'tree_uuid', 'uuid')->latestOfMany();
     }
 
-    public function diseases()
+    public function diseases(): BelongsToMany
     {
-        return $this->belongsToMany(Disease::class, 'health_records')
-                    ->withPivot('status', 'recorded_at', 'treatment')
-                    ->withTimestamps();
+        return $this->belongsToMany(Disease::class, 'health_records', 'tree_uuid', 'disease_id', 'uuid', 'id')
+            ->withPivot('status', 'recorded_at', 'treatment')
+            ->withTimestamps();
     }
+
 
     public function healthRecords()
     {
@@ -119,5 +121,4 @@ class Tree extends Model
             ->where('harvest_uuid', $harvestUuid)
             ->count();
     }
-
 }

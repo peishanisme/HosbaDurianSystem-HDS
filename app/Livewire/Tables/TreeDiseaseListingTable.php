@@ -27,12 +27,29 @@ class TreeDiseaseListingTable extends DataTableComponent
             Column::make("Symptoms", "symptoms")
                 ->searchable(),
             Column::make("Affected Trees")
-                ->label(fn($row) => $row->tree->count())
+                ->label(fn($row) => $row->trees()->wherePivotNotIn('status', ['Recovered'])->count())
                 ->sortable(
                     fn($query, $direction) =>
                     $query->withCount('tree')->orderBy('tree_count', $direction)
                 ),
-            Column::make("Remarks", "remarks")
+            Column::make("Recovered Trees")
+                ->label(fn($row) => $row->trees()->wherePivot('status', ['Recovered'])->count())
+                ->sortable(
+                    fn($query, $direction) =>
+                    $query->withCount('tree')->orderBy('tree_count', $direction)
+                ),
+            Column::make("Remarks", "remarks"),
+            Column::make('Actions')
+                ->label(fn($row, Column $column) => view('components.table-button', [
+                    'modal'     => 'diseaseDetailsModalLivewire',
+                    'icon'      => 'bi-eye',
+                    'dispatch'  => 'view-disease',
+                    'label'     => 'View',
+                    'dataField' => 'disease',
+                    'data'      =>  $row->id,
+                    // 'permission' => 'view-disease',
+                ]))->html()
+                ->excludeFromColumnSelect(),
 
         ];
     }
