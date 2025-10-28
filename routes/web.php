@@ -9,21 +9,22 @@ use App\Livewire\Module\UserManagement\RoleIndexLivewire;
 use App\Livewire\Module\UserManagement\UserIndexLivewire;
 use App\Livewire\Module\TreeManagement\TreeDetailsLivewire;
 use App\Livewire\Module\UserManagement\UserProfileLivewire;
+use App\Livewire\Module\TreeManagement\DiseaseIndexLivewire;
 use App\Livewire\Module\TreeManagement\SpeciesIndexLivewire;
 use App\Livewire\Module\TreeManagement\TreeGrowthLogLivewire;
 use App\Livewire\Module\PostHarvest\HarvestEventIndexLivewire;
 use App\Livewire\Module\UserManagement\PermissionIndexLivewire;
 use App\Livewire\Module\SalesAndTransactions\BuyerIndexLivewire;
+use App\Livewire\Module\TreeManagement\TreeHealthRecordLivewire;
 use App\Livewire\Module\UserManagement\ActivityLogIndexLivewire;
 use App\Livewire\Module\PostHarvest\HarvestEventOverviewLivewire;
 use App\Livewire\Module\SalesAndTransactions\BuyerOverviewLivewire;
 use App\Livewire\Module\SalesAndTransactions\TransactionIndexLivewire;
+use App\Livewire\Module\PostHarvest\HarvestEventHarvestSummaryLivewire;
 use App\Livewire\Module\SalesAndTransactions\CreateTransactionLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalIndexLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalOverviewLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire;
-use App\Livewire\Module\PostHarvest\HarvestEventHarvestSummaryLivewire;
-use App\Livewire\Module\TreeManagement\DiseaseIndexLivewire;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardLivewire::class)->name('dashboard');
@@ -49,6 +50,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::group(['prefix' => 'details/{tree:id}'], fn() => [
             Route::get('overview', TreeDetailsLivewire::class)->name('show'),
             Route::get('growth-log', TreeGrowthLogLivewire::class)->name('growth-log'),
+            Route::get('health-record', TreeHealthRecordLivewire::class)->name('health-record'),
         ]);
     });
 

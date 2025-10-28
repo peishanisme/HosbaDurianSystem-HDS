@@ -1,6 +1,6 @@
 <x-modal-component :id="$modalID" :title="$modalTitle">
 
-    <div class="mb-4 d-flex justify-content-between align-items-center">
+    <div class="mb-8 d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Affected Trees</h5>
 
         <!-- Filter Dropdown -->
@@ -31,7 +31,12 @@
             <tbody>
                 @forelse($trees as $tree)
                     <tr class="py-5">
-                        <td class="py-7">{{ $tree->tree_tag }}</td>
+                        <td class="py-7">
+                            <a href="{{ route('tree.show', $tree->id) }}"
+                                class="fw-semibold text-dark text-hover-primary">
+                                {{ $tree->tree_tag }}
+                            </a>
+                        </td>
                         <td class="py-7">{{ $tree->species->name ?? '-' }}</td>
                         <td class="py-7">
                             <span

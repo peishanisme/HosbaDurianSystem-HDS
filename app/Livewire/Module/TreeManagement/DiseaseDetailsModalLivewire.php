@@ -5,7 +5,7 @@ namespace App\Livewire\Module\TreeManagement;
 use App\Models\Disease;
 use Livewire\Component;
 
-class TreeDiseaseDetailsModalLivewire extends Component
+class DiseaseDetailsModalLivewire extends Component
 {
     public string $modalID = 'diseaseDetailsModalLivewire', $modalTitle = 'Disease Details';
 
@@ -83,6 +83,6 @@ class TreeDiseaseDetailsModalLivewire extends Component
 
     public function render()
     {
-        return view('livewire.module.tree-management.tree-disease-details-modal-livewire');
+        return view('livewire.module.tree-management.disease-details-modal-livewire');
     }
 }

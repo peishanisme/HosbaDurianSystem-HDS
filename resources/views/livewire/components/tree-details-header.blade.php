@@ -142,7 +142,7 @@
             <x-show-navbar-navitem title="Overview" :route="route('tree.show', $tree->id)" :active="request()->routeIs('tree.show')" />
             <x-show-navbar-navitem title="Growth Logs" :route="route('tree.growth-log', $tree->id)" :active="request()->routeIs('tree.growth-log')" />
             <x-show-navbar-navitem title="Status History" />
-            <x-show-navbar-navitem title="Health Records" />
+            <x-show-navbar-navitem title="Health Records" :route="route('tree.health-record', $tree->id)" :active="request()->routeIs('tree.health-record')" />
             <x-show-navbar-navitem title="Fertilization" />
             <x-show-navbar-navitem title="Yield History" />
             <x-show-navbar-navitem title="Media" />
