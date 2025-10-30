@@ -6,7 +6,7 @@ use App\Models\Tree;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 
-#[Title('Tree Management')]
+#[Title('Tree Health Record')]
 class TreeHealthRecordLivewire extends Component
 {
     public Tree $tree;

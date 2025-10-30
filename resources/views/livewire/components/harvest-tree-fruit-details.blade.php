@@ -4,18 +4,13 @@
 
         <div class="d-flex flex-wrap gap-2">
             <!-- Search -->
-            <input
-                wire:model.live="search"
-                type="text"
-                class="form-control form-control-sm"
-                placeholder="Search by tree tag or species..."
-                style="width: 220px;"
-            >
+            <input wire:model.live="search" type="text" class="form-control form-control-sm"
+                placeholder="Search by tree tag or species..." style="width: 220px;">
 
             <!-- Species Filter -->
             <select wire:model.live="filterSpecies" class="form-select form-select-sm" style="width: 180px;">
                 <option value="">All Species</option>
-                @foreach($speciesList as $species)
+                @foreach ($speciesList as $species)
                     <option value="{{ $species->id }}">{{ $species->name }}</option>
                 @endforeach
             </select>
@@ -37,15 +32,22 @@
                     @forelse ($trees as $tree)
                         <tr>
                             <td class="align-middle">
-                                <button wire:click="toggleExpand('{{ $tree->uuid }}')" class="btn btn-link p-0 d-inline-flex align-items-center">
-                                    <span class="me-2" style="display:inline-block; transition: transform .2s; {{ in_array($tree->uuid, $expanded) ? 'transform: rotate(90deg);' : '' }}">
+                                <button wire:click="toggleExpand('{{ $tree->uuid }}')"
+                                    class="btn btn-link p-0 d-inline-flex align-items-center">
+                                    <span class="me-2"
+                                        style="display:inline-block; transition: transform .2s; {{ in_array($tree->uuid, $expanded) ? 'transform: rotate(90deg);' : '' }}">
                                         ▶
                                     </span>
-                                    {{ $tree->tree_tag }}
+
                                 </button>
+                                <a href="{{ route('tree.show', $tree->id) }}" class="text-dark text-hover-primary align-middle fw-bold">
+                                    {{ $tree->tree_tag }}
+                                </a>
                             </td>
                             <td class="align-middle">{{ $tree->species->name ?? '-' }}</td>
-                            <td class="align-middle">{{ $tree->planted_at ? \Carbon\Carbon::parse($tree->planted_at)->format('d M Y') : '-' }}</td>
+                            <td class="align-middle">
+                                {{ $tree->planted_at ? \Carbon\Carbon::parse($tree->planted_at)->format('d M Y') : '-' }}
+                            </td>
                             <td class="align-middle">{{ $tree->fruitCountInHarvest($harvestEvent->uuid) }}</td>
                         </tr>
 
@@ -78,14 +80,22 @@
                                                                     'E' => 'badge bg-danger-subtle text-danger',
                                                                     'F' => 'badge bg-danger-subtle text-danger',
                                                                 ];
-                                                                $badgeClass = $gradeClassMap[$grade] ?? 'badge bg-secondary-subtle text-secondary';
+                                                                $badgeClass =
+                                                                    $gradeClassMap[$grade] ??
+                                                                    'badge bg-secondary-subtle text-secondary';
                                                             @endphp
-                                                            <span class="{{ $badgeClass }}">{{ $grade ?: '-' }}</span>
+                                                            <span
+                                                                class="{{ $badgeClass }}">{{ $grade ?: '-' }}</span>
                                                         </td>
-                                                        <td class="small">{{ $fruit->harvested_at ? \Carbon\Carbon::parse($fruit->harvested_at)->format('d M Y') : '-' }}</td>
+                                                        <td class="small">
+                                                            {{ $fruit->harvested_at ? \Carbon\Carbon::parse($fruit->harvested_at)->format('d M Y') : '-' }}
+                                                        </td>
                                                     </tr>
                                                 @empty
-                                                    <tr><td colspan="4" class="ps-4 small text-muted">No fruits for this tree.</td></tr>
+                                                    <tr>
+                                                        <td colspan="4" class="ps-4 small text-muted">No fruits for
+                                                            this tree.</td>
+                                                    </tr>
                                                 @endforelse
                                             </tbody>
                                         </table>
@@ -94,7 +104,9 @@
                             </tr>
                         @endif
                     @empty
-                        <tr><td colspan="4" class="text-center text-muted">No trees found.</td></tr>
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">No trees found.</td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>

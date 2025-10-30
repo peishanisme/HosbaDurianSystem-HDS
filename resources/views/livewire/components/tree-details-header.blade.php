@@ -144,7 +144,7 @@
             <x-show-navbar-navitem title="Status History" />
             <x-show-navbar-navitem title="Health Records" :route="route('tree.health-record', $tree->id)" :active="request()->routeIs('tree.health-record')" />
             <x-show-navbar-navitem title="Fertilization" />
-            <x-show-navbar-navitem title="Yield History" />
+            <x-show-navbar-navitem title="Harvest Records" :route="route('tree.harvest-record', $tree->id)" :active="request()->routeIs('tree.harvest-record')" />
             <x-show-navbar-navitem title="Media" />
         </ul>
         <!--begin::Navs-->
