@@ -9,6 +9,7 @@ use Livewire\Attributes\On;
 use App\Models\Agrochemical;
 use App\Enum\AgrochemicalType;
 use App\Livewire\Forms\AgrochemicalForm;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class AgrochemicalModalLivewire extends Component
 {
@@ -33,10 +34,16 @@ class AgrochemicalModalLivewire extends Component
 
 
     #[On('thumbnail-updated')]
-    public function setThumbnail($thumbnail): void
+     #[On('thumbnail-updated')]
+    public function setThumbnail($path): void
     {
-        $this->form->thumbnail = $thumbnail;
-        $this->isThumbnailValid = true;
+        if ($path) {
+            $this->form->thumbnail = new TemporaryUploadedFile(
+                storage_path('app/livewire-tmp/' . $path),
+                'local'
+            );
+            $this->isThumbnailValid = true;
+        }
     }
 
     #[On('thumbnail-validation-failed')]

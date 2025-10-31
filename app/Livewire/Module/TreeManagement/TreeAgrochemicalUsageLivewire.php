@@ -6,12 +6,12 @@ use App\Models\Tree;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 
-#[Title('Tree Growth Log')]
-class TreeGrowthLogLivewire extends Component
+#[Title('Tree Agrochemical Usage')]
+class TreeAgrochemicalUsageLivewire extends Component
 {
     public Tree $tree;
     public function render()
     {
-        return view('livewire.module.tree-management.tree-growth-log-livewire');
+        return view('livewire.module.tree-management.tree-agrochemical-usage-livewire');
     }
 }

@@ -56,7 +56,6 @@ class TreeModalLivewire extends Component
     {
         $this->resetInput();
         $this->form->edit($tree);
-        // dd($this->form->thumbnail );
         $this->dispatch('edit-thumbnail', $tree->thumbnail);
     }
 

@@ -6,7 +6,7 @@ use App\Models\Tree;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 
-#[Title('Tree Management')]
+#[Title('Tree Overview')]
 class TreeDetailsLivewire extends Component
 {
     public Tree $tree;

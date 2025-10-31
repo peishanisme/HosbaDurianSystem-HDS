@@ -2,15 +2,17 @@
 
 namespace App\Livewire\Forms;
 
-use App\Actions\AgrochemicalManagement\CreateAgrochemicalAction;
-use App\Actions\AgrochemicalManagement\UpdateAgrochemicalAction;
 use Livewire\Form;
 use App\Models\Agrochemical;
 use App\DataTransferObject\AgrochemicalDTO;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use App\Actions\AgrochemicalManagement\CreateAgrochemicalAction;
+use App\Actions\AgrochemicalManagement\UpdateAgrochemicalAction;
 
 class AgrochemicalForm extends Form
 {
-    public ?string $name = null, $type = null, $description = null, $thumbnail = null;
+    public TemporaryUploadedFile|string|null $thumbnail = null;
+    public ?string $name = null, $type = null, $description = null;
     public ?float $quantity_per_unit = null, $price = null;
     public ?Agrochemical $agrochemical = null;
 
@@ -22,7 +24,7 @@ class AgrochemicalForm extends Form
             'price'             => ['required', 'numeric', 'min:0'],
             'type'              => ['required', 'string'],
             'description'       => ['nullable', 'string'],
-            'thumbnail'         => ['nullable', 'string'],
+            'thumbnail'         => ['nullable'],
         ];
     }
 
@@ -44,7 +46,6 @@ class AgrochemicalForm extends Form
 
     public function update($validatedData): void
     {
-        app(UpdateAgrochemicalAction::class)->handle($this->agrochemical,AgrochemicalDTO::fromArray($validatedData));
+        app(UpdateAgrochemicalAction::class)->handle($this->agrochemical, AgrochemicalDTO::fromArray($validatedData));
     }
-
 }

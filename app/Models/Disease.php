@@ -5,8 +5,9 @@ namespace App\Models;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Disease extends Model
 {
@@ -37,9 +38,9 @@ class Disease extends Model
         return $this->hasMany(Disease::class);
     }
 
-    public function tree()
+    public function trees(): BelongsToMany
     {
-        return $this->belongsToMany(Tree::class, 'health_records')
+        return $this->belongsToMany(Tree::class, 'health_records' ,'disease_id', 'tree_uuid','id','uuid')
                     ->withPivot('status', 'recorded_at', 'treatment')
                     ->withTimestamps();
     }
