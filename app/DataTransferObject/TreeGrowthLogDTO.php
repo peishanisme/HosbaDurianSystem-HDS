@@ -8,7 +8,7 @@ class TreeGrowthLogDTO
     use ToArrayTrait;
     
     public function __construct(
-        public int $tree_id,
+        // public int $tree_id,
         public string $tree_uuid,
         public float $height,
         public float $diameter,
@@ -18,7 +18,7 @@ class TreeGrowthLogDTO
     public static function fromArray(array $data): self
     {
         return new self(
-            tree_id: $data['tree_id'],
+            // tree_id: $data['tree_id'],
             tree_uuid: $data['tree_uuid'],
             height: $data['height'],
             diameter: $data['diameter'],
