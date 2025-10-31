@@ -25,6 +25,7 @@ use App\Livewire\Module\SalesAndTransactions\CreateTransactionLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalIndexLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalOverviewLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire;
+use App\Livewire\Module\TreeManagement\TreeAgrochemicalUsageLivewire;
 use App\Livewire\Module\TreeManagement\TreeHarvestRecordLivewire;
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -53,6 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('growth-log', TreeGrowthLogLivewire::class)->name('growth-log'),
             Route::get('health-record', TreeHealthRecordLivewire::class)->name('health-record'),
             Route::get('harvest-record', TreeHarvestRecordLivewire::class)->name('harvest-record'),
+            Route::get('agrochemical-usage', TreeAgrochemicalUsageLivewire::class)->name('agrochemical-usage'),
         ]);
     });
 
