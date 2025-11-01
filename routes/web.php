@@ -2,6 +2,7 @@
 
 // use App\Http\Controllers\ProfileController;
 
+use App\Livewire\Module\AgrochemicalManagement\AgrochemicalApplicationRecordLivewire;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Module\DashboardLivewire;
 use App\Livewire\Module\TreeManagement\TreeIndexLivewire;
@@ -63,6 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::group(['prefix' => 'details/{agrochemical:id}'], fn() => [
             Route::get('overview', AgrochemicalOverviewLivewire::class)->name('show'),
             Route::get('purchase-history', AgrochemicalPurchaseHistoryLivewire::class)->name('purchase-history'),
+            Route::get('application-record', AgrochemicalApplicationRecordLivewire::class)->name('application-record'),
         ]);
     });
 

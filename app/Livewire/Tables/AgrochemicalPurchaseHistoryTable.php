@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
-class PurchaseHistoryTable extends DataTableComponent
+class AgrochemicalPurchaseHistoryTable extends DataTableComponent
 {
     public ?Agrochemical $agrochemical = null;
     

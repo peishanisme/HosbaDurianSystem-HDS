@@ -10,7 +10,7 @@ use Livewire\Attributes\Title;
 use App\Models\AgrochemicalStockMovement;
 use App\Traits\AuthorizesRoleOrPermission;
 
-#[Title('Agrochemical Management')]
+#[Title('Agrochemical Purchase History')]
 class AgrochemicalPurchaseHistoryLivewire extends Component
 {    
     use SweetAlert, AuthorizesRoleOrPermission;

@@ -18,7 +18,11 @@
                     'tree.disease.index',
                     'tree.species.index',
                     'tree.trees.index',
-                    'tree.trees.show',
+                    'tree.show',
+                    'tree.growth-log',
+                    'tree.algochemical-usage',
+                    'tree.harvest-record',
+                    'tree.health-record',
                 ]),
             ])>
             <x-layouts.sidebar.menu-sub-accordion title="Species Listing" route="tree.species.index" />

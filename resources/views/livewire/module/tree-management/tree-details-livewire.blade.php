@@ -1,3 +1,3 @@
 <div id="kt_app_content_container" class="container-fluid">
-    <livewire:components.tree-details-header :tree="$tree" />
+    <livewire:components.headers.tree-details-header :tree="$tree" />
 </div>

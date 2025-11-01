@@ -1,5 +1,5 @@
 <div id="kt_app_content_container" class="container-fluid">
-    <livewire:components.buyer-header-livewire :buyer="$buyer" />
+    <livewire:components.headers.buyer-header-livewire :buyer="$buyer" />
 
     <div class="card mb-5 mb-xl-10" id="kt_profile_details_view">
         <div class="card-header cursor-pointer">

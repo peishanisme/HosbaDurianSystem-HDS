@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Components;
+namespace App\Livewire\Components\Headers;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -14,6 +14,6 @@ class AgrochemicalDetailsHeader extends Component
     #[On('refresh-header')] 
     public function render()
     {
-        return view('livewire.components.agrochemical-details-header');
+        return view('livewire.components.headers.agrochemical-details-header');
     }
 }
