@@ -23,4 +23,21 @@ class BlockchainService
         Log::error('Blockchain sync failed', ['response' => $response->body()]);
         return ['success' => false];
     }
+
+    public function createFruitHarvest(array $payload): array
+    {
+        $url = rtrim(config('services.blockchain.base_url'), '/') . '/add-fruit-harvest';
+
+        $response = Http::post($url, $payload);
+
+        if ($response->successful()) {
+            return [
+                'success' => true,
+                'txHash' => $response['txHash'],
+            ];
+        }
+
+        Log::error('Blockchain sync failed', ['response' => $response->body()]);
+        return ['success' => false];
+    }
 }
