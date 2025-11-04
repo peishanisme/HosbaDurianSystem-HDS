@@ -7,10 +7,11 @@ use App\Services\PinataService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\DataTransferObject\FruitDTO;
+use App\Services\BlockchainService;
 
 class CreateFruitAction
 {
-    public function __construct(protected PinataService $pinataService) {}
+    public function __construct(protected PinataService $pinataService, protected BlockchainService $blockchainService) {}
 
     public function handle(FruitDTO $dto): Fruit
     {
@@ -65,6 +66,44 @@ class CreateFruitAction
                 'metadata_hash' => $metadataHash,
             ])->save();
         });
+
+        // 4) Push to blockchain (outside DB transaction)
+        try {
+            $payload = [
+                'fruitId' => $fruit->fruit_tag,
+                'metadataHash' => '0x' . $metadataHash, 
+            ];
+
+            $blockchainResult = $this->blockchainService->createFruit($payload);
+
+            if ($blockchainResult['success']) {
+                $txHash = $blockchainResult['txHash'];
+
+                // Update DB with blockchain info
+                DB::transaction(function () use ($fruit, $txHash) {
+                    $fruit->forceFill([
+                        'tx_hash' => $txHash,
+                        'is_onchain' => true,
+                        'onchain_at' => now(),
+                    ])->save();
+                });
+
+                Log::info('Fruit synced to blockchain', [
+                    'fruit_id' => $fruit->id,
+                    'txHash' => $blockchainResult['txHash'],
+                ]);
+            } else {
+                Log::warning('Blockchain sync failed for fruit', [
+                    'fruit_id' => $fruit->id,
+                    'payload' => $payload,
+                ]);
+            }
+        } catch (\Throwable $e) {
+            Log::error('Blockchain push exception', [
+                'error' => $e->getMessage(),
+                'fruit_id' => $fruit->id,
+            ]);
+        }
 
         return $fruit->fresh();
     }

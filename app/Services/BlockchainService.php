@@ -24,9 +24,9 @@ class BlockchainService
         return ['success' => false];
     }
 
-    public function createFruitHarvest(array $payload): array
+    public function createFruit(array $payload): array
     {
-        $url = rtrim(config('services.blockchain.base_url'), '/') . '/add-fruit-harvest';
+        $url = rtrim(config('services.blockchain.base_url'), '/') . '/add-fruit';
 
         $response = Http::post($url, $payload);
 
