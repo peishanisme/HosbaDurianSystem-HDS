@@ -24,22 +24,22 @@ class CreateTransactionAction
             $transaction = Transaction::create($validatedData);
 
             // Step 2: Call the blockchain
-            $payload = [
-                'transactionId' => $transaction->reference_id,
-                'buyerId' => $transaction->buyer->reference_id,
-                'totalPrice' => $transaction->total_price,
-            ];
+            // $payload = [
+            //     'transactionId' => $transaction->reference_id,
+            //     'buyerId' => $transaction->buyer->reference_id,
+            //     'totalPrice' => $transaction->total_price,
+            // ];
 
-            $response = $this->blockchain->createSale($payload);
+            // $response = $this->blockchain->createSale($payload);
 
-            // Step 3: Update transaction with tx hash
-            if ($response['success']) {
-                $transaction->update([
-                    'blockchain_tx_hash' => $response['txHash'],
-                    'blockchain_status' => 'confirmed',
-                    'synced_at' => Carbon::now(),
-                ]);
-            }
+            // // Step 3: Update transaction with tx hash
+            // if ($response['success']) {
+            //     $transaction->update([
+            //         'blockchain_tx_hash' => $response['txHash'],
+            //         'blockchain_status' => 'confirmed',
+            //         'synced_at' => Carbon::now(),
+            //     ]);
+            // }
 
             return $transaction;
         });
