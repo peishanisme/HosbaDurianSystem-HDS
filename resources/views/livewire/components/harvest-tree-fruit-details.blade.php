@@ -32,7 +32,7 @@
                     @forelse ($trees as $tree)
                         <!-- Main Tree Row -->
                         <tr wire:key="tree-{{ $tree->uuid }}">
-                            <td class="align-middle">
+                            <td class="align-middle py-5">
                                 <button data-tree-toggle data-uuid="{{ $tree->uuid }}"
                                     class="btn btn-link p-0 d-inline-flex align-items-center ms-5" type="button">
                                     <span class="me-2 d-inline-block transition-transform duration-200"
@@ -46,11 +46,11 @@
                                 </a>
                             </td>
 
-                            <td class="align-middle">{{ $tree->species->name ?? '-' }}</td>
-                            <td class="align-middle">
+                            <td class="align-middle py-5">{{ $tree->species->name ?? '-' }}</td>
+                            <td class="align-middle py-5">
                                 {{ $tree->planted_at ? \Carbon\Carbon::parse($tree->planted_at)->format('d M Y') : '-' }}
                             </td>
-                            <td class="align-middle">{{ $tree->fruitCountInHarvest($harvestEvent->uuid) }}</td>
+                            <td class="align-middle py-5">{{ $tree->fruitCountInHarvest($harvestEvent->uuid) }}</td>
                         </tr>
 
                         <!-- Expanded Fruit Details -->
@@ -207,5 +207,6 @@
             padding: 1rem;
             background-color: #f9f9f9;
         }
+
     </style>
 @endpush

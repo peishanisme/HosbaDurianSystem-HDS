@@ -18,6 +18,7 @@ class CreateTransactionLivewire extends Component
     public array $buyerOptions = [];
     public TransactionForm $form;
     public $scannedFruits = [];
+    public $decodedText;
 
     public function mount()
     {
@@ -49,22 +50,38 @@ class CreateTransactionLivewire extends Component
         );
     }
 
-    public function addScannedFruit($fruitTag)
+    #[On('scan-fruit')]
+    public function addScannedFruit()
     {
-        $fruit = Fruit::where('tag', $fruitTag)->first();
+        $fruit = Fruit::where('uuid', $this->decodedText)->first();
 
         if (!$fruit) {
-            $this->dispatchBrowserEvent('notify', ['message' => 'Fruit not found']);
+            $this->dispatch('notify', message: 'Fruit not found.');
+            return;
+        }
+
+        // Avoid duplicates
+        if (collect($this->scannedFruits)->pluck('tag')->contains($fruit->fruit_tag)) {
+            $this->dispatch('notify', message: 'This fruit is already scanned.');
             return;
         }
 
         $this->scannedFruits[] = [
-            'tag' => $fruit->tag,
-            'species' => $fruit->species,
+            'uuid' => $fruit->uuid,
+            'tag' => $fruit->fruit_tag,
+            'species' => $fruit->tree->species->name,
             'grade' => $fruit->grade,
             'weight' => $fruit->weight,
-            'price_per_kg' => null,
         ];
+
+        $this->dispatch('refreshTable', scannedFruits: $this->scannedFruits);
+    }
+
+    #[On('removeFruit')]
+    public function removeScannedFruit($uuid)
+    {
+        $this->scannedFruits = array_filter($this->scannedFruits, fn($f) => $f['uuid'] !== $uuid);
+        $this->dispatch('refreshTable', scannedFruits: $this->scannedFruits);
     }
 
     public function calculateTotal()
@@ -81,18 +98,6 @@ class CreateTransactionLivewire extends Component
         $this->dispatchBrowserEvent('notify', ['message' => 'Transaction recorded successfully']);
     }
 
-    public function startScanner()
-    {
-        $this->dispatch('startScanner');
-    }
-
-    #[On('qrScanned')]
-    public function handleQrScanned($data)
-    {
-        $code = $data['code'];
-        dd($code);
-        $this->addScannedFruit($code);
-    }
 
     public function render()
     {
