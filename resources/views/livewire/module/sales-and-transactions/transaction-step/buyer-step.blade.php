@@ -8,7 +8,13 @@
             <!--begin::Stepper-->
             <div class="stepper stepper-pills" wire>
                 {{-- Stepper header --}}
-                <x-stepper :label1="'Buyer details'" :label2="'Scan fruit'" :label3="'Transaction details'" :label4="'Review'" :activeStep="$activeStep" />
+                <x-stepper 
+                    :label1="'Buyer details'" 
+                    :label2="'Scan fruit'" 
+                    :label3="'Transaction details'" 
+                    :label4="'Review'"
+                    :activeStep="$activeStep"
+                />
 
                 <!--begin::Form-->
                 <form class="form px-lg-10 mx-auto" novalidate="novalidate">
@@ -43,10 +49,8 @@
                                             <h5 class="card-title mb-0">Scan Fruit QR Code</h5>
 
                                             <div wire:ignore>
-                                                <small class="text-muted">Scan <strong>Fruit QR code</strong>
-                                                    Here</small>
-                                                <div id="reader" class="mb-4" style="width:100%;max-width:600px;">
-                                                </div>
+                                                <small class="text-muted">Scan <strong>Fruit QR code</strong> Here</small>
+                                                <div id="reader" class="mb-4" style="width:100%;max-width:600px;"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -63,54 +67,23 @@
                         @if ($activeStep === 3)
                             <div class="flex-column">
                                 <livewire:components.transaction-fruit-summary-table :scannedFruits="$scannedFruits" />
-                                <div class="mt-2">
-                                    <x-input-error :messages="$errors->get('summaryPrices')" />
-                                </div>
                             </div>
                         @endif
 
                         <!-- Step 4 -->
                         @if ($activeStep === 4)
                             <div class="flex-column">
-                                <div class="card p-5 mb-10 shadow-sm">
-                                    <h5 class="mb-3">Transaction Summary</h5>
-
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span>Subtotal</span>
-                                        <span>RM {{ number_format($form->subtotal, 2) }}</span>
-                                    </div>
-
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span>Discount</span>
-                                        <span>- RM {{ number_format($form->discount, 2) }}</span>
-                                    </div>
-
-                                    <hr>
-
-                                    <div class="d-flex justify-content-between fw-bold text-success fs-5">
-                                        <span>Final Amount</span>
-                                        <span>RM {{ number_format($form->total_price, 2) }}</span>
-                                    </div>
-                                </div>
-
-                                <!-- Payment Method -->
-                                <div class="fv-row mb-10">
-                                    <x-input-label for="payment_method"  class="mb-2 required" :value="__('Payment Method')" />
-                                    <x-input-select id="payment_method" placeholder="Select Payment Method"
-                                        wire:model="form.payment_method" :options="[
-                                            'cash' => 'Cash',
-                                            'credit_card' => 'Credit Card',
-                                            'bank_transfer' => 'Bank Transfer',
-                                            'e_wallet' => 'E-Wallet',
-                                        ]" />
-                                    <x-input-error :messages="$errors->get('form.payment_method')" />
+                                <div class="mt-4">
+                                    <p>Subtotal: RM {{ number_format($subtotal, 2) }}</p>
+                                    <p>Discount: RM {{ number_format($discount, 2) }}</p>
+                                    <p class="fw-bold text-success">Final Amount: RM {{ number_format($finalAmount, 2) }}</p>
                                 </div>
 
                                 <div class="fv-row mb-10">
-                                    <x-input-label for="remark" class="mb-2" :value="__('Remark')" />
-                                    <x-input-textarea id="remark" placeholder="Remark"
-                                        wire:model="form.remark"></x-input-textarea>
-                                    <x-input-error :messages="$errors->get('form.remark')" />
+                                    <x-input-label for="remarks" class="mb-2" :value="__('Remarks')" />
+                                    <x-input-textarea id="remarks" placeholder="Remarks"
+                                        wire:model="form.remarks"></x-input-textarea>
+                                    <x-input-error :messages="$errors->get('form.remarks')" />
                                 </div>
                             </div>
                         @endif
@@ -133,12 +106,10 @@
                                     Continue
                                 </button>
                             @else
-                                <button type="button" class="btn btn-primary" wire:click="create"
-                                    wire:loading.attr="disabled">
+                                <button type="button" class="btn btn-primary" wire:click="submitForm" wire:loading.attr="disabled">
                                     <span class="indicator-label">Submit</span>
                                     <span class="indicator-progress">
-                                        Please wait... <span
-                                            class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                        Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                     </span>
                                 </button>
                             @endif
@@ -156,46 +127,23 @@
 @push('scripts')
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script>
-        document.addEventListener("livewire:load", () => {
-            let html5QrcodeScanner;
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log(`Code Matched = ${decodedText}`, decodedResult);
+            @this.set('decodedText', decodedText);
+            Livewire.dispatch('scan-fruit');
+        }
 
-            function onScanSuccess(decodedText, decodedResult) {
-                console.log(`Code Matched = ${decodedText}`, decodedResult);
-                Livewire.dispatch('scan-fruit', {
-                    decodedText
-                });
-            }
+        function onScanFailure(error) {
+            console.warn(`Code Scan Error = ${error}`);
+        }
 
-            function onScanFailure(error) {
-                console.warn(`Code Scan Error = ${error}`);
-            }
-
-            Livewire.on('init-qr-scanner', () => {
-                // Wait a bit to ensure #reader exists in DOM
-                setTimeout(() => {
-                    const readerElem = document.getElementById("reader");
-                    if (!readerElem) {
-                        console.error("QR Reader element not found.");
-                        return;
-                    }
-
-                    // Clear old scanner if exists
-                    if (html5QrcodeScanner) {
-                        html5QrcodeScanner.clear().catch(err => console.warn(err));
-                        html5QrcodeScanner = null;
-                    }
-
-                    html5QrcodeScanner = new Html5QrcodeScanner("reader", {
-                        fps: 10,
-                        qrbox: {
-                            width: 250,
-                            height: 250
-                        }
-                    }, false);
-
-                    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-                }, 300);
-            });
-        });
+        let html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader", {
+                fps: 10,
+                qrbox: { width: 250, height: 250 },
+            },
+            false
+        );
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
     </script>
 @endpush

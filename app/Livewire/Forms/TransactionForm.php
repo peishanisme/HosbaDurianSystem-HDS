@@ -8,22 +8,20 @@ use Livewire\Form;
 
 class TransactionForm extends Form
 {
-    public ?string $date,$buyer_uuid;
-    public ?float $total_price;
+    public ?string $date, $buyer_uuid, $payment_method, $remark;
+    public ?float $total_price, $discount = 0, $subtotal = 0;
 
-    protected function rules(): array
-    {
-        return [
-            'date' => ['required', 'date', 'before_or_equal:today'],
-            'total_price' => ['required', 'numeric', 'min:0'],
-            'buyer_uuid' => ['required', 'exists:buyers,uuid'],
-        ];
-    }
+    // protected function rules(): array
+    // {
+    //     return [
+    //         'date' => ['required', 'date', 'before_or_equal:today'],
+    //         'total_price' => ['required', 'numeric', 'min:0'],
+    //         'buyer_uuid' => ['required', 'exists:buyers,uuid'],
+    //     ];
+    // }
 
     public function create(array $validatedData): void
     {
         app(CreateTransactionAction::class)->handle($validatedData);
     }
-
-    
 }

@@ -11,7 +11,6 @@ use Carbon\Carbon;
 class CreateTransactionAction
 {
     protected BlockchainService $blockchain;
-    
 
     public function __construct(BlockchainService $blockchain)
     {

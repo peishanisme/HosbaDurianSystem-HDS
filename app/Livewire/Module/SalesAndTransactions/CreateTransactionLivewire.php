@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Traits\SweetAlert;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
+use Illuminate\Support\Facades\Log;
 use App\Livewire\Forms\TransactionForm;
 
 #[Title('Sales & Transactions')]
@@ -19,26 +20,51 @@ class CreateTransactionLivewire extends Component
     public TransactionForm $form;
     public $scannedFruits = [];
     public $decodedText;
+    public $summary = [];
+    public ?float $subtotal = 0, $discount = 0, $finalAmount = 0;
+    public int $activeStep = 1;
 
     public function mount()
     {
         $this->buyerOptions = Buyer::all()->mapWithKeys(function ($buyer) {
             return [$buyer->uuid => $buyer->company_name];
         })->toArray();
-    }
 
-    public function create()
-    {
-        $validatedData = $this->form->validate();
+        $this->scannedFruits = [
+            [
+                'uuid' => '53b6698b-8a54-40db-b158-5c706e5ef0ec',
+                'tag' => 'FR000002',
+                'species' => 'Musang King',
+                'grade' => 'B',
+                'weight' => 1.4,
+            ],
 
-        try {
+            [
+                'uuid' => '9c91a879-0136-419a-8bb9-1fad14876e51',
+                'tag' => 'FR000005',
+                'species' => 'D24',
+                'grade' => 'A',
+                'weight' => 1.2,
+            ],
 
-            $this->form->create($validatedData);
-            $this->alertSuccess('Transaction has been created successfully.');
-        } catch (Exception $error) {
+            [
+                'uuid' => '6e394393-c8d3-4c1f-b2cb-880e93022226',
+                'tag' => 'FR000010',
+                'species' => 'Musang King',
+                'grade' => 'C',
+                'weight' => 1.5,
+            ],
 
-            $this->alertError($error->getMessage());
-        }
+            [
+                'uuid' => '076dafb0-6913-417c-8223-91306d0f5896',
+                'tag' => 'FR000003',
+                'species' => 'Musang King',
+                'grade' => 'B',
+                'weight' => 1.5,
+            ],
+
+        ];
+        $this->dispatch('refreshSummary', scannedFruits: $this->scannedFruits);
     }
 
     #[On('redirect-to-index')]
@@ -84,20 +110,74 @@ class CreateTransactionLivewire extends Component
         $this->dispatch('refreshTable', scannedFruits: $this->scannedFruits);
     }
 
-    public function calculateTotal()
+    #[On('updateTotals')]
+    public function updateTotals($subtotal, $finalAmount, $discount)
     {
-        return collect($this->scannedFruits)->sum(function ($fruit) {
-            return ($fruit['weight'] ?? 0) * ($fruit['price_per_kg'] ?? 0);
-        });
+        $this->form->subtotal = $subtotal;
+        $this->form->total_price = $finalAmount;
+        $this->form->discount = $discount;
     }
 
-    public function confirmTransaction()
+    #[On('updateSummary')]
+    public function updateSummary($summary)
     {
-        // Save to transactions table
-        // ...
-        $this->dispatchBrowserEvent('notify', ['message' => 'Transaction recorded successfully']);
+        $this->summary = $summary;
+        Log::info('Updated summary received', ['summary' => $this->summary]);
     }
 
+    public function nextStep()
+    {
+        if ($this->activeStep === 1) {
+            $this->validate([
+                'form.date' => ['required', 'date', 'before_or_equal:today'],
+                'form.buyer_uuid' => ['required', 'uuid', 'exists:buyers,uuid'],
+            ]);
+        }
+
+        if ($this->activeStep === 3) {
+            $hasMissingPrice = collect($this->summary)
+                ->some(fn($item) => empty($item['price_per_kg']) || $item['price_per_kg'] <= 0);
+
+            if ($hasMissingPrice) {
+                $this->addError('summaryPrices', 'Please fill in all prices before proceeding to Step 4.');
+                return;
+            }
+        }
+
+        // Increment step safely
+        if ($this->activeStep < 4) {
+            $this->activeStep++;
+
+            // STEP 2 → Initialize QR scanner
+            if ($this->activeStep === 2) {
+                $this->dispatch('init-qr-scanner');
+            }
+        }
+    }
+
+    public function previousStep()
+    {
+        if ($this->activeStep > 1) {
+            $this->activeStep--;
+        }
+    }
+
+    public function create()
+    {
+        //validate on payment_method
+        $this->validate([
+            'form.payment_method' => ['required', 'string'],
+            'form.remark' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        try {
+            $this->form->create($this->form->toArray());
+            $this->alertSuccess('Transaction has been created successfully.');
+        } catch (Exception $error) {
+
+            $this->alertError($error->getMessage());
+        }
+    }
 
     public function render()
     {

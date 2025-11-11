@@ -151,4 +151,5 @@
     });
 </script>
 
+@livewireScripts
 @stack('scripts')

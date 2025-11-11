@@ -1,4 +1,4 @@
-<div class="stepper-nav d-flex justify-content-between flex-wrap mb-15">
+{{-- <div class="stepper-nav d-flex justify-content-between flex-wrap mb-15" wire:ignore>
     <!--begin::Step 1-->
     <div class="stepper-item mx-8 my-4 current" data-kt-stepper-element="nav" data-kt-stepper-action="step">
         <!--begin::Wrapper-->
@@ -143,4 +143,88 @@
             stepper.goPrevious(); // go previous step
         });
     </script>
+@endpush --}}
+
+@props([
+    'label1' => 'Step 1',
+    'label2' => 'Step 2',
+    'label3' => 'Step 3',
+    'label4' => 'Step 4',
+    'activeStep' => 1,
+])
+
+<div class="stepper-nav d-flex justify-content-between mb-10">
+    <div class="stepper-item {{ $activeStep >= 1 ? 'current' : '' }}">
+        <div class="stepper-number {{ $activeStep === 1 ? 'bg-primary text-white' : 'bg-light text-muted' }} mx-3">
+            1
+        </div>
+        <div class="stepper-label fw-semibold mt-2">
+            {{ $label1 }}
+        </div>
+    </div>
+
+    <div class="stepper-item {{ $activeStep >= 2 ? 'current' : '' }} ">
+        <div class="stepper-number {{ $activeStep === 2 ? 'bg-primary text-white' : 'bg-light text-muted' }} mx-3">
+            2
+        </div>
+        <div class="stepper-label fw-semibold mt-2">
+            {{ $label2 }}
+        </div>
+    </div>
+
+    <div class="stepper-item {{ $activeStep >= 3 ? 'current' : '' }}">
+        <div class="stepper-number {{ $activeStep === 3 ? 'bg-primary text-white' : 'bg-light text-muted' }} mx-3">
+            3
+        </div>
+        <div class="stepper-label fw-semibold mt-2">
+            {{ $label3 }}
+        </div>
+    </div>
+
+    <div class="stepper-item {{ $activeStep >= 4 ? 'current' : '' }}">
+        <div class="stepper-number {{ $activeStep === 4 ? 'bg-primary text-white' : 'bg-light text-muted' }} mx-3">
+            4
+        </div>
+        <div class="stepper-label fw-semibold mt-2">
+            {{ $label4 }}
+        </div>
+    </div>
+</div>
+
+@push('styles')
+    <style>
+        .stepper-item {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .stepper-number {
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            border-radius: 50%;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .stepper-item::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background-color: #e9ecef;
+            z-index: -1;
+        }
+
+        .stepper-item:last-child::after {
+            display: none;
+        }
+
+        .stepper-item.current::after {
+            background-color: #0d6efd;
+        }
+    </style>
 @endpush

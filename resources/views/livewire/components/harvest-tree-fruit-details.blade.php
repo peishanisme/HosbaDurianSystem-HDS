@@ -68,6 +68,7 @@
                                                         <th>Weight (kg)</th>
                                                         <th>Grade</th>
                                                         <th>Harvested Date</th>
+                                                        <th>Sell Status</th>
                                                         <th>QR Code</th>
                                                     </tr>
                                                 </thead>
@@ -97,6 +98,20 @@
                                                             </td>
                                                             <td class="small">
                                                                 {{ $fruit->harvested_at ? \Carbon\Carbon::parse($fruit->harvested_at)->format('d M Y') : '-' }}
+                                                            </td>
+                                                            <td class="small">
+                                                                @php
+                                                                    $status = $fruit->transaction_uuid ? 'Sold' : 'Available';
+                                                                    $gradeClassMap = [
+                                                                        'Available' => 'badge bg-success-subtle text-success',
+                                                                        'Sold' => 'badge bg-danger-subtle text-danger',
+                                                                    ];
+                                                                    $badgeClass =
+                                                                        $gradeClassMap[$status] ??
+                                                                        'badge bg-secondary-subtle text-secondary';
+                                                                @endphp
+                                                                <span
+                                                                    class="{{ $badgeClass }}">{{ $status ?: '-' }}</span>
                                                             </td>
                                                             <td class="small">
                                                                 <button wire:click="showQrCode('{{ $fruit->uuid }}')"
