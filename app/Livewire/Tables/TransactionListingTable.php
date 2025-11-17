@@ -60,6 +60,17 @@ class TransactionListingTable extends DataTableComponent
                 ->sortable(),
             Column::make("Created at", "created_at")
                 ->sortable(),
+            Column::make('Actions')
+                ->label(fn($row, Column $column) => view('components.table-button', [
+                    'modal'     => 'transactionDetailsModalLivewire',
+                    'icon'      => 'bi-eye',
+                    'dispatch'  => 'view-transaction',
+                    'label'     => 'View',
+                    'dataField' => 'transaction',
+                    'data'      =>  $row->id,
+                    // 'permission' => 'view-disease',
+                ]))->html()
+                ->excludeFromColumnSelect(),
         ];
     }
 }

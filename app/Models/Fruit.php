@@ -24,6 +24,13 @@ class Fruit extends Model
         'transaction_uuid',
         'is_spoiled',
         'fruit_tag',
+        'metadata_cid',
+        'metadata_hash',
+        'tx_hash',
+        'onchain_at',
+        'is_onchain',
+        'metadata_version',
+        'price_per_kg',
     ];
 
     protected static function booted()

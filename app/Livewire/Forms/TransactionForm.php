@@ -20,8 +20,8 @@ class TransactionForm extends Form
     //     ];
     // }
 
-    public function create(array $validatedData): void
+    public function create(array $validatedData, array $scannedFruits, array $summary): void
     {
-        app(CreateTransactionAction::class)->handle($validatedData);
+        app(CreateTransactionAction::class)->handle($validatedData, $scannedFruits, $summary);
     }
 }

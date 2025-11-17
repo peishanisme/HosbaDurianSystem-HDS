@@ -20,6 +20,9 @@ class Transaction extends Model
         'blockchain_status',
         'synced_at',
         'reference_id',
+        'payment_method',
+        'remark',
+        'price_per_kg',
     ];
 
     // protected $casts = [

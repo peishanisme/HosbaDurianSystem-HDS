@@ -30,40 +30,58 @@ class CreateTransactionLivewire extends Component
             return [$buyer->uuid => $buyer->company_name];
         })->toArray();
 
-        $this->scannedFruits = [
-            [
-                'uuid' => '53b6698b-8a54-40db-b158-5c706e5ef0ec',
-                'tag' => 'FR000002',
-                'species' => 'Musang King',
-                'grade' => 'B',
-                'weight' => 1.4,
-            ],
+        // fruits uuid and create an array of scanned fruits
+        $fruitUuids = ['c218f235-624e-41fb-8f81-0909d97dd369','9dc3964a-5b54-48c5-ba85-9ef084d03eff','bd860a5c-eb8f-4b21-b9cd-00f6db664a1f','4f5f12f8-78e3-4f79-a100-bca918ca61ec'];
+        //initialize scanned fruits with data for the fruits with uuids above
+        $this->scannedFruits = [];
+        foreach ($fruitUuids as $uuid) {
+            $fruit = Fruit::where('uuid', $uuid)->first();
+            if ($fruit) {
+                $this->scannedFruits[] = [
+                    'uuid' => $fruit->uuid,
+                    'tag' => $fruit->fruit_tag,
+                    'species' => $fruit->tree->species->name,
+                    'grade' => $fruit->grade,
+                    'weight' => $fruit->weight,
+                ];
+            }
+        }
 
-            [
-                'uuid' => '9c91a879-0136-419a-8bb9-1fad14876e51',
-                'tag' => 'FR000005',
-                'species' => 'D24',
-                'grade' => 'A',
-                'weight' => 1.2,
-            ],
+        // $this->scannedFruits = [
+        //     [
+        //         'uuid' => '21b265b8-5214-4795-a128-62b7f0cd61fa',
+        //         'tag' => 'FR000006',
+        //         'species' => 'Musang King',
+        //         'grade' => 'B',
+        //         'weight' => 1.4,
+        //     ],
 
-            [
-                'uuid' => '6e394393-c8d3-4c1f-b2cb-880e93022226',
-                'tag' => 'FR000010',
-                'species' => 'Musang King',
-                'grade' => 'C',
-                'weight' => 1.5,
-            ],
+        //     [
+        //         'uuid' => '9c91a879-0136-419a-8bb9-1fad14876e51',
+        //         'tag' => 'FR000005',
+        //         'species' => 'D24',
+        //         'grade' => 'A',
+        //         'weight' => 1.2,
+        //     ],
 
-            [
-                'uuid' => '076dafb0-6913-417c-8223-91306d0f5896',
-                'tag' => 'FR000003',
-                'species' => 'Musang King',
-                'grade' => 'B',
-                'weight' => 1.5,
-            ],
+        //     [
+        //         'uuid' => '6e394393-c8d3-4c1f-b2cb-880e93022226',
+        //         'tag' => 'FR000010',
+        //         'species' => 'Musang King',
+        //         'grade' => 'C',
+        //         'weight' => 1.5,
+        //     ],
 
-        ];
+        //     [
+        //         'uuid' => '076dafb0-6913-417c-8223-91306d0f5896',
+        //         'tag' => 'FR000003',
+        //         'species' => 'Musang King',
+        //         'grade' => 'B',
+        //         'weight' => 1.5,
+        //     ],
+
+        // ];
+
         $this->dispatch('refreshSummary', scannedFruits: $this->scannedFruits);
     }
 
@@ -164,14 +182,14 @@ class CreateTransactionLivewire extends Component
 
     public function create()
     {
-        //validate on payment_method
+        //validate on payment_method and remark
         $this->validate([
             'form.payment_method' => ['required', 'string'],
             'form.remark' => ['nullable', 'string', 'max:500'],
         ]);
 
         try {
-            $this->form->create($this->form->toArray());
+            $this->form->create($this->form->toArray(),$this->scannedFruits, $this->summary);
             $this->alertSuccess('Transaction has been created successfully.');
         } catch (Exception $error) {
 

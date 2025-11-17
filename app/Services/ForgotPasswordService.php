@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Log;
 use Exception;
 use Carbon\Carbon;
 use App\Models\User;
@@ -44,6 +45,7 @@ class ForgotPasswordService
         $url = "https://api.callmebot.com/whatsapp.php?phone={$phone}&text={$message}&apikey={$api_key}";
 
         $response = Http::get($url);
+        Log::info('WhatsApp OTP response', ['response' => $response->body()]);
 
         if (!$response->successful()) {
             throw new Exception('Failed to send OTP. Please try again later.');
