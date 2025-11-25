@@ -73,6 +73,7 @@ Route::middleware('auth:sanctum')->delete('/agrochemicals/{uuid}', [Agrochemical
 
 // Tree Growth Log Controller
 Route::middleware('auth:sanctum')->post('/tree-growth-logs', [TreeGrowthLogController::class, 'store']);
+Route::middleware('auth:sanctum')->get('/tree-growth-logs', [TreeGrowthLogController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/tree-growth-logs/{uuid}', [TreeGrowthLogController::class, 'getByTreeUuid']);
 
 // // Buyer Controller

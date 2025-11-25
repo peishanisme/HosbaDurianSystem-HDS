@@ -41,4 +41,14 @@ class TreeGrowthLogController extends Controller
             'data'    => $growthLogs,
         ], 200);
     }
+
+    public function index()
+    {
+        $growthLogs = TreeGrowthLog::all();
+
+        return response()->json([
+            'message' => 'All growth logs fetched successfully',
+            'data'    => $growthLogs,
+        ], 200);
+    }
 }
