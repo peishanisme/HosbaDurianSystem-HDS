@@ -96,7 +96,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/welcome', 'welcome')->name('welcome');
 });
 
-Route::get('/portal', PublicPortalLivewire::class)->name('public.portal');
+Route::get('/product-details/{fruit:uuid}', PublicPortalLivewire::class)->name('public.portal');
 
 
 require __DIR__ . '/auth.php';

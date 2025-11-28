@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -67,5 +68,10 @@ class Fruit extends Model
     public function harvestEvent(): BelongsTo
     {
         return $this->belongsTo(HarvestEvent::class, 'harvest_uuid', 'uuid');
+    }
+
+    public function feedbacks(): HasMany
+    {
+        return $this->hasMany(FruitFeedback::class, 'fruit_uuid', 'uuid');
     }
 }

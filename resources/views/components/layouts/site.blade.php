@@ -32,6 +32,7 @@
     <meta name="theme-color" content="#ffffff"> --}}
 
     <title>@yield('title', $title ?? 'Hosba Durian System')</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     @include('components.site.layouts.styles')
 </head>
 
@@ -44,8 +45,7 @@
         {{ $slot }}
     </main>
 
-    <footer  class="bg-primary/10 py-12"
-      style="border-top-left-radius: 50% 20%; border-top-right-radius: 50% 20%;">
+    <footer class="bg-primary/10 py-12" style="border-top-left-radius: 50% 20%; border-top-right-radius: 50% 20%;">
         @include('components.site.layouts.footer')
     </footer>
 

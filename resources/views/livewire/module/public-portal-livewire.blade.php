@@ -14,7 +14,7 @@
             </div>
             <h1
                 class="text-[clamp(2.5rem,6vw,4rem)] font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-4 relative z-10 ">
-                Fruit Species
+                {{ $fruit->tree->species->name }}
             </h1>
             <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-48 h-6 bg-accent/30 rounded-full -z-10"
                 style="clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);"></div>
@@ -47,7 +47,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-700">Fruit Tag</h3>
-                        <p class="text-gray-600">DRN-MYS-2023-12458</p>
+                        <p class="text-gray-600">{{ $fruit->fruit_tag }}</p>
                     </div>
                 </div>
                 <div class="flex items-start">
@@ -56,7 +56,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-700">Tree Tag</h3>
-                        <p class="text-gray-600">TREE-0087-MAL</p>
+                        <p class="text-gray-600">{{ $fruit->tree->tree_tag }}</p>
                     </div>
                 </div>
                 <div class="flex items-start">
@@ -65,7 +65,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-700">Harvest Date</h3>
-                        <p class="text-gray-600">August 15, 2023</p>
+                        <p class="text-gray-600">{{ $fruit->harvested_at }}</p>
                     </div>
                 </div>
                 <div class="flex items-start">
@@ -74,7 +74,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-700">Weight</h3>
-                        <p class="text-gray-600">2.8 kg</p>
+                        <p class="text-gray-600">{{ $fruit->weight }} kg</p>
                     </div>
                 </div>
                 <div class="flex items-start">
@@ -83,7 +83,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-700">Grade</h3>
-                        <p class="text-gray-600">AAA (Highest)</p>
+                        <p class="text-gray-600">{{ $fruit->grade }}</p>
                     </div>
                 </div>
                 <div class="flex items-start">
@@ -93,7 +93,7 @@
                     <div>
                         <h3 class="font-semibold text-gray-700">Blockchain Record ID</h3>
                         <p class="text-gray-600 truncate">
-                            0x7aF3bD2E9c5A8f1d4G6h7J8k9L0m1N2o3P4q5R6s7T8u9V0w
+                            {{ $fruit->tx_hash ?? '-' }}
                         </p>
                     </div>
                 </div>
@@ -134,18 +134,17 @@
                 <i class="fas fa-comment-dots mr-2 text-accent"> </i>
                 We Value Your Feedback
             </h2>
-            <form id="feedback-form">
+            <form id="feedback-form" wire:submit.prevent="submit">
                 <div class="mb-6">
                     <label class="block hunter-green font-medium mb-2" for="feedback">
                         Please share your experience with this purchase
                     </label>
-                    <textarea
+
+                    <textarea id="feedback" name="feedback" rows="5" wire:model.defer="feedback"
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none resize-none shadow-sm hover:shadow-md transition-shadow"
-                        id="feedback" name="feedback"
-                        placeholder="What do you think about the taste, aroma, and ripeness of the durian? Any suggestions are welcome..."
-                        rows="5">
-                </textarea>
+                        placeholder="What do you think about the taste, aroma, and ripeness of the durian? Any suggestions are welcome..."></textarea>
                 </div>
+
                 <div class="flex justify-end">
                     <button
                         class="bg-gradient-to-r from-accent to-goldLight text-dark font-medium py-3 px-6 rounded-xl transition-all duration-300 flex items-center shadow-md hover:shadow-lg hover:shadow-accent/30 transform hover:-translate-y-0.5"
@@ -158,9 +157,9 @@
         </div>
     </section>
 
-    <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden" id="feedback-modal">
-        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 transform transition-all duration-300 scale-95 opacity-0 shadow-xl"
-            id="modal-content">
+    <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden" id="feedback-modal" wire:ignore>
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 transform transition-all duration-900 scale-95 opacity-0 shadow-xl"
+            id="modal-content" wire:ignore>
             <div class="text-center">
                 <div class="bg-green-400 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-check text-white text-2xl"> </i>
@@ -174,6 +173,28 @@
                     class="bg-gradient-to-r from-accent to-goldLight hover:shadow-lg hover:shadow-accent/30 transform hover:-translate-y-0.5 hunter-green font-medium py-2 px-6 rounded-xl transition-colors"
                     id="close-modal">
                     OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ERROR MODAL -->
+    <div id="error-modal" wire:ignore class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 transform transition-all duration-300 scale-95 opacity-0 shadow-xl"
+            id="error-modal-content" wire:ignore>
+            <div class="text-center">
+                <div class="bg-red-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-times text-white text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-red-600 mb-2">Error</h3>
+
+                <p class="text-gray-600 mb-6" id="error-message">
+                    Something went wrong. Please try again.
+                </p>
+
+                <button class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-xl"
+                    id="close-error-modal">
+                    Close
                 </button>
             </div>
         </div>

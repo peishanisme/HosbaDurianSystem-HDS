@@ -48,7 +48,7 @@ class HarvestTreeFruitDetails extends Component
         $this->fruitUuid = $uuid;
 
         // Generate QR code as HTML string (make sure it's plain string)
-        $this->qrCode = (string) QrCode::size(200)->generate($uuid);
+        $this->qrCode = (string) QrCode::size(200)->generate( route('public.portal', $this->fruitUuid));
 
         // Dispatch browser event to open the modal
         $this->dispatch('show-qr-modal');
