@@ -70,6 +70,7 @@ Route::middleware('auth:sanctum')->get('/trees/{uuid}/agrochemicals', [Agrochemi
 Route::middleware('auth:sanctum')->get('/agrochemicals', [AgrochemicalController::class, 'index']);
 Route::middleware('auth:sanctum')->put('/agrochemicals/{uuid}', [AgrochemicalController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('/agrochemicals/{uuid}', [AgrochemicalController::class, 'destroy']);
+Route::middleware('auth:sanctum')->get('/agrochemical-records', [AgrochemicalController::class, 'getAllAgroRecords']);
 
 // Tree Growth Log Controller
 Route::middleware('auth:sanctum')->post('/tree-growth-logs', [TreeGrowthLogController::class, 'store']);

@@ -68,7 +68,6 @@ class HealthController extends Controller
     }
 }
 
-    // Fetch all diseases
     public function index() 
     {
         $records = HealthRecord::all();
