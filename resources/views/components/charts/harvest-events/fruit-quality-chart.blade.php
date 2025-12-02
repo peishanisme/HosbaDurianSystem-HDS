@@ -5,6 +5,15 @@
     <div class="card-body p-5" id="fruit-quality-chart"></div>
 </div>
 
+@push('styles')
+    <style>
+        #fruit-selling-chart {
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+@endpush
+
 @push('scripts')
     <script>
         am5.ready(function() {
@@ -24,7 +33,6 @@
 
             var chart = root.container.children.push(am5percent.PieChart.new(root, {
                 layout: root.verticalLayout,
-                innerRadius: am5.percent(50)
             }));
 
             var series = chart.series.push(am5percent.PieSeries.new(root, {

@@ -18,7 +18,7 @@
                     category: "",
                     from: 0,
                     to: unsold,
-                    name: "Unsold",
+                    name: "Unsold (" + selling.unsold + " pcs)",
                     columnSettings: {
                         fill: am5.color(0xffd100)
                     }
@@ -27,7 +27,7 @@
                     category: "",
                     from: unsold,
                     to: unsold + sold,
-                    name: "Sold",
+                    name: "Sold (" + selling.sold + " pcs)",
                     columnSettings: {
                         fill: am5.color(0x0ca948)
                     }

@@ -120,7 +120,11 @@ class HarvestEventOverviewLivewire extends Component
 
     public function loadHarvestSpeciesData()
     {
-        $speciesData = Fruit::select('species.name as species', DB::raw('COUNT(*) as total'))
+        $speciesData = Fruit::select(
+            'species.name as species',
+            DB::raw('COUNT(*) as total_pieces'),
+            DB::raw('SUM(fruits.weight) as total_weight')
+        )
             ->join('trees', 'fruits.tree_uuid', '=', 'trees.uuid')
             ->join('species', 'trees.species_id', '=', 'species.id')
             ->where('fruits.harvest_uuid', $this->harvestEvent->uuid)
@@ -129,7 +133,8 @@ class HarvestEventOverviewLivewire extends Component
             ->map(function ($item) {
                 return [
                     'species' => $item->species,
-                    'total' => $item->total,
+                    'total_pieces' => (int)$item->total_pieces,
+                    'total_weight' => (float)$item->total_weight,
                 ];
             });
 

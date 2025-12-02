@@ -82,16 +82,9 @@
 @push('styles')
     <style>
         #harvest-species-chart,
-        #fruit-quality-chart,
-        #top10-harvest-trees-chart,
-         {
+        #fruit-quality-chart {
             width: 100%;
             height: 500px;
-        }
-
-        #fruit-selling-chart {
-            width: 100%;
-            height: 100px;
         }
     </style>
 @endpush
