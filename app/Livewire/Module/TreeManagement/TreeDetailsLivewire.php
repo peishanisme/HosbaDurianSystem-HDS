@@ -50,12 +50,31 @@ class TreeDetailsLivewire extends Component
         return $diseaseCounts->toArray();
     }
 
+    public function loadTotalHarvestData()
+    {
+        $treeUuid = $this->tree->getAttribute('uuid');
+
+        $harvestCounts = $this->tree->fruits()
+            ->join('harvest_events', 'fruits.harvest_uuid', '=', 'harvest_events.uuid')
+            ->select('harvest_events.event_name')
+            ->selectRaw('COUNT(*) as total')
+            ->selectRaw('MAX(harvest_events.created_at) as last_created_at')
+            ->where('fruits.tree_uuid', $treeUuid)
+            ->groupBy('harvest_events.uuid', 'harvest_events.event_name')
+            ->orderBy('last_created_at', 'desc')
+            ->limit(6)
+            ->pluck('total', 'event_name');
+            
+        return $harvestCounts->toArray();
+    }
+
     public function render()
     {
         return view('livewire.module.tree-management.tree-details-livewire', [
             'growthLogData' => $this->loadGrowthLogData(),
             'harvestGradeData' => $this->loadHarvestGradeData(),
             'treeDiseaseData' => $this->loadTreeDiseaseData(),
+            'totalHarvestData' => $this->loadTotalHarvestData(),
         ]);
     }
 }

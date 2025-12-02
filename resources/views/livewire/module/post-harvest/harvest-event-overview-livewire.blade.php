@@ -1,7 +1,7 @@
 <div id="kt_app_content_container" class="container-fluid">
     <livewire:components.headers.harvest-event-header :harvestEvent="$harvestEvent" />
 
-    <div class="card mt-5">
+    {{-- <div class="card mt-5">
         <div class="card-body">
             <h5 class="mb-4 fw-bold">Harvest Details</h5>
 
@@ -67,6 +67,31 @@
                 @endif
             </form>
         </div>
-    </div>
+    </div> --}}
+
+    <x-charts.harvest-events.top5-harvest-trees-chart :top5HarvestTreesData="$top5HarvestTreesData" />
+
+    <x-charts.harvest-events.harvest-species-chart :harvestSpeciesData="$harvestSpeciesData" />
+
+    <x-charts.harvest-events.fruit-quality-chart :fruitQualityData="$fruitQualityData" />
+
+    <x-charts.harvest-events.durian-selling-chart :sellingStatusData="$sellingStatusData" />
 
 </div>
+
+@push('styles')
+    <style>
+        #harvest-species-chart,
+        #fruit-quality-chart,
+        #top10-harvest-trees-chart,
+         {
+            width: 100%;
+            height: 500px;
+        }
+
+        #fruit-selling-chart {
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+@endpush

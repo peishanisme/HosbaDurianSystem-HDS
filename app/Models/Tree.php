@@ -104,7 +104,6 @@ class Tree extends Model
             ->withTimestamps();
     }
 
-
     public function healthRecords(): HasMany
     {
         return $this->hasMany(HealthRecord::class, 'tree_uuid', 'uuid');
