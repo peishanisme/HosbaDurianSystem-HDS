@@ -98,5 +98,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::get('/product-details/{fruit:uuid}', PublicPortalLivewire::class)->name('public.portal');
 
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'zh', 'ms'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+});
+
+
 
 require __DIR__ . '/auth.php';

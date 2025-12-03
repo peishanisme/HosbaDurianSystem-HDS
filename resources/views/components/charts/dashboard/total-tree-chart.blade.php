@@ -1,31 +1,17 @@
 <div class="card pb-10">
     <div class="card-header">
-        <h3 class="card-title">Fruit Quality</h3>
+        <h3 class="card-title">Total Trees by Species</h3>
     </div>
-    <div class="card-body p-5" id="fruit-quality-chart"></div>
+    <div class="card-body p-5" id="total-tree-chart" style="width: 100%; height: 400px;"></div>
 </div>
-
-@push('styles')
-    <style>
-        #fruit-selling-chart {
-            width: 100%;
-            height: 100px;
-        }
-    </style>
-@endpush
 
 @push('scripts')
     <script>
         am5.ready(function() {
 
-            const fruitQualityData = @json($fruitQualityData);
+            const chartData = @json($totalTreeData);
 
-            const chartData = Object.entries(fruitQualityData).map(([, count]) => ({
-                category: ,
-                value: count
-            }));
-
-            var root = am5.Root.new("fruit-quality-chart");
+            var root = am5.Root.new("total-tree-chart");
 
             root.setThemes([
                 am5themes_Animated.new(root)
@@ -33,6 +19,8 @@
 
             var chart = root.container.children.push(am5percent.PieChart.new(root, {
                 layout: root.verticalLayout,
+                innerRadius: am5.percent(60)
+
             }));
 
             var series = chart.series.push(am5percent.PieSeries.new(root, {
@@ -40,7 +28,15 @@
                 categoryField: "category",
                 alignLabels: true,
                 legendLabelText: "{category}",
-                legendValueText: "{value} pc(s)"
+                legendValueText: "{value}"
+            }));
+
+            series.children.push(am5.Label.new(root, {
+                centerX: am5.percent(50),
+                centerY: am5.percent(50),
+                text: "Total Trees: {valueSum}",
+                populateText: true,
+                fontSize: "1.5em"
             }));
 
             series.labels.template.setAll({
@@ -49,6 +45,7 @@
                 centerY: 0
             });
 
+            // Set the data
             series.data.setAll(chartData);
 
             // Create legend
