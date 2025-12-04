@@ -8,11 +8,11 @@
             <!-- Sticky table header -->
             <thead class="sticky-top bg-white" style="z-index: 1;">
                 <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
-                    <th class="p-0 pb-3 min-w-105px text-start">Tree Tag</th>
-                    <th class="p-0 pb-3 min-w-170px text-end">Disease</th>
-                    <th class="p-0 pb-3 min-w-100px text-end">Status</th>
-                    <th class="p-0 pb-3 min-w-175px text-end pe-12">Last Checked</th>
-                    <th class="p-0 pb-3 w-50px text-end">VIEW</th>
+                    <th class="p-0 pb-3 min-w-105px text-start">{{ __('messages.tree_tags') }}</th>
+                    <th class="p-0 pb-3 min-w-170px text-end">{{ __('messages.disease') }}</th>
+                    <th class="p-0 pb-3 min-w-100px text-end">{{ __('messages.status') }}</th>
+                    <th class="p-0 pb-3 min-w-175px text-end pe-12">{{ __('messages.last_checked') }}</th>
+                    <th class="p-0 pb-3 w-50px text-end">{{ __('messages.view') }}</th>
                 </tr>
             </thead>
 
@@ -27,7 +27,7 @@
                             <span class="badge 
                                 {{ $item->status === 'Severe' ? 'badge-light-danger' : 
                                    ($item->status === 'Medium' ? 'badge-light-warning' : '') }}">
-                                {{ $item->status }}
+                                {{ __('messages.' . strtolower($item->status)) }}
                             </span>
                         </td>
 

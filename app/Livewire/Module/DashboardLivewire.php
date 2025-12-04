@@ -2,17 +2,14 @@
 
 namespace App\Livewire\Module;
 
-use Carbon\Carbon;
 use App\Models\Tree;
 use App\Models\Fruit;
 use Livewire\Component;
 use App\Models\Transaction;
 use App\Models\HealthRecord;
-use Livewire\Attributes\Title;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\WeatherController;
 
-#[Title('Dashboard')]
 class DashboardLivewire extends Component
 {
     public $weather;
@@ -105,11 +102,10 @@ class DashboardLivewire extends Component
         $topSelling = Fruit::select('species.name as species', DB::raw('COUNT(*) as total'))
             ->join('trees', 'fruits.tree_uuid', '=', 'trees.uuid')
             ->join('species', 'trees.species_id', '=', 'species.id')
-            ->whereNotNull('fruits.transaction_uuid')  
+            ->whereNotNull('fruits.transaction_uuid')
             ->groupBy('species.name')
             ->orderByDesc('total')
-            ->get()
-            ;
+            ->get();
 
         return $topSelling;
     }
@@ -125,6 +121,6 @@ class DashboardLivewire extends Component
                 'topSellingSpecies' => $this->loadTopSellingSpecies(),
                 'treeHealthRecords' => $this->getTreeHealthRecords(),
             ]
-        );
+        )->title(__('messages.dashboard'));
     }
 }

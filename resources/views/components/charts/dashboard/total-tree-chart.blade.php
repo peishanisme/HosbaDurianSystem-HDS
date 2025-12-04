@@ -1,6 +1,6 @@
 <div class="card pb-10">
     <div class="card-header">
-        <h3 class="card-title">Total Trees by Species</h3>
+        <h3 class="card-title">{{ __('messages.total_trees_by_species') }}</h3>
     </div>
     <div class="card-body p-5" id="total-tree-chart" style="width: 100%; height: 350px;"></div>
 </div>
@@ -34,9 +34,9 @@
             series.children.push(am5.Label.new(root, {
                 centerX: am5.percent(50),
                 centerY: am5.percent(50),
-                text: "Total Trees: {valueSum}",
+                text: "{{ __('messages.total_trees') }}: {valueSum}",
                 populateText: true,
-                fontSize: "1.5em"
+                fontSize: "1.3em"
             }));
 
             series.labels.template.setAll({

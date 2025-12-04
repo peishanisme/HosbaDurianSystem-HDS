@@ -1,6 +1,6 @@
 <div class="card pb-10">
     <div class="card-header">
-        <h3 class="card-title">Total Harvested Fruits</h3>
+        <h3 class="card-title">{{ __('messages.total_harvested_fruits') }}</h3>
     </div>
     <div class="card-body p-5" id="total-harvested-fruits-chart" style="width: 100%; height: 400px;"></div>
 </div>

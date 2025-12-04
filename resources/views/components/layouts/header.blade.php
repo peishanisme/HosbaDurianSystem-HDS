@@ -22,7 +22,7 @@
                         class="menu-item here show menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
                         <!--begin:Menu link-->
                         <a href="{{ route('dashboard') }}" class="menu-link">
-                            <span class="menu-title">Dashboards</span>
+                            <span class="menu-title">{{ __('messages.dashboard') }}</span>
                             <span class="menu-arrow d-lg-none"></span>
                         </a>
                         <!--end:Menu link-->
@@ -43,28 +43,38 @@
                     </div>
 
                     <!--begin::Dropdown-->
-                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded fw-semibold py-4 fs-6 w-125px"
+                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded fw-semibold py-4 fs-6 w-150px"
                         data-kt-menu="true">
 
+                        <!-- English -->
                         <div class="menu-item px-3">
-                            <a href="/lang/en" class="menu-link px-3 {{ app()->getLocale() === 'en' ? 'active' : '' }}">
+                            <a href="{{ route('lang.switch', ['locale' => 'en', 'redirect' => request()->fullUrl()]) }}"
+                                class="menu-link px-3 {{ app()->getLocale() == 'en' ? 'active' : '' }}"
+                                data-kt-menu-dismiss="true">
                                 English
                             </a>
                         </div>
 
+                        <!-- Chinese -->
                         <div class="menu-item px-3">
-                            <a href="/lang/zh" class="menu-link px-3 {{ app()->getLocale() === 'zh' ? 'active' : '' }}">
+                            <a href="{{ route('lang.switch', ['locale' => 'zh', 'redirect' => request()->fullUrl()]) }}"
+                                class="menu-link px-3 {{ app()->getLocale() == 'zh' ? 'active' : '' }}"
+                                data-kt-menu-dismiss="true">
                                 中文 (Chinese)
                             </a>
                         </div>
 
+                        <!-- Malay -->
                         <div class="menu-item px-3">
-                            <a href="/lang/ms" class="menu-link px-3 {{ app()->getLocale() === 'ms' ? 'active' : '' }}">
-                                Malay
+                            <a href="{{ route('lang.switch', ['locale' => 'ms', 'redirect' => request()->fullUrl()]) }}"
+                                class="menu-link px-3 {{ app()->getLocale() == 'ms' ? 'active' : '' }}"
+                                data-kt-menu-dismiss="true">
+                                Bahasa Melayu
                             </a>
                         </div>
 
                     </div>
+
                     <!--end::Dropdown-->
                 </div>
                 <!--end::Language switcher-->
@@ -106,7 +116,7 @@
                         <!--end::Menu separator-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="{{ route('account.settings') }}" class="menu-link px-5">My Profile</a>
+                            <a href="{{ route('account.settings') }}" class="menu-link px-5">{{ __('messages.my_profile') }}</a>
                         </div>
 
                         <div class="separator my-2"></div>
@@ -116,7 +126,7 @@
                                 @csrf
                                 <span class="menu-link justify-center cursor-pointer"
                                     onclick="event.preventDefault(); this.closest('form').submit();">
-                                    Log out
+                                    {{ __('messages.logout') }}
                                 </span>
                             </form>
                         </div>

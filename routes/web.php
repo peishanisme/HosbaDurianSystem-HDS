@@ -1,7 +1,5 @@
 <?php
 
-// use App\Http\Controllers\ProfileController;
-
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Module\DashboardLivewire;
 use App\Livewire\Module\PublicPortalLivewire;
@@ -29,6 +27,23 @@ use App\Livewire\Module\AgrochemicalManagement\AgrochemicalIndexLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalOverviewLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalApplicationRecordLivewire;
+
+// routes/web.php
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'zh', 'ms'])) {
+        session(['locale' => $locale]);
+    }
+
+    return redirect(request('redirect', '/'));
+})->name('lang.switch');
+
+Route::get('/debug-locale', function () {
+    return [
+        'session_locale' => session('locale'),
+        'app_locale' => app()->getLocale(),
+    ];
+});
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardLivewire::class)->name('dashboard');
@@ -97,14 +112,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('/product-details/{fruit:uuid}', PublicPortalLivewire::class)->name('public.portal');
-
-Route::get('/lang/{locale}', function ($locale) {
-    if (in_array($locale, ['en', 'zh', 'ms'])) {
-        session(['locale' => $locale]);
-    }
-    return redirect()->back();
-});
-
 
 
 require __DIR__ . '/auth.php';

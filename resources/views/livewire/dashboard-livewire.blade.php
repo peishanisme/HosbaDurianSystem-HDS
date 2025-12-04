@@ -21,7 +21,7 @@
         <div class="card-body d-flex justify-content-between align-items-center {{ $bgClass }}"
             style=" border-radius: 8px;">
             <div>
-                <h2 class="card-title mb-1">Current Weather</h2>
+                <h2 class="card-title mb-1">{{ __('messages.current_weather') }}</h2>
                 <p class="text-white mb-5">Hosba Durian Farm, Kedah</p>
 
                 <h1 class="fw-bold mb-0" style="font-size: 35px;">
@@ -29,9 +29,9 @@
                 </h1>
 
                 <small class="text-white">
-                    Humidity: {{ $weather['relative_humidity_2m'] ?? '--' }}% |
-                    Wind: {{ $weather['wind_speed_10m'] ?? '--' }} m/s |
-                    Rain: {{ $weather['precipitation'] ?? '0' }} mm
+                     {{ __('messages.humidity') }}: {{ $weather['relative_humidity_2m'] ?? '--' }}% |
+                    {{ __('messages.wind_speed') }}: {{ $weather['wind_speed_10m'] ?? '--' }} m/s |
+                    {{ __('messages.rain') }}: {{ $weather['precipitation'] ?? '0' }} mm
                 </small>
             </div>
 
@@ -64,7 +64,7 @@
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header">
-                    <h3 class="card-title">Health Status of Trees</h3>
+                    <h3 class="card-title">{{ __('messages.health_status_of_trees') }}</h3>
                 </div>
                 <x-dashboard-items.tree-health-status :treeHealthRecords="$treeHealthRecords" />
             </div>
@@ -85,7 +85,7 @@
 @push('styles')
     <style>
         .weather-sunny {
-            background: linear-gradient(90deg, #f8d66d 0%, #fff7d1 100%);
+            background: linear-gradient(90deg, #e6b874 0%, #fff7d1 100%);
             color: #ffffff;
         }
 

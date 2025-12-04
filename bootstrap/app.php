@@ -12,8 +12,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->append(\App\Http\Middleware\SetLocale::class);
+
+        // --- IMPORTANT ---
+        // Put session + SetLocale inside the WEB GROUP
+        $middleware->group('web', [
+            \Illuminate\Session\Middleware\StartSession::class,
+            \App\Http\Middleware\SetLocale::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->create();
