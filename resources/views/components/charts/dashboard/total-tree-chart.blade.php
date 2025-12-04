@@ -2,7 +2,7 @@
     <div class="card-header">
         <h3 class="card-title">Total Trees by Species</h3>
     </div>
-    <div class="card-body p-5" id="total-tree-chart" style="width: 100%; height: 400px;"></div>
+    <div class="card-body p-5" id="total-tree-chart" style="width: 100%; height: 350px;"></div>
 </div>
 
 @push('scripts')

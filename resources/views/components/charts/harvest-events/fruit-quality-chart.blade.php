@@ -20,8 +20,8 @@
 
             const fruitQualityData = @json($fruitQualityData);
 
-            const chartData = Object.entries(fruitQualityData).map(([, count]) => ({
-                category: ,
+            const chartData = Object.entries(fruitQualityData).map(([grade, count]) => ({
+                category: grade,
                 value: count
             }));
 
