@@ -2,18 +2,18 @@
     <livewire:components.headers.tree-details-header :tree="$tree" />
 
     <div class="row">
-        <div class="col-md-6 mb-4">
+        <div class="col-md-6 mb-10">
             <x-charts.trees.growth-log-chart :growthLogData="$growthLogData" />
         </div>
 
-        <div class="col-md-6 mb-4">
+        <div class="col-md-6 mb-10">
             <x-charts.trees.harvest-grade-chart :harvestGradeData="$harvestGradeData" />
         </div>
     </div>
 
     <!-- Other charts -->
-    <div class="row mt-4">
-        <div class="col-12 mb-4">
+    <div class="row ">
+        <div class="col-12 mb-10">
             <x-charts.trees.tree-disease-chart :treeDiseaseData="$treeDiseaseData" />
         </div>
 

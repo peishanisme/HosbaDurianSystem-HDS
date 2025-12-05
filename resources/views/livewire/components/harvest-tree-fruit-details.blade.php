@@ -70,6 +70,7 @@
                                                         <th>Harvested Date</th>
                                                         <th>Sell Status</th>
                                                         <th>QR Code</th>
+                                                        <th>View Feedback</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -101,9 +102,12 @@
                                                             </td>
                                                             <td class="small">
                                                                 @php
-                                                                    $status = $fruit->transaction_uuid ? 'Sold' : 'Available';
+                                                                    $status = $fruit->transaction_uuid
+                                                                        ? 'Sold'
+                                                                        : 'Available';
                                                                     $gradeClassMap = [
-                                                                        'Available' => 'badge bg-success-subtle text-success',
+                                                                        'Available' =>
+                                                                            'badge bg-success-subtle text-success',
                                                                         'Sold' => 'badge bg-danger-subtle text-danger',
                                                                     ];
                                                                     $badgeClass =
@@ -116,7 +120,14 @@
                                                             <td class="small">
                                                                 <button wire:click="showQrCode('{{ $fruit->uuid }}')"
                                                                     class="btn btn-sm btn-light-primary">
-                                                                    <i class="bi bi-qr-code"></i> View
+                                                                    <i class="bi bi-qr-code"></i> View QR
+                                                                </button>
+                                                            </td>
+                                                            <td class="small">
+                                                                <button
+                                                                    wire:click="showFeedback('{{ $fruit->uuid }}')"
+                                                                    class="btn btn-sm btn-light-primary">
+                                                                    <i class="bi bi-eye"></i> View
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -165,12 +176,51 @@
         </div>
     </div>
 
+    <!-- Feedback Modal -->
+    <div wire:ignore.self class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-3">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="feedbackModalLabel">Fruit Feedback</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    @if ($feedback && $feedback->count() > 0)
+                        <div class="list-group">
+                            @foreach ($feedback as $fb)
+                                <div class="card mb-3 shadow-sm border-0">
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="mb-0 fw-bold text-dark">{{ $fb->feedback }}</h6>
+                                            <span
+                                                class="text-muted small">{{ $fb->created_at->format('Y-m-d g:i A') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-muted my-4">No feedback available for this fruit.</div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 @push('scripts')
     <script>
         window.addEventListener('show-qr-modal', () => {
             const modal = new bootstrap.Modal(document.getElementById('qrCodeModal'));
+            modal.show();
+        });
+    </script>
+
+    <script>
+        window.addEventListener('show-feedback-modal', () => {
+            const modal = new bootstrap.Modal(document.getElementById('feedbackModal'));
             modal.show();
         });
     </script>
@@ -222,6 +272,5 @@
             padding: 1rem;
             background-color: #f9f9f9;
         }
-
     </style>
 @endpush

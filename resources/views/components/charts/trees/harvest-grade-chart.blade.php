@@ -31,7 +31,7 @@
             var series = chart.series.push(am5percent.PieSeries.new(root, {
                 valueField: "value",
                 categoryField: "category",
-                alignLabels: false,
+                alignLabels: true,
                 legendLabelText: "{category}",
                 legendValueText: "{value} pc(s)"
             }));

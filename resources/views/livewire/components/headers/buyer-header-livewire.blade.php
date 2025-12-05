@@ -68,8 +68,9 @@
         </div>
        
         <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
-            <x-show-navbar-navitem title="Overview" route="sales.buyers.show" />
-            <x-show-navbar-navitem title="Transactions" />
+            <x-show-navbar-navitem title="Overview" route="{{ route('sales.buyers.show', $buyer->id) }}"
+                :active="request()->routeIs('sales.buyers.show')" />
+            <x-show-navbar-navitem title="Transactions" route="{{ route('sales.buyers.transaction', $buyer->id) }}" :active="request()->routeIs('sales.buyers.transaction')"/>
         </ul>
 
     </div>

@@ -35,7 +35,7 @@
                                 placeholder="1xxxxxxxxx" value="{{ old('phone') }}" required autofocus
                                 autocomplete="tel"  />
                         </div>
-                        <x-input-error :messages="$errors->get('phone')" class="text-danger mt-1" />
+                        {{-- <x-input-error :messages="$errors->get('phone')" class="text-danger mt-1" /> --}}
                     </div>
 
                     <!-- Password -->
@@ -49,7 +49,7 @@
                                 <i class="bi bi-eye-slash "></i>
                             </span>
                         </div>
-                        <x-input-error :messages="$errors->get('password')" class="text-danger mt-1" />
+                        {{-- <x-input-error :messages="$errors->get('password')" class="text-danger mt-1" /> --}}
                     </div>
 
                     <!-- Remember & Forgot -->

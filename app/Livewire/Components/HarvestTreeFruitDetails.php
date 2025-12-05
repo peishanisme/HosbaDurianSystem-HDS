@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Components;
 
+use App\Models\FruitFeedback;
 use App\Models\Tree;
 use App\Models\Species;
 use Livewire\Component;
@@ -18,6 +19,7 @@ class HarvestTreeFruitDetails extends Component
     public $expanded = [];
     public $qrCode;
     public $fruitUuid;
+    public $feedback;
 
     protected $queryString = ['search', 'filterSpecies'];
 
@@ -48,10 +50,19 @@ class HarvestTreeFruitDetails extends Component
         $this->fruitUuid = $uuid;
 
         // Generate QR code as HTML string (make sure it's plain string)
-        $this->qrCode = (string) QrCode::size(200)->generate( route('public.portal', $this->fruitUuid));
+        $this->qrCode = (string) QrCode::size(200)->generate(route('public.portal', $this->fruitUuid));
 
         // Dispatch browser event to open the modal
         $this->dispatch('show-qr-modal');
+    }
+
+    public function showFeedback($uuid)
+    {
+        $this->fruitUuid = $uuid;
+        $this->feedback = FruitFeedback::where('fruit_uuid', $this->fruitUuid)->orderBy('created_at', 'desc')
+            ->get();
+        // Dispatch browser event to open the modal
+        $this->dispatch('show-feedback-modal');
     }
 
     public function render()
