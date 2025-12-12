@@ -133,6 +133,11 @@
                 makeSeries(grade, colors[index]);
             });
 
+            var exporting = am5plugins_exporting.Exporting.new(root, {
+                menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+                filePrefix: "{{ __('messages.top_selling_trees') }}"
+            });
+
             // 12. Animate chart
             chart.appear(1000, 100);
 

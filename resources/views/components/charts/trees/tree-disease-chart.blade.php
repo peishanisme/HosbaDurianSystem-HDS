@@ -82,6 +82,11 @@
             xAxis.data.setAll(chartData);
             series.data.setAll(chartData);
 
+            var exporting = am5plugins_exporting.Exporting.new(root, {
+                menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+                filePrefix: "{{ __('messages.tree_disease') }}"
+            });
+
             series.appear(1000);
             chart.appear(1000, 100);
 

@@ -26,6 +26,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="sweetalert2.min.js"></script>
 
+<script src="https://cdn.amcharts.com/lib/5/plugins/exporting.js"></script>
+
 <!--end::Vendors Javascript-->
 <!--begin::Custom Javascript(used for this page only)-->
 <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>

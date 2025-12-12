@@ -52,7 +52,7 @@
                 xAxis: xAxis,
                 yAxis: yAxis,
                 valueYField: "value",
-                valueXField: "date", 
+                valueXField: "date",
                 tooltip: am5.Tooltip.new(root, {
                     pointerOrientation: "horizontal",
                     labelText: "{valueY}"
@@ -103,6 +103,11 @@
             chart.set("scrollbarX", am5.Scrollbar.new(root, {
                 orientation: "horizontal"
             }));
+            
+            var exporting = am5plugins_exporting.Exporting.new(root, {
+                menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+                filePrefix: "{{ __('messages.total_transactions') }}"
+            });
 
             chart.appear(1000, 100);
         });

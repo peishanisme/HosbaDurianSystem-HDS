@@ -58,6 +58,11 @@
 
             legend.data.setAll(series.dataItems);
 
+            var exporting = am5plugins_exporting.Exporting.new(root, {
+                menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+                filePrefix: "{{ __('messages.total_trees_by_species') }}"
+            });
+
             series.appear(1000, 100);
 
         });

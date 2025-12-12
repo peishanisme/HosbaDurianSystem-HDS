@@ -133,6 +133,11 @@
 
             legend.data.setAll(seriesPieces.dataItems);
 
+            var exporting = am5plugins_exporting.Exporting.new(root, {
+                menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+                filePrefix: "{{ __('messages.harvest_species') }}"
+            });
+
         }); 
     </script>
 @endpush

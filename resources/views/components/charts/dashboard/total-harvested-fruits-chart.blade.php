@@ -114,6 +114,11 @@
             );
 
             sbSeries.data.setAll(chartData);
+            
+            var exporting = am5plugins_exporting.Exporting.new(root, {
+                menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+                filePrefix: "{{ __('messages.top_selling_species') }}"
+            });
 
             // Animate on load
             series.appear(1000);

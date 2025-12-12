@@ -61,6 +61,11 @@
 
             legend.data.setAll(series.dataItems);
 
+            var exporting = am5plugins_exporting.Exporting.new(root, {
+                menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+                filePrefix: "{{ __('messages.fruit_quality') }}"
+            });
+
             series.appear(1000, 100);
 
         });

@@ -150,6 +150,11 @@
             seriesHeight.data.setAll(data);
             seriesDiameter.data.setAll(data);
 
+            var exporting = am5plugins_exporting.Exporting.new(root, {
+                menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+                filePrefix: "{{ __('messages.tree_growth_log') }}"
+            });
+
             // Animations
             seriesHeight.appear(1000);
             seriesDiameter.appear(1000);

@@ -81,6 +81,10 @@
                 return chart.get("colors").getIndex(series.columns.indexOf(target));
             });
 
+            var exporting = am5plugins_exporting.Exporting.new(root, {
+                menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+                filePrefix: "{{ __('messages.top_selling_species') }}"
+            });
 
             // Inject your backend data here
             var data = @json($topSellingSpecies);

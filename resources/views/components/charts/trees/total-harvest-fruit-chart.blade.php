@@ -79,6 +79,11 @@
             yAxis.data.setAll(chartData);
             series.data.setAll(chartData);
 
+            var exporting = am5plugins_exporting.Exporting.new(root, {
+                menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+                filePrefix: "{{ __('messages.total_harvest_in_each_event') }}"
+            });
+
             series.appear(1000);
             chart.appear(1000, 100);
 

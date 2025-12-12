@@ -103,6 +103,11 @@
 
             legend.data.setAll(series.dataItems);
 
+            var exporting = am5plugins_exporting.Exporting.new(root, {
+                menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+                filePrefix: "{{ __('messages.fruit_selling_status') }}"
+            });
+
             series.appear();
             chart.appear(800, 100);
         });
