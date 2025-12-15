@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TreeController;
 use App\Http\Controllers\Api\SpeciesController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Api\BuyerController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\DiseaseController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Api\TreeGrowthLogController;
 
 // General
 Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
 // Species Controller
 Route::middleware('auth:sanctum')->post('/species', [SpeciesController::class, 'store']);
@@ -76,6 +78,7 @@ Route::middleware('auth:sanctum')->get('/agrochemical-records', [AgrochemicalCon
 Route::middleware('auth:sanctum')->post('/tree-growth-logs', [TreeGrowthLogController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/tree-growth-logs', [TreeGrowthLogController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/tree-growth-logs/{uuid}', [TreeGrowthLogController::class, 'getByTreeUuid']);
+
 
 // // Buyer Controller
 // Route::middleware('auth:sanctum')->post('/buyers', [BuyerController::class, 'store']);
