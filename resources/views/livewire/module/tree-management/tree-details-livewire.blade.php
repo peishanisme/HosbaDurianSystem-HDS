@@ -12,12 +12,12 @@
     </div>
 
     <!-- Other charts -->
-    <div class="row ">
-        <div class="col-12 mb-10">
+    <div class="row mb-10">
+        <div class="col-md-6">
             <x-charts.trees.tree-disease-chart :treeDiseaseData="$treeDiseaseData" />
         </div>
 
-        <div class="col-12">
+        <div class="col-md-6">
             <x-charts.trees.total-harvest-fruit-chart :totalHarvestData="$totalHarvestData" />
         </div>
     </div>

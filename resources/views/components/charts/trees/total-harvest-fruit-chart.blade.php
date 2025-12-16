@@ -3,7 +3,7 @@
     <div class="card-header">
         <h3 class="card-title">Total Harvest in Each Event</h3>
     </div>
-    <div class="card-body p-5" id="total-harvest-chart"></div>
+    <div class="card-body p-5" id="total-harvest-chart"  style="width: 93%;"></div>
 </div>
 
 @push('scripts')

@@ -2,7 +2,7 @@
     <div class="card-header">
         <h3 class="card-title">{{ __('messages.top_selling_species') }}</h3>
     </div>
-    <div class="card-body p-5" id="top-selling-species-chart" style="width: 100%; height: 400px;"></div>
+    <div class="card-body p-5" id="top-selling-species-chart" style="width: 93%; height: 400px;"></div>
 </div>
 
 @push('scripts')

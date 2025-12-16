@@ -1,60 +1,7 @@
 <div>
-    {{-- weather card --}}
-    @php
-        $rain = $weather['precipitation'] ?? 0;
-        $temp = $weather['temperature_2m'] ?? 0;
+    <x-dashboard-items.weather-card :weather="$weather" />
 
-        // Weather icon
-        $icon = '☀️';
-        $bgClass = 'weather-sunny';
-
-        if ($rain > 0) {
-            $icon = '🌧️';
-            $bgClass = 'weather-rain';
-        } elseif ($temp < 22) {
-            $icon = '⛅';
-            $bgClass = 'weather-cloudy';
-        }
-    @endphp
-
-    <div class="card shadow-sm mb-10">
-        <div class="card-body d-flex justify-content-between align-items-center {{ $bgClass }}"
-            style=" border-radius: 8px;">
-            <div>
-                <h2 class="card-title mb-1">{{ __('messages.current_weather') }}</h2>
-                <p class="text-white mb-5">Hosba Durian Farm, Kedah</p>
-
-                <h1 class="fw-bold mb-0" style="font-size: 35px;">
-                    {{ $weather['temperature_2m'] ?? '--' }}°C
-                </h1>
-
-                <small class="text-white">
-                     {{ __('messages.humidity') }}: {{ $weather['relative_humidity_2m'] ?? '--' }}% |
-                    {{ __('messages.wind_speed') }}: {{ $weather['wind_speed_10m'] ?? '--' }} m/s |
-                    {{ __('messages.rain') }}: {{ $weather['precipitation'] ?? '0' }} mm
-                </small>
-            </div>
-
-            <div>
-                @php
-                    $rain = $weather['precipitation'] ?? 0;
-                    $temp = $weather['temperature_2m'] ?? 0;
-                    $icon = '☀️';
-
-                    if ($rain > 0) {
-                        $icon = '🌧️';
-                    } elseif ($temp < 22) {
-                        $icon = '⛅';
-                    }
-                @endphp
-
-                <span style="font-size: 55px;">{{ $icon }}</span>
-            </div>
-        </div>
-    </div>
-    {{-- end weather card --}}
-
-    <div class="row g-4 mb-10">
+    <div class="row g-5 mb-15">
         <!-- Total Tree Chart Card -->
         <div class="col-md-6">
             <x-charts.dashboard.total-tree-chart :totalTreeData="$totalTreeData" />
@@ -71,12 +18,19 @@
         </div>
     </div>
 
-    <div class="mb-10">
-        <x-charts.dashboard.total-harvested-fruits-chart :totalHarvestedFruitsData="$totalHarvestedFruitsData" />
-    </div>
+    <div class="row g-5 mb-15">
 
-    <div class="mb-10">
-        <x-charts.dashboard.top-selling-species-chart :topSellingSpecies="$topSellingSpecies" />
+        <div class="col-md-6">
+            <div>
+                <x-charts.dashboard.total-harvested-fruits-chart :totalHarvestedFruitsData="$totalHarvestedFruitsData" />
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div>
+                <x-charts.dashboard.top-selling-species-chart :topSellingSpecies="$topSellingSpecies" />
+            </div>
+        </div>
     </div>
 
     <x-charts.dashboard.total-transaction-chart :totalTransactionData="$totalTransactionData" />

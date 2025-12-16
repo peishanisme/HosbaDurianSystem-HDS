@@ -1,4 +1,4 @@
-<div class="card pb-10">
+<div class="card pb-10 h-100">
     <div class="card-header">
         <h3 class="card-title">{{ __('messages.total_trees_by_species') }}</h3>
     </div>

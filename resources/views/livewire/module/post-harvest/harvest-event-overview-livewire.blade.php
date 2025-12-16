@@ -69,22 +69,28 @@
         </div>
     </div> --}}
 
-    <div class="mb-10">
+    <div class="mb-15">
         <x-charts.harvest-events.harvest-species-chart :harvestSpeciesData="$harvestSpeciesData" />
     </div>
 
-    <div class="mb-10">
-        <x-charts.harvest-events.top5-harvest-trees-chart :top5HarvestTreesData="$top5HarvestTreesData" />
+    <div class="row mb-15 align-items-stretch g-5">
+        <div class="col-md-6 d-flex">
+            <div class="w-100 h-100">
+                <x-charts.harvest-events.fruit-quality-chart :fruitQualityData="$fruitQualityData" />
+            </div>
+        </div>
 
+        <div class="col-md-6 d-flex">
+            <div class="w-100 h-100">
+                <x-charts.harvest-events.top5-harvest-trees-chart :top5HarvestTreesData="$top5HarvestTreesData" />
+            </div>
+        </div>
     </div>
 
-    <div class="mb-10">
-        <x-charts.harvest-events.fruit-quality-chart :fruitQualityData="$fruitQualityData" />
-
+    <div>
+        <x-charts.harvest-events.durian-selling-chart :sellingStatusData="$sellingStatusData" />
     </div>
-
-    <div> <x-charts.harvest-events.durian-selling-chart :sellingStatusData="$sellingStatusData" />
-    </div>
+</div>
 
 </div>
 

@@ -3,7 +3,7 @@
     <div class="card-header">
         <h3 class="card-title">Tree Disease</h3>
     </div>
-    <div class="card-body p-5" id="tree-disease-chart"></div>
+    <div class="card-body p-5" id="tree-disease-chart" style="width: 93%;"></div>
 </div>
 
 @push('scripts')

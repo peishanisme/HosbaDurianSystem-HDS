@@ -2,7 +2,7 @@
     <div class="card-header">
         <h3 class="card-title">Harvest Species Overview</h3>
     </div>
-    <div class="card-body p-5" id="harvest-species-chart"></div>
+    <div class="card-body p-5" id="harvest-species-chart" style="width: 100%;"></div>
 </div>
 
 
@@ -19,88 +19,152 @@
 
             root.container.set("layout", root.verticalLayout);
 
-            var chartContainer = root.container.children.push(
-                am5.Container.new(root, {
-                    layout: root.horizontalLayout,
-                    width: am5.p100,
-                    height: am5.p100
-                })
-            );
+            // Create container to hold charts
+            var chartContainer = root.container.children.push(am5.Container.new(root, {
+                layout: root.horizontalLayout,
+                width: am5.p100,
+                height: am5.p100
+            }));
 
-            // ----------------------------------------
-            //  Donut Chart: TOTAL PIECES
-            // ----------------------------------------
-            var chartPieces = chartContainer.children.push(
+            // Create the 1st chart
+            var chart = chartContainer.children.push(
                 am5percent.PieChart.new(root, {
+                    endAngle: 270,
                     innerRadius: am5.percent(60)
                 })
             );
 
-            var seriesPieces = chartPieces.series.push(
+
+            var series = chart.series.push(
                 am5percent.PieSeries.new(root, {
                     valueField: "value",
                     categoryField: "category",
-                    alignLabels: false
+                    endAngle: 270,
+                    alignLabels: true
                 })
             );
 
-            seriesPieces.children.push(
-                am5.Label.new(root, {
-                    centerX: am5.percent(50),
-                    centerY: am5.percent(50),
-                    text: "Total Pieces\n{valueSum}",
-                    populateText: true,
-                    fontSize: "1.2em",
-                    textAlign: "center"
-                })
-            );
+            series.children.push(am5.Label.new(root, {
+                centerX: am5.percent(50),
+                centerY: am5.percent(50),
+                text: "Grade",
+                populateText: true,
+                fontSize: "1.2em"
+            }));
 
-            // ----------------------------------------
-            //  Donut Chart: TOTAL WEIGHT
-            // ----------------------------------------
-            var chartWeight = chartContainer.children.push(
+            series.slices.template.setAll({
+                cornerRadius: 8
+            })
+
+            series.states.create("hidden", {
+                endAngle: -90
+            });
+
+            series.labels.template.setAll({
+                textType: "circular"
+            });
+
+            // Create the 2nd chart
+            var chart2 = chartContainer.children.push(
                 am5percent.PieChart.new(root, {
+                    endAngle: 270,
                     innerRadius: am5.percent(60)
                 })
             );
 
-            var seriesWeight = chartWeight.series.push(
+            var series2 = chart2.series.push(
                 am5percent.PieSeries.new(root, {
                     valueField: "value",
                     categoryField: "category",
-                    alignLabels: false
+                    endAngle: 270,
+                    alignLabels: true,
+                    tooltip: am5.Tooltip.new(root, {}) 
                 })
             );
 
-            seriesWeight.children.push(
-                am5.Label.new(root, {
-                    centerX: am5.percent(50),
-                    centerY: am5.percent(50),
-                    text: "Total Weight\n{valueSum} kg",
-                    populateText: true,
-                    fontSize: "1.2em",
-                    textAlign: "center"
-                })
-            );
+            series2.children.push(am5.Label.new(root, {
+                centerX: am5.percent(50),
+                centerY: am5.percent(50),
+                text: "Total Weight\n{valueSum} kg",
+                populateText: true,
+                fontSize: "1.2em"
+            }));
 
-            function syncHover(seriesA, seriesB) {
-                seriesA.slices.template.events.on("pointerover", function(ev) {
-                    var category = ev.target.dataItem.get("category");
-                    seriesB.dataItems.each(di => {
-                        if (di.get("category") === category) di.get("slice").hover();
-                    });
-                });
+            series2.slices.template.setAll({
+                cornerRadius: 8
+            })
 
-                seriesA.slices.template.events.on("pointerout", function(ev) {
-                    var category = ev.target.dataItem.get("category");
-                    seriesB.dataItems.each(di => {
-                        if (di.get("category") === category) di.get("slice").unhover();
-                    });
-                });
-            }
+            series2.states.create("hidden", {
+                endAngle: -90
+            });
 
-            syncHover(seriesPieces, seriesWeight);
-            syncHover(seriesWeight, seriesPieces);
+            series2.labels.template.setAll({
+                textType: "circular"
+            });
+
+
+            // Duplicate interaction
+            // Must be added before setting data
+            series.slices.template.events.on("pointerover", function(ev) {
+                var slice = ev.target;
+                var dataItem = slice.dataItem;
+                var otherSlice = getSlice(dataItem, series2);
+
+                if (otherSlice) {
+                    otherSlice.hover();
+                }
+            });
+
+            series.slices.template.events.on("pointerout", function(ev) {
+                var slice = ev.target;
+                var dataItem = slice.dataItem;
+                var otherSlice = getSlice(dataItem, series2);
+
+                if (otherSlice) {
+                    otherSlice.unhover();
+                }
+            });
+
+            series.slices.template.on("active", function(active, target) {
+                var slice = target;
+                var dataItem = slice.dataItem;
+                var otherSlice = getSlice(dataItem, series2);
+
+                if (otherSlice) {
+                    otherSlice.set("active", active);
+                }
+            });
+
+            // Same for the 2nd series
+            series2.slices.template.events.on("pointerover", function(ev) {
+                var slice = ev.target;
+                var dataItem = slice.dataItem;
+                var otherSlice = getSlice(dataItem, series);
+
+                if (otherSlice) {
+                    otherSlice.hover();
+                }
+            });
+
+            series2.slices.template.events.on("pointerout", function(ev) {
+                var slice = ev.target;
+                var dataItem = slice.dataItem;
+                var otherSlice = getSlice(dataItem, series);
+
+                if (otherSlice) {
+                    otherSlice.unhover();
+                }
+            });
+
+            series2.slices.template.on("active", function(active, target) {
+                var slice = target;
+                var dataItem = slice.dataItem;
+                var otherSlice = getSlice(dataItem, series);
+
+                if (otherSlice) {
+                    otherSlice.set("active", active);
+                }
+            });
 
             var speciesData = @json($harvestSpeciesData);
 
@@ -117,27 +181,59 @@
                 value: item.total_weight
             }));
 
-            seriesPieces.data.setAll(piecesData);
-            seriesWeight.data.setAll(weightData);
+            series.data.setAll(piecesData);
+            series2.data.setAll(weightData);
 
-            // ----------------------------------------
-            // 🏷 Shared Legend
-            // ----------------------------------------
-            var legend = root.container.children.push(
-                am5.Legend.new(root, {
-                    x: am5.percent(50),
-                    centerX: am5.percent(50),
-                    layout: root.horizontalLayout
-                })
-            );
+            function getSlice(dataItem, series) {
+                var otherSlice;
+                am5.array.each(series.dataItems, function(di) {
+                    if (di.get("category") === dataItem.get("category")) {
+                        otherSlice = di.get("slice");
+                    }
+                });
 
-            legend.data.setAll(seriesPieces.dataItems);
+                return otherSlice;
+            }
+
+            // Create legend
+            var legend = root.container.children.push(am5.Legend.new(root, {
+                x: am5.percent(50),
+                centerX: am5.percent(50)
+            }));
+
+
+            // Trigger all the same for the 2nd series
+            legend.itemContainers.template.events.on("pointerover", function(ev) {
+                var dataItem = ev.target.dataItem.dataContext;
+                var slice = getSlice(dataItem, series2);
+                slice.hover();
+            });
+
+            legend.itemContainers.template.events.on("pointerout", function(ev) {
+                var dataItem = ev.target.dataItem.dataContext;
+                var slice = getSlice(dataItem, series2);
+                slice.unhover();
+            });
+
+            legend.itemContainers.template.on("disabled", function(disabled, target) {
+                var dataItem = target.dataItem.dataContext;
+                var slice = getSlice(dataItem, series2);
+                if (disabled) {
+                    series2.hideDataItem(slice.dataItem);
+                } else {
+                    series2.showDataItem(slice.dataItem);
+                }
+            });
+
+            legend.data.setAll(series.dataItems);
+
+            series.appear(1000, 100);
 
             var exporting = am5plugins_exporting.Exporting.new(root, {
                 menu: am5plugins_exporting.ExportingMenu.new(root, {}),
                 filePrefix: "{{ __('messages.harvest_species') }}"
             });
 
-        }); 
+        });
     </script>
 @endpush
