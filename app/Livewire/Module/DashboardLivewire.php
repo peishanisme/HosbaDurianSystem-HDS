@@ -8,15 +8,31 @@ use Livewire\Component;
 use App\Models\Transaction;
 use App\Models\HealthRecord;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\WeatherController;
 
 class DashboardLivewire extends Component
 {
     public $weather;
+    public $totalTreeData;
+    public $totalHarvestedFruitsData;
+    public $totalTransactionData;
+    public $topSellingSpecies;
+    public $treeHealthRecords;
 
     public function mount()
     {
-        $this->weather = (new WeatherController)->getCurrentWeather();
+        $this->weather = Cache::remember(
+            'weather',
+            600,
+            fn() => (new WeatherController)->getCurrentWeather()
+        );
+
+        $this->totalTreeData = $this->loadTotalTreeData();
+        $this->totalHarvestedFruitsData = $this->loadTotalHarvestData();
+        $this->totalTransactionData = $this->loadTotalTransactionData();
+        $this->topSellingSpecies = $this->loadTopSellingSpecies();
+        $this->treeHealthRecords = $this->getTreeHealthRecords();
     }
 
     public function getTreeHealthRecords()
@@ -113,14 +129,7 @@ class DashboardLivewire extends Component
     public function render()
     {
         return view(
-            'livewire.dashboard-livewire',
-            [
-                'totalTreeData' => $this->loadTotalTreeData(),
-                'totalHarvestedFruitsData' => $this->loadTotalHarvestData(),
-                'totalTransactionData' => $this->loadTotalTransactionData(),
-                'topSellingSpecies' => $this->loadTopSellingSpecies(),
-                'treeHealthRecords' => $this->getTreeHealthRecords(),
-            ]
+            'livewire.dashboard-livewire'
         )->title(__('messages.dashboard'));
     }
 }

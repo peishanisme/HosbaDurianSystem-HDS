@@ -62,7 +62,8 @@
                         <!-- Step 3 -->
                         @if ($activeStep === 3)
                             <div class="flex-column">
-                                <livewire:components.transaction-fruit-summary-table :scannedFruits="$scannedFruits" />
+                                <livewire:components.transaction-fruit-summary-table :scannedFruits="$scannedFruits"
+                                    :summary="$summary" :discount="$form->discount" :subtotal="$form->subtotal" :finalAmount="$form->total_price" wire:key="summary-table" />
                                 <div class="mt-2">
                                     <x-input-error :messages="$errors->get('summaryPrices')" />
                                 </div>
@@ -95,7 +96,7 @@
 
                                 <!-- Payment Method -->
                                 <div class="fv-row mb-10">
-                                    <x-input-label for="payment_method"  class="mb-2 required" :value="__('Payment Method')" />
+                                    <x-input-label for="payment_method" class="mb-2 required" :value="__('Payment Method')" />
                                     <x-input-select id="payment_method" placeholder="Select Payment Method"
                                         wire:model="form.payment_method" :options="[
                                             'cash' => 'Cash',
@@ -156,18 +157,54 @@
 @push('scripts')
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script>
-        document.addEventListener("livewire:load", () => {
+        document.addEventListener("DOMContentLoaded", () => {
             let html5QrcodeScanner;
 
-            function onScanSuccess(decodedText, decodedResult) {
-                console.log(`Code Matched = ${decodedText}`, decodedResult);
+            function onScanSuccess(decodedText) {
+                console.log('Raw scanned text:', decodedText);
+
+                let uuid = null;
+
+                try {
+                    const url = new URL(decodedText);
+                    const segments = url.pathname.split('/').filter(Boolean);
+                    uuid = segments[segments.length - 1];
+                } catch (e) {
+                    // In case QR is not a valid URL
+                    uuid = decodedText;
+                }
+
+                // Optional UUID format validation
+                const uuidRegex =
+                    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+                if (!uuidRegex.test(uuid)) {
+                    Livewire.dispatch('toast', {
+                        type: 'warning',
+                        message: 'Invalid QR code detected'
+                    });
+                    return;
+                }
+
+                console.log('Extracted UUID:', uuid);
+
                 Livewire.dispatch('scan-fruit', {
-                    decodedText
+                    uuid
                 });
             }
 
+            let lastErrorAt = 0;
+
             function onScanFailure(error) {
-                console.warn(`Code Scan Error = ${error}`);
+                const now = Date.now();
+
+                // only fire once every 3 seconds
+                if (now - lastErrorAt < 3000) return;
+                lastErrorAt = now;
+
+                Livewire.dispatch('scan-error', {
+                    error: 'Invalid QR code detected'
+                });
             }
 
             Livewire.on('init-qr-scanner', () => {
