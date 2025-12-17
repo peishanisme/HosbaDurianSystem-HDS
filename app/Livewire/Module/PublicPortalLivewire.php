@@ -4,14 +4,85 @@ namespace App\Livewire\Module;
 
 use App\Models\Fruit;
 use Livewire\Component;
-use Livewire\Attributes\On;
 use App\Models\FruitFeedback;
+use App\Services\BlockchainService;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 
 class PublicPortalLivewire extends Component
 {
     public Fruit $fruit;
     public ?string $feedback = '';
+    public array $ipfsMetadata = [];
+    public bool $isVerified = false;
+    public ?string $verificationReasonCode = null;
+    public ?string $verificationError = null;
 
+    public function mount()
+    {
+        try {
+            if (empty($this->fruit->metadata_cid)) {
+                return $this->failVerification('not_published');
+            }
+
+            // 1. Fetch metadata from IPFS
+            $response = Http::timeout(10)->get(
+                "https://ipfs.io/ipfs/{$this->fruit->metadata_cid}"
+            );
+
+            if (!$response->successful()) {
+                return $this->failVerification('temporarily_unavailable');
+            }
+
+            $this->ipfsMetadata = $response->json();
+
+            // 2. Recalculate hash
+            $metadataJson = json_encode(
+                $this->ipfsMetadata,
+                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+            );
+
+            $recalculatedHash = hash('sha256', $metadataJson);
+
+            // 3. Read hash from blockchain
+            $onChainHash = Cache::remember(
+                "fruit_hash_{$this->fruit->fruit_tag}",
+                now()->addMinutes(10),
+                fn() => app(BlockchainService::class)
+                    ->getFruitOnChain($this->fruit->fruit_tag)
+            );            
+
+            if (!$onChainHash) {
+                return $this->failVerification('record_not_found');
+            }
+
+            // 4. Compare hashes
+            if (
+                $this->normalizeHash($recalculatedHash) !==
+                $this->normalizeHash($onChainHash)
+            ) {
+                return $this->failVerification('data_mismatch');
+            }
+            dd($this->verificationReasonCode);
+
+            // 5. Verified
+            $this->isVerified = true;
+            $this->verificationReasonCode = null;
+        } catch (\Throwable $e) {
+            $this->failVerification('temporarily_unavailable');
+        }
+    }
+
+    private function failVerification(string $reason): void
+    {
+        $this->isVerified = false;
+        $this->verificationReasonCode = $reason;
+    }
+
+    private function normalizeHash(string $hash): string
+    {
+        return strtolower(ltrim($hash, '0x'));
+    }
 
     public function submit()
     {

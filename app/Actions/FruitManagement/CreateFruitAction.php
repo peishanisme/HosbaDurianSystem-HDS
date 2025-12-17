@@ -48,7 +48,7 @@ class CreateFruitAction
             Log::info('Pinata upload response', $ipfs ?? []);
         } catch (\Throwable $e) {
             Log::error('Pinata upload exception', ['error' => $e->getMessage(), 'fruit_id' => $fruit->id]);
-            // retry mechanism, you can dispatch a job here.
+            // retry mechanism, dispatch a job here.
             // dispatch(new RetryPinataUploadJob($fruit, $metadata));
             throw $e;
         }

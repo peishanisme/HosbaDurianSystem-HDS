@@ -14,7 +14,7 @@
             </div>
             <h1
                 class="text-[clamp(2.5rem,6vw,4rem)] font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-4 relative z-10 ">
-                {{ $fruit->tree->species->name }}
+                {{ $ipfsMetadata['species'] ?? $fruit->tree->species->name }}
             </h1>
             <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-48 h-6 bg-accent/30 rounded-full -z-10"
                 style="clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);"></div>
@@ -36,10 +36,48 @@
     <section id="product-details" class="mb-12 max-w-3xl mx-auto">
         <div class="bg-white rounded-3xl shadow-lg p-6 md:p-8 card-hover border-2 border-secondary/20 relative overflow-hidden bg-opacity-90 backdrop-blur-sm"
             style="box-shadow: 0 4px 20px rgba(106, 153, 78, 0.1); border-style: dotted;">
-            <h2 class="text-2xl font-bold hunter-green mb-6 flex items-center">
-                <i class="fas fa-crown text-accent mr-2 "> </i>
-                Product Details
-            </h2>
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold hunter-green flex items-center">
+                    <i class="fas fa-crown text-accent mr-2"></i>
+                    Product Details
+                </h2>
+
+                @php
+                    $verificationMessages = [
+                        'not_published' => 'This product has not yet been published for verification.',
+                        'record_not_found' => 'This product record could not be found.',
+                        'data_mismatch' => 'The product information may have been changed or is incorrect.',
+                        'temporarily_unavailable' => 'Verification service is temporarily unavailable.',
+                    ];
+                @endphp
+
+                @if ($isVerified)
+                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700">
+                        ✅ Verified Product
+                    </span>
+                @else
+                    <span
+                        class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 relative group">
+                        ⚠️ Verification Failed
+
+                        <i class="fas fa-info-circle ml-2 cursor-pointer"></i>
+
+                        <div
+                            class="absolute left-1/2 top-full mt-2 w-72 -translate-x-1/2
+                   bg-gray-800 text-white text-xs rounded-lg px-4 py-3
+                   opacity-0 group-hover:opacity-100 transition z-50">
+                            <p class="font-semibold mb-1">Why this may happen:</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>{{ $verificationMessages[$verificationReasonCode] ?? 'Unable to verify this product.' }}
+                                </li>
+                                <li>Please contact us for more information.</li>
+                            </ul>
+                        </div>
+                    </span>
+                @endif
+
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="flex items-start">
                     <div class="bg-secondary/20 p-3 rounded-full mr-4">
@@ -47,7 +85,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-700">Fruit Tag</h3>
-                        <p class="text-gray-600">{{ $fruit->fruit_tag }}</p>
+                        <p class="text-gray-600">{{ $ipfsMetadata['id'] ?? $fruit->fruit_tag }}</p>
                     </div>
                 </div>
                 <div class="flex items-start">
@@ -56,7 +94,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-700">Tree Tag</h3>
-                        <p class="text-gray-600">{{ $fruit->tree->tree_tag }}</p>
+                        <p class="text-gray-600">{{ $ipfsMetadata['tree_origin'] ?? $fruit->tree->tree_tag }}</p>
                     </div>
                 </div>
                 <div class="flex items-start">
@@ -65,7 +103,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-700">Harvest Date</h3>
-                        <p class="text-gray-600">{{ $fruit->harvested_at }}</p>
+                        <p class="text-gray-600">{{ $ipfsMetadata['date'] ?? $fruit->harvested_at }}</p>
                     </div>
                 </div>
                 <div class="flex items-start">
@@ -74,7 +112,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-700">Weight</h3>
-                        <p class="text-gray-600">{{ $fruit->weight }} kg</p>
+                        <p class="text-gray-600">{{ $ipfsMetadata['weight'] ?? $fruit->weight . ' kg' }}</p>
                     </div>
                 </div>
                 <div class="flex items-start">
@@ -83,7 +121,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-700">Grade</h3>
-                        <p class="text-gray-600">{{ $fruit->grade }}</p>
+                        <p class="text-gray-600">{{ $ipfsMetadata['grade'] ?? $fruit->grade }}</p>
                     </div>
                 </div>
                 <div class="flex items-start">
@@ -92,7 +130,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-700">Blockchain Record ID</h3>
-                        <p class="text-gray-600 truncate">
+                        <p class="text-gray-600 break-all">
                             {{ $fruit->tx_hash ?? '-' }}
                         </p>
                     </div>
@@ -100,7 +138,7 @@
             </div>
             <div class="mt-6 pt-6 border-t border-gray-100">
                 <a class="hunter-green hover:text-dark flex items-center font-medium transition-colors"
-                    href="javascript:void(0);">
+                    href="https://amoy.polygonscan.com/tx/{{ $fruit->tx_hash }}" target="_blank">
                     <span> View Full Blockchain Traceability Record </span>
                     <i class="fas fa-arrow-right ml-2"> </i>
                 </a>

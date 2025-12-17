@@ -40,4 +40,18 @@ class BlockchainService
         Log::error('Blockchain sync failed', ['response' => $response->body()]);
         return ['success' => false];
     }
+
+    public function getFruitOnChain(string $fruitTag): string
+    {
+        $url = rtrim(config('services.blockchain.base_url'), '/')
+            . '/fruit/' . $fruitTag;
+
+        $response = Http::get($url);
+
+        if (!$response->successful()) {
+            throw new \Exception('Blockchain read failed');
+        }
+
+        return strtolower($response['metadataHash']);
+    }
 }
