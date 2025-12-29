@@ -197,5 +197,43 @@
     });
 </script>
 
+{{-- download qr script --}}
+<script>
+    function downloadQR(wrapperId, filename = 'qr-code.png') {
+        const svg = document.querySelector(`#${wrapperId} svg`);
+        if (!svg) {
+            console.error('QR SVG not found');
+            return;
+        }
+
+        const serializer = new XMLSerializer();
+        const svgStr = serializer.serializeToString(svg);
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const img = new Image();
+        const blob = new Blob([svgStr], {
+            type: 'image/svg+xml;charset=utf-8'
+        });
+        const url = URL.createObjectURL(blob);
+
+        canvas.width = 300;
+        canvas.height = 300;
+
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+            URL.revokeObjectURL(url);
+
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        };
+
+        img.src = url;
+    }
+</script>
+
 @livewireScripts
 @stack('scripts')

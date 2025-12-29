@@ -68,8 +68,17 @@
 
                                     <div class="modal-body text-center">
 
-                                        {!! QrCode::size(300)->generate($tree->uuid ?? 'No UUID') !!}
-                                        
+                                        <div id="qrCodeWrapper">
+                                            {!! QrCode::size(300)->generate($tree->uuid ?? 'No UUID') !!}
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal-footer d-flex justify-content-center gap-2">
+                                        <button class="btn btn-primary"
+                                            onclick="downloadQR( 'qrCodeWrapper'
+                                            , 'tree-{{ $tree->tree_tag }}.png' )">Download</button>
+                                        <button class="btn btn-secondary" onclick="printQR('Tree {{ $tree->tree_tag }}')">Print</button>
                                     </div>
 
                                 </div>
@@ -150,3 +159,4 @@
         <!--begin::Navs-->
     </div>
 </div>
+

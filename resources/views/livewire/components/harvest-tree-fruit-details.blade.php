@@ -166,8 +166,17 @@
                 </div>
                 <div class="modal-body text-center py-4">
                     @if ($qrCode)
-                        {!! $qrCode !!}
+                        <div id="qrCodeWrapper">
+                            {!! $qrCode !!}
+                        </div>
                         <p class="mt-3 text-muted small">{{ $fruitUuid }}</p>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary"
+                                onclick="downloadQR( 'qrCodeWrapper'
+                                            , 'fruit-{{ $fruit->fruit_tag }}.png' )">Download</button>
+                            <button class="btn btn-secondary" onclick="printQR('Fruit- {{ $fruit->fruit_tag }}')">Print</button>
+                        </div>
                     @else
                         <div class="text-muted small">No QR Code generated yet.</div>
                     @endif
