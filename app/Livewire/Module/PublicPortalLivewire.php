@@ -63,7 +63,6 @@ class PublicPortalLivewire extends Component
             ) {
                 return $this->failVerification('data_mismatch');
             }
-            dd($this->verificationReasonCode);
 
             // 5. Verified
             $this->isVerified = true;

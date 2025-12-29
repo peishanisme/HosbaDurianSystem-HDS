@@ -41,6 +41,7 @@ class HarvestEventModalLivewire extends Component
 
             $this->form->create($validatedData);
             $this->alertSuccess('Harvest event has been created successfully.', $this->modalID);
+
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);
@@ -55,6 +56,7 @@ class HarvestEventModalLivewire extends Component
 
             $this->form->update($validatedData);
             $this->alertSuccess('Harvest event has been updated successfully.', $this->modalID);
+            
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);

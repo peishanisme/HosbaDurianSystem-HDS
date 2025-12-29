@@ -145,7 +145,7 @@
             <x-show-navbar-navitem title="Health Records" :route="route('tree.health-record', $tree->id)" :active="request()->routeIs('tree.health-record')" />
             <x-show-navbar-navitem title="Agrochemical Usage" :route="route('tree.agrochemical-usage', $tree->id)" :active="request()->routeIs('tree.agrochemical-usage')" />
             <x-show-navbar-navitem title="Harvest Records" :route="route('tree.harvest-record', $tree->id)" :active="request()->routeIs('tree.harvest-record')" />
-            <x-show-navbar-navitem title="Media" />
+            {{-- <x-show-navbar-navitem title="Media" /> --}}
         </ul>
         <!--begin::Navs-->
     </div>
