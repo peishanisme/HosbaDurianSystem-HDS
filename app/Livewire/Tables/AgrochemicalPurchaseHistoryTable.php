@@ -24,7 +24,7 @@ class AgrochemicalPurchaseHistoryTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-        ->setSearchPlaceholder('Search Stock')
+            ->setSearchPlaceholder('Search Stock')
             ->setEmptyMessage('No results found')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [

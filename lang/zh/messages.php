@@ -9,6 +9,7 @@ return [
     'disease_listing' => '病害列表',
     'agrochemicals' => '农用化学品',
     'agrochemical_listing' => '农用化学品列表',
+    'agrochemical_usage' => '农用化学品使用',
     'post_harvest' => '采后管理',
     'sales_and_transactions' => '销售与交易',
     'buyer_listing' => '买家列表',

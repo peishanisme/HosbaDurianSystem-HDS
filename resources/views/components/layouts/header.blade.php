@@ -39,7 +39,7 @@
                 <div class="app-navbar-item ms-1 ms-md-4">
                     <div class="cursor-pointer btn btn-light btn-sm"
                         data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-end">
-                        {{ strtoupper(app()->getLocale()) }}
+                        {{ app()->getLocale() == 'ms' ? 'BM' : (app()->getLocale() == 'zh' ? 'CN' : strtoupper(app()->getLocale())) }}
                     </div>
 
                     <!--begin::Dropdown-->

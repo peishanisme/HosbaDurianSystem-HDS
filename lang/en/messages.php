@@ -9,6 +9,7 @@ return [
     'disease_listing' => 'Disease Listing',
     'agrochemicals' => 'Agrochemicals',
     'agrochemical_listing' => 'Agrochemical Listing',
+    'agrochemical_usage' => 'Agrochemical Usage',
     'post_harvest' => 'Post Harvest',
     'harvest_events_listing' => 'Harvest Event Listing',
     'sales_and_transactions' => 'Sales And Transactions',

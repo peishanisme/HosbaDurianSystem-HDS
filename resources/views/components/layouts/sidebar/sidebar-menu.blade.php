@@ -42,12 +42,15 @@
             @class([
                 'show active' => Route::is([
                     'agrochemical.agrochemicals.index',
+                    'agrochemical.agrochemicals.usage',
                     'agrochemical.show',
                     'agrochemical.purchase-history',
                 ]),
             ])>
             <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.agrochemical_listing') }}"
                 route="agrochemical.agrochemicals.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.agrochemical_usage') }}"
+                route="agrochemical.agrochemicals.usage" />
         </x-layouts.sidebar.menu-accordion>
 
         {{-- Post Harvest --}}

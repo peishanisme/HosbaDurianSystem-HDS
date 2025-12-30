@@ -9,6 +9,7 @@ return [
     'disease_listing' => 'Senarai Penyakit',
     'agrochemicals' => 'Agrokimia',
     'agrochemical_listing' => 'Senarai Agrokimia',
+    'agrochemical_usage' => 'Penggunaan Agrokimia',
     'post_harvest' => 'Pasca Tuai',
     'harvest_events_listing' => 'Senarai Acara Penuaian',
     'sales_and_transactions' => 'Jualan dan Transaksi',
