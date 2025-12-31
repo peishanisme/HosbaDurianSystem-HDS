@@ -30,23 +30,6 @@ class CreateTransactionLivewire extends Component
             return [$buyer->uuid => $buyer->company_name];
         })->toArray();
 
-        // fruits uuid and create an array of scanned fruits
-        $fruitUuids = ['c218f235-624e-41fb-8f81-0909d97dd369', '9dc3964a-5b54-48c5-ba85-9ef084d03eff', 'bd860a5c-eb8f-4b21-b9cd-00f6db664a1f', '4f5f12f8-78e3-4f79-a100-bca918ca61ec'];
-        //initialize scanned fruits with data for the fruits with uuids above
-        $this->scannedFruits = [];
-        foreach ($fruitUuids as $uuid) {
-            $fruit = Fruit::where('uuid', $uuid)->first();
-            if ($fruit) {
-                $this->scannedFruits[] = [
-                    'uuid' => $fruit->uuid,
-                    'tag' => $fruit->fruit_tag,
-                    'species' => $fruit->tree->species->name,
-                    'grade' => $fruit->grade,
-                    'weight' => $fruit->weight,
-                ];
-            }
-        }
-
         $this->dispatch('refreshSummary', scannedFruits: $this->scannedFruits);
     }
 

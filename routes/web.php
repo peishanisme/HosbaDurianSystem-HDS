@@ -43,6 +43,9 @@ Route::get('/lang/{locale}', function ($locale) {
 Route::get('/reports/export', [ReportController::class, 'export'])
     ->name('report.export');
 
+Route::get('/receipt/print/{transaction}', [ReportController::class, 'printReceipt'])->name('receipt.print');
+
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardLivewire::class)->name('dashboard');
 

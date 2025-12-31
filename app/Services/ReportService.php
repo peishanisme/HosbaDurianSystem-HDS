@@ -12,11 +12,13 @@ class ReportService
             throw new \Exception('Model not reportable');
         }
 
+        $from = $filters['from'] ?? null;
+        $to   = $filters['to'] ?? null;
         $title = $modelClass::reportTitle();
         $query = $modelClass::reportQuery($filters);
         $data  = $query->get();
         $cols  = $modelClass::reportColumns();
 
-        return compact('title','data', 'cols', 'modelClass');
+        return compact('title', 'data', 'cols', 'modelClass', 'from', 'to');
     }
 }

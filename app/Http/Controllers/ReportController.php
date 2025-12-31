@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 use App\Services\ReportService;
-
-use App\Reports\Exporters\CsvExporter;
 use App\Reports\Exporters\PdfExporter;
 use App\Reports\Exporters\ExcelExporter;
 
@@ -36,11 +35,19 @@ class ReportController extends Controller
     {
         return match (strtolower($format)) {
             'pdf'   => PdfExporter::class,
-            'csv'   => CsvExporter::class,
             'xlsx'  => ExcelExporter::class,
             default => throw new InvalidArgumentException(
                 "Unsupported report format: {$format}"
             ),
         };
+    }
+
+    public function printReceipt(Transaction $transaction)
+    {
+        $summary = $transaction->summary; 
+        $companyName = 'Hosba Durian Sdn Bhd';
+        $companyAddress = 'Kampung Alor Janggus, 06000 Jitra, Kedah, Malaysia';
+
+        return view('documents.transaction-receipt', compact('transaction', 'summary', 'companyName', 'companyAddress'));
     }
 }

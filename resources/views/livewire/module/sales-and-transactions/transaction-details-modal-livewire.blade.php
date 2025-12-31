@@ -69,24 +69,6 @@
                     @endif
                 </table>
             </div>
-
-            <!-- Totals Summary -->
-            {{-- <div class="mt-6 border-t pt-4">
-                <div class="flex justify-end space-y-2 flex-col items-end">
-                    <div class="text-gray-700">
-                        <span class="font-medium">Subtotal:</span>
-                        RM {{ number_format($transaction->subtotal ?? 0, 2) }}
-                    </div>
-                    <div class="text-gray-700">
-                        <span class="font-medium">Discount:</span>
-                        RM {{ number_format($transaction->discount ?? 0, 2) }}
-                    </div>
-                    <div class="text-gray-900 text-lg font-bold">
-                        <span>Total Amount:</span>
-                        RM {{ number_format($transaction->total_price ?? 0, 2) }}
-                    </div>
-                </div>
-            </div> --}}
         @else
             <div class="text-center py-10 text-gray-500">
                 No transaction selected.
@@ -96,5 +78,6 @@
 
     @slot('footer')
         <x-button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</x-button>
+        {{-- <x-button type="button" class="btn btn-primary" onclick="window.open('{{ route('receipt.print', $transaction->uuid) }}', '_blank')">Print Receipt</x-button> --}}
     @endslot
 </x-modal-component>

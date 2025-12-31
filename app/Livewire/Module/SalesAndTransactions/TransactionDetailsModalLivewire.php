@@ -17,46 +17,8 @@ class TransactionDetailsModalLivewire extends Component
     public function loadTransaction(Transaction $transaction)
     {
         $this->transaction = $transaction;
-        $this->loadSummary();
-    }
-
-    public function loadSummary(){
-        $fruits = Fruit::with('tree.species')
-            ->where('transaction_uuid', $this->transaction->uuid)
-            ->get();
-
-        $grouped = [];
-
-        foreach ($fruits as $fruit) {
-            $key = $fruit->tree->species->name . '-' . $fruit->grade;
-
-            if (!isset($grouped[$key])) {
-                $grouped[$key] = [
-                    'species' => $fruit->tree->species->name,
-                    'grade' => $fruit->grade,
-                    'count' => 0,
-                    'total_weight' => 0,
-                    'price_per_kg' => $fruit->price_per_kg ?? 0,
-                    'subtotal' => 0,
-                ];
-            }
-
-            $grouped[$key]['count']++;
-            $grouped[$key]['total_weight'] += $fruit->weight;
-        }
-
-        // calculate subtotals
-        foreach ($grouped as $key => &$item) {
-            $item['subtotal'] = $item['total_weight'] * $item['price_per_kg'];
-        }
-
-        // sort nicely by species name then grade
-        uasort($grouped, function ($a, $b) {
-            $speciesCompare = strcmp($a['species'], $b['species']);
-            return $speciesCompare === 0 ? strcmp($a['grade'], $b['grade']) : $speciesCompare;
-        });
-
-        $this->summary = $grouped;
+        // dd($transaction->getSummaryAttribute());
+        $this->summary = $transaction->getFruitSummary();
     }
 
     public function resetInput()

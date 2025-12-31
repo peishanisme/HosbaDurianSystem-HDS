@@ -66,6 +66,12 @@
     {{-- Header --}}
     <div class="header">
         <h1>{{ $title }}</h1>
+        <h5 class="date">
+            Period:
+            {{ \Carbon\Carbon::parse($from)->format('d M Y') }}
+            –
+            {{ \Carbon\Carbon::parse($to)->format('d M Y') }}
+        </h5>
         <div class="date">
             Generated on {{ now()->format('d M Y, H:i') }}
         </div>
@@ -81,7 +87,7 @@
             </tr>
         </thead>
         <tbody>
-            
+
             @forelse($data as $row)
                 <tr>
                     @foreach ($columns as $field)

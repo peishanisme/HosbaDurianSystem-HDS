@@ -18,7 +18,7 @@ class HarvestTreeFruitDetails extends Component
     public $filterSpecies = '';
     public $expanded = [];
     public $qrCode;
-    public $fruitUuid;
+    public $fruitUuid, $fruitTag;
     public $feedback;
 
     protected $queryString = ['search', 'filterSpecies'];
@@ -48,9 +48,12 @@ class HarvestTreeFruitDetails extends Component
     public function showQrCode($uuid)
     {
         $this->fruitUuid = $uuid;
+        $this->fruitTag = Tree::whereHas('fruits', function ($query) use ($uuid) {
+            $query->where('uuid', $uuid);
+        })->first()->fruits()->where('uuid', $uuid)->first()->fruit_tag;
 
         // Generate QR code as HTML string (make sure it's plain string)
-        $this->qrCode = (string) QrCode::size(200)->generate(route('public.portal', $this->fruitUuid));
+        $this->qrCode = (string) QrCode::size(300)->generate(route('public.portal', $this->fruitUuid));
 
         // Dispatch browser event to open the modal
         $this->dispatch('show-qr-modal');

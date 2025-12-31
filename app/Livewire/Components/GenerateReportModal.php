@@ -4,7 +4,6 @@ namespace App\Livewire\Components;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
-use App\Models\AgrochemicalRecord;
 
 class GenerateReportModal extends Component
 {
@@ -12,6 +11,7 @@ class GenerateReportModal extends Component
     public ?string $format = '';
     public ?string $from = '';
     public ?string $to = '';
+    public ?string $model = '' ;
 
     public function generateReport()
     {        
@@ -32,11 +32,12 @@ class GenerateReportModal extends Component
         );
 
         return redirect()->route('report.export', [
-            'model' => AgrochemicalRecord::class,
+            'model' => $this->model,
             'format' => $this->format,
             'from' => $this->from,
             'to' => $this->to,
         ]);
+        
     }
 
     #[On('reset-generator')]

@@ -174,8 +174,8 @@
                         <div class="modal-footer">
                             <button class="btn btn-primary"
                                 onclick="downloadQR( 'qrCodeWrapper'
-                                            , 'fruit-{{ $fruit->fruit_tag }}.png' )">Download</button>
-                            <button class="btn btn-secondary" onclick="printQR('Fruit- {{ $fruit->fruit_tag }}')">Print</button>
+                                            , 'fruit-{{ $fruitTag }}.png' )">Download</button>
+                            <button class="btn btn-secondary" onclick="printQR('Fruit- {{ $fruitTag }}')">Print</button>
                         </div>
                     @else
                         <div class="text-muted small">No QR Code generated yet.</div>

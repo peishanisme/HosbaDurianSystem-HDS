@@ -5,7 +5,7 @@ use App\Reports\Contracts\ReportExporter;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Reports\Exporters\GenericReportExport;
 
-class ExcelExporter implements ReportExporter
+class ExcelExporter extends BaseExporter implements ReportExporter
 {
     public function export(array $reportData)
     {
@@ -14,7 +14,7 @@ class ExcelExporter implements ReportExporter
                 $reportData['cols'],
                 $reportData['data']
             ),
-            str_replace(' ', '_', $reportData['title']) . '.xlsx'
+            $this->buildFilename($reportData, 'xlsx')
         );
     }
 }

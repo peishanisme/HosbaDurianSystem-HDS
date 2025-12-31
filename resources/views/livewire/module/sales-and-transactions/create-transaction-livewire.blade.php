@@ -63,7 +63,8 @@
                         @if ($activeStep === 3)
                             <div class="flex-column">
                                 <livewire:components.transaction-fruit-summary-table :scannedFruits="$scannedFruits"
-                                    :summary="$summary" :discount="$form->discount" :subtotal="$form->subtotal" :finalAmount="$form->total_price" wire:key="summary-table" />
+                                    :summary="$summary" :discount="$form->discount" :subtotal="$form->subtotal" :finalAmount="$form->total_price"
+                                    wire:key="summary-table" />
                                 <div class="mt-2">
                                     <x-input-error :messages="$errors->get('summaryPrices')" />
                                 </div>
@@ -134,12 +135,14 @@
                                     Continue
                                 </button>
                             @else
-                                <button type="button" class="btn btn-primary" wire:click="create"
-                                    wire:loading.attr="disabled">
-                                    <span class="indicator-label">Submit</span>
-                                    <span class="indicator-progress">
-                                        Please wait... <span
-                                            class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                <button type="button" class="btn btn-primary" wire:click="create">
+                                    <!-- Show label when NOT loading -->
+                                    <span class="indicator-label" wire:loading.remove wire:target="create">Submit</span>
+
+                                    <!-- Show progress when loading -->
+                                    <span class="indicator-progress" wire:loading wire:target="create">
+                                        Please wait...
+                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                     </span>
                                 </button>
                             @endif
