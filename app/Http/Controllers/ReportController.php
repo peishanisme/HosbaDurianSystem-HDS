@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use InvalidArgumentException;
 use App\Services\ReportService;
-use App\Reports\Exporters\PdfExporter;
 
 use App\Reports\Exporters\CsvExporter;
-use InvalidArgumentException;
+use App\Reports\Exporters\PdfExporter;
+use App\Reports\Exporters\ExcelExporter;
 
 class ReportController extends Controller
 {
@@ -36,6 +37,7 @@ class ReportController extends Controller
         return match (strtolower($format)) {
             'pdf'   => PdfExporter::class,
             'csv'   => CsvExporter::class,
+            'xlsx'  => ExcelExporter::class,
             default => throw new InvalidArgumentException(
                 "Unsupported report format: {$format}"
             ),

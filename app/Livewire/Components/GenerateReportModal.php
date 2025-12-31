@@ -15,11 +15,21 @@ class GenerateReportModal extends Component
 
     public function generateReport()
     {        
-        $this->validate([
-            'format' => 'required|in:pdf,csv',
+        $this->validate(
+            [
+            'format' => 'required|in:pdf,xlsx',
             'from'   => 'required|date',
             'to'     => 'required|date',
-        ]);
+            ],
+            [
+            'format.required' => 'Please select a report format.',
+            'format.in' => 'The format must be either PDF or Excel.',
+            'from.required' => 'Please select a start date.',
+            'from.date' => 'The start date must be a valid date.',
+            'to.required' => 'Please select an end date.',
+            'to.date' => 'The end date must be a valid date.',
+            ]
+        );
 
         return redirect()->route('report.export', [
             'model' => AgrochemicalRecord::class,
@@ -30,7 +40,7 @@ class GenerateReportModal extends Component
     }
 
     #[On('reset-generator')]
-    public function resetGenerator()
+    public function resetInput()
     {
         $this->reset(['format', 'from', 'to']);
     }

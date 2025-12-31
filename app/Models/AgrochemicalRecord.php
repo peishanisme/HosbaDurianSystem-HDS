@@ -66,7 +66,7 @@ class AgrochemicalRecord extends Model implements Reportable
         return [
             'Date'              => 'applied_at',
             'Agrochemical'      => 'agrochemical.name',
-            'Type'              => 'agrochemical.type',
+            // 'Type'              => 'agrochemical.type',
             'Tree'              => 'tree.tree_tag',
             'Description'       => 'description',
         ];

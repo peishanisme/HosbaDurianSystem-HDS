@@ -81,6 +81,7 @@
             </tr>
         </thead>
         <tbody>
+            
             @forelse($data as $row)
                 <tr>
                     @foreach ($columns as $field)
