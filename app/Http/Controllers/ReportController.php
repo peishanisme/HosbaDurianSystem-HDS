@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use App\Services\ReportService;
 use App\Reports\Exporters\PdfExporter;
 use App\Reports\Exporters\ExcelExporter;
+use App\Reports\Exporters\ReceiptPdfExporter;
 
 class ReportController extends Controller
 {
@@ -44,10 +45,6 @@ class ReportController extends Controller
 
     public function printReceipt(Transaction $transaction)
     {
-        $summary = $transaction->summary; 
-        $companyName = 'Hosba Durian Sdn Bhd';
-        $companyAddress = 'Kampung Alor Janggus, 06000 Jitra, Kedah, Malaysia';
-
-        return view('documents.transaction-receipt', compact('transaction', 'summary', 'companyName', 'companyAddress'));
+       return app(ReceiptPdfExporter::class)->export($transaction);
     }
 }

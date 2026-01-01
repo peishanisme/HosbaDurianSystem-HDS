@@ -33,6 +33,7 @@ return [
     'wind_speed' => 'Wind Speed',
     'rain' => 'Rain',
 
+    'view_trees' => 'View Trees',
     'total_trees_by_species' => 'Total Trees by Species',
 
     'health_status_of_trees' => 'Health Status of Trees',

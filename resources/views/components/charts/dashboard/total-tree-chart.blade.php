@@ -1,6 +1,9 @@
 <div class="card pb-10 h-100">
     <div class="card-header">
         <h3 class="card-title">{{ __('messages.total_trees_by_species') }}</h3>
+        <div class="d-flex align-items-center justify-content-end">
+            <a class="btn btn-secondary" style="height: 45px" href="{{ route('tree.trees.index') }}">{{ __('messages.view_trees') }}</a>
+        </div>
     </div>
     <div class="card-body p-5" id="total-tree-chart" style="width: 100%; height: 350px;"></div>
 </div>

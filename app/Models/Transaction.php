@@ -114,9 +114,14 @@ class Transaction extends Model
         //discount
         //payment method
         return [
+            'buyer' => $this->buyer ? $this->buyer->company_name : 'Walk-in Customer',
+            'date' => $this->date,
+            'reference_id' => $this->reference_id,
+            'remark' => $this->remark ?? '',
             'fruit_summary' => $this->getFruitSummary(),
-            'subtotal' => $this->subtotal,
-            'total' => $this->getSubtotalAttribute(), 
+            'subtotal' => $this->getSubtotalAttribute(),
+            'total' =>  $this->total_price,
+            'discount' => $this->discount,
             'payment_method' => $this->payment_method,
         ];
     }

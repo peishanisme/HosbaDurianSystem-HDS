@@ -78,6 +78,6 @@
 
     @slot('footer')
         <x-button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</x-button>
-        {{-- <x-button type="button" class="btn btn-primary" onclick="window.open('{{ route('receipt.print', $transaction->uuid) }}', '_blank')">Print Receipt</x-button> --}}
+        <x-button type="button" class="btn btn-primary" wire:click="printReceipt">Print Receipt</x-button>
     @endslot
 </x-modal-component>
