@@ -102,4 +102,14 @@ class AgrochemicalController extends Controller
             'data'    => $records
         ], 200);
     }
+
+    public function getAllAgroRecords()
+    {
+        $records = AgrochemicalRecord::with(['agrochemical', 'tree'])->get();
+
+        return response()->json([
+            'message' => 'All agrochemical records fetched successfully',
+            'data'    => $records
+        ], 200);
+    }
 }

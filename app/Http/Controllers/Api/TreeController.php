@@ -154,14 +154,45 @@ class TreeController extends Controller
             $thumbnailUrl = "trees/jpg/{$uuidName}";
         }
 
+        // Capture latest growth values before update
+        $latestGrowth = $tree->growthLogs()->latest()->first();
+        $prevHeight = $latestGrowth?->height;
+        $prevDiameter = $latestGrowth?->diameter;
+
         $tree->update([
             'species_id'       => $request->species_id,
-                'planted_at'       => $request->planted_at,
-                'thumbnail'        => $thumbnailUrl,   // save the path in DB
-                'latitude'         => $request->latitude,
-                'longitude'        => $request->longitude,
-                'flowering_period' => $request->flowering_period,
-            ]);
+            'planted_at'       => $request->planted_at,
+            'thumbnail'        => $thumbnailUrl,   // save the path in DB
+            'latitude'         => $request->latitude,
+            'longitude'        => $request->longitude,
+            'flowering_period' => $request->flowering_period,
+        ]);
+
+        // If height or diameter changed, create a new growth log entry
+        // (treat null previous as a change so first log is recorded)
+        $newHeight = $request->height;
+        $newDiameter = $request->diameter;
+
+        $heightChanged = $prevHeight === null || (float) $newHeight != (float) $prevHeight;
+        $diameterChanged = $prevDiameter === null || (float) $newDiameter != (float) $prevDiameter;
+
+        if ($heightChanged || $diameterChanged) {
+            if ($latestGrowth) {
+                // Update the latest growth log instead of creating a new one
+                $latestGrowth->update([
+                    'height'   => $newHeight,
+                    'diameter' => $newDiameter,
+                ]);
+            } else {
+                // No previous growth log exists, create the first one
+                $tree->growthLogs()->create([
+                    'tree_id'   => $tree->id,
+                    'tree_uuid' => $tree->uuid,
+                    'height'    => $newHeight,
+                    'diameter'  => $newDiameter,
+                ]);
+            }
+        }
 
         DB::commit();
 
@@ -176,29 +207,6 @@ class TreeController extends Controller
             'error' => $e->getMessage()
         ], 500);
     }
-
-    // if ($validator->fails()) {
-    //     return response()->json([
-    //         'message' => 'Validation failed',
-    //         'errors' => $validator->errors()
-    //     ], 422);
-    // }
-
-    // try {
-    //     $dto = TreeDTO::fromRequest($request);
-
-    //     $updatedTree = (new UpdateTreeAction())->handle($tree, $dto);
-
-    //     return response()->json([
-    //         'message' => 'Tree updated successfully',
-    //         'data' => $updatedTree
-    //     ]);
-    // } catch (\Exception $e) {
-    //     return response()->json([
-    //         'message' => 'Failed to update tree',
-    //         'error' => $e->getMessage()
-    //     ], 500);
-    // }
     }
 
     public function destroy($id) {

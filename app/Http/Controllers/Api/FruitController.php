@@ -46,11 +46,12 @@ class FruitController extends Controller
 
     public function index()
     {
-        $fruits = Fruit::with('tree.species')->get();
+        $fruits = Fruit::with('tree.species')
+            ->orderBy('harvested_at', 'desc')
+            ->get();
+
         return response()->json($fruits);
     }
-
-
 
     public function update(Request $request, $uuid)
     {
