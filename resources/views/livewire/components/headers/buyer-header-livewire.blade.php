@@ -4,16 +4,13 @@
         <div class="d-flex flex-wrap flex-sm-nowrap">
             <!--begin: Pic-->
             <div class="me-7 mb-4">
-                <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-                    <img class="object-fit-cover border"
-                        src="{{ secure_asset('assets/media/placeholder/profile-icon.png') }}" alt="image" />
-                </div>
+                <x-avatar :name="$buyer->company_name" size="80px" />
             </div>
 
             <div class="flex-grow-1">
                 <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
                     <div class="d-flex flex-column">
-                        <div class="d-flex align-items-center mb-2">
+                        <div class="d-flex align-items-center my-2">
                             <span class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{ $buyer->company_name }}
                             </span>
                         </div>
@@ -71,8 +68,9 @@
         </div>
        
         <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
-            <x-show-navbar-navitem title="Overview" route="sales.buyers.show" />
-            <x-show-navbar-navitem title="Transactions" />
+            <x-show-navbar-navitem title="Overview" route="{{ route('sales.buyers.show', $buyer->id) }}"
+                :active="request()->routeIs('sales.buyers.show')" />
+            <x-show-navbar-navitem title="Transactions" route="{{ route('sales.buyers.transaction', $buyer->id) }}" :active="request()->routeIs('sales.buyers.transaction')"/>
         </ul>
 
     </div>

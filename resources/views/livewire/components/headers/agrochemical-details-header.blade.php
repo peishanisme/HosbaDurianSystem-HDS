@@ -88,6 +88,8 @@
                 :active="request()->routeIs('agrochemical.show')" />
             <x-show-navbar-navitem title="Purchase History"
                 route="{{ route('agrochemical.purchase-history', $agrochemical->id) }}" :active="request()->routeIs('agrochemical.purchase-history')" />
+            <x-show-navbar-navitem title="Application Records"
+                route="{{ route('agrochemical.application-record', $agrochemical->id) }}" :active="request()->routeIs('agrochemical.application-record')" />
         </ul>
 
     </div>

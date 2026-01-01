@@ -5,6 +5,7 @@
 <!--begin::Global Javascript Bundle(mandatory for all pages)-->
 <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
 <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+
 <!--end::Global Javascript Bundle-->
 <!--begin::Vendors Javascript(used for this page only)-->
 <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
@@ -24,6 +25,8 @@
 {{-- sweetalert2 --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="sweetalert2.min.js"></script>
+
+<script src="https://cdn.amcharts.com/lib/5/plugins/exporting.js"></script>
 
 <!--end::Vendors Javascript-->
 <!--begin::Custom Javascript(used for this page only)-->
@@ -147,8 +150,90 @@
                 }
             });
         });
+
+        Livewire.on('toast-success', ({
+            message,
+        }) => {
+            console.log(message);
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "success",
+                title: message
+            });
+        });
+
+        Livewire.on('toast-error', ({
+            message,
+        }) => {
+            console.log(message);
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "error",
+                title: message
+            });
+        });
     });
 </script>
 
-@stack('scripts')
+{{-- download qr script --}}
+<script>
+    function downloadQR(wrapperId, filename = 'qr-code.png') {
+        const svg = document.querySelector(`#${wrapperId} svg`);
+        if (!svg) {
+            console.error('QR SVG not found');
+            return;
+        }
 
+        const serializer = new XMLSerializer();
+        const svgStr = serializer.serializeToString(svg);
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const img = new Image();
+        const blob = new Blob([svgStr], {
+            type: 'image/svg+xml;charset=utf-8'
+        });
+        const url = URL.createObjectURL(blob);
+
+        canvas.width = 300;
+        canvas.height = 300;
+
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+            URL.revokeObjectURL(url);
+
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        };
+
+        img.src = url;
+    }
+</script>
+
+@livewireScripts
+@stack('scripts')

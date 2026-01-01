@@ -62,10 +62,10 @@ class HarvestEvent extends Model
         return $this->hasManyThrough(
             Tree::class,
             Fruit::class,
-            'harvest_uuid',  // Foreign key on Fruit table
-            'uuid',            // Local key on Tree table (we’ll override this below)
-            'uuid',          // Local key on HarvestEvent
-            'tree_uuid'        // Foreign key on Fruit table to Tree
+            'harvest_uuid',  
+            'uuid',            
+            'uuid',          
+            'tree_uuid'       
         )->distinct();
     }
 }

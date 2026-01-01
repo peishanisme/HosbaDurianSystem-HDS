@@ -34,7 +34,6 @@ class AgrochemicalModalLivewire extends Component
 
 
     #[On('thumbnail-updated')]
-     #[On('thumbnail-updated')]
     public function setThumbnail($path): void
     {
         if ($path) {

@@ -3,84 +3,105 @@
     <div class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6" id="#kt_app_sidebar_menu"
         data-kt-menu="true" data-kt-menu-expand="false">
 
-        <x-layouts.sidebar.menu-item title="Dashboard" route="dashboard" />
+        {{-- Dashboard --}}
+        <x-layouts.sidebar.menu-item title="{{ __('messages.dashboard') }}" route="dashboard" />
 
         <div class="menu-item pt-5">
             <div class="menu-content">
-                <span class="menu-heading fw-bold text-uppercase fs-7">Features</span>
+                <span class="menu-heading fw-bold text-uppercase fs-7">
+                    {{ __('messages.features') ?? 'FEATURES' }}
+                </span>
             </div>
         </div>
 
-        {{-- tree management --}}
-        <x-layouts.sidebar.menu-accordion title="Tree Management" icon="ki-duotone ki-tree"
+        {{-- Tree Management --}}
+        <x-layouts.sidebar.menu-accordion title="{{ __('messages.tree_management') }}" icon="ki-duotone ki-tree"
             @class([
                 'show active' => Route::is([
                     'tree.disease.index',
                     'tree.species.index',
                     'tree.trees.index',
-                    'tree.trees.show',
+                    'tree.show',
+                    'tree.growth-log',
+                    'tree.algochemical-usage',
+                    'tree.harvest-record',
+                    'tree.health-record',
                 ]),
             ])>
-            <x-layouts.sidebar.menu-sub-accordion title="Species Listing" route="tree.species.index" />
-            <x-layouts.sidebar.menu-sub-accordion title="Trees Listing" route="tree.trees.index" />
-            <x-layouts.sidebar.menu-sub-accordion title="Diseases Listing" route="tree.disease.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.species_listing') }}"
+                route="tree.species.index" />
+
+            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.tree_listing') }}" route="tree.trees.index" />
+
+            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.disease_listing') }}"
+                route="tree.disease.index" />
         </x-layouts.sidebar.menu-accordion>
 
-        {{-- agrochemical --}}
-        <x-layouts.sidebar.menu-accordion title="Agrochemicals" :svg="view('components.icons.agrochemical')" @class([
-            'show active' => Route::is([
-                'agrochemical.agrochemicals.index',
-                'agrochemical.show',
-                'agrochemical.purchase-history'
-            ]),
-        ])>
-            <x-layouts.sidebar.menu-sub-accordion title="Agrochemicals Listing"
+        {{-- Agrochemicals --}}
+        <x-layouts.sidebar.menu-accordion title="{{ __('messages.agrochemicals') }}" :svg="view('components.icons.agrochemical')"
+            @class([
+                'show active' => Route::is([
+                    'agrochemical.agrochemicals.index',
+                    'agrochemical.agrochemicals.usage',
+                    'agrochemical.show',
+                    'agrochemical.purchase-history',
+                ]),
+            ])>
+            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.agrochemical_listing') }}"
                 route="agrochemical.agrochemicals.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.agrochemical_usage') }}"
+                route="agrochemical.agrochemicals.usage" />
         </x-layouts.sidebar.menu-accordion>
 
-        {{-- post-harvest --}}
-        <x-layouts.sidebar.menu-accordion title="Post-Harvest" icon="ki-duotone ki-cube-2" @class([
-            'show active' => Route::is([
-                'harvest.events.index',
-            ]),
-        ])>
-            <x-layouts.sidebar.menu-sub-accordion title="Harvest Events Listing"
+        {{-- Post Harvest --}}
+        <x-layouts.sidebar.menu-accordion title="{{ __('messages.post_harvest') }}" icon="ki-duotone ki-cube-2"
+            @class([
+                'show active' => Route::is(['harvest.events.index']),
+            ])>
+            <x-layouts.sidebar.menu-sub-accordion
+                title="{{ __('messages.harvest_events_listing') ?? 'Harvest Events Listing' }}"
                 route="harvest.events.index" />
         </x-layouts.sidebar.menu-accordion>
 
-        {{-- sales & transactions --}}
-        <x-layouts.sidebar.menu-accordion title="Sales & Transactions" icon="ki-duotone ki-dollar"
-            @class([
+        {{-- Sales & Transactions --}}
+        <x-layouts.sidebar.menu-accordion title="{{ __('messages.sales_and_transactions') }}"
+            icon="ki-duotone ki-dollar" @class([
                 'show active' => Route::is([
                     'sales.buyers.index',
                     'sales.buyers.show',
                     'sales.transaction.index',
                 ]),
             ])>
-            <x-layouts.sidebar.menu-sub-accordion title="Buyers Listing" route="sales.buyers.index" />
-            <x-layouts.sidebar.menu-sub-accordion title="Transactions Listing" route="sales.transaction.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.buyer_listing') }}"
+                route="sales.buyers.index" />
+
+            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.transaction_listing') }}"
+                route="sales.transaction.index" />
         </x-layouts.sidebar.menu-accordion>
 
-        {{-- user management --}}
-        <x-layouts.sidebar.menu-accordion title="User Management" icon="ki-duotone ki-security-user"
-            @class([
+        {{-- User Management --}}
+        <x-layouts.sidebar.menu-accordion title="{{ __('messages.user_management') }}"
+            icon="ki-duotone ki-security-user" @class([
                 'show active' => Route::is([
                     'user.users.index',
                     'user.roles.index',
                     'user.permissions.index',
                 ]),
             ])>
-            <x-layouts.sidebar.menu-sub-accordion title="Users Listing" route="user.users.index" />
-            <x-layouts.sidebar.menu-sub-accordion title="Roles Listing" route="user.roles.index" />
-            <x-layouts.sidebar.menu-sub-accordion title="Permissions Listing" route="user.permissions.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.user_listing') }}" route="user.users.index" />
+
+            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.role_listing') }}" route="user.roles.index" />
+
+            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.permission_listing') }}"
+                route="user.permissions.index" />
         </x-layouts.sidebar.menu-accordion>
 
-        {{-- activity log --}}
-        <x-layouts.sidebar.menu-accordion title="Activity Log" icon="ki-duotone ki-bookmark-2"
+        {{-- Activity Log --}}
+        <x-layouts.sidebar.menu-accordion title="{{ __('messages.activity_logs') }}" icon="ki-duotone ki-bookmark-2"
             @class([
                 'show active' => Route::is(['log.logs.index']),
             ])>
-            <x-layouts.sidebar.menu-sub-accordion title="Logs" route="log.logs.index" />
+            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.logs_listing') }}" route="log.logs.index" />
         </x-layouts.sidebar.menu-accordion>
 
     </div>

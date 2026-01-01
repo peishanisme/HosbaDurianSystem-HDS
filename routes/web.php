@@ -1,9 +1,9 @@
 <?php
 
-// use App\Http\Controllers\ProfileController;
-
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReportController;
 use App\Livewire\Module\DashboardLivewire;
+use App\Livewire\Module\PublicPortalLivewire;
 use App\Livewire\Module\TreeManagement\TreeIndexLivewire;
 use App\Livewire\Module\UserManagement\RoleIndexLivewire;
 use App\Livewire\Module\UserManagement\UserIndexLivewire;
@@ -18,15 +18,33 @@ use App\Livewire\Module\SalesAndTransactions\BuyerIndexLivewire;
 use App\Livewire\Module\TreeManagement\TreeHealthRecordLivewire;
 use App\Livewire\Module\UserManagement\ActivityLogIndexLivewire;
 use App\Livewire\Module\PostHarvest\HarvestEventOverviewLivewire;
+use App\Livewire\Module\TreeManagement\TreeHarvestRecordLivewire;
 use App\Livewire\Module\SalesAndTransactions\BuyerOverviewLivewire;
+use App\Livewire\Module\TreeManagement\TreeAgrochemicalUsageLivewire;
+use App\Livewire\Module\SalesAndTransactions\BuyerTransactionLivewire;
 use App\Livewire\Module\SalesAndTransactions\TransactionIndexLivewire;
 use App\Livewire\Module\PostHarvest\HarvestEventHarvestSummaryLivewire;
 use App\Livewire\Module\SalesAndTransactions\CreateTransactionLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalIndexLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalOverviewLivewire;
+use App\Livewire\Module\AgrochemicalManagement\AgrochemicalGlobalUsageLivewire;
 use App\Livewire\Module\AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire;
-use App\Livewire\Module\TreeManagement\TreeAgrochemicalUsageLivewire;
-use App\Livewire\Module\TreeManagement\TreeHarvestRecordLivewire;
+use App\Livewire\Module\AgrochemicalManagement\AgrochemicalApplicationRecordLivewire;
+
+// routes/web.php
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'zh', 'ms'])) {
+        session(['locale' => $locale]);
+    }
+
+    return redirect(request('redirect', '/'));
+})->name('lang.switch');
+
+Route::get('/reports/export', [ReportController::class, 'export'])
+    ->name('report.export');
+
+Route::get('/receipt/print/{transaction:uuid}', [ReportController::class, 'printReceipt'])->name('receipt.print');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardLivewire::class)->name('dashboard');
@@ -60,9 +78,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::group(['prefix' => 'agrochemical', 'as' => 'agrochemical.'], function () {
         Route::get('/all', AgrochemicalIndexLivewire::class)->name('agrochemicals.index');
+        Route::get('/usage', AgrochemicalGlobalUsageLivewire::class)->name('agrochemicals.usage');
         Route::group(['prefix' => 'details/{agrochemical:id}'], fn() => [
             Route::get('overview', AgrochemicalOverviewLivewire::class)->name('show'),
             Route::get('purchase-history', AgrochemicalPurchaseHistoryLivewire::class)->name('purchase-history'),
+            Route::get('application-record', AgrochemicalApplicationRecordLivewire::class)->name('application-record'),
         ]);
     });
 
@@ -77,7 +97,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['prefix' => 'sales', 'as' => 'sales.'], function () {
         Route::group(['prefix' => 'buyer'], function () {
             Route::get('/all', BuyerIndexLivewire::class)->name('buyers.index');
-            Route::get('details/{buyer:id}', BuyerOverviewLivewire::class)->name('buyers.show');
+            Route::group(['prefix' => 'details/{buyer:id}'], fn() => [
+                Route::get('overview', BuyerOverviewLivewire::class)->name('buyers.show'),
+                Route::get('transaction', BuyerTransactionLivewire::class)->name('buyers.transaction'),
+            ]);
         });
 
         Route::group(['prefix' => 'transaction'], function () {
@@ -92,5 +115,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::view('/welcome', 'welcome')->name('welcome');
 });
+
+Route::get('/product-details/{fruit:uuid}', PublicPortalLivewire::class)->name('public.portal');
+
+
 
 require __DIR__ . '/auth.php';

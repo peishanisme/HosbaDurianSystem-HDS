@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Components;
+namespace App\Livewire\Components\Headers;
 
 use Livewire\Component;
 use App\Models\HarvestEvent;
@@ -13,6 +13,6 @@ class HarvestEventHeader extends Component
 
     public function render()
     {
-        return view('livewire.components.harvest-event-header');
+        return view('livewire.components.headers.harvest-event-header');
     }
 }

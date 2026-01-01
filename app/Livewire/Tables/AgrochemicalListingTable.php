@@ -62,8 +62,8 @@ class AgrochemicalListingTable extends DataTableComponent
             ViewComponentColumn::make('Type', 'type')
                 ->component('table-badge')
                 ->attributes(fn($value, $row, Column $column) => [
-                    'badge' => 'badge-light-primary',
-                    'label' => $value->label(),
+                    'badge' => $value === AgrochemicalType::PESTICIDE ?  'badge-light-info' : 'badge-light-primary',
+                    'label' => $value->label() ,
                 ]),
             Column::make("Description", "description"),
             Column::make('Actions')

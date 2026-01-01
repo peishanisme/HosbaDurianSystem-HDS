@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Components;
+namespace App\Livewire\Components\Headers;
 
 use App\Models\Buyer;
 use Livewire\Component;
@@ -12,6 +12,6 @@ class BuyerHeaderLivewire extends Component
 
     public function render()
     {
-        return view('livewire.components.buyer-header-livewire');
+        return view('livewire.components.headers.buyer-header-livewire');
     }
 }

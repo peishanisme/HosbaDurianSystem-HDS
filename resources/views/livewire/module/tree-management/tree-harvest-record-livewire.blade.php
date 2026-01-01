@@ -1,5 +1,5 @@
-<div>
-    <livewire:components.tree-details-header :tree="$tree" />
+<div id="kt_app_content_container" class="container-fluid">
+    <livewire:components.headers.tree-details-header :tree="$tree" />
 
     <div class="card shadow-sm rounded">
         <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center">

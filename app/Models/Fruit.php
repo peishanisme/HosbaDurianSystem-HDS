@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -24,6 +25,13 @@ class Fruit extends Model
         'transaction_uuid',
         'is_spoiled',
         'fruit_tag',
+        'metadata_cid',
+        'metadata_hash',
+        'tx_hash',
+        'onchain_at',
+        'is_onchain',
+        'metadata_version',
+        'price_per_kg',
     ];
 
     protected static function booted()
@@ -60,5 +68,15 @@ class Fruit extends Model
     public function harvestEvent(): BelongsTo
     {
         return $this->belongsTo(HarvestEvent::class, 'harvest_uuid', 'uuid');
+    }
+
+    public function feedbacks(): HasMany
+    {
+        return $this->hasMany(FruitFeedback::class, 'fruit_uuid', 'uuid');
+    }
+
+    public function getIsSoldAttribute(): bool
+    {
+        return !is_null($this->transaction_uuid);
     }
 }

@@ -39,6 +39,7 @@ class BuyerListingTable extends DataTableComponent
             ViewComponentColumn::make('Company Name', 'company_name')
                 ->component('components.table-primary-column')
                 ->attributes(fn($value, $row, Column $column) => [
+                    'avatar' => $value,
                     'title' => $value,
                     'route' => route('sales.buyers.show', $row->id),
                 ])->searchable()

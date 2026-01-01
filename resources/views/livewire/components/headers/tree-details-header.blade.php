@@ -68,8 +68,17 @@
 
                                     <div class="modal-body text-center">
 
-                                        {!! QrCode::size(300)->generate($tree->uuid ?? 'No UUID') !!}
-                                        
+                                        <div id="qrCodeWrapper">
+                                            {!! QrCode::size(300)->generate($tree->uuid ?? 'No UUID') !!}
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal-footer d-flex justify-content-center gap-2">
+                                        <button class="btn btn-primary"
+                                            onclick="downloadQR( 'qrCodeWrapper'
+                                            , 'tree-{{ $tree->tree_tag }}.png' )">Download</button>
+                                        <button class="btn btn-secondary" onclick="printQR('Tree {{ $tree->tree_tag }}')">Print</button>
                                     </div>
 
                                 </div>
@@ -145,8 +154,9 @@
             <x-show-navbar-navitem title="Health Records" :route="route('tree.health-record', $tree->id)" :active="request()->routeIs('tree.health-record')" />
             <x-show-navbar-navitem title="Agrochemical Usage" :route="route('tree.agrochemical-usage', $tree->id)" :active="request()->routeIs('tree.agrochemical-usage')" />
             <x-show-navbar-navitem title="Harvest Records" :route="route('tree.harvest-record', $tree->id)" :active="request()->routeIs('tree.harvest-record')" />
-            <x-show-navbar-navitem title="Media" />
+            {{-- <x-show-navbar-navitem title="Media" /> --}}
         </ul>
         <!--begin::Navs-->
     </div>
 </div>
+
