@@ -36,7 +36,7 @@
     <section id="product-details" class="mb-12 max-w-3xl mx-auto">
         <div class="bg-white rounded-3xl shadow-lg p-6 md:p-8 card-hover border-2 border-secondary/20 relative overflow-hidden bg-opacity-90 backdrop-blur-sm"
             style="box-shadow: 0 4px 20px rgba(106, 153, 78, 0.1); border-style: dotted;">
-            <div class="flex items-center justify-between mb-6">
+            <div class="flex flex-col md:flex-row items-center justify-between mb-6">
                 <h2 class="text-2xl font-bold hunter-green flex items-center">
                     <i class="fas fa-crown text-accent mr-2"></i>
                     Product Details
@@ -52,12 +52,12 @@
                 @endphp
 
                 @if ($isVerified)
-                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700">
+                    <span class="mt-3 md:mt-0 inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700">
                         ✅ Verified Product
                     </span>
                 @else
                     <span
-                        class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 relative group">
+                        class="mt-3 mt-md-0 inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 relative group">
                         ⚠️ Verification Failed
 
                         <i class="fas fa-info-circle ml-2 cursor-pointer"></i>
