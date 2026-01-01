@@ -58,6 +58,12 @@ class CreateTransactionLivewire extends Component
             return;
         }
 
+        //sold fruit
+        if ($fruit->is_sold) {
+            $this->toastError('Fruit has already been sold.');
+            return;
+        }
+
         $this->scannedFruits[] = [
             'uuid' => $fruit->uuid,
             'tag' => $fruit->fruit_tag,

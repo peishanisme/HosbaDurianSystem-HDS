@@ -74,4 +74,9 @@ class Fruit extends Model
     {
         return $this->hasMany(FruitFeedback::class, 'fruit_uuid', 'uuid');
     }
+
+    public function getIsSoldAttribute(): bool
+    {
+        return !is_null($this->transaction_uuid);
+    }
 }
