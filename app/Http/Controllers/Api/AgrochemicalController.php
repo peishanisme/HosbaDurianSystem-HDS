@@ -112,4 +112,40 @@ class AgrochemicalController extends Controller
             'data'    => $records
         ], 200);
     }
+
+    /**
+     * Get all trees that have a usage record for a specific agrochemical.
+     */
+    public function getTreesByAgrochemical($agrochemicalUuid)
+    {
+        $records = AgrochemicalRecord::where('agrochemical_uuid', $agrochemicalUuid)
+            ->with(['tree', 'agrochemical'])
+            ->orderByDesc('applied_at')
+            ->get();
+
+        if ($records->isEmpty()) {
+            return response()->json([
+                'message' => 'No trees found for this agrochemical',
+                'data'    => [],
+                'agrochemical_uuid' => $agrochemicalUuid,
+            ], 200);
+        }
+
+        $trees = $records->groupBy('tree_uuid')->map(function ($group) {
+            return [
+                'tree'             => $group->first()->tree,
+                'agrochemical'     => $group->first()->agrochemical,
+                'usage_records'    => $group->values(),
+                'usage_count'      => $group->count(),
+                'latest_applied_at'=> $group->firstWhere('applied_at', '!=', null)?->applied_at,
+            ];
+        })->values();
+
+        return response()->json([
+            'message' => 'Trees with agrochemical usage fetched successfully',
+            'data'    => $trees,
+            'total'   => $trees->count(),
+            'agrochemical_uuid' => $agrochemicalUuid,
+        ], 200);
+    }
 }
