@@ -75,6 +75,8 @@ Route::middleware('auth:sanctum')->put('/agrochemicals/{uuid}', [AgrochemicalCon
 Route::middleware('auth:sanctum')->delete('/agrochemicals/{uuid}', [AgrochemicalController::class, 'destroy']);
 Route::middleware('auth:sanctum')->get('/agrochemical-records', [AgrochemicalController::class, 'getAllAgroRecords']);
 Route::middleware('auth:sanctum')->get('/agrochemicals/{agrochemicalUuid}/trees', [AgrochemicalController::class, 'getTreesByAgrochemical']);
+Route::middleware('auth:sanctum')->get('/agrochemicals/available/stock', [AgrochemicalController::class, 'getAvailableStock']);
+Route::middleware('auth:sanctum')->post('/agrochemical-stock-movements', [AgrochemicalController::class, 'storeStockMovement']);
 
 // Tree Growth Log Controller
 Route::middleware('auth:sanctum')->post('/tree-growth-logs', [TreeGrowthLogController::class, 'store']);
