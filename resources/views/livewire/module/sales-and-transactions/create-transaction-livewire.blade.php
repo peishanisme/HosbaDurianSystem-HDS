@@ -62,9 +62,8 @@
                         <!-- Step 3 -->
                         @if ($activeStep === 3)
                             <div class="flex-column">
-                                <livewire:components.transaction-fruit-summary-table :scannedFruits="$scannedFruits"
-                                    :summary="$summary" :discount="$form->discount" :subtotal="$form->subtotal" :finalAmount="$form->total_price"
-                                    wire:key="summary-table" />
+                                <livewire:components.transaction-fruit-summary-table :scanned-fruits="$scannedFruits"
+                                    :summary="$summary" :discount="$discount" wire:key="summary-table" />
                                 <div class="mt-2">
                                     <x-input-error :messages="$errors->get('summaryPrices')" />
                                 </div>
