@@ -17,7 +17,7 @@ class ForgotPasswordLivewire extends Component
     public $countdown = 0;
 
     protected $rules = [
-        'phone' => 'required|exists:users,phone',
+        'phone' => 'required',
     ];
 
     protected $listeners = [
@@ -41,7 +41,7 @@ class ForgotPasswordLivewire extends Component
 
             // Update component state
             $this->otpSent = true;
-            $this->message = 'OTP has been sent to your WhatsApp.';
+            $this->message = 'OTP has been sent to your registered email.';
             $this->countdown = 20;
             $this->dispatch('otpSent');
         } catch (\Exception $e) {

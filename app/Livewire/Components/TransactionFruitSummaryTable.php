@@ -4,7 +4,6 @@ namespace App\Livewire\Components;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
-use Illuminate\Support\Facades\Log;
 
 class TransactionFruitSummaryTable extends Component
 {

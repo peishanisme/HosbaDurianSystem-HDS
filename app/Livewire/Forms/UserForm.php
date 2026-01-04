@@ -20,7 +20,7 @@ class UserForm extends Form
     {
         return [
             'name'            => ['required', 'string', 'max:255'],
-            'email'           => ['nullable', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user->id ?? null)],
+            'email'           => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user->id ?? null)],
             'role'            => ['required', Rule::exists('roles', 'id')],
             'is_active'       => ['required', 'boolean'],
             'phone'           => ['required', 'string', Rule::unique('users', 'phone')->ignore($this->user->id ?? null), 'numeric'],
