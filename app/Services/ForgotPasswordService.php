@@ -2,61 +2,49 @@
 
 namespace App\Services;
 
-use Log;
-use Exception;
 use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PasswordResetOtpMail;
 
 class ForgotPasswordService
 {
-    public function sendOtp($phone)
+    public function sendOtp(string $phone): void
     {
         $user = User::where('phone', $phone)->first();
-        if (!$user) {
-            throw new Exception('User not found.');
+
+        // Do NOT reveal user existence
+        if (!$user || !$user->email) {
+            return;
         }
 
-        $otp = rand(100000, 999999);
+        $otp = random_int(100000, 999999);
 
         DB::table('password_resets')->updateOrInsert(
             ['phone' => $phone],
             [
-                'otp' => $otp,
+                'otp'   => Hash::make($otp),
                 'expires_at' => Carbon::now()->addMinutes(5),
                 'updated_at' => now(),
             ]
         );
 
-        $this->sendWhatsAppOtp($phone, $otp);
-
-        return $otp;
+        $this->sendEmailOtp($user->email, $otp);
     }
 
-    protected function sendWhatsAppOtp($phone, $otp)
+    protected function sendEmailOtp(string $email, int $otp): void
     {
-        $api_key = config('services.callmebot.api_key');
-        // format phone as international (e.g. Malaysia: 60123456789)
-        $message = urlencode("Your Hosba Durian Farm OTP is: {$otp}. It will expire in 5 minutes.");
-
-        $url = "https://api.callmebot.com/whatsapp.php?phone={$phone}&text={$message}&apikey={$api_key}";
-
-        $response = Http::get($url);
-        Log::info('WhatsApp OTP response', ['response' => $response->body()]);
-
-        if (!$response->successful()) {
-            throw new Exception('Failed to send OTP. Please try again later.');
-        }
+        Mail::to($email)->send(
+            new PasswordResetOtpMail($otp)
+        );
     }
 
-    public function verifyOtp($phone, $otp)
+    public function verifyOtp(string $phone, string $otp): bool
     {
         $record = DB::table('password_resets')
             ->where('phone', $phone)
-            ->where('otp', $otp)
             ->first();
 
         if (!$record) {
@@ -64,22 +52,23 @@ class ForgotPasswordService
         }
 
         if (Carbon::parse($record->expires_at)->isPast()) {
-            // OTP expired — clean up
             DB::table('password_resets')->where('phone', $phone)->delete();
             return false;
         }
 
-        // Valid OTP — remove it to prevent reuse
+        if (!Hash::check($otp, $record->otp)) {
+            return false;
+        }
+
         DB::table('password_resets')->where('phone', $phone)->delete();
         return true;
     }
 
-    public function resetPassword($phone, $newPassword)
+    public function resetPassword(string $phone, string $newPassword): void
     {
         $user = User::where('phone', $phone)->firstOrFail();
+
         $user->password = Hash::make($newPassword);
         $user->save();
-        
-        return $user;
     }
 }
