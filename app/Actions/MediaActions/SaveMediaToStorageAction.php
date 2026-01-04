@@ -9,7 +9,7 @@ class SaveMediaToStorageAction
 {
     public function __construct(protected MediaService $mediaService) {}
 
-    public function handle($dto, $path): string
+    public function handle($dto, $path): ?string
     {
         $thumbnailPath = null;
 

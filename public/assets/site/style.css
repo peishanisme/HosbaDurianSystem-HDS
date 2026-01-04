@@ -1,0 +1,27 @@
+.moss-green {
+    color: #8A9A5B;
+}
+
+.sage-green {
+    color: #BCB88A;
+}
+
+.hunter-green {
+    color: #355E3B;
+}
+
+.pakistan-green {
+    color: #014421;
+}
+
+.dark-green {
+    color: #013220;
+}
+
+/* responsive */
+/* 768px amd above */
+@media (min-width: 768px) {
+    .appreciation-text{
+        text-align: left !important;
+    }
+}

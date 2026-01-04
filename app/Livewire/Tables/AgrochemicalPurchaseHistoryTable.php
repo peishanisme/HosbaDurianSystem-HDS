@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
-class PurchaseHistoryTable extends DataTableComponent
+class AgrochemicalPurchaseHistoryTable extends DataTableComponent
 {
     public ?Agrochemical $agrochemical = null;
     
@@ -24,7 +24,7 @@ class PurchaseHistoryTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-        ->setSearchPlaceholder('Search Stock')
+            ->setSearchPlaceholder('Search Stock')
             ->setEmptyMessage('No results found')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [

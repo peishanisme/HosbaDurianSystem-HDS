@@ -43,6 +43,10 @@ return [
         'api_key' => env('CALLMEBOT_API_KEY'),
     ],
 
+    'pinata' => [
+        'jwt' => env('PINATA_JWT'),
+        'base_url' => env('PINATA_BASE_URL', 'https://api.pinata.cloud'),
+    ],
 
 
 

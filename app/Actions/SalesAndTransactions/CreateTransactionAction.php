@@ -17,11 +17,30 @@ class CreateTransactionAction
         $this->blockchain = $blockchain;
     }
 
-    public function handle(array $validatedData): Transaction
+    public function handle(array $validatedData, array $scannedFruits, array $summary): Transaction
     {
-        return DB::transaction(function () use ($validatedData) {
+        return DB::transaction(function () use ($validatedData, $scannedFruits, $summary) {
             // Step 1: Create the transaction
             $transaction = Transaction::create($validatedData);
+
+            //update transaction uuid in fruits
+            foreach ($scannedFruits as $fruitData) {
+                $fruit = \App\Models\Fruit::where('uuid', $fruitData['uuid'])->first();
+               if ($fruit) {
+                    $speciesName = $fruit->tree->species->name ?? null;
+                    $grade = $fruit->grade ?? null;
+
+                    if ($speciesName && $grade) {
+                        $key = $speciesName . '-' . $grade;
+                        $pricePerKg = $summary[$key]['price_per_kg'] ?? 0;
+
+                        $fruit->update([
+                            'transaction_uuid' => $transaction->uuid,
+                            'price_per_kg' => $pricePerKg,
+                        ]);
+                    }
+                }
+            }
 
             // Step 2: Call the blockchain
             $payload = [

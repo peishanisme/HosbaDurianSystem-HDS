@@ -6,7 +6,7 @@ use App\Models\Agrochemical;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 
-#[Title('Agrochemicals Management')]
+#[Title('Agrochemical Overview')]
 class AgrochemicalOverviewLivewire extends Component
 {
     public Agrochemical $agrochemical;

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Tables;
 
+use App\Models\Buyer;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -9,10 +10,15 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
 class TransactionListingTable extends DataTableComponent
 {
+    public ?Buyer $buyer = null;
     protected $model = Transaction::class;
 
     public function builder(): Builder
     {
+        if ($this->buyer) {
+            return Transaction::query()->where('buyer_uuid', $this->buyer->uuid)->with('buyer');
+        }
+
         return Transaction::query()->with('buyer');
     }
 
@@ -50,16 +56,29 @@ class TransactionListingTable extends DataTableComponent
                 ->hideIf(true),
             Column::make("Buyer", "buyer.company_name")  
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->hideIf($this->buyer !== null),
             Column::make("Buyer Ref ID", "buyer.reference_id")
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->hideIf($this->buyer !== null),
             Column::make("Date", "date")
                 ->sortable(),
             Column::make("Total price", "total_price")
                 ->sortable(),
             Column::make("Created at", "created_at")
                 ->sortable(),
+            Column::make('Actions')
+                ->label(fn($row, Column $column) => view('components.table-button', [
+                    'modal'     => 'transactionDetailsModalLivewire',
+                    'icon'      => 'bi-eye',
+                    'dispatch'  => 'view-transaction',
+                    'label'     => 'View',
+                    'dataField' => 'transaction',
+                    'data'      =>  $row->id,
+                    // 'permission' => 'view-disease',
+                ]))->html()
+                ->excludeFromColumnSelect(),
         ];
     }
 }

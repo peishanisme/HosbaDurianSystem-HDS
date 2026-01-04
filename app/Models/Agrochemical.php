@@ -42,7 +42,7 @@ class Agrochemical extends Model
     public function getLatestPurchaseDate()
     {
         $latest = $this->stockMovements()
-            ->where('movement_type', 'IN')
+            ->where('movement_type', 'in')
             ->latest('created_at')
             ->value('created_at');
 

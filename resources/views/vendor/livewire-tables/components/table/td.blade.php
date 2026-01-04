@@ -22,7 +22,7 @@
             'd-none d-lg-table-cell' => $isBootstrap && $column && $column->shouldCollapseOnTablet(),
             'laravel-livewire-tables-cursor' => $isBootstrap && $column && $column->isClickable(),
     
-            'align-middle' => $isBootstrap,
+            'align-middle py-6 px-6' => $isBootstrap,
         ])->except(['default', 'default-styling', 'default-colors']) }}
     >
     {{ $slot }}

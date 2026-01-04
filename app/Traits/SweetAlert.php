@@ -37,4 +37,14 @@ trait SweetAlert
         $this->dispatch('alert-warning', message: $message, action: $action);
         $this->dispatch('refreshDatatable');
     }
+
+    public function toastSuccess($message): void
+    {
+        $this->dispatch('toast-success', message: $message);
+    }
+
+    public function toastError($message): void
+    {
+        $this->dispatch('toast-error', message: $message);
+    }
 }
