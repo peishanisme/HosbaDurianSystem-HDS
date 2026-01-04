@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use App\Services\ForgotPasswordService;
 
 class UserController extends Controller
 {
@@ -106,12 +107,26 @@ public function update(Request $request, $id)
             // Trim whitespace or special chars
             $phone = trim($phone);
 
-            // Check if user exists
-            $exists = User::where('phone', $phone)->exists();
+            // Check if user exists and get user data
+            $user = User::where('phone', $phone)->first();
+
+            if ($user) {
+                // Phone is valid, send OTP automatically
+                (new ForgotPasswordService())->sendOtp($phone);
+
+                return response()->json([
+                    'exists' => true,
+                    'message' => 'Phone number is registered. OTP sent to your email.',
+                    'email' => $user->email,
+                    'otp_sent' => true,
+                ]);
+            }
 
             return response()->json([
-                'exists' => $exists,
-                'message' => $exists ? 'Phone number is registered' : 'Phone number not found',
+                'exists' => false,
+                'message' => 'Phone number not found',
+                'email' => null,
+                'otp_sent' => false,
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -121,4 +136,77 @@ public function update(Request $request, $id)
         }
     }
 
+    /**
+     * Verify OTP for password reset
+     */
+    public function verifyOtp(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'phone' => 'required|string|max:20',
+                'otp' => 'required|string|size:6',
+            ]);
+
+            $phone = trim($validated['phone']);
+            $otp = $validated['otp'];
+
+            // Verify OTP using ForgotPasswordService
+            $isValid = (new ForgotPasswordService())->verifyOtp($phone, $otp);
+
+            if ($isValid) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'OTP verified successfully. You can now reset your password.',
+                ], 200);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid or expired OTP',
+            ], 401);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error verifying OTP',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Reset password after OTP verification
+     */
+    public function resetPassword(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'phone' => 'required|string|max:20',
+                'new_password' => 'required|string|min:6|confirmed',
+            ]);
+
+            $phone = trim($validated['phone']);
+            $newPassword = $validated['new_password'];
+
+            // Reset password using ForgotPasswordService
+            (new ForgotPasswordService())->resetPassword($phone, $newPassword);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Password reset successfully. You can now login with your new password.',
+            ], 200);
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found',
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error resetting password',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

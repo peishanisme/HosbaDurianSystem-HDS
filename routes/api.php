@@ -32,6 +32,8 @@ Route::middleware('auth:sanctum')->delete('/species/{id}', [SpeciesController::c
 // Route::middleware('auth:sanctum')->put('/users/{id}', [UserController::class, 'update']);
 // Route::middleware('auth:sanctum')->delete('/users/{id}', [UserController::class, 'destroy']);
 Route::get('/check-phone/{phone}', [UserController::class, 'checkPhone']);
+Route::post('/verify-otp', [UserController::class, 'verifyOtp']);
+Route::post('/reset-password', [UserController::class, 'resetPassword']);
 
 // Tree Controller
 Route::middleware('auth:sanctum')->post('/trees', [TreeController::class, 'store']);
