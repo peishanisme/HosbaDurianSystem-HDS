@@ -4,8 +4,10 @@
         <div class="mb-10">
             <label class="form-label required">Date Range</label>
             <input class="form-control form-control-solid" placeholder="Pick date range" id="kt_daterangepicker_1" />
-            <input type="hidden" wire:model="from">
-            <input type="hidden" wire:model="to">
+
+            <input type="hidden" wire:model="from" id="from-hidden" value="{{ $from }}">
+            <input type="hidden" wire:model="to" id="to-hidden" value="{{ $to }}">
+
             <x-input-error :messages="$errors->get('from')" />
         </div>
 
@@ -27,7 +29,13 @@
 
 @push('scripts')
     <script>
-        $("#kt_daterangepicker_1").daterangepicker({}, function(start, end) {
+        $("#kt_daterangepicker_1").daterangepicker({
+            autoUpdateInput: false, // 
+        }, function(start, end) {
+            $('#kt_daterangepicker_1').val(
+                start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD')
+            );
+
             @this.set('from', start.format('YYYY-MM-DD'));
             @this.set('to', end.format('YYYY-MM-DD'));
         });

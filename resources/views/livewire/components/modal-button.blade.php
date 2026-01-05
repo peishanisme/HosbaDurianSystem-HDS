@@ -1,4 +1,4 @@
-@props(['permission' => null, 'dispatch' => null, 'target' => null, 'label'])
+@props(['permission' => null, 'dispatch' => null, 'target' => null, 'label'=>null])
 
 @can($permission)
     <button 

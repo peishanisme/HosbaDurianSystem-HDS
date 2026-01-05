@@ -2,10 +2,11 @@
 
 namespace App\Livewire\Auth;
 
-use App\Actions\FormatPhoneNumberAction;
+use App\Models\User;
 use Livewire\Component;
-use App\Services\Auth\PasswordResetService;
 use App\Services\ForgotPasswordService;
+use App\Actions\FormatPhoneNumberAction;
+use App\Services\Auth\PasswordResetService;
 
 class ForgotPasswordLivewire extends Component
 {
@@ -35,8 +36,19 @@ class ForgotPasswordLivewire extends Component
         // validate the formatted phone field only
         $this->validateOnly('phone');
 
+        $user = User::where('phone', $this->phone)->first();
+
+        if (!$user) {
+            $this->addError('phone', 'No user found with this phone number. Please contact your manager for assistance.');
+            return;
+        }
+
+        if (!$user->email) {
+            $this->addError('phone', 'This phone number exists but no email is registered. Please contact your manager.');
+            return;
+        }
+
         try {
-            // Send OTP via CallMeBot or other integrated service
             $service->sendOtp($this->phone);
 
             // Update component state

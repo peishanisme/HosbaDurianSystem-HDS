@@ -10,10 +10,64 @@
     </div>
 
     <style>
+        @page {
+            size: A4;
+            margin: 20mm 15mm;
+        }
+
         body {
+            margin: 0;
             font-family: DejaVu Sans, sans-serif;
             font-size: 12px;
             color: #333;
+        }
+
+        /* === TABLE WRAPPER === */
+        .table-wrapper {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            /* Center horizontally */
+            overflow: hidden;
+            /* Prevent overflow */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            /* IMPORTANT */
+            page-break-inside: auto;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 6px 8px;
+            text-align: left;
+
+            /* === PREVENT OVERFLOW === */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+        thead {
+            display: table-header-group;
+        }
+
+        tr {
+            page-break-inside: avoid;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
         }
 
         .header {
@@ -26,30 +80,9 @@
             font-size: 18px;
         }
 
-        .header .date {
+        .date {
             font-size: 11px;
             color: #666;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th,
-        td {
-            border: 1px solid #ccc;
-            padding: 6px 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        tr:nth-child(even) {
-            background-color: #fafafa;
         }
 
         .footer {
@@ -59,6 +92,7 @@
             color: #666;
         }
     </style>
+
 </head>
 
 <body>
@@ -78,33 +112,43 @@
     </div>
 
     {{-- Data Table --}}
-    <table>
-        <thead>
-            <tr>
-                @foreach ($columns as $header => $field)
-                    <th>{{ $header }}</th>
-                @endforeach
-            </tr>
-        </thead>
-        <tbody>
-
-            @forelse($data as $row)
+    <div class="table-wrapper">
+        <table>
+            <thead>
                 <tr>
-                    @foreach ($columns as $field)
-                        <td>
-                            {{ data_get($row, $field) }}
-                        </td>
+                    @foreach ($columns as $header => $field)
+                        <th>{{ $header }}</th>
                     @endforeach
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="{{ count($columns) }}" style="text-align: center;">
-                        No records found
-                    </td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @forelse($data as $row)
+                    <tr>
+                        @foreach ($columns as $field)
+                            <td>{{ data_get($row, $field) }}</td>
+                        @endforeach
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="{{ count($columns) }}" style="text-align:center;">
+                            No records found
+                        </td>
+                    </tr>
+                @endforelse
+
+                @if (isset($totalAmount))
+                    <tr style="background-color:#f2f2f2;">
+                        <td colspan="{{ count($columns) - 1 }}" style="text-align:right; font-weight:bold;">
+                            Total Transaction (RM)
+                        </td>
+                        <td style="font-weight:bold;">
+                            RM {{ number_format($totalAmount, 2) }}
+                        </td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+    </div>
 
     <p>Total records: {{ $data->count() }}</p>
 

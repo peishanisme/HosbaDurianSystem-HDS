@@ -19,6 +19,11 @@ class ReportService
         $data  = $query->get();
         $cols  = $modelClass::reportColumns();
 
-        return compact('title', 'data', 'cols', 'modelClass', 'from', 'to');
+        $totalAmount = null;
+        if ($modelClass === \App\Models\Transaction::class) {
+            $totalAmount = $data->sum('total_price');
+        }
+
+        return compact('title', 'data', 'cols', 'totalAmount', 'modelClass', 'from', 'to');
     }
 }

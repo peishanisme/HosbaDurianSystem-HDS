@@ -27,13 +27,17 @@ class TransactionListingTable extends DataTableComponent
         $this->setPrimaryKey('id')
             ->setSearchPlaceholder('Search Transaction')
             ->setEmptyMessage('No results found')
+            ->setDefaultSort('created_at', 'desc')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
-                    'components.redirect-button',
+                    'components.table-com-button2',
                     [
-                        'label' => 'Create Transaction',
-                        'dispatch' => 'reset-transaction',
+                        'label1' => 'Create Transaction',
+                        'dispatch1' => 'reset-transaction',
                         'redirectUrl' => 'sales.transaction.create',
+                        'label2' => 'Generate Report',
+                        'dispatch2' => 'reset-generator',
+                        'target2' => 'generateReportModalLivewire',
                     ]
                 ]
             ]);
