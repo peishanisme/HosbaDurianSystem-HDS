@@ -34,16 +34,6 @@ class FruitController extends Controller
         ], 201);
     }
 
-    // public function index() 
-    // {
-    //     $records = Fruit::all();
-
-    //     return response()->json([
-    //         'message' => 'Fruit records fetched successfully',
-    //         'data'    => $records
-    //     ], 200);
-    // }
-
     public function index()
     {
         $fruits = Fruit::with('tree.species')
@@ -84,5 +74,32 @@ class FruitController extends Controller
         return response()->json([
             'message' => 'Fruit deleted successfully'
         ], 200);
+    }
+
+    /**
+     * Get all fruits by harvest event UUID
+     */
+    public function getByHarvestEvent($harvestUuid)
+    {
+        try {
+            $fruits = Fruit::with('tree.species')
+                ->where('harvest_uuid', $harvestUuid)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Fruits fetched successfully',
+                'data' => $fruits,
+                'count' => $fruits->count()
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error fetching fruits',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

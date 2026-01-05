@@ -64,6 +64,7 @@ Route::middleware('auth:sanctum')->post('/fruit', [FruitController::class, 'stor
 Route::middleware('auth:sanctum')->get('/fruit', [FruitController::class, 'index']);
 Route::middleware('auth:sanctum')->put('/fruit/{uuid}', [FruitController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('/fruit/{uuid}', [FruitController::class, 'destroy']);
+Route::middleware('auth:sanctum')->get('/harvest-events/{harvestUuid}/fruits', [FruitController::class, 'getByHarvestEvent']);
 
 // Event Controller
 Route::middleware('auth:sanctum')->get('/harvest-events', [EventController::class, 'index']);

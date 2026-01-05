@@ -16,11 +16,7 @@ class PinataService
         $this->jwt = config('services.pinata.jwt', '');
 
         if (!$this->jwt) {
-            throw new \Exception('Pinata JWT not loaded from config');
-        }
-
-        if (!preg_match('/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/', $this->jwt)) {
-            throw new \Exception('Pinata JWT format invalid: ' . $this->jwt);
+            Log::warning('Pinata JWT not loaded from config. Pinata uploads will be skipped.');
         }
     }
 
@@ -29,6 +25,12 @@ class PinataService
      */
     public function uploadJson(array $data, string $group = 'Fruit'): ?array
     {
+        // Skip upload if JWT is not configured
+        if (!$this->jwt) {
+            Log::warning('Pinata JWT not available. Skipping IPFS upload.');
+            return null;
+        }
+
         try {
             $metadata = [
                 'pinataMetadata' => json_encode([
