@@ -90,9 +90,10 @@
     <div>
         <x-charts.harvest-events.durian-selling-chart :sellingStatusData="$sellingStatusData" />
     </div>
+
+    <livewire:components.generate-report-modal model="App\Models\HarvestEvent" :harvestEvent="$harvestEvent"/>
 </div>
 
-</div>
 
 @push('styles')
     <style>

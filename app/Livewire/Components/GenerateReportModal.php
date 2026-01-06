@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Components;
 
+use App\Models\HarvestEvent;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -13,6 +14,8 @@ class GenerateReportModal extends Component
     public ?string $from = '';
     public ?string $to = '';
     public ?string $model = '';
+    public ?string $reportType = '';
+    public ?HarvestEvent $harvestEvent = null;
 
     public function mount()
     {
@@ -25,37 +28,50 @@ class GenerateReportModal extends Component
         $this->dispatch('init-report-daterangepicker');
     }
 
+    public function rules(): array
+    {
+        $rules = [
+            'format'     => 'required|in:pdf,xlsx',
+        ];
+
+        if ($this->model === \App\Models\HarvestEvent::class) {
+            $rules['reportType'] = 'required|in:species,record,tree';
+        } else {
+            $rules['from'] = 'required|date';
+            $rules['to']   = 'required|date';
+        }
+
+        return $rules;
+    }
+
+    protected function messages(): array
+    {
+        return [
+            'reportType.required' => 'Please select a report type.',
+            'reportType.in'       => 'Invalid report type selected.',
+            'from.required'       => 'Please select a date range.',
+            'to.required'         => 'Please select a date range.',
+        ];
+    }
 
     public function generateReport()
     {
-        $this->validate(
-            [
-                'format' => 'required|in:pdf,xlsx',
-                'from'   => 'required|date',
-                'to'     => 'required|date',
-            ],
-            [
-                'format.required' => 'Please select a report format.',
-                'format.in' => 'The format must be either PDF or Excel.',
-                'from.required' => 'Please select a start date.',
-                'from.date' => 'The start date must be a valid date.',
-                'to.required' => 'Please select an end date.',
-                'to.date' => 'The end date must be a valid date.',
-            ]
-        );
+        $this->validate();
 
         return redirect()->route('report.export', [
             'model' => $this->model,
             'format' => $this->format,
             'from' => $this->from,
             'to' => $this->to,
+            'reportType' => $this->reportType,
+            'harvest_uuid' => $this->harvestEvent?->uuid,
         ]);
     }
 
     #[On('reset-generator')]
     public function resetInput()
     {
-        $this->reset(['format', 'from', 'to']);
+        $this->reset(['format', 'from', 'to', 'reportType']);
     }
 
     public function render()

@@ -1,15 +1,32 @@
 <x-modal-component :id="$modalID" :title="$modalTitle">
 
     <div class="card-body p-5">
-        <div class="mb-10">
-            <label class="form-label required">Date Range</label>
-            <input class="form-control form-control-solid" placeholder="Pick date range" id="kt_daterangepicker_1" />
+        @if ($model === 'App\Models\HarvestEvent')
+            <div class="mb-10">
+                <label class="form-label required">Report Type</label>
 
-            <input type="hidden" wire:model="from" id="from-hidden" value="{{ $from }}">
-            <input type="hidden" wire:model="to" id="to-hidden" value="{{ $to }}">
+                <select class="form-select form-select-solid" wire:model="reportType">
+                    <option value="">Select perspective</option>
 
-            <x-input-error :messages="$errors->get('from')" />
-        </div>
+                    <option value="tree">Tree summary only</option>
+                    <option value="species">Species summary only</option>
+                    <option value="record">Fruit record only</option>
+                </select>
+
+                <x-input-error :messages="$errors->get('reportType')" />
+            </div>
+        @else
+            <div class="mb-10">
+                <label class="form-label required">Date Range</label>
+                <input class="form-control form-control-solid" placeholder="Pick date range"
+                    id="kt_daterangepicker_1" />
+
+                <input type="hidden" wire:model="from" id="from-hidden" value="{{ $from }}">
+                <input type="hidden" wire:model="to" id="to-hidden" value="{{ $to }}">
+
+                <x-input-error :messages="$errors->get('from')" />
+            </div>
+        @endif
 
         <div class="fv-row mb-10">
             <x-input-label for="format" class="required mb-4" :value="__('Format')" />

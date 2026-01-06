@@ -24,6 +24,6 @@
         {{ $label2 }}
     </button>
     @endcan --}}
-    <livewire:components.modal-button :permission="$permission2" :dispatch="$dispatch2" :target="$target2" :label="$label2"/>
+    <livewire:components.modal-button  :dispatch="$dispatch2" :target="$target2" :label="$label2"/>
 
 </div>

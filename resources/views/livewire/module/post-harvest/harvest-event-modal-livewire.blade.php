@@ -1,5 +1,5 @@
 <x-modal-component :id="$modalID" :title="$modalTitle">
-    @if ($hasUnclosedEvent)
+    @if ($this->hasUnclosedEvent())
         <div class="p-5 text-center">
             <h3 class="fw-semibold text-danger mb-3">
                 Cannot Create New Harvest Event
