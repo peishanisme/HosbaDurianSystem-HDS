@@ -10,6 +10,7 @@ class PdfExporter extends BaseExporter implements ReportExporter
     public function export(array $reportData)
     {
         $pdf = Pdf::loadView('components.documents.pdf', [
+            'totalAmount' => $reportData['totalAmount'] ?? null,
             'title'   => $reportData['title'],
             'columns' => $reportData['cols'],
             'data'    => $reportData['data'],

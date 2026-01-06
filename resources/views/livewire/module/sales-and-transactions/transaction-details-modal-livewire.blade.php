@@ -10,7 +10,8 @@
                     <strong>Buyer:</strong> {{ $transaction->buyer->company_name ?? '-' }}
                 </div>
                 <div class="fs-5 my-3 text-gray-600">
-                    <strong>Payment Method:</strong> {{ ucfirst($transaction->payment_method) ?? '-' }}
+                    <strong>Payment Method:</strong>
+                    {{ $transaction->payment_method ? ucfirst(str_replace('_', ' ', $transaction->payment_method)) : '-' }}
                 </div>
                 <div class="fs-5 my-3 text-gray-600">
                     <strong>Remark:</strong> {{ $transaction->remark ?? '-' }}

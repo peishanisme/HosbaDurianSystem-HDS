@@ -33,11 +33,10 @@
                                 class="indicator-label">{{ $harvestEvent->end_date ? 'Reopen Event' : 'Close Event' }}</span>
                         </button>
 
-                        {{--  <div class="me-3">
-                            <x-table-button modal="agrochemicalModalLivewire" dispatch="edit-agrochemical"
-                                dataField="agrochemical" data="{{ $agrochemical->id }}" />
-                            <livewire:module.agrochemical-management.agrochemical-modal-livewire />
-                        </div> --}}
+                        <div class="me-3">
+                            <livewire:components.modal-button  :dispatch="'reset-generator'" :target="'generateReportModalLivewire'"
+                                :label="'Generate Report'" />
+                        </div>
                     </div>
                 </div>
 

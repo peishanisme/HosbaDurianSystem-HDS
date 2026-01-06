@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use App\Enums\BlockchainStatus;
+use App\Reports\Contracts\Reportable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Transaction extends Model
+class Transaction extends Model implements Reportable
 {
     use SoftDeletes;
     protected $fillable = [
@@ -38,7 +39,6 @@ class Transaction extends Model
             $model->uuid = (string) Str::uuid();
             $model->reference_id = 'txn-' . substr(md5((string) Str::uuid()), 0, 27);
         });
-
     }
 
     public function buyer(): BelongsTo
@@ -46,7 +46,7 @@ class Transaction extends Model
         return $this->belongsTo(Buyer::class, 'buyer_uuid', 'uuid');
     }
 
-    
+
     /**
      * Get summary of fruits for this transaction, grouped by species and grade.
      *
@@ -125,5 +125,50 @@ class Transaction extends Model
             'payment_method' => $this->payment_method,
         ];
     }
-   
+
+    public static function reportQuery(array $filters)
+    {
+        return self::with(['buyer'])
+            ->when(
+                $filters['from'] ?? null,
+                fn($q, $from) =>
+                $q->whereDate('date', '>=', $from)
+            )
+            ->when(
+                $filters['to'] ?? null,
+                fn($q, $to) =>
+                $q->whereDate('date', '<=', $to)
+            )
+            ->when(
+                $filters['payment_method'] ?? null,
+                fn($q, $method) =>
+                $q->where('payment_method', $method)
+            )
+            ->when(
+                $filters['buyer_uuid'] ?? null,
+                fn($q, $buyer) =>
+                $q->where('buyer_uuid', $buyer)
+            );
+    }
+
+    //report 
+    public static function reportColumns(): array
+    {
+        return [
+            'Transaction Date'   => 'date',
+            'Reference ID'       => 'reference_id',
+            'Buyer'              => 'buyer.company_name',
+            'Subtotal (RM)'      => 'subtotal',
+            'Discount (RM)'      => 'discount',
+            'Total Amount (RM)'  => 'total_price',
+            'Payment Method'     => 'payment_method',
+            'Remark'             => 'remark',
+        ];
+    }
+
+
+    public static function reportTitle(): string
+    {
+        return 'Transaction Sales Report';
+    }
 }

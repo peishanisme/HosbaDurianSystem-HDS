@@ -3,4 +3,6 @@
 
     <livewire:components.harvest-tree-fruit-details :harvestEvent="$harvestEvent" />
 
+    <livewire:components.generate-report-modal model="App\Models\HarvestEvent" :harvestEvent="$harvestEvent"/>
+
 </div>
