@@ -158,4 +158,45 @@ class HealthController extends Controller
             'data'    => $records
         ], 200);
     }
+
+    /**
+     * Get all trees that have health records for a specific disease.
+     * 
+     * @param int $diseaseId - The disease ID to filter by
+     * @return JSON list of trees with their associated health records for that disease
+     */
+    public function getTreesByDisease($diseaseId)
+    {
+        // Get all health records for the specified disease
+        $healthRecords = HealthRecord::where('disease_id', $diseaseId)
+            ->with(['tree', 'disease'])
+            ->orderBy('recorded_at', 'desc')
+            ->get();
+
+        // If no records found, return early
+        if ($healthRecords->isEmpty()) {
+            return response()->json([
+                'message' => 'No trees found with this disease',
+                'data'    => [],
+                'diseaseId' => $diseaseId
+            ], 200);
+        }
+
+        // Group health records by tree to avoid duplicates
+        $treesList = $healthRecords->groupBy('tree_uuid')->map(function ($records) {
+            return [
+                'tree'           => $records->first()->tree,
+                'disease'        => $records->first()->disease,
+                'health_records' => $records->values(), // All records for this tree with this disease
+                'record_count'   => $records->count(),
+            ];
+        })->values();
+
+        return response()->json([
+            'message' => 'Trees with disease records fetched successfully',
+            'data'    => $treesList,
+            'total'   => $treesList->count(),
+            'diseaseId' => $diseaseId
+        ], 200);
+    }
 }

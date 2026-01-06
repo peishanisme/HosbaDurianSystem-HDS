@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use App\DataTransferObject\FruitDTO;
 use Illuminate\Support\Str;
 use App\Actions\FruitManagement\CreateFruitAction;
+use App\Services\PinataService;
+use App\Services\BlockchainService;
 
 class FruitController extends Controller
 {
@@ -26,23 +28,13 @@ class FruitController extends Controller
 
         $dto = FruitDTO::fromArray($validated);
 
-        $record = (new CreateFruitAction())->handle($dto);
+        $record = (new CreateFruitAction(app(PinataService::class), app(BlockchainService::class)))->handle($dto);
 
         return response()->json([
             'message' => 'Fruit created successfully',
             'data' => $record
         ], 201);
     }
-
-    // public function index() 
-    // {
-    //     $records = Fruit::all();
-
-    //     return response()->json([
-    //         'message' => 'Fruit records fetched successfully',
-    //         'data'    => $records
-    //     ], 200);
-    // }
 
     public function index()
     {
@@ -84,5 +76,32 @@ class FruitController extends Controller
         return response()->json([
             'message' => 'Fruit deleted successfully'
         ], 200);
+    }
+
+    /**
+     * Get all fruits by harvest event UUID
+     */
+    public function getByHarvestEvent($harvestUuid)
+    {
+        try {
+            $fruits = Fruit::with('tree.species')
+                ->where('harvest_uuid', $harvestUuid)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Fruits fetched successfully',
+                'data' => $fruits,
+                'count' => $fruits->count()
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error fetching fruits',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
