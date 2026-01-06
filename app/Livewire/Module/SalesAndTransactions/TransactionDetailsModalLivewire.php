@@ -3,9 +3,10 @@
 namespace App\Livewire\Module\SalesAndTransactions;
 
 use App\Models\Fruit;
-use App\Models\Transaction;
-use App\Traits\SweetAlert;
 use Livewire\Component;
+use App\Traits\SweetAlert;
+use App\Models\Transaction;
+use Livewire\Attributes\On;
 use App\Services\BlockchainService;
 
 class TransactionDetailsModalLivewire extends Component
@@ -17,8 +18,8 @@ class TransactionDetailsModalLivewire extends Component
     public array $summary = [];
     public $fruits;
 
-    public bool $blockchainVerified = false; 
-    public $blockchainStatus = null;         
+    public bool $blockchainVerified = false;
+    public $blockchainStatus = null;
 
     protected $listeners = ['view-transaction' => 'loadTransaction'];
 
@@ -26,6 +27,7 @@ class TransactionDetailsModalLivewire extends Component
     {
         $this->transaction = $transaction;
         $this->summary = $transaction->getFruitSummary();
+
 
         // ---------------------------
         // 1. Perform blockchain verification
@@ -43,7 +45,6 @@ class TransactionDetailsModalLivewire extends Component
                     $transaction->date
             );
             $hashToVerify = '0x' . $hashToVerify;
-            // dd($hashToVerify);
 
             try {
                 $verifyResult = $blockchain->verifySale(
@@ -83,6 +84,28 @@ class TransactionDetailsModalLivewire extends Component
         return redirect()->route('receipt.print', [
             'transaction' => $this->transaction->uuid,
         ]);
+    }
+
+    public function cancelTransaction()
+    {
+        $this->alertConfirm('Are you sure you want to cancel this transaction?', 'confirm-cancel');
+    }
+
+    #[On('confirm-cancel')]
+    public function confirmCancel()
+    {
+        if (!$this->transaction) {
+            $this->toastError('No transaction loaded.');
+            return;
+        }
+        try {
+            app(\App\Actions\SalesAndTransactions\CancelTransactionAction::class)
+                ->handle($this->transaction);
+
+            $this->alertSuccess('Transaction cancelled successfully.',$this->modalID);
+        } catch (\Throwable $e) {
+            $this->alertError('Failed to cancel transaction: ' . $e->getMessage(), $this->modalID);
+        }
     }
 
     public function render()

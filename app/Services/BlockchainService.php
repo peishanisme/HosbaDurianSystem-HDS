@@ -62,7 +62,6 @@ class BlockchainService
             . '/verify-sale/' . $transactionId . '/' . $transactionHash;
 
         $response = Http::get($url);
-        // dd($response->body());
 
         if (!$response->successful()) {
             throw new \Exception('Blockchain verification failed');

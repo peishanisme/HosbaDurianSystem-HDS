@@ -1,6 +1,9 @@
 <x-modal-component :id="$modalID" :title="$modalTitle">
     <div>
         @if ($transaction)
+            @if ($transaction->is_cancelled)
+                <span class="badge badge-light-danger">This Transaction is Cancelled</span>
+            @endif
 
             <!-- Transaction Info -->
             <div class="mb-5 space-y-2">
@@ -72,26 +75,48 @@
                 </table>
                 <div class="text-end">
                     @if ($blockchainStatus === 'confirmed' && $blockchainVerified)
-                        <span class="badge bg-light-success">✔ Verified on Blockchain</span>
+                        <span class="badge badge-light-success">✔ Verified on Blockchain</span>
                     @elseif ($blockchainStatus === 'confirmed' && !$blockchainVerified)
-                        <span class="badge bg-light-danger">✖ Data Tampered</span>
+                        <span class="badge badge-light-danger">✖ Data Tampered</span>
                     @elseif ($blockchainStatus === 'canceled')
-                        <span class="badge bg-light-warning text-dark">⚠ Canceled on Blockchain</span>
+                        <span class="badge badge-light-warning text-dark">⚠ Canceled on Blockchain</span>
                     @else
-                        <span class="badge bg-light-secondary">⏳ Not Yet Verified</span>
+                        <span class="badge badge-light-secondary">⏳ Not Yet Verified</span>
                     @endif
                 </div>
 
             </div>
         @else
-            <div class="text-center py-10 text-gray-500">
-                No transaction selected.
+            <div class="text-center py-10">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
             </div>
         @endif
     </div>
 
     @slot('footer')
-        <x-button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</x-button>
-        <x-button type="button" class="btn btn-primary" wire:click="printReceipt">Print Receipt</x-button>
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <!-- Left side -->
+            @if ($transaction && !$transaction->is_cancelled)
+                <div>
+                    <x-button type="button" class="btn btn-light-danger" wire:click="cancelTransaction">
+                        Cancel Transaction
+                    </x-button>
+                </div>
+
+                <!-- Right side -->
+                <div class="d-flex gap-2">
+                    <x-button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </x-button>
+
+                    <x-button type="button" class="btn btn-primary" wire:click="printReceipt">
+                        Print Receipt
+                    </x-button>
+                </div>
+            @endif
+        </div>
     @endslot
+
 </x-modal-component>

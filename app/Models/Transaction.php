@@ -25,6 +25,7 @@ class Transaction extends Model implements Reportable
         'payment_method',
         'remark',
         'price_per_kg',
+        'is_cancelled',
     ];
 
     // protected $casts = [
