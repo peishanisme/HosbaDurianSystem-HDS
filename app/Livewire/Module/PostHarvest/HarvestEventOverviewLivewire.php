@@ -22,6 +22,16 @@ class HarvestEventOverviewLivewire extends Component
     public $harvested_date;
     public $grade;
     public $weight;
+    public Fruit $fruit;
+
+    public function mount(){
+        $this->fruit = Fruit::where('id',54)->first();
+        $tree = Tree::where('uuid',$this->fruit->tree_uuid)->first();
+        $this->tree_id = $tree->id;
+        $this->harvested_date = $this->fruit->harvested_at;
+        $this->grade = $this->fruit->grade;
+        $this->weight = $this->fruit->weight;
+    }
 
     #[On('close-event')]
     public function closeEvent(HarvestEvent $harvestEvent)
@@ -88,6 +98,35 @@ class HarvestEventOverviewLivewire extends Component
         session()->flash('message', 'Harvest saved successfully!');
 
         // Reset form after save
+        $this->reset(['tree_id', 'harvested_date', 'grade', 'weight']);
+    }
+
+    public function update()
+    {
+        $data = $this->validate([
+            'tree_id' => 'required',
+            'harvested_date' => 'required|date',
+            'grade' => 'required',
+            'weight' => 'required|numeric|min:0',
+        ]);
+
+        $tree = Tree::find($this->tree_id);
+
+        $fruitDTO = new FruitDTO(
+            harvest_uuid: $this->harvestEvent->uuid,
+            transaction_uuid: null,
+            harvested_at: $this->harvested_date,
+            is_spoiled: false,
+            tree_uuid: $tree->uuid ?? null,
+            weight: $this->weight,
+            grade: $this->grade
+        );
+
+        app('App\Actions\FruitManagement\UpdateFruitAction')->handle($fruitDTO, $this->fruit->uuid);
+
+        session()->flash('message', 'Fruit updated successfully!');
+
+        // Reset form after update
         $this->reset(['tree_id', 'harvested_date', 'grade', 'weight']);
     }
 

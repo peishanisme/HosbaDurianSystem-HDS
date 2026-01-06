@@ -97,6 +97,7 @@ class BlockchainService
 
     public function getFruitOnChain(string $fruitTag): string
     {
+        
         $url = rtrim(config('services.blockchain.base_url'), '/')
             . '/fruit/' . $fruitTag;
 
