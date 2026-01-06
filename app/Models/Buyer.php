@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -48,5 +49,39 @@ class Buyer extends Model
         return $this->hasMany(Transaction::class, 'buyer_uuid', 'uuid');
     }
 
-       
+    public function getTotalSpentAttribute(): float
+    {
+        return $this->transactions()
+            ->where('is_cancelled', false)
+            ->sum('total_price');
+    }
+
+    public function getTotalTransactionsAttribute(): int
+    {
+        return $this->transactions()
+            ->where('is_cancelled', false)
+            ->count();
+    }
+
+    public function getQuantityPurchasedAttribute(): int
+    {
+        return $this->transactions()
+            ->where('is_cancelled', false)
+            ->withCount(['fruits as total_quantity'])
+            ->get()
+            ->sum('total_quantity');
+    }
+
+    public function getTotalWeightPurchasedAttribute(): float
+    {
+        return (float) $this->transactions()
+            ->where('is_cancelled', false)
+            ->withCount([
+                'fruits as total_weight' => function ($query) {
+                    $query->select(DB::raw('COALESCE(SUM(weight), 0)'));
+                }
+            ])
+            ->get()
+            ->sum('total_weight');
+    }
 }

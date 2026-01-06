@@ -54,7 +54,7 @@
                 <label class="col-lg-4 fw-semibold text-muted">Total Transactions</label>
 
                 <div class="col-lg-8 fv-row">
-                    <span class="fw-semibold text-gray-800 fs-6">21</span>
+                    <span class="fw-semibold text-gray-800 fs-6">{{ $buyer->getTotalTransactionsAttribute() ?? '-'}}</span>
                 </div>
             </div>
 
@@ -62,7 +62,7 @@
                 <label class="col-lg-4 fw-semibold text-muted">Total Quantity Purchased</label>
 
                 <div class="col-lg-8 fv-row">
-                    <span class="fw-semibold text-gray-800 fs-6">1234</span>
+                    <span class="fw-semibold text-gray-800 fs-6">{{ $buyer->getQuantityPurchasedAttribute() ?? '-' }} piece(s)</span>
                 </div>
             </div>
 
@@ -70,7 +70,7 @@
                 <label class="col-lg-4 fw-semibold text-muted">Total Weight Purchased</label>
 
                 <div class="col-lg-8 fv-row">
-                    <span class="fw-semibold text-gray-800 fs-6">1314</span>
+                    <span class="fw-semibold text-gray-800 fs-6">{{ $buyer->getTotalWeightPurchasedAttribute() ?? '-' }}kg</span>
                 </div>
             </div>
 
@@ -78,7 +78,7 @@
                 <label class="col-lg-4 fw-semibold text-muted">Total Revenue from Buyer</label>
 
                 <div class="col-lg-8 fv-row">
-                    <span class="fw-semibold text-gray-800 fs-6">RM2500.00</span>
+                    <span class="fw-semibold text-gray-800 fs-6">RM{{ number_format($buyer->getTotalSpentAttribute(), 2) ?? '-' }}</span>
                 </div>
             </div>
 
