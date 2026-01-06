@@ -2,11 +2,11 @@
 
 namespace App\Actions\SalesAndTransactions;
 
-use App\Enums\BlockchainStatus;
-use App\Models\Transaction;
-use App\Services\BlockchainService;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\DB;
+use App\Services\BlockchainService;
+use Illuminate\Support\Facades\Log;
 
 class CreateTransactionAction
 {
@@ -20,13 +20,19 @@ class CreateTransactionAction
     public function handle(array $validatedData, array $scannedFruits, array $summary): Transaction
     {
         return DB::transaction(function () use ($validatedData, $scannedFruits, $summary) {
-            // Step 1: Create the transaction
+
+            // --------------------
+            // 1. Create transaction
+            // --------------------
             $transaction = Transaction::create($validatedData);
 
-            //update transaction uuid in fruits
+            // --------------------
+            // 2. Update fruits
+            // --------------------
             foreach ($scannedFruits as $fruitData) {
                 $fruit = \App\Models\Fruit::where('uuid', $fruitData['uuid'])->first();
-               if ($fruit) {
+
+                if ($fruit) {
                     $speciesName = $fruit->tree->species->name ?? null;
                     $grade = $fruit->grade ?? null;
 
@@ -42,21 +48,36 @@ class CreateTransactionAction
                 }
             }
 
-            // Step 2: Call the blockchain
-            $payload = [
-                'transactionId' => $transaction->reference_id,
-                'buyerId' => $transaction->buyer->reference_id,
-                'totalPrice' => $transaction->total_price,
-            ];
+            // --------------------
+            // 3. Generate blockchain hash
+            // --------------------
+            $transactionHash = hash(
+                'sha256',
+                $transaction->reference_id .
+                $transaction->buyer->reference_id .
+                number_format($transaction->total_price, 2, '.', '') .
+                $transaction->date
+            );
 
-            $response = $this->blockchain->createSale($payload);
+            $transactionHash = '0x' . $transactionHash;
+            Log::info('Generated Transaction Hash: ' . $transactionHash);
 
-            // Step 3: Update transaction with tx hash
+            // --------------------
+            // 4. Push hash to blockchain
+            // --------------------
+            $response = $this->blockchain->createSale(
+                $transaction->reference_id,
+                $transactionHash
+            );
+
+            // --------------------
+            // 5. Update transaction status
+            // --------------------
             if ($response['success']) {
                 $transaction->update([
                     'blockchain_tx_hash' => $response['txHash'],
-                    'blockchain_status' => 'confirmed',
-                    'synced_at' => Carbon::now(),
+                    'blockchain_status'  => 'confirmed',
+                    'synced_at'          => Carbon::now(),
                 ]);
             }
 

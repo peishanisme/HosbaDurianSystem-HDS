@@ -1,6 +1,7 @@
 <x-modal-component :id="$modalID" :title="$modalTitle">
     <div>
         @if ($transaction)
+
             <!-- Transaction Info -->
             <div class="mb-5 space-y-2">
                 <div class="fs-5 my-3 text-gray-600">
@@ -69,6 +70,18 @@
                         </tfoot>
                     @endif
                 </table>
+                <div class="text-end">
+                    @if ($blockchainStatus === 'confirmed' && $blockchainVerified)
+                        <span class="badge bg-light-success">✔ Verified on Blockchain</span>
+                    @elseif ($blockchainStatus === 'confirmed' && !$blockchainVerified)
+                        <span class="badge bg-light-danger">✖ Data Tampered</span>
+                    @elseif ($blockchainStatus === 'canceled')
+                        <span class="badge bg-light-warning text-dark">⚠ Canceled on Blockchain</span>
+                    @else
+                        <span class="badge bg-light-secondary">⏳ Not Yet Verified</span>
+                    @endif
+                </div>
+
             </div>
         @else
             <div class="text-center py-10 text-gray-500">
