@@ -1,7 +1,7 @@
 <div id="kt_app_content_container" class="container-fluid">
     <livewire:components.headers.harvest-event-header :harvestEvent="$harvestEvent" />
 
-    {{-- <div class="card mt-5">
+    <div class="card mt-5">
         <div class="card-body">
             <h5 class="mb-4 fw-bold">Harvest Details</h5>
 
@@ -67,9 +67,9 @@
                 @endif
             </form>
         </div>
-    </div> --}}
+    </div>
 
-    <div class="card mt-5">
+    {{-- <div class="card mt-5">
         <div class="card-body">
             <h5 class="mb-4 fw-bold">Edit Fruit Details</h5>
 
@@ -134,7 +134,7 @@
                 @endif
             </form>
         </div>
-    </div>
+    </div> --}}
 
 
     <div class="mb-15">

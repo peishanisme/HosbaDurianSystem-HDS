@@ -135,7 +135,7 @@
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="fs-2 fw-bold">{{ $tree->flowering_period }}</div>
+                                    <div class="fs-2 fw-bold">{{ $tree->getFloweringPeriod() }}</div>
                                 </div>
                                 <div class="fw-semibold fs-6 text-gray-500">Flowering Period</div>
                             </div>

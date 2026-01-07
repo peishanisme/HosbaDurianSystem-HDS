@@ -24,14 +24,14 @@ class HarvestEventOverviewLivewire extends Component
     public $weight;
     public Fruit $fruit;
 
-    public function mount(){
-        $this->fruit = Fruit::where('id',66)->first();
-        $tree = Tree::where('uuid',$this->fruit->tree_uuid)->first();
-        $this->tree_id = $tree->id;
-        $this->harvested_date = $this->fruit->harvested_at;
-        $this->grade = $this->fruit->grade;
-        $this->weight = $this->fruit->weight;
-    }
+    // public function mount(){
+    //     $this->fruit = Fruit::where('id',66)->first();
+    //     $tree = Tree::where('uuid',$this->fruit->tree_uuid)->first();
+    //     $this->tree_id = $tree->id;
+    //     $this->harvested_date = $this->fruit->harvested_at;
+    //     $this->grade = $this->fruit->grade;
+    //     $this->weight = $this->fruit->weight;
+    // }
 
     #[On('close-event')]
     public function closeEvent(HarvestEvent $harvestEvent)

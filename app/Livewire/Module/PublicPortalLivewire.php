@@ -26,13 +26,20 @@ class PublicPortalLivewire extends Component
             }
 
             // 1. Fetch metadata from IPFS
-            $response = Http::timeout(10)->get(
+            $response = Http::timeout(20)->get(
                 "https://ipfs.io/ipfs/{$this->fruit->metadata_cid}"
             );
 
             if (!$response->successful()) {
                 return $this->failVerification('temporarily_unavailable');
             }
+            // if ($response->successful()) {
+            //     $data = $response->body();
+            //     dd('Success!', $data); // or Log::info('Success!', ['data' => $data]);
+            // } else {
+            //     // HTTP error like 404, 500, etc.
+            //     dd('HTTP Error', $response->status(), $response->body());
+            // }
 
             $this->ipfsMetadata = $response->json();
 
