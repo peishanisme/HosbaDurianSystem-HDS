@@ -4,9 +4,9 @@ namespace App\Actions\FruitManagement;
 
 use App\Models\Fruit;
 use App\Services\PinataService;
+use App\Jobs\SyncFruitToPinataJob;
 use Illuminate\Support\Facades\DB;
 use App\Services\BlockchainService;
-use Illuminate\Support\Facades\Log;
 use App\DataTransferObject\FruitDTO;
 use App\Traits\FruitBlockchainHelper;
 
@@ -20,11 +20,7 @@ class CreateFruitAction
     {
         $fruit = DB::transaction(fn() => Fruit::create($dto->toArray()));
 
-        $metadata = $this->buildMetadata($fruit);
-        $hash = $this->computeMetadataHash($metadata);
-        $cid = $this->uploadToPinata($metadata, $fruit->fruit_tag, $this->pinataService);
-        $this->saveMetadata($fruit, $cid, $hash);
-        $this->pushToBlockchain($fruit, $hash, $this->blockchainService);
+        SyncFruitToPinataJob::dispatch($fruit->id);
 
         return $fruit->fresh();
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Traits;
 
 use App\Models\Fruit;
@@ -57,7 +58,7 @@ trait FruitBlockchainHelper
     {
         try {
             $fruitId = ($fruit->version === 1) ? $fruit->fruit_tag : $fruit->fruit_tag . '-v' . $fruit->version;
-        
+
             $payload = [
                 'fruitId' => $fruitId,
                 'metadataHash' => '0x' . $metadataHash,
@@ -76,6 +77,8 @@ trait FruitBlockchainHelper
             }
         } catch (\Throwable $e) {
             Log::error('Blockchain push exception', ['error' => $e->getMessage(), 'fruit_id' => $fruit->id]);
+
+            throw $e;
         }
     }
 }
