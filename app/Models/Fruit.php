@@ -32,6 +32,7 @@ class Fruit extends Model
         'is_onchain',
         'metadata_version',
         'price_per_kg',
+        'version',
     ];
 
     protected static function booted()

@@ -43,14 +43,17 @@ class PublicPortalLivewire extends Component
             );
 
             $recalculatedHash = hash('sha256', $metadataJson);
+            $recalculatedHash = '0x' . $recalculatedHash;   
+
+            $fruitId = ($this->fruit->version === 1) ? $this->fruit->fruit_tag : $this->fruit->fruit_tag . '-v' . $this->fruit->version;
 
             // 3. Read hash from blockchain
             $onChainHash = Cache::remember(
                 "fruit_hash_{$this->fruit->fruit_tag}",
                 now()->addMinutes(10),
                 fn() => app(BlockchainService::class)
-                    ->getFruitOnChain($this->fruit->fruit_tag)
-            );            
+                    ->getFruitOnChain($fruitId)
+            );
 
             if (!$onChainHash) {
                 return $this->failVerification('record_not_found');

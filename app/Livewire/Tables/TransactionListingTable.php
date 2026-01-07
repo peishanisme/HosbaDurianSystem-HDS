@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
 
 class TransactionListingTable extends DataTableComponent
 {
@@ -15,19 +16,23 @@ class TransactionListingTable extends DataTableComponent
 
     public function builder(): Builder
     {
+        $query = Transaction::query()->with('buyer');
+
         if ($this->buyer) {
-            return Transaction::query()->where('buyer_uuid', $this->buyer->uuid)->with('buyer');
+            $query->where('buyer_uuid', $this->buyer->uuid);
         }
 
-        return Transaction::query()->with('buyer');
+        return $query
+            ->orderBy('is_cancelled', 'asc')
+            ->orderBy('created_at', 'desc');
     }
+
 
     public function configure(): void
     {
         $this->setPrimaryKey('id')
             ->setSearchPlaceholder('Search Transaction')
             ->setEmptyMessage('No results found')
-            ->setDefaultSort('created_at', 'desc')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'components.table-com-button2',
@@ -58,7 +63,7 @@ class TransactionListingTable extends DataTableComponent
             Column::make("Buyer uuid", "buyer_uuid")
                 ->sortable()
                 ->hideIf(true),
-            Column::make("Buyer", "buyer.company_name")  
+            Column::make("Buyer", "buyer.company_name")
                 ->sortable()
                 ->searchable()
                 ->hideIf($this->buyer !== null),
@@ -70,6 +75,12 @@ class TransactionListingTable extends DataTableComponent
                 ->sortable(),
             Column::make("Total price", "total_price")
                 ->sortable(),
+            ViewComponentColumn::make('Status', 'is_cancelled')
+                ->component('table-badge')
+                ->attributes(fn($value, $row, Column $column) => [
+                    'badge' => $row->is_cancelled ?  'badge-light-danger' : 'badge-light-success',
+                    'label' => $row->is_cancelled ? 'Cancelled' : 'Active',
+                ]),
             Column::make("Created at", "created_at")
                 ->sortable(),
             Column::make('Actions')

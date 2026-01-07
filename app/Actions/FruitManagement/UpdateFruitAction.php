@@ -10,15 +10,23 @@ use Illuminate\Support\Facades\Log;
 use App\DataTransferObject\FruitDTO;
 use App\Traits\FruitBlockchainHelper;
 
-class CreateFruitAction
+class UpdateFruitAction
 {
     use FruitBlockchainHelper;
 
     public function __construct(protected PinataService $pinataService, protected BlockchainService $blockchainService) {}
 
-    public function handle(FruitDTO $dto): Fruit
+    public function handle(FruitDTO $dto, $uuid): Fruit
     {
-        $fruit = DB::transaction(fn() => Fruit::create($dto->toArray()));
+        $fruit = Fruit::where('uuid', $uuid)->firstOrFail();
+        DB::transaction(function () use ($fruit, $dto) {
+            $fruit->forceFill(
+                array_merge(
+                    $dto->toArray(),
+                    ['version' => $fruit->version + 1] 
+                )
+            )->save();
+        });
 
         $metadata = $this->buildMetadata($fruit);
         $hash = $this->computeMetadataHash($metadata);

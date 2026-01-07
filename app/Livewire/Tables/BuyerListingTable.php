@@ -36,6 +36,7 @@ class BuyerListingTable extends DataTableComponent
             Column::make("Id", "id")
                 ->sortable()
                 ->hideIf(true),
+
             ViewComponentColumn::make('Company Name', 'company_name')
                 ->component('components.table-primary-column')
                 ->attributes(fn($value, $row, Column $column) => [
@@ -44,6 +45,9 @@ class BuyerListingTable extends DataTableComponent
                     'route' => route('sales.buyers.show', $row->id),
                 ])->searchable()
                 ->sortable(),
+            Column::make("Reference ID", "reference_id")
+                ->sortable()
+                ->searchable(),
             Column::make("Contact name", "contact_name")
                 ->sortable()
                 ->searchable(),
