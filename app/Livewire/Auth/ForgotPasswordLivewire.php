@@ -25,6 +25,21 @@ class ForgotPasswordLivewire extends Component
         'setCountdown',
     ];
 
+    private function maskEmail(string $email): string
+    {
+        [$name, $domain] = explode('@', $email);
+
+        if (strlen($name) <= 2) {
+            return $name[0] . 'x@' . $domain;
+        }
+
+        return
+            substr($name, 0, 1) .
+            str_repeat('x', strlen($name) - 2) .
+            substr($name, -1) .
+            '@' . $domain;
+    }
+
     /**
      * Send OTP to user's phone using ForgotPasswordService
      */
@@ -50,10 +65,10 @@ class ForgotPasswordLivewire extends Component
 
         try {
             $service->sendOtp($this->phone);
-
+            $maskedEmail = $this->maskEmail($user->email);
             // Update component state
             $this->otpSent = true;
-            $this->message = 'OTP has been sent to your registered email.';
+            $this->message = 'OTP has been sent to your registered email: ' . $maskedEmail;
             $this->countdown = 20;
             $this->dispatch('otpSent');
         } catch (\Exception $e) {
