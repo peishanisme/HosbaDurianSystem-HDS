@@ -42,6 +42,8 @@ class TreeModalLivewire extends Component
                 'local'
             );
             $this->isThumbnailValid = true;
+        } else {
+            $this->form->thumbnail = null;
         }
     }
 

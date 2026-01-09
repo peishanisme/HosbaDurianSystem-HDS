@@ -6,7 +6,7 @@
     </div>
 
     <div class="fv-row mb-8">
-        <x-input-label for="email" class="mb-2" :value="__('Email')" />
+        <x-input-label for="email" class="required mb-2" :value="__('Email')" />
         <x-input-text id="email" placeholder="Email" wire:model="form.email" />
         <x-input-error :messages="$errors->get('form.email')" />
     </div>

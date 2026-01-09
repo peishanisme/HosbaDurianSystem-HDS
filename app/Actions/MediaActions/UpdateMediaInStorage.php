@@ -11,11 +11,11 @@ class UpdateMediaInStorage
 
     public function handle($object, $dto, $path)
     {
-        $thumbnailPath = $dto->thumbnail;
+        $newThumbnail = $dto->thumbnail;
         $oldThumbnail = $object->thumbnail;
 
-        if (empty($thumbnailPath)) {
-            return $oldThumbnail;
+        if (empty($newThumbnail)) {
+            return null;
         }
 
         if ($dto->thumbnail instanceof TemporaryUploadedFile) {
@@ -33,15 +33,5 @@ class UpdateMediaInStorage
 
             return $thumbnailPath;
         }
-
-
-        // Handle unchanged or string path
-        // $newThumbnailPath = $path . "/" . $dto->thumbnail->getClientOriginalExtension() . "/" . $dto->thumbnail->getFilename();
-        // if ($oldThumbnail === $newThumbnailPath) {
-        //     return $thumbnailPath;
-        // }
-
-        // Default: just return as-is
-        // return $thumbnailPath;
     }
 }
