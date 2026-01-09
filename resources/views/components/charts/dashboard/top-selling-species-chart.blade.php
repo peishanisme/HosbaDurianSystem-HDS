@@ -1,8 +1,14 @@
-<div class="card pb-10">
+<div class="card pb-10" style="min-height: 505px">
     <div class="card-header">
         <h3 class="card-title">{{ __('messages.top_selling_species') }}</h3>
     </div>
-    <div class="card-body p-5" id="top-selling-species-chart" style="width: 93%; height: 400px;"></div>
+    @if (empty($topSellingSpecies) || count($topSellingSpecies) === 0)
+        <div class="card-body p-5">
+            <p class="text-center">{{ __('messages.no_data_available') }}</p>
+        </div>
+    @else
+        <div class="card-body p-5" id="top-selling-species-chart" style="width: 93%; height: 400px;"></div>
+    @endif
 </div>
 
 @push('scripts')

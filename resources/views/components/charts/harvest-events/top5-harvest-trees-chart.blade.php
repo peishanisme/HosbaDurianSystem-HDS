@@ -25,14 +25,14 @@
             // Each object: {tree: "Tree 1", A: 5, B: 2, C: 1, D: 0}
             const chartData = rawData.map(item => ({
                 tree: item.tree,
-                S: Number(item.S || 0),
+                AA: Number(item.AA || 0),
                 A: Number(item.A || 0),
                 B: Number(item.B || 0),
                 C: Number(item.C || 0),
                 D: Number(item.D || 0),
             }));
 
-            const grades = ['S', 'A', 'B', 'C', 'D'];
+            const grades = ['AA', 'A', 'B', 'C', 'D'];
             const colors = [
                 am5.color(0x315E26),
                 am5.color(0x7A9F79),

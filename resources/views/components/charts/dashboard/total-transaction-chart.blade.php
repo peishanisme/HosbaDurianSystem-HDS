@@ -2,7 +2,13 @@
     <div class="card-header">
         <h3 class="card-title">{{ __('messages.total_transactions') }}</h3>
     </div>
-    <div class="card-body p-5" id="total-transaction-chart" style="width: 100%; height: 400px;"></div>
+    @if (empty($totalTransactionData) || count($totalTransactionData) === 0)
+        <div class="card-body p-5">
+            <p class="text-center">{{ __('messages.no_data_available') }}</p>
+        </div>
+    @else
+        <div class="card-body p-5" id="total-transaction-chart" style="width: 100%; height: 400px;"></div>
+    @endif
 </div>
 
 @push('scripts')
@@ -103,7 +109,7 @@
             chart.set("scrollbarX", am5.Scrollbar.new(root, {
                 orientation: "horizontal"
             }));
-            
+
             var exporting = am5plugins_exporting.Exporting.new(root, {
                 menu: am5plugins_exporting.ExportingMenu.new(root, {}),
                 filePrefix: "{{ __('messages.total_transactions') }}"

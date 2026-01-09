@@ -145,11 +145,11 @@ class HarvestEventOverviewLivewire extends Component
         $chartData = $topTrees->map(function ($grades, $treeUuid) {
             return [
                 'tree' => Tree::where('uuid', $treeUuid)->value('tree_tag'),
+                'AA' => $grades->get('AA', 0),
                 'A' => $grades->get('A', 0),
                 'B' => $grades->get('B', 0),
                 'C' => $grades->get('C', 0),
                 'D' => $grades->get('D', 0),
-                'S' => $grades->get('S', 0),
                 'total' => array_sum($grades->toArray()),
             ];
         })->values();
@@ -188,7 +188,7 @@ class HarvestEventOverviewLivewire extends Component
             ->pluck('count', 'grade')
             ->toArray();
 
-        $orderedGrades = ['S', 'A', 'B', 'C', 'D'];
+        $orderedGrades = ['AA', 'A', 'B', 'C', 'D'];
 
         $fruitQualityData = [];
         foreach ($orderedGrades as $grade) {

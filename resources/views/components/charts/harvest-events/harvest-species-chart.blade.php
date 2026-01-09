@@ -47,7 +47,7 @@
             series.children.push(am5.Label.new(root, {
                 centerX: am5.percent(50),
                 centerY: am5.percent(50),
-                text: "Grade",
+                text: "Pieces\n{valueSum} pc(s)",
                 populateText: true,
                 fontSize: "1.2em"
             }));
