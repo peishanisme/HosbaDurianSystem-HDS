@@ -21,6 +21,9 @@ class BlockchainService
         ]);
 
         if ($response->successful()) {
+            Log::info('Blockchain sale sync successful', [
+                'response' => $response->body(),
+            ]);
             return [
                 'success' => true,
                 'txHash'  => $response['txHash'],
@@ -69,7 +72,7 @@ class BlockchainService
 
         return [
             'valid'     => $response['valid'],
-            'status'    => $response['status'],    
+            'status'    => $response['status'],
             'timestamp' => $response['timestamp'],
         ];
     }
@@ -97,7 +100,7 @@ class BlockchainService
 
     public function getFruitOnChain(string $fruitTag): string
     {
-        
+
         $url = rtrim(config('services.blockchain.base_url'), '/')
             . '/fruit/' . $fruitTag;
 

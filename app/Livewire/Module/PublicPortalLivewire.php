@@ -6,8 +6,8 @@ use App\Models\Fruit;
 use Livewire\Component;
 use App\Models\FruitFeedback;
 use App\Services\BlockchainService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Cache;
 
 class PublicPortalLivewire extends Component
 {
@@ -26,8 +26,8 @@ class PublicPortalLivewire extends Component
             }
 
             // 1. Fetch metadata from IPFS
-            $response = Http::timeout(20)->get(
-                "https://ipfs.io/ipfs/{$this->fruit->metadata_cid}"
+            $response = Http::timeout(60)->get(
+                "https://indigo-worthy-carp-537.mypinata.cloud/ipfs/{$this->fruit->metadata_cid}"
             );
 
             if (!$response->successful()) {
@@ -51,13 +51,21 @@ class PublicPortalLivewire extends Component
 
             $recalculatedHash = hash('sha256', $metadataJson);
             $recalculatedHash = '0x' . $recalculatedHash;
+            Log::info('Recalculated hash', [
+                'fruitId' => $this->fruit->fruit_tag,
+                'recalculatedHash' => $recalculatedHash,
+            ]);
             // dd( $recalculatedHash);
 
             $fruitId = ($this->fruit->version === 1) ? $this->fruit->fruit_tag : $this->fruit->fruit_tag . '-v' . $this->fruit->version;
-
             // 3. Read hash from blockchain
             $onChainHash = app(BlockchainService::class)
                 ->getFruitOnChain($fruitId);
+            Log::info('Blockchain fetch successful', [
+                'fruitId' => $fruitId,
+                'onChainHash' => $onChainHash,
+            ]);
+            // dd($onChainHash);
 
             if (!$onChainHash) {
                 return $this->failVerification('record_not_found');
