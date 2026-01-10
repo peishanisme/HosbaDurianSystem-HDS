@@ -2,13 +2,14 @@
 
 namespace App\Livewire\Module\UserManagement;
 
-use App\Traits\SweetAlert;
 use Exception;
 use App\Models\User;
 use Livewire\Component;
+use App\Traits\SweetAlert;
 use Livewire\Attributes\On;
 use App\Livewire\Forms\UserForm;
 use Spatie\Permission\Models\Role;
+use App\Actions\FormatPhoneNumberAction;
 
 class UserModalLivewire extends Component
 {
