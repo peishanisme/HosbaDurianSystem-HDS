@@ -2,7 +2,7 @@
     <div class="card-header">
         <h3 class="card-title">Harvest Species Overview</h3>
     </div>
-    <div class="card-body p-5" id="harvest-species-chart" style="width: 100%;"></div>
+    <div wire:ignore class="card-body p-5" id="harvest-species-chart" style="width: 100%;"></div>
 </div>
 
 

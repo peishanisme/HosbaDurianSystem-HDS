@@ -7,7 +7,7 @@
             <p class="text-center">{{ __('messages.no_data_available') }}</p>
         </div>
     @else
-        <div class="card-body p-5" id="total-transaction-chart" style="width: 100%; height: 400px;"></div>
+        <div wire:ignore class="card-body p-5" id="total-transaction-chart" style="width: 100%; height: 400px;"></div>
     @endif
 </div>
 

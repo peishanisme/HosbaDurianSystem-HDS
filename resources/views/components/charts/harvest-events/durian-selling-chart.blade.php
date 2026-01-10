@@ -2,7 +2,7 @@
     <div class="card-header">
         <h3 class="card-title">Fruit Selling Status</h3>
     </div>
-    <div class="card-body p-5" id="fruit-selling-chart" style="width: 95%;"></div>
+    <div wire:ignore class="card-body p-5" id="fruit-selling-chart" style="width: 95%;"></div>
 </div>
 
 @push('scripts')

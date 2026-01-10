@@ -2,7 +2,7 @@
     <div class="card-header">
         <h3 class="card-title">Top 10 Harvest Trees</h3>
     </div>
-    <div class="card-body p-5" id="top10-harvest-trees-chart" style="width: 95%;"></div>
+    <div wire:ignore class="card-body p-5" id="top10-harvest-trees-chart" style="width: 95%;"></div>
 </div>
 
 @push('styles')

@@ -11,7 +11,7 @@
             <h4 class="mt-3 text-muted">{{ __('messages.no_data_available') }}</h4>
         </div>
     @else
-        <div class="card-body p-5" id="total-tree-chart" style="width: 100%; height: 350px;"></div>
+        <div wire:ignore class="card-body p-5" id="total-tree-chart" style="width: 100%; height: 350px;"></div>
     @endif
 </div>
 

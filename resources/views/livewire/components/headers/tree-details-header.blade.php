@@ -147,7 +147,7 @@
         </div>
         <!--end::Details-->
         <!--begin::Navs-->
-        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
+        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold" wire:ignore>
             <x-show-navbar-navitem title="Overview" :route="route('tree.show', $tree->id)" :active="request()->routeIs('tree.show')" />
             <x-show-navbar-navitem title="Growth Logs" :route="route('tree.growth-log', $tree->id)" :active="request()->routeIs('tree.growth-log')" />
             {{-- <x-show-navbar-navitem title="Status History" /> --}}
