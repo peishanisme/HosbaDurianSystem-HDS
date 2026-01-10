@@ -12,6 +12,7 @@ use App\Livewire\Forms\BuyerForm;
 class BuyerModalLivewire extends Component
 {
     use SweetAlert;
+    protected $listeners = ['refreshComponent' => '$refresh'];
 
     public Buyer $buyer;
     public BuyerForm $form;
@@ -34,34 +35,28 @@ class BuyerModalLivewire extends Component
     public function create(): void
     {
         $validatedData = $this->form->validate();
-        
+
         try {
 
             $this->form->create($validatedData);
             $this->alertSuccess('Buyer has been created successfully.', $this->modalID);
-
-        
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);
-        
         }
     }
 
     public function update(): void
     {
         $validatedData = $this->form->validate();
-        
+
         try {
 
             $this->form->update($validatedData);
             $this->alertSuccess('Buyer has been updated successfully.', $this->modalID);
-
-        
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);
-        
         }
     }
 

@@ -9,6 +9,8 @@ use Livewire\Attributes\On;
 
 class GenerateReportModal extends Component
 {
+    protected $listeners = ['refreshComponent' => '$refresh'];
+
     public string $modalID = 'generateReportModalLivewire', $modalTitle = 'Generate Report';
     public ?string $format = '';
     public ?string $from = '';

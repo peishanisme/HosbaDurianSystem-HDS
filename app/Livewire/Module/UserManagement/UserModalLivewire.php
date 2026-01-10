@@ -14,6 +14,8 @@ use App\Actions\FormatPhoneNumberAction;
 class UserModalLivewire extends Component
 {
     use SweetAlert;
+    protected $listeners = ['refreshComponent' => '$refresh'];
+
     public UserForm $form;
     public string $modalID = 'userModalLivewire', $modalTitle = 'User Details';
     public array $roleOptions = [];
@@ -42,34 +44,28 @@ class UserModalLivewire extends Component
     public function create(): void
     {
         $validatedData = $this->form->validate();
-        
+
         try {
 
             $this->form->create($validatedData);
             $this->alertSuccess('User has been created successfully.', $this->modalID);
-
-        
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);
-        
         }
     }
 
     public function update(): void
     {
         $validatedData = $this->form->validate();
-        
+
         try {
 
             $this->form->update($validatedData);
             $this->alertSuccess('User has been updated successfully.', $this->modalID);
-
-        
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);
-        
         }
     }
 

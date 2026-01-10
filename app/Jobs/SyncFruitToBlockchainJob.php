@@ -31,7 +31,7 @@ class SyncFruitToBlockchainJob implements ShouldQueue
         
         $fruit = Fruit::findOrFail($this->fruitId);
 
-        if (! $fruit->metadata_hash) {
+        if (! $fruit->metadata_hash ) {
             throw new \Exception('Metadata not ready');
             
         }

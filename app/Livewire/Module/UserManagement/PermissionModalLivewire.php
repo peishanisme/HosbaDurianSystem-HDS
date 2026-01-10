@@ -13,21 +13,22 @@ use App\Traits\AuthorizesRoleOrPermission;
 class PermissionModalLivewire extends Component
 {
     use AuthorizesRoleOrPermission, SweetAlert;
+    protected $listeners = ['refreshComponent' => '$refresh'];
 
     public string $modalID = 'permissionModalLivewire', $modalTitle = 'Permission Details';
     public ?Role $role;
-    public $permissions,$roleName;
+    public $permissions, $roleName;
     public array $selectedPermissions = [];
     public string $search = '';
 
-     public function mount(): void
+    public function mount(): void
     {
         $this->authorizeRoleOrPermission(['edit-permissions']);
 
         $this->permissions = Permission::all();
     }
 
-    public function resetInput(): void 
+    public function resetInput(): void
     {
         $this->reset('search');
     }
@@ -49,7 +50,6 @@ class PermissionModalLivewire extends Component
         return $this->permissions->filter(function ($permission) {
             return str_contains(strtolower($permission->name), strtolower($this->search));
         });
-        
     }
 
     public function update()
@@ -57,13 +57,11 @@ class PermissionModalLivewire extends Component
         try {
             $this->selectedPermissions = array_map('intval', $this->selectedPermissions);
             UpdatePermissionAction::handle($this->role, $this->selectedPermissions);
-            
-            $this->alertSuccess('Permission has been updated successfully.', $this->modalID);
 
+            $this->alertSuccess('Permission has been updated successfully.', $this->modalID);
         } catch (\Exception $e) {
 
             $this->alertError('Failed to update permissions: ' . $e->getMessage(), $this->modalID);
-
         }
     }
 
