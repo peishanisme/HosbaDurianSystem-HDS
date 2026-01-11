@@ -27,10 +27,6 @@ Route::middleware('auth:sanctum')->put('/species/{id}', [SpeciesController::clas
 Route::middleware('auth:sanctum')->delete('/species/{id}', [SpeciesController::class, 'destroy']);
 
 // // User Controller
-// Route::middleware('auth:sanctum')->post('/users', [UserController::class, 'store']);
-// Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
-// Route::middleware('auth:sanctum')->put('/users/{id}', [UserController::class, 'update']);
-// Route::middleware('auth:sanctum')->delete('/users/{id}', [UserController::class, 'destroy']);
 Route::get('/check-phone/{phone}', [UserController::class, 'checkPhone']);
 Route::post('/verify-otp', [UserController::class, 'verifyOtp']);
 Route::post('/reset-password', [UserController::class, 'resetPassword']);
@@ -85,11 +81,3 @@ Route::middleware('auth:sanctum')->post('/agrochemical-stock-movements', [Agroch
 Route::middleware('auth:sanctum')->post('/tree-growth-logs', [TreeGrowthLogController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/tree-growth-logs', [TreeGrowthLogController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/tree-growth-logs/{uuid}', [TreeGrowthLogController::class, 'getByTreeUuid']);
-
-
-// // Buyer Controller
-// Route::middleware('auth:sanctum')->post('/buyers', [BuyerController::class, 'store']);
-// Route::middleware('auth:sanctum')->get('/buyers', [BuyerController::class, 'index']);
-// Route::middleware('auth:sanctum')->put('/buyers/{id}', [BuyerController::class, 'update']);
-// Route::middleware('auth:sanctum')->delete('/buyers/{id}', [BuyerController::class, 'destroy']);
-// Route::middleware('auth:sanctum')->get('/buyers/{id}', [BuyerController::class, 'show']);
