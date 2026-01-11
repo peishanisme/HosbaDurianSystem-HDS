@@ -8,10 +8,16 @@
             <!-- Transaction Info -->
             <div class="mb-5 space-y-2">
                 <div class="fs-5 my-3 text-gray-600">
+                    <strong>Transaction Ref ID:</strong> {{ $transaction->reference_id ?? '-' }}
+                </div>
+                <div class="fs-5 my-3 text-gray-600">
                     <strong>Date:</strong> {{ \Carbon\Carbon::parse($transaction->date)->format('d M Y') }}
                 </div>
                 <div class="fs-5 my-3 text-gray-600">
                     <strong>Buyer:</strong> {{ $transaction->buyer->company_name ?? '-' }}
+                </div>
+                <div class="fs-5 my-3 text-gray-600">
+                    <strong>Buyer Ref ID:</strong> {{ $transaction->buyer->reference_id ?? '-' }}
                 </div>
                 <div class="fs-5 my-3 text-gray-600">
                     <strong>Payment Method:</strong>
