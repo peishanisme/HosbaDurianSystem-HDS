@@ -2,7 +2,7 @@
     <div class="card-header">
         <h3 class="card-title">Fruit Quality</h3>
     </div>
-    <div class="card-body p-5" id="fruit-quality-chart" style="width: 100%; "></div>
+    <div wire:ignore class="card-body p-5" id="fruit-quality-chart" style="width: 100%; "></div>
 </div>
 
 @push('styles')

@@ -15,7 +15,7 @@ class TreeListingTable extends DataTableComponent
     {
         return Tree::query()
             ->with(['species', 'latestGrowthLog'])
-            ->orderBy('trees.updated_at', 'desc'); // no need to load all growthLogs
+            ->orderBy('trees.created_at', 'desc'); 
     }
 
 

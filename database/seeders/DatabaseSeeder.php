@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleAndPermissionSeeder::class);
        User::firstOrCreate(
-        ["phone" => "0123456789"],
+        ["phone" => "60134078855"],
         [
             "name" => "Super Admin",
-            "email" => "admin@hosbadurian.com",
+            "email" => "teikhooi@gmail.com",
             "password" => bcrypt("hosbadurian"),
         ]
         )->assignRole("Super-Admin");

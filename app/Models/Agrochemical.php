@@ -43,10 +43,10 @@ class Agrochemical extends Model
     {
         $latest = $this->stockMovements()
             ->where('movement_type', 'in')
-            ->latest('created_at')
-            ->value('created_at');
+            ->latest('date')   // use date column
+            ->value('date');
 
-        return $latest ? $latest->format('d/m/Y') : '-';
+        return $latest ? \Carbon\Carbon::parse($latest)->format('d/m/Y') : '-';
     }
 
     public function getRemainingStock(): int

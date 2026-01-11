@@ -18,42 +18,65 @@ class ForgotPasswordLivewire extends Component
     public $countdown = 0;
 
     protected $rules = [
-        'phone' => 'required',
+        'phoneNum' => [
+            'required',
+            'regex:/^1\d{8,9}$/',
+        ],
     ];
+
+    protected $messages = [
+        'phoneNum.required' => 'Phone number is required.',
+        'phoneNum.regex' => 'Please enter a valid phone number starting with "1" without any spaces or special characters.',
+    ];
+    
 
     protected $listeners = [
         'setCountdown',
     ];
+
+    private function maskEmail(string $email): string
+    {
+        [$name, $domain] = explode('@', $email);
+
+        if (strlen($name) <= 2) {
+            return $name[0] . 'x@' . $domain;
+        }
+
+        return
+            substr($name, 0, 1) .
+            str_repeat('x', strlen($name) - 2) .
+            substr($name, -1) .
+            '@' . $domain;
+    }
 
     /**
      * Send OTP to user's phone using ForgotPasswordService
      */
     public function sendOtp(ForgotPasswordService $service)
     {
+        $this->validateOnly('phoneNum');
+
         // keep raw input in phoneNum and write formatted value to a separate property
         $this->phone = FormatPhoneNumberAction::handle($this->phoneNum);
-
-        // validate the formatted phone field only
-        $this->validateOnly('phone');
 
         $user = User::where('phone', $this->phone)->first();
 
         if (!$user) {
-            $this->addError('phone', 'No user found with this phone number. Please contact your manager for assistance.');
+            $this->addError('phoneNum', 'No user found with this phone number. Please contact your manager for assistance.');
             return;
         }
 
         if (!$user->email) {
-            $this->addError('phone', 'This phone number exists but no email is registered. Please contact your manager.');
+            $this->addError('phoneNum', 'This phone number exists but no email is registered. Please contact your manager.');
             return;
         }
 
         try {
             $service->sendOtp($this->phone);
-
+            $maskedEmail = $this->maskEmail($user->email);
             // Update component state
             $this->otpSent = true;
-            $this->message = 'OTP has been sent to your registered email.';
+            $this->message = 'OTP has been sent to your registered email: ' . $maskedEmail;
             $this->countdown = 20;
             $this->dispatch('otpSent');
         } catch (\Exception $e) {

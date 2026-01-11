@@ -9,7 +9,7 @@ use App\Traits\SweetAlert;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 
-#[Title('Sales & Transactions')]
+#[Title('Buyer Management')]
 class BuyerIndexLivewire extends Component
 {
      use SweetAlert, AuthorizesRoleOrPermission;

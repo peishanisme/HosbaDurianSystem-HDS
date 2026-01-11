@@ -1,9 +1,21 @@
 {{-- harvest grade chart --}}
-<div class="card pb-10">
+<div class="card pb-10" style="min-height: 605px;">
     <div class="card-header">
         <h3 class="card-title">Harvest Grade</h3>
     </div>
-    <div class="card-body p-5" id="harvest-grade-chart"></div>
+    @php
+        $harvestGradeData = $this->loadHarvestGradeData();
+        $hasData = collect($harvestGradeData)->sum() > 0;
+    @endphp
+
+    @if ($hasData)
+        <div class="card-body p-5" id="harvest-grade-chart"></div>
+    @else
+        <div class="card-body p-5">
+            <p class="text-center">{{ __('messages.no_data_available') }}</p>
+        </div>
+    @endif
+
 </div>
 
 @push('scripts')

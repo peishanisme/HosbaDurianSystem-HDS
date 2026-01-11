@@ -135,7 +135,7 @@
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="fs-2 fw-bold">{{ $tree->flowering_period }}</div>
+                                    <div class="fs-2 fw-bold">{{ $tree->getFloweringPeriod() }}</div>
                                 </div>
                                 <div class="fw-semibold fs-6 text-gray-500">Flowering Period</div>
                             </div>
@@ -147,7 +147,7 @@
         </div>
         <!--end::Details-->
         <!--begin::Navs-->
-        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
+        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold" wire:ignore>
             <x-show-navbar-navitem title="Overview" :route="route('tree.show', $tree->id)" :active="request()->routeIs('tree.show')" />
             <x-show-navbar-navitem title="Growth Logs" :route="route('tree.growth-log', $tree->id)" :active="request()->routeIs('tree.growth-log')" />
             {{-- <x-show-navbar-navitem title="Status History" /> --}}

@@ -46,8 +46,8 @@ class Tree extends Model
         $speciesCode = $species->code;
 
         $latestTag = static::when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))
-            ->withTrashed() // include soft-deleted trees to keep numbering consistent
-            ->orderByDesc('id') // assuming trees are inserted in order
+            ->withTrashed()
+            ->orderByDesc('id')
             ->value('tree_tag');
 
         if ($latestTag && preg_match('/-(\d+)$/', $latestTag, $matches)) {
@@ -119,5 +119,15 @@ class Tree extends Model
         return $this->fruits()
             ->where('harvest_uuid', $harvestUuid)
             ->count();
+    }
+
+    public function getFloweringPeriod(): int
+    {
+        $harvestCount = $this->fruits()
+            ->whereNotNull('harvest_uuid')
+            ->distinct('harvest_uuid')
+            ->count('harvest_uuid');
+
+        return $this->flowering_period + $harvestCount;
     }
 }

@@ -77,7 +77,7 @@
                 </div>
             </div>
         </div>
-        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
+        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold" wire:ignore>
             <x-show-navbar-navitem title="Overview" route="{{ route('harvest.show', $harvestEvent->id) }}"
                 :active="request()->routeIs('harvest.show')" />
             <x-show-navbar-navitem title="Harvest Summary"

@@ -38,7 +38,7 @@
                             @endif
                         </button>
                     </div>
-                    <x-input-error :messages="$errors->get('phone')" class="text-danger mt-1" />
+                    <x-input-error :messages="$errors->get('phoneNum')" class="text-danger mt-1" />
 
                 </div>
 
