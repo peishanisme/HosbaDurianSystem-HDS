@@ -1,4 +1,11 @@
-@props(['title' => null, 'subtitle' => null, 'thumbnail' => null, 'route' => null, 'bracket' => null, 'avatar' => null])
+@props([
+    'title' => null,
+    'subtitle' => null,
+    'thumbnail' => null,
+    'route' => null,
+    'bracket' => null,
+    'avatar' => null,
+])
 
 <div class="d-flex align-items-center">
     {{-- @if ($thumbnail && $thumbnail != 'default')
@@ -10,20 +17,24 @@
             <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;" src="{{ secure_asset('assets/media/placeholder/placeholder.svg') }}" alt="Placeholder">
         </div>
     @endif --}}
-    @if ($thumbnail != null)
-        @if ($thumbnail != 'default')
-            <div class="me-3">
-                <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;"
-                    src="{{ $thumbnail && $thumbnail != 'default' ? app(\App\Services\MediaService::class)->get($thumbnail) : app(\App\Services\MediaService::class)->get('logo/placeholder.svg') }}"
-                    alt="Image">
-            </div>
-        @elseif ($thumbnail == 'default')
-            <div class="me-3">
-                <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;"
-                    src="{{ app(\App\Services\MediaService::class)->get('logo/placeholder.svg') }}" alt="Placeholder">
-            </div>
+    <div class="me-3">
+        @php
+            $imageUrl =
+                $thumbnail && $thumbnail !== 'default'
+                    ? app(\App\Services\MediaService::class)->get($thumbnail)
+                    : app(\App\Services\MediaService::class)->get('logo/placeholder.svg');
+
+            $usePreview = $thumbnail && $thumbnail !== 'default';
+        @endphp
+
+        @if ($usePreview)
+            <x-image-preview :src="$imageUrl" alt="Image" thumb-size="60" max-size="400"
+                modal-id="imagePreview-{{ $loop->index ?? uniqid() }}" />
+        @else
+            <img src="{{ $imageUrl }}" alt="Placeholder" class="rounded object-fit-cover"
+                style="width: 60px; aspect-ratio: 1/1;" />
         @endif
-    @endif
+    </div>
 
     @if ($avatar != null)
         <div class="me-3">

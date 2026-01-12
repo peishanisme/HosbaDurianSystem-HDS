@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->put('/trees/{id}', [TreeController::class, 'u
 Route::middleware('auth:sanctum')->delete('/trees/{id}', [TreeController::class, 'destroy']);
 Route::middleware('auth:sanctum')->get('/trees/uuid/{uuid}', [TreeController::class, 'showByUuid']);
 Route::middleware('auth:sanctum')->put('/trees/location/{uuid}', [TreeController::class, 'updateTreeLocation']);
-
+Route::middleware('auth:sanctum')->get('/trees/{uuid}/flowering-period', [TreeController::class, 'getFloweringPeriod']);
 
 // Disease Controller
 Route::middleware('auth:sanctum')->post('/diseases', [DiseaseController::class, 'store']);
