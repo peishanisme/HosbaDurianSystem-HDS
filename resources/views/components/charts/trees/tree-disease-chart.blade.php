@@ -1,9 +1,21 @@
 {{-- tree disease chart --}}
-<div class="card pb-10">
+<div class="card pb-10" style="min-height: 605px;">
     <div class="card-header">
         <h3 class="card-title">Tree Disease</h3>
     </div>
-    <div class="card-body p-5" id="tree-disease-chart" style="width: 93%;"></div>
+    @php
+        $treeDiseaseData = $this->loadTreeDiseaseData();
+        $hasData = collect($treeDiseaseData)->sum() > 0;
+    @endphp
+
+    @if ($hasData)
+        <div class="card-body p-5" id="tree-disease-chart"></div>
+    @else
+        <div class="card-body p-5">
+            <p class="text-center">{{ __('messages.no_data_available') }}</p>
+        </div>
+    @endif
+
 </div>
 
 @push('scripts')

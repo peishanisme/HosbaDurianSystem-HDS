@@ -2,10 +2,17 @@
     <div class="card-header">
         <h3 class="card-title">{{ __('messages.total_trees_by_species') }}</h3>
         <div class="d-flex align-items-center justify-content-end">
-            <a class="btn btn-secondary" style="height: 45px" href="{{ route('tree.trees.index') }}">{{ __('messages.view_trees') }}</a>
+            <a class="btn btn-secondary" style="height: 45px"
+                href="{{ route('tree.trees.index') }}">{{ __('messages.view_trees') }}</a>
         </div>
     </div>
-    <div class="card-body p-5" id="total-tree-chart" style="width: 100%; height: 350px;"></div>
+    @if ($totalTreeData->isEmpty())
+        <div class="card-body d-flex flex-column align-items-center justify-content-center" style="height: 350px;">
+            <h4 class="mt-3 text-muted">{{ __('messages.no_data_available') }}</h4>
+        </div>
+    @else
+        <div wire:ignore class="card-body p-5" id="total-tree-chart" style="width: 100%; height: 350px;"></div>
+    @endif
 </div>
 
 @push('scripts')

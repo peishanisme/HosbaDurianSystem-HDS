@@ -23,6 +23,7 @@ class AgrochemicalGlobalUsageTable extends DataTableComponent
         $this->setPrimaryKey('id')
             ->setSearchPlaceholder('Search Stock')
             ->setEmptyMessage('No results found')
+            ->setDefaultSort('created_at', 'desc')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'livewire.components.modal-button',
@@ -73,8 +74,7 @@ class AgrochemicalGlobalUsageTable extends DataTableComponent
                 ->sortable(),
             Column::make("Description", "description"),
             Column::make("Created at", "created_at")
-                ->sortable()
-                ->hideIf(true),
+                ->sortable(),
             Column::make("Updated at", "updated_at")
                 ->sortable()
                 ->hideIf(true),

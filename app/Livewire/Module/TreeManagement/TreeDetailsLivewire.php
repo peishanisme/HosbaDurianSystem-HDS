@@ -24,6 +24,7 @@ class TreeDetailsLivewire extends Component
         $spoiledCount = $fruits->where('is_spoiled', true)->count();
         $gradeCounts = $fruits->where('is_spoiled', false)->groupBy('grade')->map->count();
         return [
+            'AA' => $gradeCounts->get('AA', 0),
             'A' => $gradeCounts->get('A', 0),
             'B' => $gradeCounts->get('B', 0),
             'C' => $gradeCounts->get('C', 0),
@@ -64,7 +65,7 @@ class TreeDetailsLivewire extends Component
             ->orderBy('last_created_at', 'desc')
             ->limit(6)
             ->pluck('total', 'event_name');
-            
+
         return $harvestCounts->toArray();
     }
 

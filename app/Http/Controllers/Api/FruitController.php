@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\DataTransferObject\FruitDTO;
 use Illuminate\Support\Str;
 use App\Actions\FruitManagement\CreateFruitAction;
+use App\Actions\FruitManagement\UpdateFruitAction;
 use App\Services\PinataService;
 use App\Services\BlockchainService;
 
@@ -16,6 +17,9 @@ class FruitController extends Controller
 {
     public function store(Request $request)
     {
+        // Increase timeout for Pinata and Blockchain operations
+        set_time_limit(300);
+
         $validated = $request->validate([
             'tree_uuid' => 'required|exists:trees,uuid',
             'harvest_uuid' => 'required|exists:harvest_events,uuid',
@@ -47,6 +51,9 @@ class FruitController extends Controller
 
     public function update(Request $request, $uuid)
     {
+        // Increase timeout for Pinata and Blockchain operations
+        set_time_limit(300);
+
         $validated = $request->validate([
             'tree_uuid' => 'required|exists:trees,uuid',
             'harvest_uuid' => 'required|exists:harvest_events,uuid',
@@ -57,9 +64,9 @@ class FruitController extends Controller
             'is_spoiled' => 'nullable|boolean',
         ]);
 
-        $fruit = Fruit::where('uuid', $uuid)->firstOrFail();
+        $dto = FruitDTO::fromArray($validated);
 
-        $fruit->update($validated);
+        $fruit = (new UpdateFruitAction(app(PinataService::class), app(BlockchainService::class)))->handle($dto, $uuid);
 
         return response()->json([
             'message' => 'Fruit updated successfully',

@@ -8,6 +8,7 @@ use App\Traits\SweetAlert;
 use Livewire\Attributes\On;
 use App\Models\Agrochemical;
 use App\Enum\AgrochemicalType;
+use Illuminate\Support\Facades\Log;
 use App\Livewire\Forms\AgrochemicalForm;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
@@ -42,6 +43,8 @@ class AgrochemicalModalLivewire extends Component
                 'local'
             );
             $this->isThumbnailValid = true;
+        } else {
+            $this->form->thumbnail = null;
         }
     }
 
@@ -71,6 +74,7 @@ class AgrochemicalModalLivewire extends Component
 
             $this->form->create($validatedData);
             $this->alertSuccess('Inventory has been created successfully.', $this->modalID);
+            $this->resetInput();
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);
@@ -89,6 +93,7 @@ class AgrochemicalModalLivewire extends Component
 
             $this->form->update($validatedData);
             $this->alertSuccess('Inventory has been updated successfully.', $this->modalID);
+            $this->resetInput();
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);

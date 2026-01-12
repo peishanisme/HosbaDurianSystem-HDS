@@ -19,7 +19,7 @@ class AgrochemicalForm extends Form
     public function rules(): array
     {
         return [
-            'name'              => ['required', 'string', 'max:255'],
+            'name'              => ['required', 'string', 'max:255','unique:agrochemicals,name,' . ($this->agrochemical?->id ?? 'NULL')],
             'quantity_per_unit' => ['required', 'numeric', 'min:0'],
             'price'             => ['required', 'numeric', 'min:0'],
             'type'              => ['required', 'string'],
