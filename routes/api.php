@@ -15,10 +15,12 @@ use App\Http\Controllers\Api\FruitController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\AgrochemicalController;
 use App\Http\Controllers\Api\TreeGrowthLogController;
+use App\Http\Controllers\ForgotPasswordController;
 
 // General
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthenticatedSessionController::class, 'destroy']);
+Route::middleware('auth:sanctum')->post('/check-old-password', [ForgotPasswordController::class, 'checkOldPassword']);
 
 // Species Controller
 Route::middleware('auth:sanctum')->post('/species', [SpeciesController::class, 'store']);
