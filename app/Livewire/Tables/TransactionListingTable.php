@@ -39,10 +39,12 @@ class TransactionListingTable extends DataTableComponent
                     [
                         'label1' => 'Create Transaction',
                         'dispatch1' => 'reset-transaction',
+                        'permission1' => 'create-sale',
                         'redirectUrl' => 'sales.transaction.create',
                         'label2' => 'Generate Report',
                         'dispatch2' => 'reset-generator',
                         'target2' => 'generateReportModalLivewire',
+                        'permission2' => 'export-reports',
                     ]
                 ]
             ]);

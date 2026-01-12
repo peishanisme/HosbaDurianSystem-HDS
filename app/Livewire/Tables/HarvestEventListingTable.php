@@ -60,7 +60,8 @@ class HarvestEventListingTable extends DataTableComponent
                     'dispatch' => 'edit-harvest-event',
                     'label'    => 'Edit',
                     'dataField' => 'harvestEvent',
-                    'data'      =>  $row->id
+                    'data'      =>  $row->id,
+                    'permission' => 'edit-harvest-event',
                 ]))->html()
                 ->excludeFromColumnSelect(),
         ];

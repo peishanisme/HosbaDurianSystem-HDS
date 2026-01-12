@@ -26,17 +26,20 @@
                     </div>
 
                     <div class="d-flex my-4">
-                        <button class="btn btn-sm btn-light me-2" {{-- data-bs-toggle="modal"
+                        @can('close-harvest-event')
+                            <button class="btn btn-sm btn-light me-2" {{-- data-bs-toggle="modal"
                             data-bs-target="#agrochemicalStockMovementModalLivewire" --}}
-                            wire:click="$dispatch({{ json_encode($harvestEvent->end_date ? 'reopen-event' : 'close-event') }}, { harvestEvent: {{ $harvestEvent->id }} })">
-                            <span
-                                class="indicator-label">{{ $harvestEvent->end_date ? 'Reopen Event' : 'Close Event' }}</span>
-                        </button>
+                                wire:click="$dispatch({{ json_encode($harvestEvent->end_date ? 'reopen-event' : 'close-event') }}, { harvestEvent: {{ $harvestEvent->id }} })">
+                                <span
+                                    class="indicator-label">{{ $harvestEvent->end_date ? 'Reopen Event' : 'Close Event' }}</span>
+                            </button>
+                        @endcan
 
-                        <div class="me-3">
-                            <livewire:components.modal-button  :dispatch="'reset-generator'" :target="'generateReportModalLivewire'"
-                                :label="'Generate Report'" />
-                        </div>
+                        @can('export-reports')
+                            <div class="me-3">
+                                <livewire:components.modal-button :dispatch="'reset-generator'" :target="'generateReportModalLivewire'" :label="'Generate Report'" />
+                            </div>
+                        @endcan
                     </div>
                 </div>
 

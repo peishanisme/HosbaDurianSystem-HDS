@@ -11,11 +11,12 @@ use App\Models\HarvestEvent;
 use Livewire\Attributes\Title;
 use Illuminate\Support\Facades\DB;
 use App\DataTransferObject\FruitDTO;
+use App\Traits\AuthorizesRoleOrPermission;
 
 #[Title('Harvest Events')]
 class HarvestEventOverviewLivewire extends Component
 {
-    use SweetAlert;
+    use SweetAlert, AuthorizesRoleOrPermission;
     public HarvestEvent $harvestEvent;
 
     public $tree_id;
@@ -23,15 +24,11 @@ class HarvestEventOverviewLivewire extends Component
     public $grade;
     public $weight;
     public Fruit $fruit;
-
-    // public function mount(){
-    //     $this->fruit = Fruit::where('id',66)->first();
-    //     $tree = Tree::where('uuid',$this->fruit->tree_uuid)->first();
-    //     $this->tree_id = $tree->id;
-    //     $this->harvested_date = $this->fruit->harvested_at;
-    //     $this->grade = $this->fruit->grade;
-    //     $this->weight = $this->fruit->weight;
-    // }
+    
+    public function mount(): void
+    {
+        $this->authorizeRoleOrPermission(['view-harvest-event']);
+    }
 
     #[On('close-event')]
     public function closeEvent(HarvestEvent $harvestEvent)

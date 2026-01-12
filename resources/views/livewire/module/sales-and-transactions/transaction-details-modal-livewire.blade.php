@@ -105,11 +105,13 @@
         <div class="d-flex justify-content-between align-items-center w-100">
             <!-- Left side -->
             @if ($transaction && !$transaction->is_cancelled)
-                <div>
-                    <x-button type="button" class="btn btn-light-danger" wire:click="cancelTransaction">
-                        Cancel Transaction
-                    </x-button>
-                </div>
+                @can('delete-sale')
+                    <div>
+                        <x-button type="button" class="btn btn-light-danger" wire:click="cancelTransaction">
+                            Cancel Transaction
+                        </x-button>
+                    </div>
+                @endcan
 
                 <!-- Right side -->
                 <div class="d-flex gap-2">
