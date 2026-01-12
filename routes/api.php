@@ -5,20 +5,22 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TreeController;
-use App\Http\Controllers\Api\SpeciesController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Api\BuyerController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\DiseaseController;
-use App\Http\Controllers\Api\HealthController;
-use App\Http\Controllers\Api\FruitController;
+use App\Http\Controllers\Api\BuyerController;
 use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\FruitController;
+use App\Http\Controllers\Api\HealthController;
+use App\Http\Controllers\Api\DiseaseController;
+use App\Http\Controllers\Api\SpeciesController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\Api\AgrochemicalController;
 use App\Http\Controllers\Api\TreeGrowthLogController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // General
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthenticatedSessionController::class, 'destroy']);
+Route::middleware('auth:sanctum')->post('/check-old-password', [ForgotPasswordController::class, 'checkOldPassword']);
 
 // Species Controller
 Route::middleware('auth:sanctum')->post('/species', [SpeciesController::class, 'store']);

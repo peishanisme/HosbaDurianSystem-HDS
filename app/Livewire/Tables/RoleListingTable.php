@@ -41,7 +41,7 @@ class RoleListingTable extends DataTableComponent
                     'dispatch' => 'edit-permission',
                     'dataField' => 'role',
                     'data' => $row->id,
-                    'disabled' => $row->name === 'Super-Admin',
+                    'disabled' => $row->name === 'Super-Admin' || $row->name === 'Worker',
                     'permission' => 'edit-permissions',
                 ]))->html()
                 ->excludeFromColumnSelect(),
