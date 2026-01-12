@@ -17,24 +17,27 @@
             <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;" src="{{ secure_asset('assets/media/placeholder/placeholder.svg') }}" alt="Placeholder">
         </div>
     @endif --}}
-    <div class="me-3">
-        @php
-            $imageUrl =
-                $thumbnail && $thumbnail !== 'default'
-                    ? app(\App\Services\MediaService::class)->get($thumbnail)
-                    : app(\App\Services\MediaService::class)->get('logo/placeholder.svg');
+    @if ($avatar == null)
 
-            $usePreview = $thumbnail && $thumbnail !== 'default';
-        @endphp
+        <div class="me-3">
+            @php
+                $imageUrl =
+                    $thumbnail && $thumbnail !== 'default'
+                        ? app(\App\Services\MediaService::class)->get($thumbnail)
+                        : app(\App\Services\MediaService::class)->get('logo/placeholder.svg');
 
-        @if ($usePreview)
-            <x-image-preview :src="$imageUrl" alt="Image" thumb-size="60" max-size="400"
-                modal-id="imagePreview-{{ $loop->index ?? uniqid() }}" />
-        @else
-            <img src="{{ $imageUrl }}" alt="Placeholder" class="rounded object-fit-cover"
-                style="width: 60px; aspect-ratio: 1/1;" />
-        @endif
-    </div>
+                $usePreview = $thumbnail && $thumbnail !== 'default';
+            @endphp
+
+            @if ($usePreview)
+                <x-image-preview :src="$imageUrl" alt="Image" thumb-size="60" max-size="400"
+                    modal-id="imagePreview-{{ $loop->index ?? uniqid() }}" />
+            @else
+                <img src="{{ $imageUrl }}" alt="Placeholder" class="rounded object-fit-cover"
+                    style="width: 60px; aspect-ratio: 1/1;" />
+            @endif
+        </div>
+    @endif
 
     @if ($avatar != null)
         <div class="me-3">

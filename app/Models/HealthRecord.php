@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 
 class HealthRecord extends Model
 {
-    use HasFactory, LogsActivity, SoftDeletes;
+    use HasFactory, LogsActivity;
     public $incrementing = false;
     protected $keyType = 'string';
 
