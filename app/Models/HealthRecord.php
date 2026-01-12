@@ -12,11 +12,21 @@ use Illuminate\Support\Str;
 
 class HealthRecord extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity, SoftDeletes;
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = ['tree_uuid','disease_id', 'status', 'recorded_at', 'treatment', 'thumbnail'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('health_record')
+            ->setDescriptionForEvent(fn(string $eventName) => "A tree health record has been $eventName.")
+            ->dontSubmitEmptyLogs();
+    }
 
     protected static function boot()
     {

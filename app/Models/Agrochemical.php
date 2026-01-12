@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use App\Enum\AgrochemicalType;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Agrochemical extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
 
     protected $casts = [
         'type' => AgrochemicalType::class,
@@ -24,6 +26,16 @@ class Agrochemical extends Model
         'description',
         'thumbnail',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('agrochemical')
+            ->setDescriptionForEvent(fn(string $eventName) => "An agrochemical has been $eventName.")
+            ->dontSubmitEmptyLogs();
+    }
 
     protected static function boot()
     {

@@ -24,17 +24,6 @@ class TreeListingTable extends DataTableComponent
         $this->setPrimaryKey('id')
             ->setSearchPlaceholder('Search Tree')
             ->setEmptyMessage('No results found');
-        // ->setConfigurableAreas([
-        //     'toolbar-right-end' => [
-        //         'livewire.components.modal-button',
-        //         [
-        //             'label' => 'Create Tree',
-        //             'dispatch' => 'reset-tree',
-        //             'target' => 'treeModalLivewire',
-        //             'permission' => 'create-tree',
-        //         ]
-        //     ]
-        // ]);
     }
 
     public function filters(): array
@@ -71,27 +60,17 @@ class TreeListingTable extends DataTableComponent
                     'label' => $value,
                 ]),
 
-            // Column::make("Current Height (m)")
-            //     ->label(fn($row) => optional($row->latestGrowthLog)->height ?? '-'),
-
-            // Column::make("Current Diameter (m)")
-            //     ->label(fn($row) => optional($row->latestGrowthLog)->diameter ?? '-'),
-
             Column::make("Planted At", "planted_at")
                 ->sortable(),
 
             Column::make('Actions')
-                ->label(fn($row, Column $column) => view('components.table-com-button', [
+                ->label(fn($row, Column $column) => view('components.table-button', [
                     'modal'     => 'treeModalLivewire',
-                    'dispatch1' => 'edit-tree',
-                    'label1'    => 'Edit',
+                    'dispatch' => 'edit-tree',
+                    'label'    => 'Edit',
                     'dataField' => 'tree',
                     'data'      =>  $row->id,
-                    'icon2'     => 'bi bi-trash3',
-                    'dispatch2' => 'delete-tree',
-                    'label2'    => 'Delete',
-                    'permission1' => 'edit-tree',
-                    'permission2' => 'delete-tree',
+                    'permission' => 'edit-tree',
                 ]))->html()
                 ->excludeFromColumnSelect(),
         ];
