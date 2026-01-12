@@ -4,7 +4,6 @@ namespace App\Livewire\Forms;
 
 use Livewire\Form;
 use App\Models\Buyer;
-use Livewire\Attributes\Validate;
 use App\DataTransferObject\BuyerDTO;
 use App\Actions\SalesAndTransactions\CreateBuyerAction;
 use App\Actions\SalesAndTransactions\UpdateBuyerAction;
@@ -17,7 +16,7 @@ class BuyerForm extends Form
     public function rules(): array
     {
         return [
-            'company_name'   => ['required', 'string', 'max:255'],
+            'company_name'   => ['required', 'string', 'max:255','unique:buyers,company_name,' . ($this->buyer?->id ?? 'NULL')],
             'contact_name'   => ['nullable', 'string', 'max:255'],
             'contact_number' => ['required', 'string','numeric'],
             'email'          => ['nullable', 'email', 'max:255'],

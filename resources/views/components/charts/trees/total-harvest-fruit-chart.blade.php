@@ -1,9 +1,17 @@
 {{-- total harvest in each event chart --}}
-<div class="card pb-10">
+<div class="card pb-10" style="min-height: 605px;">
     <div class="card-header">
         <h3 class="card-title">Total Harvest in Each Event</h3>
     </div>
-    <div class="card-body p-5" id="total-harvest-chart"  style="width: 93%;"></div>
+
+    @if (!empty($totalHarvestData))
+        <div class="card-body p-5" id="total-harvest-chart" style="width: 93%;"></div>
+    @else
+        <div class="card-body p-5">
+            <p class="text-center">{{ __('messages.no_data_available') }}</p>
+        </div>
+    @endif
+
 </div>
 
 @push('scripts')

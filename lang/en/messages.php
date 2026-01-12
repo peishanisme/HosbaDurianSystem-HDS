@@ -51,4 +51,6 @@ return [
     'top_selling_species' => 'Top Selling Species',
 
     'total_transactions' => 'Total Transactions',
+
+    'no_data_available' => 'No data available',
 ];

@@ -23,7 +23,7 @@ class UserForm extends Form
             'email'           => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user->id ?? null)],
             'role'            => ['required', Rule::exists('roles', 'id')],
             'is_active'       => ['required', 'boolean'],
-            'phone'           => ['required', 'string', Rule::unique('users', 'phone')->ignore($this->user->id ?? null), 'numeric'],
+            'phone'           => ['required', 'string', Rule::unique('users', 'phone')->ignore($this->user->id ?? null), 'numeric','regex:/^1\d{8,9}$/'],
         ];
     }
 

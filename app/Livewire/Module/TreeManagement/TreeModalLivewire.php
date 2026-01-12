@@ -13,6 +13,8 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 class TreeModalLivewire extends Component
 {
     use SweetAlert;
+    protected $listeners = ['refreshComponent' => '$refresh'];
+
     public TreeForm $form;
 
     public string $modalID = 'treeModalLivewire', $modalTitle = 'Tree Details';
@@ -42,6 +44,8 @@ class TreeModalLivewire extends Component
                 'local'
             );
             $this->isThumbnailValid = true;
+        } else {
+            $this->form->thumbnail = null;
         }
     }
 

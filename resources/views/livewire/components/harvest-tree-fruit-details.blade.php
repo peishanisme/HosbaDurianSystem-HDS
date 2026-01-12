@@ -83,12 +83,11 @@
                                                                 @php
                                                                     $grade = strtoupper($fruit->grade ?? '');
                                                                     $gradeClassMap = [
-                                                                        'A' => 'badge bg-success-subtle text-success',
-                                                                        'B' => 'badge bg-primary-subtle text-primary',
-                                                                        'C' => 'badge bg-warning-subtle text-warning',
-                                                                        'D' => 'badge bg-info-subtle text-info',
-                                                                        'E' => 'badge bg-danger-subtle text-danger',
-                                                                        'F' => 'badge bg-danger-subtle text-danger',
+                                                                        'AA' => 'badge bg-success-subtle text-success',
+                                                                        'A' => 'badge bg-primary-subtle text-primary',
+                                                                        'B' => 'badge bg-warning-subtle text-warning',
+                                                                        'C' => 'badge bg-info-subtle text-info',
+                                                                        'D' => 'badge bg-danger-subtle text-danger',
                                                                     ];
                                                                     $badgeClass =
                                                                         $gradeClassMap[$grade] ??

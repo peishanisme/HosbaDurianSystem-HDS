@@ -12,6 +12,7 @@ use App\Livewire\Forms\HarvestEventForm;
 class HarvestEventModalLivewire extends Component
 {
     use SweetAlert;
+    protected $listeners = ['refreshComponent' => '$refresh'];
 
     public ?HarvestEvent $harvestEvent = null;
     public HarvestEventForm $form;
