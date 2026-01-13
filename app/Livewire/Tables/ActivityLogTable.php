@@ -18,8 +18,8 @@ class ActivityLogTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-        ->setEmptyMessage('No results found')
-        ->setDefaultSort('created_at', 'desc');
+            ->setEmptyMessage('No results found')
+            ->setDefaultSort('created_at', 'desc');
     }
 
 
@@ -27,7 +27,7 @@ class ActivityLogTable extends DataTableComponent
     {
         return [
             Column::make("Id", "id")
-            ->hideIf(true),
+                ->hideIf(true),
 
             Column::make('Description', 'description')
                 ->searchable(),
@@ -36,11 +36,10 @@ class ActivityLogTable extends DataTableComponent
                 ->searchable()
                 ->sortable(),
 
-            ViewComponentColumn::make('Action By', 'causer_id')
-                ->component('components.table-primary-column')
-                ->attributes(fn($value, $row, Column $column) => [
-                    'title' => $row->causer_name,
-                ]),
+            Column::make('Action By', 'causer_id')
+                ->format(fn($value, $row, Column $column) => $row->causer_name)
+                ->searchable()
+                ->sortable(),
 
             Column::make('Created At', 'created_at')
                 ->format(fn($value) => \Carbon\Carbon::parse($value)->diffForHumans())

@@ -3,9 +3,18 @@
 
         <div class="d-flex flex-wrap flex-sm-nowrap">
 
-            <div class="me-7 mb-4"> 
-                <x-image-preview :src="app(\App\Services\MediaService::class)->get($tree->thumbnail)" alt="Tree Image"
-                    modal-id="treeImagePreviewModal-{{ $tree->id }}" />
+            <div class="me-7 mb-4">
+                @if ($tree->thumbnail)
+                    <x-image-preview :src="app(\App\Services\MediaService::class)->get($tree->thumbnail)" alt="Tree Image"
+                        modal-id="treeImagePreviewModal-{{ $tree->id }}" />
+                @else
+                    <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
+                        <img class="object-fit-cover border"
+                            src="{{ app(\App\Services\MediaService::class)->get('logo/placeholder.svg') }}"
+                            alt="image" />
+                    </div>
+                @endif
+
             </div>
 
             <!--begin::Info-->
