@@ -17,7 +17,7 @@
             <img class="rounded object-fit-cover" style="width: 60px; aspect-ratio: 1/1;" src="{{ secure_asset('assets/media/placeholder/placeholder.svg') }}" alt="Placeholder">
         </div>
     @endif --}}
-    @if ($avatar == null)
+    @if ($avatar == null && $thumbnail)
 
         <div class="me-3">
             @php

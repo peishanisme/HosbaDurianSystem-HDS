@@ -5,12 +5,9 @@
         </div>
 
         <div class="card-body">
-            <!--begin::Stepper-->
             <div class="stepper stepper-pills" wire>
-                {{-- Stepper header --}}
                 <x-stepper :label1="'Buyer details'" :label2="'Scan fruit'" :label3="'Transaction details'" :label4="'Review'" :activeStep="$activeStep" />
 
-                <!--begin::Form-->
                 <form class="form px-lg-10 mx-auto" novalidate="novalidate">
                     <div class="mb-5">
                         <!-- Step 1 -->
@@ -54,6 +51,8 @@
                                     <div class="col-12 col-lg-9">
                                         <livewire:components.transaction-scanned-fruit-table :scannedFruits="$scannedFruits"
                                             wire:key="transaction-scanned-fruit-table" />
+                                        <div class="mt-2"> <x-input-error :messages="$errors->get('scannedFruits')" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -64,6 +63,7 @@
                             <div class="flex-column">
                                 <livewire:components.transaction-fruit-summary-table :scanned-fruits="$scannedFruits"
                                     :summary="$summary" :discount="$discount" wire:key="summary-table" />
+
                                 <div class="mt-2">
                                     <x-input-error :messages="$errors->get('summaryPrices')" />
                                 </div>
@@ -94,7 +94,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Payment Method -->
                                 <div class="fv-row mb-10">
                                     <x-input-label for="payment_method" class="mb-2 required" :value="__('Payment Method')" />
                                     <x-input-select id="payment_method" placeholder="Select Payment Method"
@@ -117,7 +116,6 @@
                         @endif
                     </div>
 
-                    <!--begin::Actions-->
                     <div class="d-flex flex-stack">
                         <div class="me-2">
                             @if ($activeStep > 1)
@@ -135,10 +133,8 @@
                                 </button>
                             @else
                                 <button type="button" class="btn btn-primary" wire:click="create">
-                                    <!-- Show label when NOT loading -->
                                     <span class="indicator-label" wire:loading.remove wire:target="create">Submit</span>
 
-                                    <!-- Show progress when loading -->
                                     <span class="indicator-progress" wire:loading wire:target="create">
                                         Please wait...
                                         <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
@@ -147,94 +143,8 @@
                             @endif
                         </div>
                     </div>
-                    <!--end::Actions-->
                 </form>
-                <!--end::Form-->
             </div>
-            <!--end::Stepper-->
         </div>
     </div>
 </div>
-
-@push('scripts')
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            let html5QrcodeScanner;
-
-            function onScanSuccess(decodedText) {
-                console.log('Raw scanned text:', decodedText);
-
-                let uuid = null;
-
-                try {
-                    const url = new URL(decodedText);
-                    const segments = url.pathname.split('/').filter(Boolean);
-                    uuid = segments[segments.length - 1];
-                } catch (e) {
-                    // In case QR is not a valid URL
-                    uuid = decodedText;
-                }
-
-                // Optional UUID format validation
-                const uuidRegex =
-                    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-                if (!uuidRegex.test(uuid)) {
-                    Livewire.dispatch('toast', {
-                        type: 'warning',
-                        message: 'Invalid QR code detected'
-                    });
-                    return;
-                }
-
-                console.log('Extracted UUID:', uuid);
-
-                Livewire.dispatch('scan-fruit', {
-                    uuid
-                });
-            }
-
-            let lastErrorAt = 0;
-
-            function onScanFailure(error) {
-                const now = Date.now();
-
-                // only fire once every 3 seconds
-                if (now - lastErrorAt < 3000) return;
-                lastErrorAt = now;
-
-                Livewire.dispatch('scan-error', {
-                    error: 'Invalid QR code detected'
-                });
-            }
-
-            Livewire.on('init-qr-scanner', () => {
-                // Wait a bit to ensure #reader exists in DOM
-                setTimeout(() => {
-                    const readerElem = document.getElementById("reader");
-                    if (!readerElem) {
-                        console.error("QR Reader element not found.");
-                        return;
-                    }
-
-                    // Clear old scanner if exists
-                    if (html5QrcodeScanner) {
-                        html5QrcodeScanner.clear().catch(err => console.warn(err));
-                        html5QrcodeScanner = null;
-                    }
-
-                    html5QrcodeScanner = new Html5QrcodeScanner("reader", {
-                        fps: 10,
-                        qrbox: {
-                            width: 250,
-                            height: 250
-                        }
-                    }, false);
-
-                    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-                }, 300);
-            });
-        });
-    </script>
-@endpush

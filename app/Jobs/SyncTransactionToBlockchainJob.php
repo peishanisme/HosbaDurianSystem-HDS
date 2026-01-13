@@ -33,6 +33,7 @@ class SyncTransactionToBlockchainJob implements ShouldQueue
         try {
             if ($transaction->blockchain_tx_hash) {
                 // Already synced
+                dd('Transaction already synced to blockchain.');
                 return;
             }
             // --------------------
