@@ -7,7 +7,6 @@ use App\Models\Agrochemical;
 use Livewire\Attributes\Title;
 use App\Traits\AuthorizesRoleOrPermission;
 
-#[Title('Agrochemical Overview')]
 class AgrochemicalOverviewLivewire extends Component
 {
     use AuthorizesRoleOrPermission;
@@ -19,6 +18,6 @@ class AgrochemicalOverviewLivewire extends Component
     }
     public function render()
     {
-        return view('livewire.module.agrochemical-management.agrochemical-overview-livewire');
+        return view('livewire.module.agrochemical-management.agrochemical-overview-livewire')->title(__('messages.agrochemical_details'));
     }
 }

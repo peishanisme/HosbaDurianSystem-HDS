@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 use App\DataTransferObject\FruitDTO;
 use App\Traits\AuthorizesRoleOrPermission;
 
-#[Title('Harvest Events')]
 class HarvestEventOverviewLivewire extends Component
 {
     use SweetAlert, AuthorizesRoleOrPermission;
@@ -34,7 +33,7 @@ class HarvestEventOverviewLivewire extends Component
     public function closeEvent(HarvestEvent $harvestEvent)
     {
         $this->harvestEvent = $harvestEvent;
-        $this->alertConfirm('Are you sure you want to close this harvest event?', 'confirm-close');
+        $this->alertConfirm(__('messages.are_you_sure_close'), 'confirm-close');
     }
 
     #[On('confirm-close')]
@@ -43,9 +42,9 @@ class HarvestEventOverviewLivewire extends Component
         try {
             $this->harvestEvent->end_date = now()->toDateString();
             $this->harvestEvent->save();
-            $this->alertSuccess('Harvest event closed successfully.');
+            $this->alertSuccess(__('messages.harvest_event_closed_successfully'));
         } catch (\Exception $e) {
-            $this->alertError('An error occurred while closing the harvest event: ' . $e->getMessage());
+            $this->alertError(__('messages.error_occurred') . $e->getMessage());
         }
     }
 
@@ -53,7 +52,7 @@ class HarvestEventOverviewLivewire extends Component
     public function reopenEvent(HarvestEvent $harvestEvent)
     {
         $this->harvestEvent = $harvestEvent;
-        $this->alertConfirm('Are you sure you want to reopen this harvest event?', 'confirm-reopen');
+        $this->alertConfirm(__('messages.are_you_sure_reopen'), 'confirm-reopen');
     }
 
     #[On('confirm-reopen')]
@@ -62,9 +61,9 @@ class HarvestEventOverviewLivewire extends Component
         try {
             $this->harvestEvent->end_date = null;
             $this->harvestEvent->save();
-            $this->alertSuccess('Harvest event reopened successfully.');
+            $this->alertSuccess(__('messages.harvest_event_reopened_successfully'));
         } catch (\Exception $e) {
-            $this->alertError('An error occurred while reopening the harvest event: ' . $e->getMessage());
+            $this->alertError(__('messages.error_occurred') . $e->getMessage());
         }
     }
 
@@ -231,6 +230,6 @@ class HarvestEventOverviewLivewire extends Component
             'harvestSpeciesData' => $this->loadHarvestSpeciesData(),
             'fruitQualityData' => $this->loadFruitQualityData(),
             'sellingStatusData' => $this->loadSellingStatusData(),
-        ]);
+        ])->title(__('messages.harvest_event_overview'));
     }
 }

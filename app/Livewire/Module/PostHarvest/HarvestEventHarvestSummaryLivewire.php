@@ -7,7 +7,6 @@ use App\Models\HarvestEvent;
 use Livewire\Attributes\Title;
 use App\Traits\AuthorizesRoleOrPermission;
 
-#[Title('Harvest Events')]
 class HarvestEventHarvestSummaryLivewire extends Component
 {
     use AuthorizesRoleOrPermission;
@@ -20,6 +19,6 @@ class HarvestEventHarvestSummaryLivewire extends Component
     }
     public function render()
     {
-        return view('livewire.module.post-harvest.harvest-event-harvest-summary-livewire');
+        return view('livewire.module.post-harvest.harvest-event-harvest-summary-livewire')->title(__('messages.harvest_event_harvest_summary'));
     }
 }

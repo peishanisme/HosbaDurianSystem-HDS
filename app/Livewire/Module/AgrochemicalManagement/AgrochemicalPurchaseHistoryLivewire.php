@@ -10,7 +10,6 @@ use Livewire\Attributes\Title;
 use App\Models\AgrochemicalStockMovement;
 use App\Traits\AuthorizesRoleOrPermission;
 
-#[Title('Agrochemical Purchase History')]
 class AgrochemicalPurchaseHistoryLivewire extends Component
 {    
     use SweetAlert, AuthorizesRoleOrPermission;
@@ -27,17 +26,17 @@ class AgrochemicalPurchaseHistoryLivewire extends Component
     public function deleteStock(AgrochemicalStockMovement $stock)
     {
         $this->stock = $stock;
-        $this->alertConfirm('Are you sure you want to delete this purchase history?', 'confirm-delete');
+        $this->alertConfirm(__('messages.are_you_sure_delete'), 'confirm-delete');
     }
 
     #[On('confirm-delete')]
     public function confirmDelete()
     {
         $this->stock->delete();
-        $this->alertSuccess('Purchase History deleted successfully.');
+        $this->alertSuccess(__('messages.purchase_history_deleted_successfully'));
     }
     public function render()
     {
-        return view('livewire.module.agrochemical-management.agrochemical-purchase-history-livewire');
+        return view('livewire.module.agrochemical-management.agrochemical-purchase-history-livewire')->title(__('messages.agrochemical_purchase_history') );
     }
 }

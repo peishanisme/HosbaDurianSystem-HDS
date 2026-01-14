@@ -45,6 +45,7 @@
                     'agrochemical.agrochemicals.usage',
                     'agrochemical.show',
                     'agrochemical.purchase-history',
+                    'agrochemical.application-record'
                 ]),
             ])>
             <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.agrochemical_listing') }}"
@@ -56,7 +57,7 @@
         {{-- Post Harvest --}}
         <x-layouts.sidebar.menu-accordion title="{{ __('messages.post_harvest') }}" icon="ki-duotone ki-cube-2"
             @class([
-                'show active' => Route::is(['harvest.events.index']),
+                'show active' => Route::is(['harvest.events.index', 'harvest.show','harvest.harvest-summary']),
             ])>
             <x-layouts.sidebar.menu-sub-accordion
                 title="{{ __('messages.harvest_events_listing') ?? 'Harvest Events Listing' }}"

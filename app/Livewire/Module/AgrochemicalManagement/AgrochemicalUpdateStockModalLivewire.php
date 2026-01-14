@@ -14,12 +14,13 @@ class AgrochemicalUpdateStockModalLivewire extends Component
 {
     use SweetAlert;
 
-    public string $modalID = 'agrochemicalStockMovementModalLivewire', $modalTitle = 'Agrochemical Stock Details';
+    public string $modalID = 'agrochemicalStockMovementModalLivewire', $modalTitle;
     public AgrochemicalStockMovementForm $form;
     public ?Agrochemical $agrochemical = null;
 
     public function mount()
     {
+        $this->modalTitle = __('messages.update_agrochemical_stock');
         $this->form->agrochemical = $this->agrochemical;
         $this->form->name = $this->agrochemical?->name;
         $this->form->agrochemical_uuid = $this->agrochemical?->uuid;
@@ -46,7 +47,7 @@ class AgrochemicalUpdateStockModalLivewire extends Component
         try {
 
             $this->form->create($validatedData);
-            $this->alertSuccess('Inventory has been created successfully.', $this->modalID);
+            $this->alertSuccess(__('messages.inventory_created_successfully'), $this->modalID);
             
             $this->dispatch('refresh-header');
 
@@ -63,7 +64,7 @@ class AgrochemicalUpdateStockModalLivewire extends Component
         try {
 
             $this->form->update($validatedData);
-            $this->alertSuccess('Inventory has been updated successfully.', $this->modalID);
+            $this->alertSuccess(__('messages.inventory_updated_successfully'), $this->modalID);
         } catch (Exception $error) {
 
             $this->alertError($error->getMessage(), $this->modalID);

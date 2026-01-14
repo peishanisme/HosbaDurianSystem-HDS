@@ -8,10 +8,16 @@ return [
     'harvest_event' => '采收季节',
 
     'cancel' => '取消',
+    'loding' => '加载中...',
     'add' => '添加',
     'update' => '更新',
     'allowed_file_types' => '允许的文件类型',
     'no_data_available' => '暂无数据',
+    //sweetalert
+    'okay' => '好的',
+    'retry' => '重试',
+    'proceed' => '继续',
+    'you_cannot_revert_this_decision' => '您无法撤销此操作',
     // Sidebar Menu
     'dashboard' => '首页',
     'tree_management' => '树木管理',
@@ -22,6 +28,7 @@ return [
     'agrochemical_listing' => '农用化学品列表',
     'agrochemical_usage' => '农用化学品使用',
     'post_harvest' => '采后管理',
+    'harvest_events_listing' => '采收季节列表',
     'sales_and_transactions' => '销售与交易',
     'buyer_listing' => '买家列表',
     'transaction_listing' => '交易列表',
@@ -99,6 +106,11 @@ return [
     'initial_height' => '初始高度',
     'initial_diameter' => '初始直径',
     'initial_flowering_period' => '初始开花期',
+    'tree_created_successfully' => '树木创建成功',
+    'tree_updated_successfully' => '树木更新成功',
+    'tree_creation_failed' => '树木创建失败',
+    'tree_updation_failed' => '树木更新失败',
+    'tree_details' => '树木详情',
 
     //tree details header
     'show_qr_code' => '显示二维码',
@@ -184,8 +196,91 @@ return [
         'Medium' => '中等',
         'Recovered' => '已恢复',
     ],
-    
 
-    
+    //agrochemical listing
+    'search_agrochemicals' => '搜索农用化学品',
+    'create_inventory' => '创建库存',
+    'type' => '类型',
+    'quantity_per_unit' => '每单位数量',
+    'agrochemical_type' => [
+        'fertilizer' => '肥料',
+        'pesticide'  => '农药',
+        'other'      => '其他',
+    ],
+
+    //agrochemcial modal
+    'agrochemical_details' => '农用化学品详情',
+    'inventory_created_successfully' => '库存创建成功',
+    'inventory_updated_successfully' => '库存更新成功',
+    'inventoory_creation_failed' => '库存创建失败',
+    'inventoory_updation_failed' => '库存更新失败',
+    'price' => '价格',
+    'select_type' => '选择类型',
+    'are_you_sure_delete_agrochemical' => '您确定要删除此农用化学品吗？',
+    'agrochemical_deleted_successfully' => '农用化学品删除成功',
+
+    //agrochemical usage
+    'agrochemical_usages_listing' => '农用化学品使用列表',
+
+    //agrochemical details
+    'price_per_unit' => '每单位价格',
+    'remaining_quantity' => '剩余数量',
+    'latest_purchase_date' => '最新采购日期',
+    'update_stock' => '更新库存',
+    'purchase_history' => '采购历史',
+    'application_records' => '使用记录',
+    'generate_report' => '生成报告',
+
+    //agrochemical purchase history
+    'purchase_history_deleted_successfully' => '采购历史删除成功',
+    'agrochemical_purchase_history' => '农用化学品采购历史',
+    'search_purchase_history' => '搜索采购历史',
+    'quantity' => '数量',
+    'update_agrochemical_stock' => '更新农用化学品库存',
+    'search_agrochemical_applications' => '搜索农用化学品使用',
+    'agrochemical_application_records' => '农用化学品使用记录',
+
+    //harvest event listing
+    'add_harvest_event' => '添加采收季节',
+    'event_name' => '季节名称',
+    'harvest_event_details' => '采收季节详情',
+    'harvest_event_created_successfully' => '采收季节创建成功',
+    'harvest_event_updated_successfully' => '采收季节更新成功',
+    'harvest_event_creation_failed' => '采收季节创建失败',
+    'harvest_event_updation_failed' => '采收季节更新失败',
+    'cannot_create_new_harvest_event' => '无法创建新的采收季节',
+    'unclosed_harvest_event_warning' => '存在未关闭的采收季节。请在创建新季节前关闭它。',
+
+    //harvest event overview
+    'harvest_event_overview' => '采收季节概览',
+    'duration' => '持续时间',
+    'reopen_event' => '重新开启季节',
+    'close_event' => '关闭季节',
+    'are_you_sure_close' => '您确定要关闭此采收季节吗？',
+    'harvest_event_closed_successfully' => '采收季节关闭成功',
+    'are_you_sure_reopen' => '您确定要重新开启此采收季节吗？',
+    'error_occurred' => '发生错误：',
+    'harvest_event_reopened_successfully' => '采收季节重新开启成功',
+    'harvest_summary' => '采收总结',
+    'harvest_species_overview' => '采收品种概览',
+    'pieces' => '颗',
+    'total_weight' => '总重量',
+    'fruit_quality' => '水果质量',
+    'top_10_harvest_trees' => '采收量前10的树木',
+    'fruit_selling_status' => '水果销售状态',
+    'unsold' => '未售出',
+    'harvest_event_harvest_summary' => '采收季节采收总结',
+    'tree_harvest_summary' => '树木采收总结',
+    'search_by_tree_tag_or_species' => '按树标签或品种搜索',
+    'all_species' => '所有品种',
+    'planted_date' => '种植日期',
+    'total_fruit' => '水果总数',
+    'no_fruits_for_this_tree' => '该树暂无水果。',
+    'no_trees_found' => '未找到树木。',
+    ''
+
+
+
+
 
 ];

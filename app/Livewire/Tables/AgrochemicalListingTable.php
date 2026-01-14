@@ -17,13 +17,13 @@ class AgrochemicalListingTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setSearchPlaceholder('Search Agrochemical')
-            ->setEmptyMessage('No results found')
+            ->setSearchPlaceholder(__('messages.search_agrochemicals'))
+            ->setEmptyMessage(__('messages.no_results_found'))
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'livewire.components.modal-button',
                     [
-                        'label' => 'Create Inventory',
+                        'label' => __('messages.create_inventory'),
                         'dispatch' => 'reset-agrochemical',
                         'target' => 'agrochemicalModalLivewire',
                         'permission' => 'create-fertilizer-pesticide',
@@ -35,11 +35,12 @@ class AgrochemicalListingTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            'type' => SelectFilter::make('Type')
-                ->options(['' => 'Any'] + AgrochemicalType::keyValue())
+            'type' => SelectFilter::make(__('messages.type'))
+                ->options(['' => __('messages.any')] + AgrochemicalType::keyValue())
                 ->filter(fn(Builder $query, $value) => $query->where('type', $value)),
         ];
     }
+
 
     public function columns(): array
     {
@@ -49,7 +50,7 @@ class AgrochemicalListingTable extends DataTableComponent
                 ->hideIf(true),
             Column::make("Thumbnail", "thumbnail")
                 ->hideIf(true),
-            ViewComponentColumn::make('Name', 'name')
+            ViewComponentColumn::make(__('messages.name'), 'name')
                 ->component('components.table-primary-column')
                 ->attributes(fn($value, $row, Column $column) => [
                     'thumbnail' => $row->thumbnail ?? 'default',
@@ -57,25 +58,28 @@ class AgrochemicalListingTable extends DataTableComponent
                     'route' => route('agrochemical.show', $row->id),
                 ])->searchable()
                 ->sortable(),
-            Column::make("Quantity Per Unit", "quantity_per_unit")
+            Column::make(__('messages.quantity_per_unit'), "quantity_per_unit")
                 ->format(fn($value) => number_format($value, 2)),
-            ViewComponentColumn::make('Type', 'type')
+            ViewComponentColumn::make(__('messages.type'), 'type')
                 ->component('table-badge')
                 ->attributes(fn($value, $row, Column $column) => [
-                    'badge' => $value === AgrochemicalType::PESTICIDE ?  'badge-light-info' : 'badge-light-primary',
-                    'label' => $value->label() ,
+                    'badge' => $value === AgrochemicalType::PESTICIDE
+                        ? 'badge-light-info'
+                        : 'badge-light-primary',
+                    'label' => $value->label(),
                 ]),
-            Column::make("Description", "description"),
-            Column::make('Actions')
+
+            Column::make(__('messages.description'), "description"),
+            Column::make(__('messages.actions'))
                 ->label(fn($row, Column $column) => view('components.table-com-button', [
                     'modal'     => 'agrochemicalModalLivewire',
                     'dispatch1' => 'edit-agrochemical',
-                    'label1'    => 'Edit',
+                    'label1'    => __('messages.edit'),
                     'dataField' => 'agrochemical',
                     'data'      =>  $row->id,
                     'icon2'     => 'bi bi-trash3',
                     'dispatch2' => 'delete-agrochemical',
-                    'label2'    => 'Delete',
+                    'label2'    => __('messages.delete'),
                     'permission1' => 'edit-fertilizer-pesticide',
                     'permission2' => 'delete-fertilizer-pesticide',
                 ]))->html()
