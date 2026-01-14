@@ -10,9 +10,10 @@ class ReceiptPdfExporter
     public function export(Transaction $transaction)
     {
         $summary = $transaction->summary;
+        dd($summary);
 
         $companyName = 'Hosba Durian Farm Sdn Bhd';
-        $companyAddress = 'Kampung Alor Janggus, 06000 Jitra, Kedah, Malaysia';
+        $companyAddress = 'Lot 29, Kawasan Perindustrian Sg.Laka, 06050 Bukit Kayu Hitam, Kedah Darulaman.';
 
         $pdf = Pdf::loadView(
             'components.documents.transaction-receipt',
