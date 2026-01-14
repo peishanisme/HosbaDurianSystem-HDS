@@ -2,29 +2,29 @@
     <div>
         @if ($transaction)
             @if ($transaction->is_cancelled)
-                <span class="badge badge-light-danger">This Transaction is Cancelled</span>
+                <span class="badge badge-light-danger">{{ __('messages.this_transaction_is_cancelled') }}</span>
             @endif
 
             <!-- Transaction Info -->
             <div class="mb-5 space-y-2">
                 <div class="fs-5 my-3 text-gray-600">
-                    <strong>Transaction Ref ID:</strong> {{ $transaction->reference_id ?? '-' }}
+                    <strong>{{ __('messages.transaction_ref_id') }}:</strong> {{ $transaction->reference_id ?? '-' }}
                 </div>
                 <div class="fs-5 my-3 text-gray-600">
-                    <strong>Date:</strong> {{ \Carbon\Carbon::parse($transaction->date)->format('d M Y') }}
+                    <strong>{{ __('messages.date') }}:</strong> {{ \Carbon\Carbon::parse($transaction->date)->format('d M Y') }}
                 </div>
                 <div class="fs-5 my-3 text-gray-600">
-                    <strong>Buyer:</strong> {{ $transaction->buyer->company_name ?? '-' }}
+                    <strong>{{ __('messages.buyer') }}:</strong> {{ $transaction->buyer->company_name ?? '-' }}
                 </div>
                 <div class="fs-5 my-3 text-gray-600">
-                    <strong>Buyer Ref ID:</strong> {{ $transaction->buyer->reference_id ?? '-' }}
+                    <strong>{{ __('messages.buyer_ref_id') }}:</strong> {{ $transaction->buyer->reference_id ?? '-' }}
                 </div>
                 <div class="fs-5 my-3 text-gray-600">
-                    <strong>Payment Method:</strong>
+                    <strong>{{ __('messages.payment_method') }}:</strong>
                     {{ $transaction->payment_method ? ucfirst(str_replace('_', ' ', $transaction->payment_method)) : '-' }}
                 </div>
                 <div class="fs-5 my-3 text-gray-600">
-                    <strong>Remark:</strong> {{ $transaction->remark ?? '-' }}
+                    <strong>{{ __('messages.remark') }}:</strong> {{ $transaction->remark ?? '-' }}
                 </div>
             </div>
 
@@ -33,12 +33,12 @@
                 <table class="table table-striped table-row-bordered gy-3 gs-3 align-middle w-full text-sm">
                     <thead class="bg-gray-100">
                         <tr>
-                            <th>Species</th>
-                            <th>Grade</th>
-                            <th class="text-center">Count</th>
-                            <th class="text-center">Total Weight (kg)</th>
-                            <th class="text-center">Price / kg (RM)</th>
-                            <th class="text-center">Subtotal (RM)</th>
+                            <th>{{ __('messages.species') }}</th>
+                            <th>{{ __('messages.grade') }}</th>
+                            <th class="text-center">{{ __('messages.count') }}</th>
+                            <th class="text-center">{{ __('messages.total_weight') }} (kg)</th>
+                            <th class="text-center">{{ __('messages.price_per_kg') }} (RM)</th>
+                            <th class="text-center">{{ __('messages.subtotal') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,8 +53,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center text-muted py-4">No fruits found for this
-                                    transaction.</td>
+                                <td colspan="6" class="text-center text-muted py-4">{{ __('messages.no_fruits_found_for_this_transaction') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -64,15 +63,15 @@
                                 $calculatedSubtotal = isset($summary) ? collect($summary)->sum('subtotal') : 0;
                             @endphp
                             <tr>
-                                <td colspan="5" class="text-end">Subtotal (Before Discount):</td>
+                                <td colspan="5" class="text-end">{{ __('messages.subtotal_before_discount') }}:</td>
                                 <td class="text-center">RM {{ number_format($calculatedSubtotal ?? 0, 2) }}</td>
                             </tr>
                             <tr>
-                                <td colspan="5" class="text-end">Discount (RM):</td>
+                                <td colspan="5" class="text-end">{{ __('messages.discount_rm') }}:</td>
                                 <td class="text-center">RM {{ number_format($transaction->discount ?? 0, 2) }}</td>
                             </tr>
                             <tr class="bg-light">
-                                <td colspan="5" class="text-end">Final Amount:</td>
+                                <td colspan="5" class="text-end">{{ __('messages.final_amount') }}:</td>
                                 <td class="text-center text-success fw-bold fs-5">RM
                                     {{ number_format($transaction->total_price ?? 0, 2) }}</td>
                             </tr>
@@ -81,13 +80,13 @@
                 </table>
                 <div class="text-end">
                     @if ($blockchainStatus === 'confirmed' && $blockchainVerified)
-                        <span class="badge badge-light-success">✔ Verified on Blockchain</span>
+                        <span class="badge badge-light-success">✔ {{ __('messages.verified_on_blockchain') }}</span>
                     @elseif ($blockchainStatus === 'confirmed' && !$blockchainVerified)
-                        <span class="badge badge-light-danger">✖ Data Tampered</span>
+                        <span class="badge badge-light-danger">✖ {{ __('messages.data_tampered') }}</span>
                     @elseif ($blockchainStatus === 'canceled')
-                        <span class="badge badge-light-warning text-dark">⚠ Canceled on Blockchain</span>
+                        <span class="badge badge-light-warning text-dark">⚠ {{ __('messages.canceled_on_blockchain') }}</span>
                     @else
-                        <span class="badge badge-light-secondary">⏳ Not Yet Verified</span>
+                        <span class="badge badge-light-secondary">⏳ {{ __('messages.not_yet_verified') }}</span>
                     @endif
                 </div>
 
@@ -95,7 +94,7 @@
         @else
             <div class="text-center py-10">
                 <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">{{ __('messages.loading') }}...</span>
                 </div>
             </div>
         @endif
@@ -108,7 +107,7 @@
                 @can('delete-sale')
                     <div>
                         <x-button type="button" class="btn btn-light-danger" wire:click="cancelTransaction">
-                            Cancel Transaction
+                            {{ __('messages.cancel_transaction') }}
                         </x-button>
                     </div>
                 @endcan
@@ -116,11 +115,11 @@
                 <!-- Right side -->
                 <div class="d-flex gap-2">
                     <x-button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Close
+                        {{ __('messages.close') }}
                     </x-button>
 
                     <x-button type="button" class="btn btn-primary" wire:click="printReceipt">
-                        Print Receipt
+                        {{ __('messages.print_receipt') }}
                     </x-button>
                 </div>
             @endif

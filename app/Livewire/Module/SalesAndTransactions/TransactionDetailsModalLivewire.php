@@ -14,7 +14,7 @@ class TransactionDetailsModalLivewire extends Component
 {
     use SweetAlert;
 
-    public string $modalID = 'transactionDetailsModalLivewire', $modalTitle = 'Transaction Details';
+    public string $modalID = 'transactionDetailsModalLivewire', $modalTitle;
     public ?Transaction $transaction = null;
     public array $summary = [];
     public $fruits;
@@ -23,6 +23,10 @@ class TransactionDetailsModalLivewire extends Component
     public $blockchainStatus = null;
 
     protected $listeners = ['view-transaction' => 'loadTransaction'];
+    public function mount()
+    {
+        $this->modalTitle = __('messages.transaction_details');
+    }   
 
     public function loadTransaction(Transaction $transaction)
     {

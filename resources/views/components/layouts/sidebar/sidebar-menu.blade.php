@@ -70,6 +70,7 @@
                 'show active' => Route::is([
                     'sales.buyers.index',
                     'sales.buyers.show',
+                    'sales.buyers.transaction',
                     'sales.transaction.index',
                 ]),
             ])>

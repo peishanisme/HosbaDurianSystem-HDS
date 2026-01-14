@@ -2,28 +2,28 @@
     {{-- profile details --}}
     <div class="card shadow-sm">
         <div class="card-header">
-            <h3 class="card-title">Profile Details</h3>
+            <h3 class="card-title">{{ __('messages.user_profile') }}</h3>
         </div>
         <div class="card-body">
 
             <div class="mb-5 row">
-                <label class="col-sm-3 col-form-label">Name</label>
+                <label class="col-sm-3 col-form-label">{{ __('messages.name') }}</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" placeholder="Name" wire:model="form.name">
+                    <input type="text" class="form-control" placeholder="{{ __('messages.name') }}" wire:model="form.name">
                     <x-input-error :messages="$errors->get('form.name')" />
                 </div>
             </div>
 
             <div class="mb-5 row">
-                <label class="col-sm-3 col-form-label">Email</label>
+                <label class="col-sm-3 col-form-label">{{ __('messages.email') }}</label>
                 <div class="col-sm-9">
-                    <input type="email" class="form-control" placeholder="Email" wire:model="form.email">
+                    <input type="email" class="form-control" placeholder="{{ __('messages.email') }}" wire:model="form.email">
                     <x-input-error :messages="$errors->get('form.email')" />
                 </div>
             </div>
 
             <div class="mb-5 row">
-                <label class="col-sm-3 col-form-label">Phone Number</label>
+                <label class="col-sm-3 col-form-label">{{ __('messages.phone_number') }}</label>
                 <div class="col-sm-9">
                     <div class="input-group mt-2">
                         <span class="input-group-text bg-light border-end-0">+60</span>
@@ -35,16 +35,16 @@
             </div>
 
             <div class="mb-5 row">
-                <label class="col-sm-3 col-form-label">Role</label>
+                <label class="col-sm-3 col-form-label">{{ __('messages.role') }}</label>
                 <div class="col-sm-9">
-                    <input type="role" class="form-control" placeholder="Role" wire:model="role" disabled>
+                    <input type="role" class="form-control" placeholder="{{ __('messages.role') }}" wire:model="role" disabled>
                 </div>
             </div>
 
         </div>
         <div class="card-footer text-end">
             <x-primary-button class="btn btn-primary px-8 py-3" wire:click="update">
-                {{ __('Update Profile') }}
+                {{ __('messages.update_profile') }}
             </x-primary-button>
         </div>
     </div>
@@ -52,16 +52,16 @@
     {{-- change password --}}
     <div class="card shadow-sm mt-10">
     <div class="card-header">
-        <h3 class="card-title">Change Password</h3>
+        <h3 class="card-title">{{ __('messages.change_password') }}</h3>
     </div>
     <div class="card-body">
 
         {{-- Old Password --}}
         <div class="mb-5 row">
-            <label class="col-sm-3 col-form-label required">Old Password</label>
+            <label class="col-sm-3 col-form-label required">{{ __('messages.old_password') }}</label>
             <div class="col-sm-9">
                 <div class="input-group">
-                    <input id="old_password" type="password" class="form-control" placeholder="Old Password"
+                    <input id="old_password" type="password" class="form-control" placeholder="{{ __('messages.old_password') }}"
                         wire:model.defer="old_password" />
                     <span class="input-group-text bg-light border-start-0 toggle-password" data-target="old_password"
                         style="cursor:pointer;">
@@ -74,10 +74,10 @@
 
         {{-- New Password --}}
         <div class="mb-5 row">
-            <label class="col-sm-3 col-form-label required">New Password</label>
+            <label class="col-sm-3 col-form-label required">{{ __('messages.new_password') }}</label>
             <div class="col-sm-9">
                 <div class="input-group">
-                    <input id="new_password" type="password" class="form-control" placeholder="New Password"
+                    <input id="new_password" type="password" class="form-control" placeholder="{{ __('messages.new_password') }}"
                         wire:model.defer="new_password" />
                     <span class="input-group-text bg-light border-start-0 toggle-password" data-target="new_password"
                         style="cursor:pointer;">
@@ -90,11 +90,11 @@
 
         {{-- Confirm Password --}}
         <div class="mb-5 row">
-            <label class="col-sm-3 col-form-label required">Confirm Password</label>
+            <label class="col-sm-3 col-form-label required">{{ __('messages.confirm_password') }}</label>
             <div class="col-sm-9">
                 <div class="input-group">
                     <input id="confirm_password" type="password" class="form-control"
-                        placeholder="Confirm Password" wire:model.defer="confirm_password" />
+                        placeholder="{{ __('messages.confirm_password') }}" wire:model.defer="confirm_password" />
                     <span class="input-group-text bg-light border-start-0 toggle-password"
                         data-target="confirm_password" style="cursor:pointer;">
                         <i class="bi bi-eye-slash"></i>
@@ -107,7 +107,7 @@
 
     <div class="card-footer text-end">
         <x-primary-button class="btn btn-primary px-8 py-3" wire:click="updatePassword">
-            {{ __('Change Password') }}
+            {{ __('messages.change_password') }}
         </x-primary-button>
     </div>
 </div>

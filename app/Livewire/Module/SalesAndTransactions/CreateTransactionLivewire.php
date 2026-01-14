@@ -12,7 +12,6 @@ use Livewire\Attributes\Title;
 use Illuminate\Support\Facades\Log;
 use App\Livewire\Forms\TransactionForm;
 
-#[Title('Sales & Transactions')]
 class CreateTransactionLivewire extends Component
 {
     use SweetAlert;
@@ -48,19 +47,19 @@ class CreateTransactionLivewire extends Component
         $fruit = Fruit::where('uuid', $uuid)->first();
 
         if (!$fruit) {
-            $this->toastError('Fruit not found.');
+            $this->toastError(__('messages.fruit_not_found'));
             return;
         }
 
         // Avoid duplicates
         if (collect($this->scannedFruits)->pluck('tag')->contains($fruit->fruit_tag)) {
-            $this->toastError('Fruit already scanned.');
+            $this->toastError(__('messages.fruit_already_scanned'));
             return;
         }
 
         //sold fruit
         if ($fruit->is_sold) {
-            $this->toastError('Fruit has already been sold.');
+            $this->toastError(__('messages.fruit_already_sold'));
             return;
         }
 
@@ -114,7 +113,7 @@ class CreateTransactionLivewire extends Component
 
         if ($this->activeStep === 2) {
         if (empty($this->scannedFruits)) {
-            $this->addError('scannedFruits', 'Please scan at least one fruit before proceeding.');
+            $this->addError('scannedFruits', __('messages.please_scan_at_least_one_fruit_before_proceeding'));
             return; // stop progression
         }
         }
@@ -124,7 +123,7 @@ class CreateTransactionLivewire extends Component
                 ->some(fn($item) => empty($item['price_per_kg']) || $item['price_per_kg'] <= 0);
 
             if ($hasMissingPrice) {
-                $this->addError('summaryPrices', 'Please fill in all prices before proceeding to Step 4.');
+                $this->addError('summaryPrices', __('messages.please_fill_in_all_prices_before_proceeding'));
                 return;
             }
         }
@@ -170,6 +169,6 @@ class CreateTransactionLivewire extends Component
 
     public function render()
     {
-        return view('livewire.module.sales-and-transactions.create-transaction-livewire');
+        return view('livewire.module.sales-and-transactions.create-transaction-livewire')->title(__( 'messages.create_transaction' ));
     }
 }

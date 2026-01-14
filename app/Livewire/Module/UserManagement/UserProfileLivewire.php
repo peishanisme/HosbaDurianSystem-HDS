@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Actions\FormatPhoneNumberAction;
 use App\Traits\PhoneNumberTrait;
 
-#[Title('Account Details')]
 class UserProfileLivewire extends Component
 {
     use SweetAlert, PhoneNumberTrait;
@@ -43,11 +42,11 @@ class UserProfileLivewire extends Component
         try {
 
             $this->form->update($validatedData);
-            $this->alertSuccess('Your profile has been updated successfully.');
+            $this->alertSuccess(__('messages.profile_updated_successfully'));
         
         } catch (\Exception $error) {
 
-            $this->alertError($error->getMessage());
+            $this->alertError(__('messages.profile_update_failed'));
         
         }
     }
@@ -73,14 +72,14 @@ class UserProfileLivewire extends Component
             // Clear password fields after success
             $this->reset(['old_password', 'new_password', 'confirm_password']);
 
-            $this->alertSuccess('Your password has been changed successfully.');
+            $this->alertSuccess(__('messages.password_changed_successfully'));
         } catch (\Exception $error) {
-            $this->alertError($error->getMessage());
+            $this->alertError(__('messages.password_change_failed'));
         }
     }
 
     public function render()
     {
-        return view('livewire.module.user-management.user-profile-livewire');
+        return view('livewire.module.user-management.user-profile-livewire')->title(__('messages.user_profile'));
     }
 }

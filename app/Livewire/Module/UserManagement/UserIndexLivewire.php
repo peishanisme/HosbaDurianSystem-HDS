@@ -6,7 +6,6 @@ use App\Traits\AuthorizesRoleOrPermission;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 
-#[Title('User Management')]
 class UserIndexLivewire extends Component
 {
     use AuthorizesRoleOrPermission;
@@ -17,6 +16,6 @@ class UserIndexLivewire extends Component
     }
     public function render()
     {
-        return view('livewire.module.user-management.user-index-livewire');
+        return view('livewire.module.user-management.user-index-livewire')->title(__('messages.user_listing'));
     }
 }

@@ -9,7 +9,6 @@ use App\Traits\SweetAlert;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 
-#[Title('Buyer Management')]
 class BuyerIndexLivewire extends Component
 {
      use SweetAlert, AuthorizesRoleOrPermission;
@@ -21,20 +20,20 @@ class BuyerIndexLivewire extends Component
     }
     
     #[On('delete-buyer')]
-    public function deleteTree(Buyer $buyer)
+    public function deleteBuyer(Buyer $buyer)
     {
         $this->buyer = $buyer;
-        $this->alertConfirm('Are you sure you want to delete this buyer?', 'confirm-delete');
+        $this->alertConfirm(__('messages.are_you_sure_you_want_to_delete_this_buyer'), 'confirm-delete');
     }
 
     #[On('confirm-delete')]
     public function confirmDelete()
     {
         $this->buyer->delete();
-        $this->alertSuccess('Buyer deleted successfully.');
+        $this->alertSuccess(__('messages.buyer_deleted_successfully'));
     }
     public function render()
     {
-        return view('livewire.module.sales-and-transactions.buyer-index-livewire');
+        return view('livewire.module.sales-and-transactions.buyer-index-livewire')->title(__('messages.buyer_listing'));
     }
 }
