@@ -57,7 +57,7 @@
                         <a href="#" class="btn btn-sm btn-light me-2" data-bs-toggle="modal"
                             data-bs-target="#qrModal">
                             <i class="ki-duotone ki-check fs-3 d-none"></i>
-                            <span class="indicator-label">Show QR Code</span>
+                            <span class="indicator-label">{{ __('messages.show_qr_code') }}</span>
                         </a>
 
                         {{-- tree qr modal --}}
@@ -67,7 +67,7 @@
                                 <div class="modal-content">
 
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="qrModalLabel">Tree QR Code</h5>
+                                        <h5 class="modal-title" id="qrModalLabel">{{ __('messages.tree_qr_code') }}</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -83,9 +83,9 @@
                                     <div class="modal-footer d-flex justify-content-center gap-2">
                                         <button class="btn btn-primary"
                                             onclick="downloadQR( 'qrCodeWrapper'
-                                            , 'tree-{{ $tree->tree_tag }}.png' )">Download</button>
+                                            , 'tree-{{ $tree->tree_tag }}.png' )">{{ __('messages.download') }}</button>
                                         <button class="btn btn-secondary"
-                                            onclick="printQR('Tree {{ $tree->tree_tag }}')">Print</button>
+                                            onclick="printQR('Tree {{ $tree->tree_tag }}')">{{ __('messages.print') }}</button>
                                     </div>
 
                                 </div>
@@ -130,21 +130,21 @@
                                 <div class="d-flex align-items-center">
                                     <div class="fs-2 fw-bold">{{ $tree->latestGrowthLog->height ?? '-' }} m</div>
                                 </div>
-                                <div class="fw-semibold fs-6 text-gray-500">Height</div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.height') }}</div>
                             </div>
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
                                     <div class="fs-2 fw-bold">{{ $tree->latestGrowthLog->diameter ?? '-' }} m</div>
                                 </div>
-                                <div class="fw-semibold fs-6 text-gray-500">Diameter</div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.diameter') }}</div>
                             </div>
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
                                     <div class="fs-2 fw-bold">{{ $tree->getFloweringPeriod() }}</div>
                                 </div>
-                                <div class="fw-semibold fs-6 text-gray-500">Flowering Period</div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.flowering_period') }}</div>
                             </div>
 
                         </div>
@@ -155,12 +155,12 @@
         <!--end::Details-->
         <!--begin::Navs-->
         <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold" wire:ignore>
-            <x-show-navbar-navitem title="Overview" :route="route('tree.show', $tree->id)" :active="request()->routeIs('tree.show')" />
-            <x-show-navbar-navitem title="Growth Logs" :route="route('tree.growth-log', $tree->id)" :active="request()->routeIs('tree.growth-log')" />
+            <x-show-navbar-navitem title="{{ __('messages.overview') }}" :route="route('tree.show', $tree->id)" :active="request()->routeIs('tree.show')" />
+            <x-show-navbar-navitem title="{{ __('messages.growth_logs') }}" :route="route('tree.growth-log', $tree->id)" :active="request()->routeIs('tree.growth-log')" />
             {{-- <x-show-navbar-navitem title="Status History" /> --}}
-            <x-show-navbar-navitem title="Health Records" :route="route('tree.health-record', $tree->id)" :active="request()->routeIs('tree.health-record')" />
-            <x-show-navbar-navitem title="Agrochemical Usage" :route="route('tree.agrochemical-usage', $tree->id)" :active="request()->routeIs('tree.agrochemical-usage')" />
-            <x-show-navbar-navitem title="Harvest Records" :route="route('tree.harvest-record', $tree->id)" :active="request()->routeIs('tree.harvest-record')" />
+            <x-show-navbar-navitem title="{{ __('messages.health_records') }}" :route="route('tree.health-record', $tree->id)" :active="request()->routeIs('tree.health-record')" />
+            <x-show-navbar-navitem title="{{ __('messages.agrochemical_usages') }}" :route="route('tree.agrochemical-usage', $tree->id)" :active="request()->routeIs('tree.agrochemical-usage')" />
+            <x-show-navbar-navitem title="{{ __('messages.harvests') }}" :route="route('tree.harvest-record', $tree->id)" :active="request()->routeIs('tree.harvest-record')" />
             {{-- <x-show-navbar-navitem title="Media" /> --}}
         </ul>
         <!--begin::Navs-->

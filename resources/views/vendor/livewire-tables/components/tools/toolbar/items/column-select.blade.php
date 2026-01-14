@@ -129,7 +129,7 @@
                 type="button" id="{{ $tableName }}-columnSelect" aria-haspopup="true"
                 x-bind:aria-expanded="open"
             >
-                {{ __($localisationPath.'Columns') }}
+                {{ __('messages.columns') }}
             </button>
 
             <div
@@ -149,7 +149,7 @@
                                 @if($this->getSelectableSelectedColumns()->count() == $this->getSelectableColumns()->count()) checked wire:click="deselectAllColumns" @else unchecked wire:click="selectAllColumns" @endif
                             />
 
-                            <span class="ml-2">{{ __($localisationPath.'All Columns') }}</span>
+                            <span class="ml-2">{{ __('messages.columns') }}</span>
 
 
                         </label>
@@ -170,7 +170,7 @@
                         />
 
                         <label wire:loading.attr="disabled" class="form-check-label">
-                            {{ __($localisationPath.'All Columns') }}
+                            {{ __('messages.columns') }}
                         </label>
                     </div>
                 @endif

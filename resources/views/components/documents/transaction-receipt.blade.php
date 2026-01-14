@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Invoice</title>
     <style>
@@ -51,7 +52,8 @@
             margin-top: 15px;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #000;
             padding: 6px;
             text-align: center;
@@ -78,6 +80,18 @@
             margin-top: 40px;
             text-align: right;
         }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .meta-table td {
+            text-align: left;
+        }
+
+        .meta-table td:first-child {
+            width: 110px;
+        }
     </style>
 </head>
 
@@ -96,14 +110,20 @@
     <div class="row">
         <div class="col">
             <span>Billing Address</span><br>
-            {{ $summary['buyer'] }}<br>
-            {{ $summary['billing_address'] ?? '-' }}
+            <strong>{{ $summary['buyer'] }}</strong><br>
+            {{ $summary['buyer_reference_id'] }}<br>
+            {{ $summary['buyer_address'] ?? '-' }}<br>
+            {{ $summary['buyer_phone'] ?? '' }}<br>
+            {{ $summary['buyer_email'] ?? '' }}
         </div>
 
         <div class="col">
             <span>Delivery Address</span><br>
-            {{ $summary['buyer'] }}<br>
-            {{ $summary['delivery_address'] ?? '-' }}
+            <strong>{{ $summary['buyer'] }}</strong><br>
+            {{ $summary['buyer_reference_id'] }}<br>
+            {{ $summary['buyer_address'] ?? '-' }}<br>
+            {{ $summary['buyer_phone'] ?? '' }}<br>
+            {{ $summary['buyer_email'] ?? '' }}
         </div>
     </div>
 
@@ -140,7 +160,6 @@
         </div>
     </div>
 
-    <!-- 🔒 TABLE UNCHANGED -->
     <table>
         <thead>
             <tr>
@@ -184,20 +203,24 @@
 
     <!-- Footer -->
     <div class="footer">
-        <strong>RINGGIT MALAYSIA :</strong>
-        {{ \Illuminate\Support\Str::upper($summary['amount_in_words'] ?? '') }} ONLY
         <br><br>
         Notes:
         <ol>
             <li>All cheques should be crossed and made payable to {{ $companyName }}</li>
+            <li>Bank Details: Public Bank (A/C No.: 3211920300)</li>
             <li>Goods sold are neither returnable nor refundable</li>
         </ol>
+        <div class="text-end total">
+            Total Payable: RM {{ number_format($summary['total'], 2) }}
+        </div>
+
     </div>
 
-    <div class="signature">
+    <div class="signature fs-10 text-end">
         Authorised Signature<br><br>
-        _______________________
+        {{ $companyName }} (202001024288 (1380608-D))
     </div>
 
 </body>
+
 </html>

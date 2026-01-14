@@ -22,15 +22,15 @@ class TreeListingTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setSearchPlaceholder('Search Tree')
-            ->setEmptyMessage('No results found');
+            ->setSearchPlaceholder(__('messages.search_trees'))
+            ->setEmptyMessage(__('messages.no_results_found'));
     }
 
     public function filters(): array
     {
         return [
-            'species' => SelectFilter::make('Species')
-                ->options(['' => 'Any'] + Tree::with('species')->get()->pluck('species.name', 'species.id')->toArray())
+            'species' => SelectFilter::make(__('messages.species'))
+                ->options(['' => __('messages.any')] + Tree::with('species')->get()->pluck('species.name', 'species.id')->toArray())
                 ->filter(fn(Builder $query, $value) => $query->whereHas('species', fn($query) => $query->where('id', $value))),
         ];
     }
@@ -44,7 +44,7 @@ class TreeListingTable extends DataTableComponent
             Column::make("Thumbnail", "thumbnail")
                 ->hideIf(true),
 
-            ViewComponentColumn::make('Tree Tag', 'tree_tag')
+            ViewComponentColumn::make(__('messages.tree_tag'), 'tree_tag')
                 ->component('components.table-primary-column')
                 ->attributes(fn($value, $row, Column $column) => [
                     'thumbnail' => $row->thumbnail ?? 'default',
@@ -53,21 +53,21 @@ class TreeListingTable extends DataTableComponent
                 ])->searchable()
                 ->sortable(),
 
-            ViewComponentColumn::make('Species', 'species.name')
+            ViewComponentColumn::make(__('messages.species'), 'species.name')
                 ->component('table-badge')
                 ->attributes(fn($value, $row, Column $column) => [
                     'badge' => 'badge-light-success',
                     'label' => $value,
                 ]),
 
-            Column::make("Planted At", "planted_at")
+            Column::make(__('messages.planted_at'), "planted_at")
                 ->sortable(),
 
-            Column::make('Actions')
+            Column::make(__('messages.actions'))
                 ->label(fn($row, Column $column) => view('components.table-button', [
                     'modal'     => 'treeModalLivewire',
                     'dispatch' => 'edit-tree',
-                    'label'    => 'Edit',
+                    'label'    => __('messages.edit'),
                     'dataField' => 'tree',
                     'data'      =>  $row->id,
                     'permission' => 'edit-tree',

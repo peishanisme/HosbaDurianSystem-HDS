@@ -10,7 +10,6 @@ class ReceiptPdfExporter
     public function export(Transaction $transaction)
     {
         $summary = $transaction->summary;
-        dd($summary);
 
         $companyName = 'Hosba Durian Farm Sdn Bhd';
         $companyAddress = 'Lot 29, Kawasan Perindustrian Sg.Laka, 06050 Bukit Kayu Hitam, Kedah Darulaman.';

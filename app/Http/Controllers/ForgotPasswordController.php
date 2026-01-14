@@ -77,23 +77,4 @@ class ForgotPasswordController extends Controller
         return redirect()->route('login')->with('status', 'Password reset successful! You may now log in.');
     }
 
-    public function verifyPassword($plainPassword, $hashedPassword)
-    {
-        return Hash::check($plainPassword, $hashedPassword);
-    }
-
-    public function checkOldPassword(Request $request)
-    {
-        $request->validate([
-            'old_password' => 'required',
-        ]);
-
-        $user = auth()->user();
-
-        if (!$this->verifyPassword($request->old_password, $user->password)) {
-            return response()->json(['valid' => false], 422);
-        }
-
-        return response()->json(['valid' => true]);
-    }
 }

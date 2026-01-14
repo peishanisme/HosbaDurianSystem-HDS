@@ -10,7 +10,6 @@ use Livewire\Attributes\Title;
 use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
-#[Title('Tree Harvest Record')]
 class TreeHarvestRecordLivewire extends Component
 {
     public Tree $tree;
@@ -74,6 +73,6 @@ class TreeHarvestRecordLivewire extends Component
         return view('livewire.module.tree-management.tree-harvest-record-livewire', [
             'harvests' => $this->harvests,
             'years' => $years,
-        ]);
+        ])->title(__('messages.tree_harvest_records'));
     }
 }
