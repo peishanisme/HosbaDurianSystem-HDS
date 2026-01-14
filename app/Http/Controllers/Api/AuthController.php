@@ -12,13 +12,24 @@ class AuthController extends Controller
     {
         $request->authenticate();
 
+        $user = $request->user();
+
+        // Only allow users with role id 1 (super admin) or 3 (worker)
+        $roleIds = $user->roles()->pluck('id')->toArray();
+
+        if (!in_array(1, $roleIds, true) && !in_array(3, $roleIds, true)) {
+            return response()->json([
+                'message' => 'You do not have permission to access this application.'
+            ], 403);
+        }
+
         // Create token (Sanctum)
-        $token = $request->user()->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('api-token')->plainTextToken;
 
         return response()->json([
             'message' => 'Login successful',
             'token' => $token,
-            'user' => $request->user()
+            'user' => $user
         ]);
     }
 }
