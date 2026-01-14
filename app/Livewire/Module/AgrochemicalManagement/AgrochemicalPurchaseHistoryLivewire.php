@@ -18,6 +18,10 @@ class AgrochemicalPurchaseHistoryLivewire extends Component
     public Agrochemical $agrochemical;
 
     public AgrochemicalStockMovement $stock;
+    public function mount(): void
+    {
+        $this->authorizeRoleOrPermission(['view-fertilizer-pesticide']);
+    }
 
     #[On('delete-stock')]
     public function deleteStock(AgrochemicalStockMovement $stock)

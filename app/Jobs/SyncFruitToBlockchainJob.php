@@ -31,29 +31,12 @@ class SyncFruitToBlockchainJob implements ShouldQueue
         
         $fruit = Fruit::findOrFail($this->fruitId);
 
-        if (! $fruit->metadata_hash ) {
+        if (!$fruit->metadata_hash ) {
             throw new \Exception('Metadata not ready');
             
         }
 
         $this->pushToBlockchain($fruit, $fruit->metadata_hash, $blockchainService);
 
-        // $fruit = Fruit::findOrFail($this->fruitId);
-
-        // if ($fruit->is_onchain) return;
-
-        // if (! $fruit->metadata_hash) {
-        //     throw new \Exception('Metadata not ready');
-        // }
-
-        // try {
-        //     $this->pushToBlockchain($fruit, $fruit->metadata_hash, $blockchainService);
-        // } catch (\Exception $e) {
-        //     if ($this->attempts() < 5) {
-        //         self::dispatch($fruit->id)->delay(now()->addMinutes(5));
-        //     } else {
-        //         throw $e;
-        //     }
-        // }
     }
 }

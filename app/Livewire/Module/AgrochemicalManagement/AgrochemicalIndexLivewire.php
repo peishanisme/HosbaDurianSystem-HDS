@@ -14,6 +14,11 @@ class AgrochemicalIndexLivewire extends Component
 {
     use SweetAlert, AuthorizesRoleOrPermission;
     public Agrochemical $agrochemical;
+    
+    public function mount(): void
+    {
+        $this->authorizeRoleOrPermission(['view-fertilizer-pesticide']);
+    }
 
     #[On('delete-agrochemical')]
     public function deleteTree(Agrochemical $agrochemical)

@@ -9,7 +9,6 @@ use App\Traits\SweetAlert;
 use Livewire\Attributes\On;
 use App\Livewire\Forms\UserForm;
 use Spatie\Permission\Models\Role;
-use App\Actions\FormatPhoneNumberAction;
 
 class UserModalLivewire extends Component
 {
@@ -26,6 +25,7 @@ class UserModalLivewire extends Component
             ->pluck('name', 'id')
             ->toArray();
     }
+    
 
     #[On('reset-user')]
     public function resetInput()

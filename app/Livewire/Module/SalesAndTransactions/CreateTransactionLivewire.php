@@ -112,6 +112,13 @@ class CreateTransactionLivewire extends Component
             ]);
         }
 
+        if ($this->activeStep === 2) {
+        if (empty($this->scannedFruits)) {
+            $this->addError('scannedFruits', 'Please scan at least one fruit before proceeding.');
+            return; // stop progression
+        }
+        }
+
         if ($this->activeStep === 3) {
             $hasMissingPrice = collect($this->summary)
                 ->some(fn($item) => empty($item['price_per_kg']) || $item['price_per_kg'] <= 0);

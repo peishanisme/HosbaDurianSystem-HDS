@@ -12,7 +12,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 class AgrochemicalPurchaseHistoryTable extends DataTableComponent
 {
     public ?Agrochemical $agrochemical = null;
-    
+
     protected $model = AgrochemicalStockMovement::class;
 
     public function builder(): Builder
@@ -20,7 +20,7 @@ class AgrochemicalPurchaseHistoryTable extends DataTableComponent
         return AgrochemicalStockMovement::where('agrochemical_uuid', $this->agrochemical?->uuid)
             ->with('agrochemical');
     }
-    
+
     public function configure(): void
     {
         $this->setPrimaryKey('id')
@@ -52,7 +52,7 @@ class AgrochemicalPurchaseHistoryTable extends DataTableComponent
                 ->sortable()
                 ->hideIf(true),
             Column::make("Date", "date")
-            ->format(fn($value, $row, Column $column) => Carbon::parse($value)->format('Y-m-d'))
+                ->format(fn($value, $row, Column $column) => Carbon::parse($value)->format('Y-m-d'))
                 ->sortable(),
             Column::make("Description", "description")
                 ->sortable()
@@ -61,7 +61,7 @@ class AgrochemicalPurchaseHistoryTable extends DataTableComponent
                 ->sortable(),
             Column::make("Created at", "created_at")
                 ->sortable(),
-                Column::make('Actions')
+            Column::make('Actions')
                 ->label(fn($row, Column $column) => view('components.table-com-button', [
                     'modal'     => 'agrochemicalStockMovementModalLivewire',
                     'dispatch1' => 'edit-stock',
@@ -71,8 +71,8 @@ class AgrochemicalPurchaseHistoryTable extends DataTableComponent
                     'icon2'     => 'bi bi-trash3',
                     'dispatch2' => 'delete-stock',
                     'label2'    => 'Delete',
-                    // 'permission1' => 'edit-agrochemical',
-                    // 'permission2' => 'delete-agrochemical',
+                    'permission1' => 'update-stock-levels',
+                    'permission2' => 'update-stock-levels',
                 ]))->html()
                 ->excludeFromColumnSelect(),
         ];

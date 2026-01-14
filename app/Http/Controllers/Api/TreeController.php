@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
 
 class TreeController extends Controller
 {
-   public function store(Request $request)
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'species_id'       => 'required|exists:species,id',
@@ -80,7 +80,6 @@ class TreeController extends Controller
                 'message' => 'Tree created successfully with growth log',
                 'data'    => $tree
             ], 201);
-
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -92,10 +91,11 @@ class TreeController extends Controller
     }
 
 
-    public function index() {
+    public function index()
+    {
         $trees = Tree::with('species')
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(10);
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
         return response()->json([
             'success' => true,
@@ -103,7 +103,8 @@ class TreeController extends Controller
         ]);
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         $tree = Tree::with('species')
             ->where('id', $id)
             ->first();
@@ -112,8 +113,8 @@ class TreeController extends Controller
             return response()->json(['message' => 'Tree not found'], 404);
         }
         $latestGrowth = $tree->growthLogs()
-        ->orderBy('created_at', 'desc')
-        ->first();
+            ->orderBy('created_at', 'desc')
+            ->first();
 
         if ($latestGrowth) {
             $tree->height = $latestGrowth->height;
@@ -126,90 +127,92 @@ class TreeController extends Controller
         return response()->json($tree);
     }
 
-    public function update(Request $request, $id) {
-    $tree = Tree::findOrFail($id);
+    public function update(Request $request, $id)
+    {
+        $tree = Tree::findOrFail($id);
 
-    $validator = Validator::make($request->all(), [
-        'species_id' => 'required|exists:species,id',
-        'planted_at' => 'required|date',
-        'thumbnail'   => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
-        'flowering_period' => 'nullable|string',
-        'height' => 'required|numeric',
-        'diameter' => 'required|numeric',
-        'latitude' => 'nullable|numeric',
-        'longitude' => 'nullable|numeric',
-    ]);
-
-    DB::beginTransaction();
-    try{
-        $thumbnailUrl = $tree->thumbnail; // Keep existing thumbnail by default
-        
-        // ✅ If user uploads a new image, replace it
-        if ($request->hasFile('thumbnail')) {
-            $ext = $request->file('thumbnail')->getClientOriginalExtension();
-            $uuidName = Str::uuid()->toString() . '.' . $ext;
-
-            // Store new image
-            $request->file('thumbnail')->storeAs('trees/jpg', $uuidName, 'supabase');
-            $thumbnailUrl = "trees/jpg/{$uuidName}";
-        }
-
-        // Capture latest growth values before update
-        $latestGrowth = $tree->growthLogs()->latest()->first();
-        $prevHeight = $latestGrowth?->height;
-        $prevDiameter = $latestGrowth?->diameter;
-
-        $tree->update([
-            'species_id'       => $request->species_id,
-            'planted_at'       => $request->planted_at,
-            'thumbnail'        => $thumbnailUrl,   // save the path in DB
-            'latitude'         => $request->latitude,
-            'longitude'        => $request->longitude,
-            'flowering_period' => $request->flowering_period,
+        $validator = Validator::make($request->all(), [
+            'species_id' => 'required|exists:species,id',
+            'planted_at' => 'required|date',
+            'thumbnail'   => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'flowering_period' => 'nullable|string',
+            'height' => 'required|numeric',
+            'diameter' => 'required|numeric',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ]);
 
-        // If height or diameter changed, create a new growth log entry
-        // (treat null previous as a change so first log is recorded)
-        $newHeight = $request->height;
-        $newDiameter = $request->diameter;
+        DB::beginTransaction();
+        try {
+            $thumbnailUrl = $tree->thumbnail; // Keep existing thumbnail by default
 
-        $heightChanged = $prevHeight === null || (float) $newHeight != (float) $prevHeight;
-        $diameterChanged = $prevDiameter === null || (float) $newDiameter != (float) $prevDiameter;
+            // ✅ If user uploads a new image, replace it
+            if ($request->hasFile('thumbnail')) {
+                $ext = $request->file('thumbnail')->getClientOriginalExtension();
+                $uuidName = Str::uuid()->toString() . '.' . $ext;
 
-        if ($heightChanged || $diameterChanged) {
-            if ($latestGrowth) {
-                // Update the latest growth log instead of creating a new one
-                $latestGrowth->update([
-                    'height'   => $newHeight,
-                    'diameter' => $newDiameter,
-                ]);
-            } else {
-                // No previous growth log exists, create the first one
-                $tree->growthLogs()->create([
-                    'tree_id'   => $tree->id,
-                    'tree_uuid' => $tree->uuid,
-                    'height'    => $newHeight,
-                    'diameter'  => $newDiameter,
-                ]);
+                // Store new image
+                $request->file('thumbnail')->storeAs('trees/jpg', $uuidName, 'supabase');
+                $thumbnailUrl = "trees/jpg/{$uuidName}";
             }
+
+            // Capture latest growth values before update
+            $latestGrowth = $tree->growthLogs()->latest()->first();
+            $prevHeight = $latestGrowth?->height;
+            $prevDiameter = $latestGrowth?->diameter;
+
+            $tree->update([
+                'species_id'       => $request->species_id,
+                'planted_at'       => $request->planted_at,
+                'thumbnail'        => $thumbnailUrl,   // save the path in DB
+                'latitude'         => $request->latitude,
+                'longitude'        => $request->longitude,
+                'flowering_period' => $request->flowering_period,
+            ]);
+
+            // If height or diameter changed, create a new growth log entry
+            // (treat null previous as a change so first log is recorded)
+            $newHeight = $request->height;
+            $newDiameter = $request->diameter;
+
+            $heightChanged = $prevHeight === null || (float) $newHeight != (float) $prevHeight;
+            $diameterChanged = $prevDiameter === null || (float) $newDiameter != (float) $prevDiameter;
+
+            if ($heightChanged || $diameterChanged) {
+                if ($latestGrowth) {
+                    // Update the latest growth log instead of creating a new one
+                    $latestGrowth->update([
+                        'height'   => $newHeight,
+                        'diameter' => $newDiameter,
+                    ]);
+                } else {
+                    // No previous growth log exists, create the first one
+                    $tree->growthLogs()->create([
+                        'tree_id'   => $tree->id,
+                        'tree_uuid' => $tree->uuid,
+                        'height'    => $newHeight,
+                        'diameter'  => $newDiameter,
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Tree updated successfully',
+                'data' => $tree
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Failed to update tree',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        DB::commit();
-
-        return response()->json([
-            'message' => 'Tree updated successfully',
-            'data' => $tree
-        ], 200);
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return response()->json([
-            'message' => 'Failed to update tree',
-            'error' => $e->getMessage()
-        ], 500);
-    }
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $tree = Tree::findOrFail($id);
 
         DB::beginTransaction();
@@ -232,7 +235,8 @@ class TreeController extends Controller
         }
     }
 
-    public function showByUuid($uuid){
+    public function showByUuid($uuid)
+    {
         $tree = Tree::with('species')->where('uuid', $uuid)->first();
 
         if (!$tree) {
@@ -246,7 +250,8 @@ class TreeController extends Controller
         return response()->json($tree);
     }
 
-    public function getTreeTagList() {
+    public function getTreeTagList()
+    {
         $trees = Tree::with('species')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -267,7 +272,8 @@ class TreeController extends Controller
         ]);
     }
 
-    public function updateTreeLocation(Request $request, $id) {
+    public function updateTreeLocation(Request $request, $id)
+    {
         $validator = Validator::make($request->all(), [
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
@@ -297,4 +303,25 @@ class TreeController extends Controller
         }
     }
 
+    public function getFloweringPeriod($uuid)
+    {
+        try {
+            $tree = Tree::where('uuid', $uuid)->firstOrFail();
+            $floweringPeriod = $tree->getFloweringPeriod();
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'uuid' => $tree->uuid,
+                    'tree_tag' => $tree->tree_tag,
+                    'flowering_period' => $floweringPeriod
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Tree not found',
+                'error' => $e->getMessage()
+            ], 404);
+        }
+    }
 }

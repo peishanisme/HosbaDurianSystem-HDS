@@ -4,8 +4,7 @@
         style="width: 12rem; height: 12rem;">
         @if ($thumbnail)
             {{-- Image Preview --}}
-            <img src="{{ is_string($thumbnail) ? app(\App\Services\MediaService::class)->get($thumbnail) : $thumbnail->temporaryUrl() }}"
-                alt="Thumbnail Preview" class="w-100 h-100 object-fit-cover">
+            <img src="{{ $this->thumbnailPreviewUrl }}" class="w-100 h-100 object-fit-cover">
 
             {{-- Delete Icon --}}
 

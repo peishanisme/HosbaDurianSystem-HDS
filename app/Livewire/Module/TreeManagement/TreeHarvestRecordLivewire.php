@@ -5,8 +5,10 @@ namespace App\Livewire\Module\TreeManagement;
 use App\Models\Tree;
 use Livewire\Component;
 use App\Models\HarvestEvent;
+use App\Models\FruitFeedback;
 use Livewire\Attributes\Title;
 use Illuminate\Support\Facades\DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 #[Title('Tree Harvest Record')]
 class TreeHarvestRecordLivewire extends Component
@@ -15,6 +17,9 @@ class TreeHarvestRecordLivewire extends Component
     public $search = '';
     public $filterYear = '';
     public $expanded = [];
+    public $qrCode;
+    public $fruitUuid, $fruitTag;
+    public $feedback;
 
     public function toggleExpand($harvestUuid)
     {
@@ -34,6 +39,29 @@ class TreeHarvestRecordLivewire extends Component
             ->when($this->filterYear, fn($q) => $q->whereYear('start_date', $this->filterYear))
             ->orderByDesc('start_date')
             ->get();
+    }
+
+    public function showQrCode($uuid)
+    {
+        $this->fruitUuid = $uuid;
+        $this->fruitTag = Tree::whereHas('fruits', function ($query) use ($uuid) {
+            $query->where('uuid', $uuid);
+        })->first()->fruits()->where('uuid', $uuid)->first()->fruit_tag;
+
+        $this->qrCode = (string) QrCode::size(300)
+            ->generate(route('public.portal', $this->fruitUuid));
+
+        // Dispatch browser event to open the modal
+        $this->dispatch('show-qr-modal');
+    }
+
+    public function showFeedback($uuid)
+    {
+        $this->fruitUuid = $uuid;
+        $this->feedback = FruitFeedback::where('fruit_uuid', $this->fruitUuid)->orderBy('created_at', 'desc')
+            ->get();
+        // Dispatch browser event to open the modal
+        $this->dispatch('show-feedback-modal');
     }
     public function render()
     {

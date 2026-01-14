@@ -12,8 +12,12 @@
     </div>
 
     <div class="fv-row mb-8">
-        <x-input-label for="name" class="required mb-2" :value="__('Contact Number')" />
-        <x-input-text id="contact_number" placeholder="Contact Number" wire:model="form.contact_number"  maxlength="11"/>
+        <x-input-label for="phone" class="required mb-2" :value="__('Contact Number')" />
+        <div class="input-group mt-2">
+            <span class="input-group-text bg-light border-0">+60</span>
+            <x-input-text id="phone" class="form-control border-start-0" type="tel" name="phone" wire:model="form.contact_number" 
+                placeholder="1xxxxxxxxx" value="{{ old('phone') }}" required autofocus autocomplete="tel" />
+        </div>
         <x-input-error :messages="$errors->get('form.contact_number')" />
     </div>
 

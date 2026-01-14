@@ -3,14 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Fruit extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $table = 'fruits';
     protected $primaryKey = 'id';
@@ -34,6 +36,16 @@ class Fruit extends Model
         'price_per_kg',
         'version',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('fruit')
+            ->setDescriptionForEvent(fn(string $eventName) => "A fruit has been $eventName.")
+            ->dontSubmitEmptyLogs();
+    }
 
     protected static function booted()
     {

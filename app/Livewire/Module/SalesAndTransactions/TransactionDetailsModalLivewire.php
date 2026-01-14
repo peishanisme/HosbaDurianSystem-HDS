@@ -8,6 +8,7 @@ use App\Traits\SweetAlert;
 use App\Models\Transaction;
 use Livewire\Attributes\On;
 use App\Services\BlockchainService;
+use Illuminate\Support\Facades\Log;
 
 class TransactionDetailsModalLivewire extends Component
 {
@@ -28,23 +29,34 @@ class TransactionDetailsModalLivewire extends Component
         $this->transaction = $transaction;
         $this->summary = $transaction->getFruitSummary();
 
+        Log::info('[Blockchain] Loading transaction', [
+            'transaction_id' => $transaction->id,
+            'reference_id' => $transaction->reference_id,
+            'blockchain_tx_hash' => $transaction->blockchain_tx_hash,
+            'blockchain_status' => $transaction->blockchain_status,
+            'env' => app()->environment(),
+        ]);
 
-        // ---------------------------
-        // 1. Perform blockchain verification
-        // ---------------------------
         if ($transaction->blockchain_tx_hash && $transaction->blockchain_status === 'confirmed') {
             $this->blockchainStatus = 'confirmed';
 
             $blockchain = app(BlockchainService::class);
 
-            $hashToVerify = hash(
-                'sha256',
+            $rawString =
                 $transaction->reference_id .
-                    $transaction->buyer->reference_id .
-                    $transaction->total_price .
-                    $transaction->date
-            );
-            $hashToVerify = '0x' . $hashToVerify;
+                $transaction->buyer->reference_id .
+                $transaction->total_price .
+                $transaction->date;
+
+            $hashToVerify = '0x' . hash('sha256', $rawString);
+
+            Log::info('[Blockchain] Verification payload', [
+                'raw_string' => $rawString,
+                'hash' => $hashToVerify,
+                'buyer_reference' => $transaction->buyer->reference_id,
+                'total_price' => $transaction->total_price,
+                'date' => $transaction->date,
+            ]);
 
             try {
                 $verifyResult = $blockchain->verifySale(
@@ -52,13 +64,31 @@ class TransactionDetailsModalLivewire extends Component
                     $hashToVerify
                 );
 
+                Log::info('[Blockchain] Verification response', [
+                    'response' => $verifyResult,
+                ]);
+
                 $this->blockchainVerified = $verifyResult['valid'] ?? false;
-                $this->blockchainStatus = $verifyResult['status'] == 1 ? 'confirmed' : 'canceled';
-            } catch (\Exception $e) {
+                $this->blockchainStatus = ($verifyResult['status'] ?? 0) == 1
+                    ? 'confirmed'
+                    : 'canceled';
+            } catch (\Throwable $e) {
+
+                Log::error('[Blockchain] Verification failed', [
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
+                ]);
+
                 $this->blockchainVerified = false;
                 $this->blockchainStatus = 'error';
             }
         } else {
+
+            Log::warning('[Blockchain] Transaction not eligible for verification', [
+                'tx_hash_exists' => (bool) $transaction->blockchain_tx_hash,
+                'blockchain_status' => $transaction->blockchain_status,
+            ]);
+
             $this->blockchainVerified = false;
             $this->blockchainStatus = 'pending';
         }
@@ -102,7 +132,7 @@ class TransactionDetailsModalLivewire extends Component
             app(\App\Actions\SalesAndTransactions\CancelTransactionAction::class)
                 ->handle($this->transaction);
 
-            $this->alertSuccess('Transaction cancelled successfully.',$this->modalID);
+            $this->alertSuccess('Transaction cancelled successfully.', $this->modalID);
         } catch (\Throwable $e) {
             $this->alertError('Failed to cancel transaction: ' . $e->getMessage(), $this->modalID);
         }

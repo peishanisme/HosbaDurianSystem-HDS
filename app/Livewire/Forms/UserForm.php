@@ -2,16 +2,18 @@
 
 namespace App\Livewire\Forms;
 
+use App\Traits\PhoneNumberTrait;
 use Livewire\Form;
 use App\Models\User;
+use App\Rules\UniquePhoneRule;
 use Illuminate\Validation\Rule;
-use Livewire\Attributes\Validate;
+use App\DataTransferObject\UserDTO;
 use App\Actions\UserManagement\CreateUserAction;
 use App\Actions\UserManagement\UpdateUserAction;
-use App\DataTransferObject\UserDTO;
 
 class UserForm extends Form
 {
+    use PhoneNumberTrait;
     public ?User $user = null;
     public ?string $name, $email, $phone, $role;
     public bool $is_active = true;
@@ -23,7 +25,7 @@ class UserForm extends Form
             'email'           => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user->id ?? null)],
             'role'            => ['required', Rule::exists('roles', 'id')],
             'is_active'       => ['required', 'boolean'],
-            'phone'           => ['required', 'string', Rule::unique('users', 'phone')->ignore($this->user->id ?? null), 'numeric','regex:/^1\d{8,9}$/'],
+            'phone'           => ['required', 'string', 'numeric', 'regex:/^1\d{8,9}$/',new UniquePhoneRule($this->user->id ?? null)],
         ];
     }
 
@@ -32,7 +34,7 @@ class UserForm extends Form
         $this->user = $user;
         $this->name = $user->name;
         $this->email = $user->email;
-        $this->phone = $user->phone;
+        $this->phone = self::formatForDisplay($user->phone);
         $this->role = $user->roles->first()->id ?? null;
         $this->is_active = $user->is_active;
     }
@@ -44,7 +46,6 @@ class UserForm extends Form
 
     public function update($validatedData): void
     {
-        app(UpdateUserAction::class)->handle($this->user,UserDTO::fromArray($validatedData));
+        app(UpdateUserAction::class)->handle($this->user, UserDTO::fromArray($validatedData));
     }
-    
 }

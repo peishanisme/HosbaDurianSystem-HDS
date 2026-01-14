@@ -9,11 +9,12 @@ use Livewire\Attributes\Title;
 use App\Livewire\Forms\UserForm;
 use Illuminate\Support\Facades\Hash;
 use App\Actions\FormatPhoneNumberAction;
+use App\Traits\PhoneNumberTrait;
 
 #[Title('Account Details')]
 class UserProfileLivewire extends Component
 {
-    use SweetAlert;
+    use SweetAlert, PhoneNumberTrait;
     public User $user;
     public UserForm $form;
     public string $role = '';
@@ -36,7 +37,7 @@ class UserProfileLivewire extends Component
      * ----------------------------- */
     public function update(): void
     {
-        $this->form->phone = FormatPhoneNumberAction::handle($this->phone);
+        $this->form->phone = $this->phone;
         $validatedData = $this->form->validate();
 
         try {
