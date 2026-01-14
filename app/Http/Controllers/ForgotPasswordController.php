@@ -19,6 +19,26 @@ class ForgotPasswordController extends Controller
         $this->forgotPasswordService = $service;
     }
 
+    public function verifyPassword($plainPassword, $hashedPassword)
+    {
+        return Hash::check($plainPassword, $hashedPassword);
+    }
+
+    public function checkOldPassword(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+        ]);
+
+        $user = auth()->user();
+
+        if (!$this->verifyPassword($request->old_password, $user->password)) {
+            return response()->json(['valid' => false], 422);
+        }
+
+        return response()->json(['valid' => true]);
+    }
+
     public function showPhoneForm()
     {
         return view('auth.forgot-password');
