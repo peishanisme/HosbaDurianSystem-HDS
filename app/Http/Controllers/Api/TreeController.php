@@ -297,4 +297,26 @@ class TreeController extends Controller
         }
     }
 
+    public function getFloweringPeriod($uuid)
+    {
+        try {
+            $tree = Tree::where('uuid', $uuid)->firstOrFail();
+            $floweringPeriod = $tree->getFloweringPeriod();
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'uuid' => $tree->uuid,
+                    'tree_tag' => $tree->tree_tag,
+                    'flowering_period' => $floweringPeriod
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Tree not found',
+                'error' => $e->getMessage()
+            ], 404);
+        }
+    }
+
 }

@@ -20,7 +20,6 @@ use App\Http\Controllers\ForgotPasswordController;
 // General
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthenticatedSessionController::class, 'destroy']);
-Route::middleware('auth:sanctum')->post('/check-old-password', [ForgotPasswordController::class, 'checkOldPassword']);
 
 // Species Controller
 Route::middleware('auth:sanctum')->post('/species', [SpeciesController::class, 'store']);
@@ -32,6 +31,7 @@ Route::middleware('auth:sanctum')->delete('/species/{id}', [SpeciesController::c
 Route::get('/check-phone/{phone}', [UserController::class, 'checkPhone']);
 Route::post('/verify-otp', [UserController::class, 'verifyOtp']);
 Route::post('/reset-password', [UserController::class, 'resetPassword']);
+Route::middleware('auth:sanctum')->post('/check-old-password', [ForgotPasswordController::class, 'checkOldPassword']);
 
 // Tree Controller
 Route::middleware('auth:sanctum')->post('/trees', [TreeController::class, 'store']);
@@ -41,6 +41,7 @@ Route::middleware('auth:sanctum')->put('/trees/{id}', [TreeController::class, 'u
 Route::middleware('auth:sanctum')->delete('/trees/{id}', [TreeController::class, 'destroy']);
 Route::middleware('auth:sanctum')->get('/trees/uuid/{uuid}', [TreeController::class, 'showByUuid']);
 Route::middleware('auth:sanctum')->put('/trees/location/{uuid}', [TreeController::class, 'updateTreeLocation']);
+Route::middleware('auth:sanctum')->get('/trees/{uuid}/flowering-period', [TreeController::class, 'getFloweringPeriod']);
 
 
 // Disease Controller
