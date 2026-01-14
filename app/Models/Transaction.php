@@ -4,14 +4,16 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use App\Enums\BlockchainStatus;
+use Spatie\Activitylog\LogOptions;
 use App\Reports\Contracts\Reportable;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Transaction extends Model implements Reportable
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
     protected $fillable = [
         'uuid',
         'buyer_uuid',
@@ -28,9 +30,15 @@ class Transaction extends Model implements Reportable
         'is_cancelled',
     ];
 
-    // protected $casts = [
-    //     'blockchain_status' => BlockchainStatus::class,
-    // ];
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('transaction')
+            ->setDescriptionForEvent(fn(string $eventName) => "A transaction has been $eventName.")
+            ->dontSubmitEmptyLogs();
+    }
 
     protected static function boot()
     {

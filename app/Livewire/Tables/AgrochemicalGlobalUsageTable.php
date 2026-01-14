@@ -31,7 +31,7 @@ class AgrochemicalGlobalUsageTable extends DataTableComponent
                         'label' => 'Generate Report',
                         'dispatch' => 'reset-generator',
                         'target' => 'generateReportModalLivewire',
-                        // 'permission' => 'create-buyer',
+                        'permission' => 'export-reports',
                     ]
                 ]
             ]);
@@ -55,15 +55,26 @@ class AgrochemicalGlobalUsageTable extends DataTableComponent
             Column::make("Agrochemical uuid", "agrochemical_uuid")
                 ->sortable()
                 ->hideIf(true),
-            Column::make("Agrochemical", "agrochemical.name")
-                ->sortable()
-                ->searchable(),
+             ViewComponentColumn::make('Agrochemical Name', 'agrochemical.name')
+                ->component('components.table-primary-column')
+                ->attributes(fn($value, $row, Column $column) => [
+                    'thumbnail' => $row->agrochemical->thumbnail ?? 'default',
+                    'title' => $value,
+                    'route' => route('agrochemical.show', $row->agrochemical->id),
+                ])->searchable()
+                ->sortable(),
             Column::make("Tree uuid", "tree_uuid")
                 ->sortable()
                 ->hideIf(true),
-            Column::make("Tree", "tree.tree_tag")
-                ->sortable()
-                ->searchable(),
+            ViewComponentColumn::make('Tree Tag', 'tree.tree_tag')
+                ->component('components.table-primary-column')
+                ->attributes(fn($value, $row, Column $column) => [
+                    'thumbnail' => $row->tree->thumbnail ?? 'default',
+                    'title' => $value,
+                    'route' => route('tree.show', $row->id),
+                ])->searchable()
+                ->sortable(),
+
             ViewComponentColumn::make('Type', 'agrochemical.type')
                 ->component('table-badge')
                 ->attributes(fn($value, $row, Column $column) => [

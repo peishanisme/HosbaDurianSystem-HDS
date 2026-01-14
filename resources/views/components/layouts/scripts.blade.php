@@ -200,6 +200,7 @@
 {{-- download qr script --}}
 <script>
     function downloadQR(wrapperId, filename = 'qr-code.png') {
+        console.log('Downloading QR Code...');
         const svg = document.querySelector(`#${wrapperId} svg`);
         if (!svg) {
             console.error('QR SVG not found');
@@ -233,6 +234,78 @@
 
         img.src = url;
     }
+</script>
+
+{{-- qr scanner --}}
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        let html5QrcodeScanner;
+
+        function onScanSuccess(decodedText) {
+            console.log('Raw scanned text:', decodedText);
+
+            let uuid = null;
+
+            try {
+                const url = new URL(decodedText);
+                const segments = url.pathname.split('/').filter(Boolean);
+                uuid = segments[segments.length - 1];
+            } catch (e) {
+                // In case QR is not a valid URL
+                uuid = decodedText;
+            }
+
+            // Optional UUID format validation
+            const uuidRegex =
+                /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+            if (!uuidRegex.test(uuid)) {
+                Livewire.dispatch('toast', {
+                    type: 'warning',
+                    message: 'Invalid QR code detected'
+                });
+                return;
+            }
+
+            console.log('Extracted UUID:', uuid);
+
+            Livewire.dispatch('scan-fruit', {
+                uuid
+            });
+        }
+
+        let lastErrorAt = 0;
+
+        function onScanFailure(error) {}
+
+        Livewire.on('init-qr-scanner', () => {
+            // Wait a bit to ensure #reader exists in DOM
+            setTimeout(() => {
+                const readerElem = document.getElementById("reader");
+                if (!readerElem) {
+                    console.error("QR Reader element not found.");
+                    return;
+                }
+
+                // Clear old scanner if exists
+                if (html5QrcodeScanner) {
+                    html5QrcodeScanner.clear().catch(err => console.warn(err));
+                    html5QrcodeScanner = null;
+                }
+
+                html5QrcodeScanner = new Html5QrcodeScanner("reader", {
+                    fps: 10,
+                    qrbox: {
+                        width: 250,
+                        height: 250
+                    }
+                }, false);
+
+                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+            }, 300);
+        });
+    });
 </script>
 
 @livewireScripts

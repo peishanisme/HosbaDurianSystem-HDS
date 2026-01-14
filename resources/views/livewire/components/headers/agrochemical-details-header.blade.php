@@ -4,13 +4,19 @@
         <div class="d-flex flex-wrap flex-sm-nowrap">
             <!--begin: Pic-->
             <div class="me-7 mb-4">
-                <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-                    <img class="object-fit-cover border"
-                        src="{{ $agrochemical->thumbnail ? app(\App\Services\MediaService::class)->get($agrochemical->thumbnail) : secure_asset('assets/media/placeholder/placeholder.svg') }}"
-                        alt="image" />
 
-                </div>
+                @if ($agrochemical->thumbnail)
+                    <x-image-preview :src="app(\App\Services\MediaService::class)->get($agrochemical->thumbnail)" alt="Agrochemical Image"
+                        modal-id="agrochemicalImagePreviewModal-{{ $agrochemical->id }}" />
+                @else
+                    <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
+                        <img class="object-fit-cover border"
+                            src="{{ app(\App\Services\MediaService::class)->get('logo/placeholder.svg') }}"
+                            alt="image" />
+                    </div>
+                @endif
             </div>
+
 
             <div class="flex-grow-1">
                 <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">

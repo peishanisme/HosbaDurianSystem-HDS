@@ -5,17 +5,18 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TreeController;
-use App\Http\Controllers\Api\SpeciesController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Api\BuyerController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\DiseaseController;
-use App\Http\Controllers\Api\HealthController;
-use App\Http\Controllers\Api\FruitController;
+use App\Http\Controllers\Api\BuyerController;
 use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\FruitController;
+use App\Http\Controllers\Api\HealthController;
+use App\Http\Controllers\Api\DiseaseController;
+use App\Http\Controllers\Api\SpeciesController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\Api\AgrochemicalController;
 use App\Http\Controllers\Api\TreeGrowthLogController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // General
 Route::post('/login', [AuthController::class, 'login']);
@@ -42,7 +43,6 @@ Route::middleware('auth:sanctum')->delete('/trees/{id}', [TreeController::class,
 Route::middleware('auth:sanctum')->get('/trees/uuid/{uuid}', [TreeController::class, 'showByUuid']);
 Route::middleware('auth:sanctum')->put('/trees/location/{uuid}', [TreeController::class, 'updateTreeLocation']);
 Route::middleware('auth:sanctum')->get('/trees/{uuid}/flowering-period', [TreeController::class, 'getFloweringPeriod']);
-
 
 // Disease Controller
 Route::middleware('auth:sanctum')->post('/diseases', [DiseaseController::class, 'store']);

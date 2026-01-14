@@ -26,7 +26,7 @@ class AgrochemicalListingTable extends DataTableComponent
                         'label' => 'Create Inventory',
                         'dispatch' => 'reset-agrochemical',
                         'target' => 'agrochemicalModalLivewire',
-                        // 'permission' => 'create-user',
+                        'permission' => 'create-fertilizer-pesticide',
                     ]
                 ]
             ]);
@@ -76,8 +76,8 @@ class AgrochemicalListingTable extends DataTableComponent
                     'icon2'     => 'bi bi-trash3',
                     'dispatch2' => 'delete-agrochemical',
                     'label2'    => 'Delete',
-                    // 'permission1' => 'edit-agrochemical',
-                    // 'permission2' => 'delete-agrochemical',
+                    'permission1' => 'edit-fertilizer-pesticide',
+                    'permission2' => 'delete-fertilizer-pesticide',
                 ]))->html()
                 ->excludeFromColumnSelect(),
 

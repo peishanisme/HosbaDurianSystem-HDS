@@ -2,13 +2,19 @@
     <div class="card-body pt-9 pb-0">
 
         <div class="d-flex flex-wrap flex-sm-nowrap">
-            <!--begin: Pic-->
+
             <div class="me-7 mb-4">
-                <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-                    <img class="object-fit-cover border"
-                        src="{{ $tree->thumbnail ? app(\App\Services\MediaService::class)->get($tree->thumbnail) : secure_asset('assets/media/placeholder/placeholder.svg') }}"
-                        alt="image" />
-                </div>
+                @if ($tree->thumbnail)
+                    <x-image-preview :src="app(\App\Services\MediaService::class)->get($tree->thumbnail)" alt="Tree Image"
+                        modal-id="treeImagePreviewModal-{{ $tree->id }}" />
+                @else
+                    <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
+                        <img class="object-fit-cover border"
+                            src="{{ app(\App\Services\MediaService::class)->get('logo/placeholder.svg') }}"
+                            alt="image" />
+                    </div>
+                @endif
+
             </div>
 
             <!--begin::Info-->
@@ -78,7 +84,8 @@
                                         <button class="btn btn-primary"
                                             onclick="downloadQR( 'qrCodeWrapper'
                                             , 'tree-{{ $tree->tree_tag }}.png' )">Download</button>
-                                        <button class="btn btn-secondary" onclick="printQR('Tree {{ $tree->tree_tag }}')">Print</button>
+                                        <button class="btn btn-secondary"
+                                            onclick="printQR('Tree {{ $tree->tree_tag }}')">Print</button>
                                     </div>
 
                                 </div>
@@ -159,4 +166,3 @@
         <!--begin::Navs-->
     </div>
 </div>
-

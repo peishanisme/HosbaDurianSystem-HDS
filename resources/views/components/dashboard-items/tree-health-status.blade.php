@@ -31,7 +31,7 @@
                             </span>
                         </td>
 
-                        <td class="text-end">{{ $item->updated_at->format('Y-m-d H:i') }}</td>
+                        <td class="text-end">{{ $item->recorded_at }}</td>
 
                         <td class="text-end">
                             <a href="{{ route('tree.health-record', $item->treeId) }}"

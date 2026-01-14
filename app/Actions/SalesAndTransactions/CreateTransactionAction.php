@@ -2,6 +2,7 @@
 
 namespace App\Actions\SalesAndTransactions;
 
+use App\Jobs\SyncTransactionToBlockchainJob;
 use Carbon\Carbon;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
@@ -48,38 +49,7 @@ class CreateTransactionAction
                 }
             }
 
-            // --------------------
-            // 3. Generate blockchain hash
-            // --------------------
-            $transactionHash = hash(
-                'sha256',
-                $transaction->reference_id .
-                $transaction->buyer->reference_id .
-                number_format($transaction->total_price, 2, '.', '') .
-                $transaction->date
-            );
-
-            $transactionHash = '0x' . $transactionHash;
-            Log::info('Generated Transaction Hash: ' . $transactionHash);
-
-            // --------------------
-            // 4. Push hash to blockchain
-            // --------------------
-            $response = $this->blockchain->createSale(
-                $transaction->reference_id,
-                $transactionHash
-            );
-
-            // --------------------
-            // 5. Update transaction status
-            // --------------------
-            if ($response['success']) {
-                $transaction->update([
-                    'blockchain_tx_hash' => $response['txHash'],
-                    'blockchain_status'  => 'confirmed',
-                    'synced_at'          => Carbon::now(),
-                ]);
-            }
+            SyncTransactionToBlockchainJob::dispatch($transaction->uuid);
 
             return $transaction;
         });
