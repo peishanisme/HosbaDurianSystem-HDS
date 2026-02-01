@@ -107,7 +107,8 @@ class BlockchainService
         $response = Http::get($url);
 
         if (!$response->successful()) {
-            throw new \Exception('Blockchain read failed');
+            Log::error('Blockchain read failed', ['response' => $response->body()]);
+            throw new \Exception('Blockchain read failed'); 
         }
 
         return strtolower($response['metadataHash']);

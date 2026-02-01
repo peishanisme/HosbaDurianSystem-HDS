@@ -1,13 +1,13 @@
 <x-modal-component :id="$modalID" :title="$modalTitle">
     <div class="fv-row mb-8">
         <x-input-label for="name" class="required mb-2" :value="__('messages.name')" />
-        <x-input-text id="name" placeholder={{ __('messages.name') }} wire:model="form.name" />
+        <x-input-text id="name" placeholder="{{ __('messages.name') }}" wire:model="form.name" />
         <x-input-error :messages="$errors->get('form.name')" />
     </div>
 
     <div class="fv-row mb-8">
         <x-input-label for="email" class="required mb-2" :value="__('messages.email')" />
-        <x-input-text id="email" placeholder={{ __('messages.email') }} wire:model="form.email" />
+        <x-input-text id="email" placeholder="{{ __('messages.email') }}" wire:model="form.email" />
         <x-input-error :messages="$errors->get('form.email')" />
     </div>
 
