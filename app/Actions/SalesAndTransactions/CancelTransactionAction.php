@@ -40,18 +40,18 @@ class CancelTransactionAction
             // --------------------
             // 3. Append cancel record to blockchain
             // --------------------
-            try {
-                $this->blockchain->cancelSale(
-                    $transaction->reference_id
-                );
+            // try {
+            //     $this->blockchain->cancelSale(
+            //         $transaction->reference_id
+            //     );
 
-            } catch (\Throwable $e) {
-                // IMPORTANT: DB stays cancelled even if blockchain fails
-                Log::error('Blockchain cancel failed', [
-                    'transaction_id' => $transaction->id,
-                    'error' => $e->getMessage(),
-                ]);
-            }
+            // } catch (\Throwable $e) {
+            //     // IMPORTANT: DB stays cancelled even if blockchain fails
+            //     Log::error('Blockchain cancel failed', [
+            //         'transaction_id' => $transaction->id,
+            //         'error' => $e->getMessage(),
+            //     ]);
+            // }
         });
     }
 }

@@ -29,7 +29,7 @@ class UpdateFruitAction
             )->save();
         });
 
-        SyncFruitToPinataJob::dispatch($fruit->id);
+        // SyncFruitToPinataJob::dispatch($fruit->id);
 
         return $fruit->fresh();
     }
