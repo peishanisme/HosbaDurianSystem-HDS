@@ -126,7 +126,7 @@
     <div>
         @if ($this->sortingPillsAreEnabled() && $this->hasSorts())
             <div class="mb-3 px-5" x-cloak x-show="!currentlyReorderingStatus">
-                <small>{{ __($localisationPath.'Applied Sorting') }}:</small>
+                <small>{{ __('messages.applied_sorting') }}:</small>
 
                 @foreach($this->getSorts() as $columnSelectName => $direction)
                     @php($column = $this->getColumnBySelectName($columnSelectName) ?? $this->getColumnBySlug($columnSelectName))
@@ -175,7 +175,7 @@
                         ->except(['default-styling', 'default-colors'])
                     }}
                 >
-                    {{ __($localisationPath.'Clear') }}
+                    {{ __('messages.clear') }}
                 </a>
             </div>
         @endif

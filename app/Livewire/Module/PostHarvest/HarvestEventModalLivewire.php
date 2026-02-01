@@ -23,7 +23,11 @@ class HarvestEventModalLivewire extends Component
     public string $mode = 'create';
 
     public string $modalID = 'harvestEventModalLivewire';
-    public string $modalTitle = 'Harvest Event Details';
+    public string $modalTitle;
+    public function mount(): void
+    {
+        $this->modalTitle = __('messages.harvest_event_details');
+    }
 
     #[On('reset-harvest-event')]
     public function resetInput(): void
@@ -63,7 +67,7 @@ class HarvestEventModalLivewire extends Component
         // Extra safety: block create even if UI fails
         if ($this->hasUnclosedEvent()) {
             $this->alertError(
-                'There is an unclosed harvest event. Please close it before creating a new one.',
+                __('messages.unclosed_harvest_event_warning'),
                 $this->modalID
             );
             return;
@@ -74,11 +78,11 @@ class HarvestEventModalLivewire extends Component
         try {
             $this->form->create($validatedData);
             $this->alertSuccess(
-                'Harvest event has been created successfully.',
+                __('messages.harvest_event_created_successfully'),
                 $this->modalID
             );
         } catch (Exception $error) {
-            $this->alertError($error->getMessage(), $this->modalID);
+            $this->alertError(__('messages.harvest_event_creation_failed'), $this->modalID);
         }
     }
 
@@ -89,11 +93,11 @@ class HarvestEventModalLivewire extends Component
         try {
             $this->form->update($validatedData);
             $this->alertSuccess(
-                'Harvest event has been updated successfully.',
+                __('messages.harvest_event_updated_successfully'),
                 $this->modalID
             );
         } catch (Exception $error) {
-            $this->alertError($error->getMessage(), $this->modalID);
+            $this->alertError(__('messages.harvest_event_updation_failed'), $this->modalID);
         }
     }
 

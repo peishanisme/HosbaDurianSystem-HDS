@@ -6,11 +6,9 @@ use App\Models\Species;
 use Livewire\Component;
 use App\Traits\SweetAlert;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Title;
 use App\Traits\AuthorizesRoleOrPermission;
 use App\Actions\TreeManagement\DeleteSpeciesAction;
 
-#[Title('Tree Management')]
 class SpeciesIndexLivewire extends Component
 {
     use SweetAlert,AuthorizesRoleOrPermission;
@@ -38,6 +36,6 @@ class SpeciesIndexLivewire extends Component
     
     public function render()
     {
-        return view('livewire.module.tree-management.species-index-livewire');
+        return view('livewire.module.tree-management.species-index-livewire')->title(__('messages.species_listing'));
     }
 }

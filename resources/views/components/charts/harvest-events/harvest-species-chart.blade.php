@@ -1,6 +1,6 @@
 <div class="card pb-10">
     <div class="card-header">
-        <h3 class="card-title">Harvest Species Overview</h3>
+        <h3 class="card-title">{{ __('messages.harvest_species_overview') }}</h3>
     </div>
     <div wire:ignore class="card-body p-5" id="harvest-species-chart" style="width: 100%;"></div>
 </div>
@@ -30,7 +30,9 @@
             var chart = chartContainer.children.push(
                 am5percent.PieChart.new(root, {
                     endAngle: 270,
-                    innerRadius: am5.percent(60)
+                    radius: am5.percent(60),
+                    innerRadius: am5.percent(50)
+
                 })
             );
 
@@ -47,7 +49,7 @@
             series.children.push(am5.Label.new(root, {
                 centerX: am5.percent(50),
                 centerY: am5.percent(50),
-                text: "Pieces\n{valueSum} pc(s)",
+                text: "{{ __('messages.pieces') }}\n{valueSum} {{ __('messages.pieces') }}",
                 populateText: true,
                 fontSize: "1.2em"
             }));
@@ -68,7 +70,9 @@
             var chart2 = chartContainer.children.push(
                 am5percent.PieChart.new(root, {
                     endAngle: 270,
-                    innerRadius: am5.percent(60)
+                    radius: am5.percent(60),
+                    innerRadius: am5.percent(50)
+
                 })
             );
 
@@ -78,14 +82,14 @@
                     categoryField: "category",
                     endAngle: 270,
                     alignLabels: true,
-                    tooltip: am5.Tooltip.new(root, {}) 
+                    tooltip: am5.Tooltip.new(root, {})
                 })
             );
 
             series2.children.push(am5.Label.new(root, {
                 centerX: am5.percent(50),
                 centerY: am5.percent(50),
-                text: "Total Weight\n{valueSum} kg",
+                text: "{{ __('messages.total_weight') }}\n{valueSum} kg",
                 populateText: true,
                 fontSize: "1.2em"
             }));

@@ -1,14 +1,14 @@
 <x-modal-component :id="$modalID" :title="$modalTitle">
 
     <div class="mb-8 d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Affected Trees</h5>
+        <h5 class="mb-0">{{ __('messages.affected_trees') }}</h5>
 
         <!-- Filter Dropdown -->
         <select wire:model.defer="statusFilter" wire:change="loadTrees" class="form-select w-auto">
-            <option value="">All Status</option>
-            <option value="Severe">Severe</option>
-            <option value="Medium">Medium</option>
-            <option value="Recovered">Recovered</option>
+            <option value="">{{ __('messages.any') }}</option>
+            <option value="Severe">{{ __('messages.severe') }}</option>
+            <option value="Medium">{{ __('messages.medium') }}</option>
+            <option value="Recovered">{{ __('messages.recovered') }}</option>
         </select>
     </div>
 
@@ -19,15 +19,15 @@
             <table class="table table-striped align-middle">
                 <thead>
                     <tr>
-                        <th>Tree Tag</th>
-                        <th>Species</th>
+                        <th>{{ __('messages.tree_tag') }}</th>
+                        <th>{{ __('messages.species') }}</th>
                         <th wire:click="sortBy('status')" style="cursor:pointer;">
-                            Status
+                            {{ __('messages.status') }}
                             @if ($sortField === 'status')
                                 <i class="bi bi-caret-{{ $sortDirection === 'asc' ? 'up' : 'down' }}-fill"></i>
                             @endif
                         </th>
-                        <th>Last Checked</th>
+                        <th>{{ __('messages.last_checked') }}</th>
                     </tr>
                 </thead>
 
@@ -42,13 +42,20 @@
                             </td>
                             <td class="py-7">{{ $tree->species->name ?? '-' }}</td>
                             <td class="py-7">
-                                <span
-                                    class="badge
-                    @if ($tree->pivot->status === 'Severe') badge-light-danger
-                    @elseif($tree->pivot->status === 'Medium') badge-light-warning
-                    @elseif($tree->pivot->status === 'Recovered') badge-light-success @endif">
-                                    {{ ucfirst($tree->pivot->status ?? '-') }}
+                                @php
+                                    $status = $tree->pivot->status; 
+
+                                    $statusClassMap = [
+                                        'Severe' => 'badge-light-danger',
+                                        'Medium' => 'badge-light-warning',
+                                        'Recovered' => 'badge-light-success',
+                                    ];
+                                @endphp
+
+                                <span class="badge {{ $statusClassMap[$status] ?? 'badge-light-secondary' }}">
+                                    {{ $status ? __('messages.tree_status.' . $status) : '-' }}
                                 </span>
+
                             </td>
                             <td class="py-7">{{ $tree->updated_at->format('d M Y') }}</td>
                         </tr>
@@ -62,10 +69,10 @@
             <table class="table table-striped align-middle">
                 <thead>
                     <tr>
-                        <th>Tree Tag</th>
-                        <th>Species</th>
+                        <th>{{ __('messages.tree_tag') }}</th>
+                        <th>{{ __('messages.species') }}</th>
                         <th wire:click="sortBy('status')" style="cursor:pointer;">
-                            Status
+                            {{ __('messages.status') }}
                             @if ($sortField === 'status')
                                 <i class="bi bi-caret-{{ $sortDirection === 'asc' ? 'up' : 'down' }}-fill"></i>
                             @endif
@@ -76,7 +83,8 @@
 
                 <tbody>
                     <tr>
-                        <td colspan="4" class="text-center text-muted py-4">No trees affected by this disease.
+                        <td colspan="4" class="text-center text-muted py-4">
+                            {{ __('messages.no_trees_affected_by_this_disease') }}
                         </td>
                     </tr>
                 </tbody>
@@ -86,6 +94,6 @@
     </div>
 
     @slot('footer')
-        <x-button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</x-button>
+        <x-button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('messages.close') }}</x-button>
     @endslot
 </x-modal-component>

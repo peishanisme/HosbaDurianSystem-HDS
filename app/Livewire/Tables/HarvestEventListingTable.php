@@ -14,14 +14,14 @@ class HarvestEventListingTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setSearchPlaceholder('Search Harvest Event')
-            ->setEmptyMessage('No results found')
+            ->setSearchPlaceholder(__('messages.search_harvest_events'))
+            ->setEmptyMessage(__('messages.no_results_found'))
             ->setDefaultSort('start_date', 'desc')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'livewire.components.modal-button',
                     [
-                        'label' => 'Create Harvest Event',
+                        'label' =>  __('messages.add_harvest_event'),
                         'dispatch' => 'reset-harvest-event',
                         'target' => 'harvestEventModalLivewire',
                         'permission' => 'create-harvest-event',
@@ -39,26 +39,26 @@ class HarvestEventListingTable extends DataTableComponent
             Column::make("Uuid", "uuid")
                 ->sortable()
                 ->hideIf(true),
-            ViewComponentColumn::make('Event name', 'event_name')
+            ViewComponentColumn::make(__('messages.event_name'), 'event_name')
                 ->component('components.table-primary-column')
                 ->attributes(fn($value, $row, Column $column) => [
                     'title' => $value,
                     'route' => route('harvest.show', $row->id),
                 ])->searchable()
                 ->sortable(),
-            Column::make("Description", "description")
+            Column::make(__('messages.description'), "description")
                 ->sortable(),
-            Column::make("Start date", "start_date")
+            Column::make(__('messages.start_date'), "start_date")
                 ->sortable(),
-            Column::make("End date", "end_date")
+            Column::make(__('messages.end_date'), "end_date")
                 ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__('messages.created_at'), "created_at")
                 ->sortable(),
-            Column::make('Actions')
+            Column::make(__('messages.actions'))
                 ->label(fn($row, Column $column) => view('components.table-button', [
                     'modal'     => 'harvestEventModalLivewire',
                     'dispatch' => 'edit-harvest-event',
-                    'label'    => 'Edit',
+                    'label'    => __('messages.edit'),
                     'dataField' => 'harvestEvent',
                     'data'      =>  $row->id,
                     'permission' => 'edit-harvest-event',

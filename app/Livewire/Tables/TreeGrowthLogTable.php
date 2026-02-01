@@ -11,7 +11,6 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 class TreeGrowthLogTable extends DataTableComponent
 {
     public Tree $tree;
-    // protected $model = TreeGrowthLog::class;
 
     public function builder(): Builder
     {
@@ -22,7 +21,7 @@ class TreeGrowthLogTable extends DataTableComponent
     {
         $this->setPrimaryKey('id')
             // ->setSearchPlaceholder('Search Tree Growth Logs')
-            ->setEmptyMessage('No results found')
+            ->setEmptyMessage(__('messages.no_results_found'))
             ->setDefaultSort('created_at', 'desc')
             ->setSearchDisabled();
     }
@@ -38,13 +37,13 @@ class TreeGrowthLogTable extends DataTableComponent
             Column::make("Tree uuid", "tree_uuid")
                 ->sortable()
                 ->hideIf(true),
-            Column::make("Height", "height")
+            Column::make(__('messages.height'), "height")
                 ->sortable(),
-            Column::make("Diameter", "diameter")
+            Column::make(__('messages.diameter'), "diameter")
                 ->sortable(),
             // Column::make("Photo", "photo")
             //     ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__('messages.created_at'), "created_at")
                 ->sortable(),
         ];
     }

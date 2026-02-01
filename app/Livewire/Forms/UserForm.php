@@ -21,7 +21,7 @@ class UserForm extends Form
     protected function rules(): array
     {
         return [
-            'name'            => ['required', 'string', 'max:255'],
+            'name'            => ['nullable', 'string', 'max:255'],
             'email'           => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user->id ?? null)],
             'role'            => ['required', Rule::exists('roles', 'id')],
             'is_active'       => ['required', 'boolean'],

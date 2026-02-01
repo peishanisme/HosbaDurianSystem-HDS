@@ -15,7 +15,6 @@ use App\Http\Controllers\Api\SpeciesController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\Api\AgrochemicalController;
 use App\Http\Controllers\Api\TreeGrowthLogController;
-use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // General

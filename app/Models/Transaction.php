@@ -124,6 +124,10 @@ class Transaction extends Model implements Reportable
         //payment method
         return [
             'buyer' => $this->buyer ? $this->buyer->company_name : 'Walk-in Customer',
+            'buyer_address' => $this->buyer ? $this->buyer->address : '-',
+            'buyer_reference_id' => $this->buyer ? $this->buyer->reference_id : '-',
+            'buyer_phone' => $this->buyer ? $this->buyer->contact_number : '-',
+            'buyer_email' => $this->buyer ? $this->buyer->email : '-',
             'date' => $this->date,
             'reference_id' => $this->reference_id,
             'remark' => $this->remark ?? '',

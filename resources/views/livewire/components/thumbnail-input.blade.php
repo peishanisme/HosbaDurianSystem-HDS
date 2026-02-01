@@ -32,7 +32,7 @@
     <input type="file" accept="image/*" wire:model="thumbnail" class="d-none" id="thumbnailInput">
 
     {{-- Allowed file types --}}
-    <small class="text-muted d-block mt-2">Allowed file types: png, jpg, jpeg.</small>
+    <small class="text-muted d-block mt-2">{{ __('messages.allowed_file_types') }}: png, jpg, jpeg.</small>
 
     {{-- Validation Error --}}
     @if ($thumbnailError)

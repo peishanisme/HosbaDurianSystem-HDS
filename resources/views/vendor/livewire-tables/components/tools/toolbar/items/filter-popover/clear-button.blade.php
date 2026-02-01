@@ -4,5 +4,5 @@
         'dropdown-item btn text-center' => $isBootstrap4,
         'dropdown-item text-center' => $isBootstrap5,
     ])>
-    {{ __($localisationPath.'Clear') }}
+    {{ __('messages.clear') }}
 </button>

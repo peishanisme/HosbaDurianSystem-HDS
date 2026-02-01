@@ -24,13 +24,13 @@ class AgrochemicalPurchaseHistoryTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setSearchPlaceholder('Search Stock')
-            ->setEmptyMessage('No results found')
+            ->setSearchPlaceholder(__('messages.search_purchase_history'))
+            ->setEmptyMessage(__('messages.no_results_found'))
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'livewire.components.modal-button',
                     [
-                        'label' => 'Update Stock',
+                        'label' => __('messages.update_stock'),
                         'dispatch' => 'reset-stock',
                         'target' => 'agrochemicalStockMovementModalLivewire',
                         // 'permission' => 'create-user',
@@ -51,26 +51,26 @@ class AgrochemicalPurchaseHistoryTable extends DataTableComponent
             Column::make("Movement type", "movement_type")
                 ->sortable()
                 ->hideIf(true),
-            Column::make("Date", "date")
+            Column::make(__('messages.date'), "date")
                 ->format(fn($value, $row, Column $column) => Carbon::parse($value)->format('Y-m-d'))
                 ->sortable(),
-            Column::make("Description", "description")
+            Column::make(__('messages.description'), "description")
                 ->sortable()
                 ->searchable(),
-            Column::make("Quantity", "quantity")
+            Column::make(__('messages.quantity'), "quantity")
                 ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__('messages.created_at'), "created_at")
                 ->sortable(),
-            Column::make('Actions')
+            Column::make(__('messages.actions'))
                 ->label(fn($row, Column $column) => view('components.table-com-button', [
                     'modal'     => 'agrochemicalStockMovementModalLivewire',
                     'dispatch1' => 'edit-stock',
-                    'label1'    => 'Edit',
+                    'label1'    => __('messages.edit'),
                     'dataField' => 'stock',
                     'data'      =>  $row->id,
                     'icon2'     => 'bi bi-trash3',
                     'dispatch2' => 'delete-stock',
-                    'label2'    => 'Delete',
+                    'label2'    => __('messages.delete'),
                     'permission1' => 'update-stock-levels',
                     'permission2' => 'update-stock-levels',
                 ]))->html()

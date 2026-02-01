@@ -3,16 +3,16 @@
 
     <div class="card shadow-sm rounded">
         <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center">
-            <h5 class="mb-0">Harvest Records for {{ $tree->tree_tag }}</h5>
+            <h5 class="mb-0">{{ __('messages.tree_harvest_records') }} - {{ $tree->tree_tag }}</h5>
 
             <div class="d-flex flex-wrap gap-2">
                 <!-- Search -->
                 <input wire:model.live="search" type="text" class="form-control form-control-sm"
-                    placeholder="Search harvest name..." style="width: 220px;">
+                    placeholder="{{ __('messages.search_harvest_events') }}" style="width: 220px;">
 
                 <!-- Year Filter -->
                 <select wire:model.live="filterYear" class="form-select form-select-sm" style="width: 150px;">
-                    <option value="">All Years</option>
+                    <option value="">{{ __('messages.any') }}</option>
                     @foreach ($years as $year)
                         <option>{{ $year->year }}</option>
                     @endforeach
@@ -26,10 +26,10 @@
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr class="text-muted small text-uppercase">
-                            <th>Harvest Event</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Total Fruits</th>
+                            <th>{{ __('messages.harvest_event') }}</th>
+                            <th>{{ __('messages.start_date') }}</th>
+                            <th>{{ __('messages.end_date') }}</th>
+                            <th>{{ __('messages.total_fruits') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,13 +64,13 @@
                                             <table class="table table-sm mb-0">
                                                 <thead class="table-light">
                                                     <tr class="small text-uppercase text-muted">
-                                                        <th class="ps-4">Fruit Tag</th>
-                                                        <th>Weight (kg)</th>
-                                                        <th>Grade</th>
-                                                        <th>Harvested Date</th>
-                                                        <th>Sell Status</th>
-                                                        <th>QR Code</th>
-                                                        <th>View Feedback</th>
+                                                        <th class="ps-4">{{ __('messages.fruit_tag') }}</th>
+                                                        <th>{{ __('messages.weight') }}kg</th>
+                                                        <th>{{ __('messages.grade') }}</th>
+                                                        <th>{{ __('messages.harvested_date') }}</th>
+                                                        <th>{{ __('messages.sell_status') }}</th>
+                                                        <th>{{ __('messages.qr_code') }}</th>
+                                                        <th>{{ __('messages.view_feedback') }}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -113,20 +113,23 @@
                                                                         $gradeClassMap[$status] ??
                                                                         'badge bg-secondary-subtle text-secondary';
                                                                 @endphp
-                                                                <span
-                                                                    class="{{ $badgeClass }}">{{ $status ?: '-' }}</span>
+                                                                <span class="{{ $badgeClass }}">
+                                                                    {{ __('messages.selling_status.' . $status) }}
+                                                                </span>
                                                             </td>
                                                             <td class="small">
                                                                 <button wire:click="showQrCode('{{ $fruit->uuid }}')"
                                                                     class="btn btn-sm btn-light-primary">
-                                                                    <i class="bi bi-qr-code"></i> View QR
+                                                                    <i class="bi bi-qr-code"></i>
+                                                                    {{ __('messages.view_qr_code') }}
                                                                 </button>
                                                             </td>
                                                             <td class="small">
                                                                 <button
                                                                     wire:click="showFeedback('{{ $fruit->uuid }}')"
                                                                     class="btn btn-sm btn-light-primary">
-                                                                    <i class="bi bi-eye"></i> View
+                                                                    <i class="bi bi-eye"></i>
+                                                                    {{ __('messages.view_feedback') }}
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -134,7 +137,7 @@
                                                     @empty
                                                         <tr>
                                                             <td colspan="4" class="ps-4 small text-muted">
-                                                                No fruits for this harvest.
+                                                                {{ __('messages.no_fruits_for_this_harvest') }}
                                                             </td>
                                                         </tr>
                                                     @endforelse
@@ -146,8 +149,8 @@
                             @endif
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center text-muted">No harvest records found for this
-                                    tree.</td>
+                                <td colspan="4" class="text-center text-muted">
+                                    {{ __('messages.no_harvest_records_found_for_this_tree') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -157,7 +160,7 @@
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content rounded-3">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="qrCodeModalLabel">Fruit QR Code</h5>
+                                <h5 class="modal-title" id="qrCodeModalLabel">{{ __('messages.fruit_qr_code') }}</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -171,12 +174,12 @@
                                     <div class="modal-footer">
                                         <button class="btn btn-primary"
                                             onclick="downloadQR( 'qrCodeWrapper'
-                                            , 'fruit-{{ $fruitTag }}.png' )">Download</button>
+                                            , 'fruit-{{ $fruitTag }}.png' )">{{ __('messages.download') }}</button>
                                         <button class="btn btn-secondary"
-                                            onclick="printQR('Fruit- {{ $fruitTag }}')">Print</button>
+                                            onclick="printQR('Fruit- {{ $fruitTag }}')">{{ __('messages.print') }}</button>
                                     </div>
                                 @else
-                                    <div class="text-muted small">No QR Code generated yet.</div>
+                                    <div class="text-muted small">{{ __('messages.no_qr_code_generated_yet') }}</div>
                                 @endif
                             </div>
                         </div>
@@ -189,7 +192,8 @@
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content rounded-3">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="feedbackModalLabel">Fruit Feedback</h5>
+                                <h5 class="modal-title" id="feedbackModalLabel">{{ __('messages.fruit_feedback') }}
+                                </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -209,7 +213,8 @@
                                         @endforeach
                                     </div>
                                 @else
-                                    <div class="text-muted my-4">No feedback available for this fruit.</div>
+                                    <div class="text-muted my-4">
+                                        {{ __('messages.no_feedback_available_for_this_fruit') }}</div>
                                 @endif
                             </div>
                         </div>

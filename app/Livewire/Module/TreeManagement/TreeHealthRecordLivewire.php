@@ -7,7 +7,6 @@ use App\Traits\AuthorizesRoleOrPermission;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 
-#[Title('Tree Health Record')]
 class TreeHealthRecordLivewire extends Component
 {
     use AuthorizesRoleOrPermission;
@@ -18,6 +17,6 @@ class TreeHealthRecordLivewire extends Component
     }
     public function render()
     {
-        return view('livewire.module.tree-management.tree-health-record-livewire');
+        return view('livewire.module.tree-management.tree-health-record-livewire')->title(__('messages.tree_health_records'));
     }
 }

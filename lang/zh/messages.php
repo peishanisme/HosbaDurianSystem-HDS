@@ -1,6 +1,23 @@
 <?php
 
 return [
+    //general 
+    'species' => '品种',
+    'tree' => '树木',
+    'agrochemical' => '农用化学品',
+    'harvest_event' => '采收季节',
+
+    'cancel' => '取消',
+    'loding' => '加载中...',
+    'add' => '添加',
+    'update' => '更新',
+    'allowed_file_types' => '允许的文件类型',
+    'no_data_available' => '暂无数据',
+    //sweetalert
+    'okay' => '好的',
+    'retry' => '重试',
+    'proceed' => '继续',
+    'you_cannot_revert_this_decision' => '您无法撤销此操作',
     // Sidebar Menu
     'dashboard' => '首页',
     'tree_management' => '树木管理',
@@ -11,6 +28,7 @@ return [
     'agrochemical_listing' => '农用化学品列表',
     'agrochemical_usage' => '农用化学品使用',
     'post_harvest' => '采后管理',
+    'harvest_events_listing' => '采收季节列表',
     'sales_and_transactions' => '销售与交易',
     'buyer_listing' => '买家列表',
     'transaction_listing' => '交易列表',
@@ -32,6 +50,7 @@ return [
     'wind_speed' => '风速',
     'rain' => '降雨',
 
+    'view_trees' => '查看树木',
     'total_trees_by_species' => '按品种统计的树木总数',
 
     'health_status_of_trees' => '树木健康状况',
@@ -49,4 +68,351 @@ return [
     'top_selling_species' => '最畅销的品种',
 
     'total_transactions' => '交易总数',
+
+    //data table
+    'showing' => '显示',
+    'results' => '结果',
+    'columns' => '列',
+    'no_results_found' => '未找到结果',
+    'actions' => '操作',
+    'any' => '任意',
+    'to' => '到',
+    'of' => '的',
+    'filter' => '筛选',
+    'edit' => '编辑',
+    'delete' => '删除',
+    'are_you_sure_delete' => '您确定要删除此项吗？此操作无法撤销。',
+    'confirm' => '确认',
+    'close' => '关闭',
+    'created_at' => '创建时间',
+    'updated_at' => '更新时间',
+    'applied_sorting' => '已应用排序',
+    'clear' => '清除',
+
+    //species listing
+    'search_species' => '搜索品种',
+    'name' => '名称',
+    'code' => '代码',
+    'description' => '描述',
+    'tree_count' => '树木数量',
+
+    //tree listing
+    'search_trees' => '搜索树木',
+    'tree_tag' => '树标签',
+    'planted_at' => '种植日期',
+
+    //tree modal
+    'thumbnail' => '图片',
+    'initial_height' => '初始高度',
+    'initial_diameter' => '初始直径',
+    'initial_flowering_period' => '初始开花期',
+    'tree_created_successfully' => '树木创建成功',
+    'tree_updated_successfully' => '树木更新成功',
+    'tree_creation_failed' => '树木创建失败',
+    'tree_updation_failed' => '树木更新失败',
+    'tree_details' => '树木详情',
+
+    //tree details header
+    'show_qr_code' => '显示二维码',
+    'tree_qr_code' => '树木二维码',
+    'download' => '下载',
+    'print' => '打印',
+    'height' => '高度',
+    'diameter' => '直径',
+    'flowering_period' => '开花期',
+    'overview' => '概览',
+    'growth_logs' => '生长记录',
+    'health_records' => '健康记录',
+    'agrochemical_usages' => '农用化学品使用',
+    'harvests' => '采收',
+
+    //tree overview
+    'tree_overview' => '树木概览',
+    'measurement' => '测量',
+    'date' => '日期',
+    'harvest_grade' => '采收果实等级',
+    'tree_diseases' => '树木疾病',
+    'total_harvest_in_each_event' => '每个采收季节的总采收量',
+
+    //tree growth log 
+    'tree_growth_logs' => '树木生长记录',
+
+    //tree health record
+    'tree_health_records' => '树木健康记录',
+    'search_health_records' => '搜索健康记录',
+    'disease_name' => '疾病名称',
+    'treatment' => '治疗方法',
+    'recorded_at' => '记录时间',
+    'recovered' => '已恢复',
+
+    //tree agrochemical usage
+    'tree_agrochemical_usages' => '树木农用化学品使用',
+    'search_agrochemical_usages' => '搜索农用化学品使用',
+    'agrochemical_name' => '农用化学品名称',
+    'dosage' => '剂量',
+    'applied_at' => '使用时间',
+
+    //tree harvest records
+    'tree_harvest_records' => '树木采收记录',
+    'search_harvest_records' => '搜索采收记录',
+    'harvest_event_name' => '采收季节名称',
+    'total_fruits_harvested' => '采收水果总数',
+    'fruit_tag' => '水果标签',
+    'fruit_qr_code' => '水果二维码',
+    'download_qr_code' => '下载二维码',
+    'print_qr_code' => '打印二维码',
+    'view_feedback' => '查看反馈',
+    'no_fruits_for_this_harvest' => '该采收季节暂无水果',
+    'no_harvest_records_found_for_this_tree' => '未找到该树的采收记录。',
+    'no_qr_code_generated_yet' => '尚未生成二维码',
+    'fruit_feedback' => '水果反馈',
+    'no_feedback_available_for_this_fruit' => '该水果暂无反馈',
+    'search_harvest_events' => '搜索采收季节',
+    'start_date' => '开始日期',
+    'end_date' => '结束日期',
+    'total_fruits' => '水果总数',
+    'weight' => '重量',
+    'feedback' => '反馈',
+    'grade' => '等级',
+    'sell_status' => '销售状态',
+    'qr_code' => '二维码',
+    'view_qr_code' => '查看二维码',
+    'harvested_date' => '采收日期',
+    'sold' => '已售出',
+    'available' => '未售出',
+    'selling_status' => [
+        'Available' => '可售',
+        'Sold' => '已售出',
+    ],
+
+    //disease listing
+    'search_diseases' => '搜索病害',
+    'symptoms' => '症状',
+    'affected_trees' => '受影响的树木',
+    'remarks' => '备注',
+    'no_trees_affected_by_this_disease' => '暂无树木受此病害影响。',
+    'tree_status' => [
+        'Severe' => '严重',
+        'Medium' => '中等',
+        'Recovered' => '已恢复',
+    ],
+
+    //agrochemical listing
+    'search_agrochemicals' => '搜索农用化学品',
+    'create_inventory' => '创建库存',
+    'type' => '类型',
+    'quantity_per_unit' => '每单位数量',
+    'agrochemical_type' => [
+        'fertilizer' => '肥料',
+        'pesticide'  => '农药',
+        'other'      => '其他',
+    ],
+
+    //agrochemcial modal
+    'agrochemical_details' => '农用化学品详情',
+    'inventory_created_successfully' => '库存创建成功',
+    'inventory_updated_successfully' => '库存更新成功',
+    'inventoory_creation_failed' => '库存创建失败',
+    'inventoory_updation_failed' => '库存更新失败',
+    'price' => '价格',
+    'select_type' => '选择类型',
+    'are_you_sure_delete_agrochemical' => '您确定要删除此农用化学品吗？',
+    'agrochemical_deleted_successfully' => '农用化学品删除成功',
+
+    //agrochemical usage
+    'agrochemical_usages_listing' => '农用化学品使用列表',
+
+    //agrochemical details
+    'price_per_unit' => '每单位价格',
+    'remaining_quantity' => '剩余数量',
+    'latest_purchase_date' => '最新采购日期',
+    'update_stock' => '更新库存',
+    'purchase_history' => '采购历史',
+    'application_records' => '使用记录',
+    'generate_report' => '生成报告',
+
+    //agrochemical purchase history
+    'purchase_history_deleted_successfully' => '采购历史删除成功',
+    'agrochemical_purchase_history' => '农用化学品采购历史',
+    'search_purchase_history' => '搜索采购历史',
+    'quantity' => '数量',
+    'update_agrochemical_stock' => '更新农用化学品库存',
+    'search_agrochemical_applications' => '搜索农用化学品使用',
+    'agrochemical_application_records' => '农用化学品使用记录',
+
+    //harvest event listing
+    'add_harvest_event' => '添加采收季节',
+    'event_name' => '季节名称',
+    'harvest_event_details' => '采收季节详情',
+    'harvest_event_created_successfully' => '采收季节创建成功',
+    'harvest_event_updated_successfully' => '采收季节更新成功',
+    'harvest_event_creation_failed' => '采收季节创建失败',
+    'harvest_event_updation_failed' => '采收季节更新失败',
+    'cannot_create_new_harvest_event' => '无法创建新的采收季节',
+    'unclosed_harvest_event_warning' => '存在未关闭的采收季节。请在创建新季节前关闭它。',
+
+    //harvest event overview
+    'harvest_event_overview' => '采收季节概览',
+    'duration' => '持续时间',
+    'reopen_event' => '重新开启季节',
+    'close_event' => '关闭季节',
+    'are_you_sure_close' => '您确定要关闭此采收季节吗？',
+    'harvest_event_closed_successfully' => '采收季节关闭成功',
+    'are_you_sure_reopen' => '您确定要重新开启此采收季节吗？',
+    'error_occurred' => '发生错误：',
+    'harvest_event_reopened_successfully' => '采收季节重新开启成功',
+    'harvest_summary' => '采收总结',
+    'harvest_species_overview' => '采收品种概览',
+    'pieces' => '颗',
+    'total_weight' => '总重量',
+    'fruit_quality' => '水果质量',
+    'top_10_harvest_trees' => '采收量前10的树木',
+    'fruit_selling_status' => '水果销售状态',
+    'unsold' => '未售出',
+    'harvest_event_harvest_summary' => '采收季节采收总结',
+    'tree_harvest_summary' => '树木采收总结',
+    'search_by_tree_tag_or_species' => '按树标签或品种搜索',
+    'all_species' => '所有品种',
+    'planted_date' => '种植日期',
+    'total_fruit' => '水果总数',
+    'no_fruits_for_this_tree' => '该树暂无水果。',
+    'no_trees_found' => '未找到树木。',
+    
+    //buyer index
+    'search_buyers' => '搜索买家',
+    'are_you_sure_you_want_to_delete_this_buyer' => '您确定要删除此买家吗？',
+    'buyer_deleted_successfully' => '买家删除成功',
+    'create_buyer' => '创建买家',
+    'company_name' => '公司名称',
+    'reference_id' => '编号',
+    'contact_name' => '联系人姓名',
+    'contact_number' => '联系电话',
+    'email' => '电子邮箱',
+    'address' => '地址',
+    'buyer_created_successfully' => '买家创建成功',
+    'buyer_updated_successfully' => '买家更新成功',
+    'buyer_creation_failed' => '买家创建失败',
+    'buyer_updation_failed' => '买家更新失败',
+    'buyer_details' => '买家详情',
+    'buyer_overview' => '买家概览',
+    'total_quantity_purchased' => '购买总数量',
+    'total_weight_purchased' => '购买总重量',
+    'total_revenue_from_buyer' => '来自买家的总收入',
+    'transactions' => '交易',
+    'total_amount' => '总金额',
+    'buyer_transactions' => '买家交易',
+    'search_transactions' => '搜索交易',
+    'create_transaction' => '创建交易',
+    'total_price' => '总价',
+    'cancelled' => '已取消',
+    'active' => '有效',
+    'this_transaction_is_cancelled' => '此交易已取消',
+    'transaction_ref_id' => '交易编号',
+    'buyer_ref_id' => '买家编号',
+    'payment_method' => '支付方式',
+    'remark' => '备注',
+    'count' => '数量',
+    'price_per_kg' => '每公斤价格',
+    'subtotal' => '小计',
+    'no_fruits_found_for_this_transaction' => '未找到此交易的水果。',
+    'subtotal_before_discount' => '折扣前小计',
+    'discount_rm' => '折扣（RM）',
+    'final_amount' => '最终金额',
+    'verified_on_blockchain' => '区块链验证通过',
+    'data_tampered' => '数据被篡改',
+    'canceled_on_blockchain' => '区块链上已取消',
+    'not_yet_verified' => '尚未验证',
+    'cancel_transaction' => '取消交易',
+    'print_receipt' => '打印收据',
+    'transaction_details' => '交易详情',
+    'buyer' => '买家',
+
+    //user listing
+    'search_users' => '搜索用户',
+    'create_user' => '创建用户',
+    'phone' => '电话',
+    'roles' => '角色',
+    'inactive' => '不活跃',
+    'user_created_successfully' => '用户创建成功',
+    'user_updated_successfully' => '用户更新成功',
+    'user_creation_failed' => '用户创建失败',
+    'user_updation_failed' => '用户更新失败',
+    'user_details' => '用户详情',
+    'role' => '角色',
+    'is_active' => '是否活跃',
+    'yes' => '是',
+    'no' => '否',
+    'select_role' => '选择角色',
+
+    //activity log
+    'activity_log_listing' => '活动日志列表',
+    'search_activity_logs' => '搜索活动日志',
+    'activity_type' => '活动类型',
+    'ip_address' => 'IP地址',
+    'user_agent' => '用户代理',
+    'activity_log_details' => '活动日志详情',
+    'activity_log' => '活动日志',
+    'subject' => '主题',
+    'action_by' => '操作人',
+    'properties' => '属性',
+
+    //user profile
+    'user_profile' => '用户资料',
+    'profile_updated_successfully' => '资料更新成功',
+    'profile_update_failed' => '资料更新失败',
+    'password_changed_successfully' => '密码更改成功',
+    'password_change_failed' => '密码更改失败',
+    'old_password' => '旧密码',
+    'new_password' => '新密码',
+    'confirm_password' => '确认密码',
+    'change_password' => '更改密码',
+    'update_profile' => '更新资料',
+    'phone_number' => '电话号码',
+
+    //role listing
+    'search_roles' => '搜索角色',
+    'permissions' => '权限',
+    'role_name' => '角色名称',
+    'users_count' => '用户数量',
+    'edit_permissions' => '编辑权限',
+    'permission_updated_successfully' => '权限更新成功',
+    'failed_to_update_permissions' => '权限更新失败',
+    'no_permissions_found' => '未找到权限',
+    'update_permission' => '更新权限',
+    'search_permission' => '搜索权限',
+
+    //create transaction
+    'please_scan_at_least_one_fruit_before_proceeding' => '请在继续之前扫描至少一个水果',
+    'please_fill_in_all_prices_before_proceeding' => '请在继续之前填写所有价格',
+    'fruit_not_found' => '未找到水果',
+    'fruit_already_scanned' => '水果已被扫描',
+    'fruit_already_sold' => '水果已被售出',
+    'select_buyer' => '选择买家',
+    'scan_fruit_qr_code' => '扫描水果二维码',
+    'scan'=>'扫描',
+    'here' => '这里',
+    'transaction_summary' => '交易总结',
+    'discount' => '折扣',
+    'select_payment_method' => '选择支付方式',
+    'cash' => '现金',
+    'credit_card' => '信用卡',
+    'bank_transfer' => '银行转账',
+    'e_wallet' => '电子钱包',   
+    'back' => '返回',
+    'continue' => '继续',
+    'submit' => '提交',
+    'please_wait' => '请稍候',
+    'create_new_transaction' => '创建新交易',
+
+
+   
+
+    
+
+
+
+
+
+
+
 ];

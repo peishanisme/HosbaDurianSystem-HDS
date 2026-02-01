@@ -4,20 +4,20 @@
     <div class="card mb-5 mb-xl-10" id="kt_profile_details_view">
         <div class="card-header cursor-pointer">
             <div class="card-title m-0">
-                <h3 class="fw-bold m-0">Buyer Details</h3>
+                <h3 class="fw-bold m-0">{{ __('messages.buyer_details') }}</h3>
             </div>
         </div>
 
         <div class="card-body p-9">
             <div class="row mb-7">
-                <label class="col-lg-4 fw-semibold text-muted">Company Name</label>
+                <label class="col-lg-4 fw-semibold text-muted">{{ __('messages.company_name') }}</label>
                 <div class="col-lg-8">
                     <span class="fw-bold fs-6 text-gray-800">{{ $buyer->company_name }}</span>
                 </div>
             </div>
 
             <div class="row mb-7">
-                <label class="col-lg-4 fw-semibold text-muted">Contact Name</label>
+                <label class="col-lg-4 fw-semibold text-muted">{{ __('messages.contact_name') }}</label>
 
                 <div class="col-lg-8 fv-row">
                     <span class="fw-semibold text-gray-800 fs-6">{{ $buyer->contact_name ?? '-' }}</span>
@@ -25,7 +25,7 @@
             </div>
 
             <div class="row mb-7">
-                <label class="col-lg-4 fw-semibold text-muted">Contact Number</label>
+                <label class="col-lg-4 fw-semibold text-muted">{{ __('messages.contact_number') }}</label>
 
                 <div class="col-lg-8 fv-row">
                     <span class="fw-semibold text-gray-800 fs-6">{{ $buyer->contact_number }}</span>
@@ -33,7 +33,7 @@
             </div>
 
             <div class="row mb-7">
-                <label class="col-lg-4 fw-semibold text-muted">Email</label>
+                <label class="col-lg-4 fw-semibold text-muted">{{ __('messages.email') }}</label>
 
                 <div class="col-lg-8 fv-row">
                     <span class="fw-semibold text-gray-800 fs-6">{{ $buyer->email ?? '-' }}</span>
@@ -41,7 +41,7 @@
             </div>
 
             <div class="row mb-7">
-                <label class="col-lg-4 fw-semibold text-muted">Address</label>
+                <label class="col-lg-4 fw-semibold text-muted">{{ __('messages.address') }}</label>
 
                 <div class="col-lg-8 fv-row">
                     <span class="fw-semibold text-gray-800 fs-6">{{ $buyer->address ?? '-' }}</span>
@@ -51,7 +51,7 @@
             {{-- seperator line --}}
             <div class="separator mb-7"></div>
             <div class="row mb-7">
-                <label class="col-lg-4 fw-semibold text-muted">Total Transactions</label>
+                <label class="col-lg-4 fw-semibold text-muted">{{ __('messages.total_transactions') }}</label>
 
                 <div class="col-lg-8 fv-row">
                     <span class="fw-semibold text-gray-800 fs-6">{{ $buyer->getTotalTransactionsAttribute() ?? '-'}}</span>
@@ -59,7 +59,7 @@
             </div>
 
             <div class="row mb-7">
-                <label class="col-lg-4 fw-semibold text-muted">Total Quantity Purchased</label>
+                <label class="col-lg-4 fw-semibold text-muted">{{ __('messages.total_quantity_purchased') }}</label>
 
                 <div class="col-lg-8 fv-row">
                     <span class="fw-semibold text-gray-800 fs-6">{{ $buyer->getQuantityPurchasedAttribute() ?? '-' }} piece(s)</span>
@@ -67,7 +67,7 @@
             </div>
 
             <div class="row mb-7">
-                <label class="col-lg-4 fw-semibold text-muted">Total Weight Purchased</label>
+                <label class="col-lg-4 fw-semibold text-muted">{{ __('messages.total_weight_purchased') }}</label>
 
                 <div class="col-lg-8 fv-row">
                     <span class="fw-semibold text-gray-800 fs-6">{{ $buyer->getTotalWeightPurchasedAttribute() ?? '-' }}kg</span>
@@ -75,7 +75,7 @@
             </div>
 
             <div class="row mb-7">
-                <label class="col-lg-4 fw-semibold text-muted">Total Revenue from Buyer</label>
+                <label class="col-lg-4 fw-semibold text-muted">{{ __('messages.total_revenue_from_buyer') }}</label>
 
                 <div class="col-lg-8 fv-row">
                     <span class="fw-semibold text-gray-800 fs-6">RM{{ number_format($buyer->getTotalSpentAttribute(), 2) ?? '-' }}</span>

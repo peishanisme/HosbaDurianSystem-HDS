@@ -1,7 +1,7 @@
 {{-- total harvest in each event chart --}}
 <div class="card pb-10" style="min-height: 605px;">
     <div class="card-header">
-        <h3 class="card-title">Total Harvest in Each Event</h3>
+        <h3 class="card-title">{{ __('messages.total_harvest_in_each_event') }}</h3>
     </div>
 
     @if (!empty($totalHarvestData))

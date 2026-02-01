@@ -17,7 +17,8 @@ class RoleListingTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-        ->setEmptyMessage('No results found');
+            ->setSearchPlaceholder(__('messages.search_roles'))
+        ->setEmptyMessage(__('messages.no_results_found'));
     }
 
     public function columns(): array
@@ -26,18 +27,18 @@ class RoleListingTable extends DataTableComponent
             Column::make("Id", "id")
                 ->hideIf(true),
 
-            Column::make("Name", "name")
+            Column::make(__('messages.role_name'), "name")
                 ->searchable()
                 ->sortable(),
 
-            CountColumn::make('Users Count')
+            CountColumn::make(__('messages.users_count'))
                 ->setDataSource('users')
                 ->sortable(),
 
-            Column::make('Actions')
+            Column::make(__('messages.actions'))
                 ->label(fn($row, Column $column) => view('components.table-button', [
                     'modal' => 'permissionModalLivewire',
-                    'label' => 'Edit Permissions',
+                    'label' => __('messages.edit_permissions'),
                     'dispatch' => 'edit-permission',
                     'dataField' => 'role',
                     'data' => $row->id,

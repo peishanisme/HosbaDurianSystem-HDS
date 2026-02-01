@@ -31,17 +31,17 @@ class TransactionListingTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setSearchPlaceholder('Search Transaction')
-            ->setEmptyMessage('No results found')
+            ->setSearchPlaceholder(__('messages.search_transactions'))
+            ->setEmptyMessage(__('messages.no_results_found'))
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'components.table-com-button2',
                     [
-                        'label1' => 'Create Transaction',
+                        'label1' => __('messages.create_transaction'),
                         'dispatch1' => 'reset-transaction',
                         'permission1' => 'create-sale',
                         'redirectUrl' => 'sales.transaction.create',
-                        'label2' => 'Generate Report',
+                        'label2' => __('messages.generate_report'),
                         'dispatch2' => 'reset-generator',
                         'target2' => 'generateReportModalLivewire',
                         'permission2' => 'export-reports',
@@ -59,38 +59,38 @@ class TransactionListingTable extends DataTableComponent
             Column::make("Uuid", "uuid")
                 ->sortable()
                 ->hideIf(true),
-            Column::make("Reference ID", "reference_id")
+            Column::make(__('messages.reference_id'), "reference_id")
                 ->sortable()
                 ->searchable(),
             Column::make("Buyer uuid", "buyer_uuid")
                 ->sortable()
                 ->hideIf(true),
-            Column::make("Buyer", "buyer.company_name")
+            Column::make(__('messages.company_name'), "buyer.company_name")
                 ->sortable()
                 ->searchable()
                 ->hideIf($this->buyer !== null),
-            Column::make("Buyer Ref ID", "buyer.reference_id")
+            Column::make(__('messages.reference_id'), "buyer.reference_id")
                 ->sortable()
                 ->searchable()
                 ->hideIf($this->buyer !== null),
-            Column::make("Date", "date")
+            Column::make(__('messages.date'), "date")
                 ->sortable(),
-            Column::make("Total price", "total_price")
+            Column::make(__('messages.total_price'), "total_price")
                 ->sortable(),
-            ViewComponentColumn::make('Status', 'is_cancelled')
+            ViewComponentColumn::make(__('messages.status'), 'is_cancelled')
                 ->component('table-badge')
                 ->attributes(fn($value, $row, Column $column) => [
                     'badge' => $row->is_cancelled ?  'badge-light-danger' : 'badge-light-success',
-                    'label' => $row->is_cancelled ? 'Cancelled' : 'Active',
+                    'label' => $row->is_cancelled ? __('messages.cancelled') : __('messages.active'),
                 ]),
-            Column::make("Created at", "created_at")
+            Column::make(__('messages.created_at'), "created_at")
                 ->sortable(),
-            Column::make('Actions')
+            Column::make(__('messages.actions'))
                 ->label(fn($row, Column $column) => view('components.table-button', [
                     'modal'     => 'transactionDetailsModalLivewire',
                     'icon'      => 'bi-eye',
                     'dispatch'  => 'view-transaction',
-                    'label'     => 'View',
+                    'label'     => __('messages.view'),
                     'dataField' => 'transaction',
                     'data'      =>  $row->id,
                     // 'permission' => 'view-disease',

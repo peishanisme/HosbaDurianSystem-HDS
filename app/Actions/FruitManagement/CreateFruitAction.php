@@ -20,8 +20,6 @@ class CreateFruitAction
     {
         $fruit = DB::transaction(fn() => Fruit::create($dto->toArray()));
 
-        SyncFruitToPinataJob::dispatch($fruit->id);
-
         return $fruit->fresh();
     }
 }

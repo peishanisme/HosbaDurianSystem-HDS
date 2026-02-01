@@ -3,12 +3,9 @@
 namespace App\Actions\SalesAndTransactions;
 
 use App\Jobs\SyncTransactionToBlockchainJob;
-use Carbon\Carbon;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use App\Services\BlockchainService;
-use Illuminate\Support\Facades\Log;
-
 class CreateTransactionAction
 {
     protected BlockchainService $blockchain;
@@ -48,8 +45,6 @@ class CreateTransactionAction
                     }
                 }
             }
-
-            SyncTransactionToBlockchainJob::dispatch($transaction->uuid);
 
             return $transaction;
         });

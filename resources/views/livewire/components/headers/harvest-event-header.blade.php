@@ -31,13 +31,13 @@
                             data-bs-target="#agrochemicalStockMovementModalLivewire" --}}
                                 wire:click="$dispatch({{ json_encode($harvestEvent->end_date ? 'reopen-event' : 'close-event') }}, { harvestEvent: {{ $harvestEvent->id }} })">
                                 <span
-                                    class="indicator-label">{{ $harvestEvent->end_date ? 'Reopen Event' : 'Close Event' }}</span>
+                                    class="indicator-label">{{ $harvestEvent->end_date ? __('messages.reopen_event') : __('messages.close_event') }}</span>
                             </button>
                         @endcan
 
                         @can('export-reports')
                             <div class="me-3">
-                                <livewire:components.modal-button :dispatch="'reset-generator'" :target="'generateReportModalLivewire'" :label="'Generate Report'" />
+                                <livewire:components.modal-button :dispatch="'reset-generator'" :target="'generateReportModalLivewire'" :label="__('messages.generate_report')" />
                             </div>
                         @endcan
                     </div>
@@ -51,14 +51,14 @@
                                 <div class="d-flex align-items-center">
                                     <div class="fs-2 fw-bold">{{ $harvestEvent->start_date }}</div>
                                 </div>
-                                <div class="fw-semibold fs-6 text-gray-500">Start Date</div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.start_date') }}</div>
                             </div>
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
                                     <div class="fs-2 fw-bold">{{ $harvestEvent->end_date ?? '-' }}</div>
                                 </div>
-                                <div class="fw-semibold fs-6 text-gray-500">End Date</div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.end_date') }}</div>
                             </div>
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
@@ -72,7 +72,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="fw-semibold fs-6 text-gray-500">Duration</div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.duration') }}</div>
                             </div>
                         </div>
 
@@ -81,9 +81,9 @@
             </div>
         </div>
         <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold" wire:ignore>
-            <x-show-navbar-navitem title="Overview" route="{{ route('harvest.show', $harvestEvent->id) }}"
+            <x-show-navbar-navitem title="{{ __('messages.harvest_event_overview') }}" route="{{ route('harvest.show', $harvestEvent->id) }}"
                 :active="request()->routeIs('harvest.show')" />
-            <x-show-navbar-navitem title="Harvest Summary"
+            <x-show-navbar-navitem title="{{ __('messages.harvest_summary') }}"
                 route="{{ route('harvest.harvest-summary', $harvestEvent->id) }}" :active="request()->routeIs('harvest.harvest-summary')" />
         </ul>
     </div>
