@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Tree;
+use App\Models\HarvestRecord;
+use App\Models\TreeObservation;
 
 class HarvestEvent extends Model implements Reportable
 {
@@ -51,6 +54,35 @@ class HarvestEvent extends Model implements Reportable
             $sequence = static::whereYear('created_at', $year)->count() + 1;
 
             $model->event_name = "HES{$sequence}-{$date}";
+        });
+
+        // After a HarvestEvent is created, create a HarvestRecord and
+        // a TreeObservation('X') for every tree so that observations
+        // exist by default for the event.
+        static::created(function ($model) {
+            // Process trees in chunks to avoid memory spikes
+            Tree::chunk(100, function ($trees) use ($model) {
+                foreach ($trees as $tree) {
+                    // Ensure a HarvestRecord exists for this tree + event
+                    HarvestRecord::firstOrCreate([
+                        'harvest_uuid' => $model->uuid,
+                        'tree_uuid' => $tree->uuid,
+                    ], [
+                        'harvest_date' => $model->start_date ?? now()->toDateString(),
+                        'num_of_fruits' => 0,
+                        'weight' => null,
+                        'spoilt' => false,
+                    ]);
+
+                    // Create a default observation 'X' if missing
+                    TreeObservation::firstOrCreate([
+                        'tree_uuid' => $tree->uuid,
+                        'harvest_uuid' => $model->uuid,
+                    ], [
+                        'flowering_status' => 'X',
+                    ]);
+                }
+            });
         });
     }
 

@@ -9,6 +9,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\{HasMany, BelongsTo, HasOne};
+use App\Models\Label;
 
 class Tree extends Model
 {
@@ -22,6 +23,16 @@ class Tree extends Model
         'latitude',
         'longitude',
         'flowering_period',
+        'area',
+        'terrace',
+        'water_valve',
+    ];
+
+    protected $casts = [
+        'planted_at' => 'date',
+        'terrace' => 'integer',
+        'water_valve' => 'integer',
+        'flowering_period' => 'integer',
     ];
 
     protected static function boot()
@@ -104,6 +115,12 @@ class Tree extends Model
             ->withTimestamps();
     }
 
+    public function labels(): BelongsToMany
+    {
+        return $this->belongsToMany(Label::class, 'tree_label', 'tree_id', 'label_id')
+            ->withTimestamps();
+    }
+
     public function healthRecords(): HasMany
     {
         return $this->hasMany(HealthRecord::class, 'tree_uuid', 'uuid');
@@ -112,6 +129,16 @@ class Tree extends Model
     public function fruits(): HasMany
     {
         return $this->hasMany(Fruit::class, 'tree_uuid', 'uuid');
+    }
+
+    public function harvestRecords(): HasMany
+    {
+        return $this->hasMany(HarvestRecord::class, 'tree_uuid', 'uuid');
+    }
+
+    public function observations(): HasMany
+    {
+        return $this->hasMany(TreeObservation::class, 'tree_uuid', 'uuid');
     }
 
     public function fruitCountInHarvest($harvestUuid)

@@ -20,19 +20,24 @@ class UpdateTreeAction
                 'planted_at' => $dto->planted_at,
                 'thumbnail'  => $thumbnailPath,
                 'flowering_period' => $dto->flowering_period,
+                'area' => $dto->area ?? $tree->area,
+                'terrace' => $dto->terrace ?? $tree->terrace,
+                'water_valve' => $dto->water_valve ?? $tree->water_valve,
             ]);
 
             $firstGrowthLog = $tree->growthLogs()->orderBy('id')->first();
-            if ($firstGrowthLog) {
-                $firstGrowthLog->update([
-                    'height' => $dto->height,
-                    'diameter' => $dto->diameter,
-                ]);
-            } else {
-                $tree->growthLogs()->create([
-                    'height' => $dto->height,
-                    'diameter' => $dto->diameter,
-                ]);
+            if ($dto->height !== null || $dto->diameter !== null) {
+                if ($firstGrowthLog) {
+                    $firstGrowthLog->update([
+                        'height' => $dto->height ?? $firstGrowthLog->height,
+                        'diameter' => $dto->diameter ?? $firstGrowthLog->diameter,
+                    ]);
+                } else {
+                    $tree->growthLogs()->create([
+                        'height' => $dto->height ?? null,
+                        'diameter' => $dto->diameter ?? null,
+                    ]);
+                }
             }
 
             return $tree->fresh();
