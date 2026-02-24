@@ -9,11 +9,11 @@ use Livewire\Attributes\Title;
 use App\Livewire\Forms\UserForm;
 use Illuminate\Support\Facades\Hash;
 use App\Actions\FormatPhoneNumberAction;
+use App\Traits\PhoneNumberTrait;
 
-#[Title('Account Details')]
 class UserProfileLivewire extends Component
 {
-    use SweetAlert;
+    use SweetAlert, PhoneNumberTrait;
     public User $user;
     public UserForm $form;
     public string $role = '';
@@ -36,17 +36,17 @@ class UserProfileLivewire extends Component
      * ----------------------------- */
     public function update(): void
     {
-        $this->form->phone = FormatPhoneNumberAction::handle($this->phone);
+        $this->form->phone = $this->phone;
         $validatedData = $this->form->validate();
 
         try {
 
             $this->form->update($validatedData);
-            $this->alertSuccess('Your profile has been updated successfully.');
+            $this->alertSuccess(__('messages.profile_updated_successfully'));
         
         } catch (\Exception $error) {
 
-            $this->alertError($error->getMessage());
+            $this->alertError(__('messages.profile_update_failed'));
         
         }
     }
@@ -72,14 +72,14 @@ class UserProfileLivewire extends Component
             // Clear password fields after success
             $this->reset(['old_password', 'new_password', 'confirm_password']);
 
-            $this->alertSuccess('Your password has been changed successfully.');
+            $this->alertSuccess(__('messages.password_changed_successfully'));
         } catch (\Exception $error) {
-            $this->alertError($error->getMessage());
+            $this->alertError(__('messages.password_change_failed'));
         }
     }
 
     public function render()
     {
-        return view('livewire.module.user-management.user-profile-livewire');
+        return view('livewire.module.user-management.user-profile-livewire')->title(__('messages.user_profile'));
     }
 }

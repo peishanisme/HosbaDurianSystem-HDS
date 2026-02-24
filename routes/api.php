@@ -5,17 +5,17 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TreeController;
-use App\Http\Controllers\Api\SpeciesController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Api\BuyerController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\DiseaseController;
-use App\Http\Controllers\Api\HealthController;
-use App\Http\Controllers\Api\FruitController;
+use App\Http\Controllers\Api\BuyerController;
 use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\FruitController;
+use App\Http\Controllers\Api\HealthController;
+use App\Http\Controllers\Api\DiseaseController;
+use App\Http\Controllers\Api\SpeciesController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\Api\AgrochemicalController;
 use App\Http\Controllers\Api\TreeGrowthLogController;
-use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // General
 Route::post('/login', [AuthController::class, 'login']);
@@ -51,7 +51,6 @@ Route::middleware('auth:sanctum')->get('/trees/{id}/flowering-status', [TreeCont
 Route::middleware('auth:sanctum')->post('/trees/{id}/harvest-records', [TreeController::class, 'createHarvestRecord']);
 Route::middleware('auth:sanctum')->get('/trees/{id}/harvest-records', [TreeController::class, 'getHarvestRecords']);
 Route::middleware('auth:sanctum')->post('/trees/{id}/observations', [TreeController::class, 'createObservation']);
-
 
 // Disease Controller
 Route::middleware('auth:sanctum')->post('/diseases', [DiseaseController::class, 'store']);

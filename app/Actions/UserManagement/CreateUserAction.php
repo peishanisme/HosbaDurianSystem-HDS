@@ -3,17 +3,18 @@
 namespace App\Actions\UserManagement;
 
 use App\Models\User;
+use App\Traits\PhoneNumberTrait;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\DataTransferObject\UserDTO;
-use App\Actions\FormatPhoneNumberAction;
 
 class CreateUserAction
 {
+    use PhoneNumberTrait;
     public function handle(UserDTO $dto): User
     {
         return DB::transaction(function () use ($dto) {
-            $dto->phone = FormatPhoneNumberAction::handle($dto->phone);
+            $dto->phone = self::formatForStorage($dto->phone);
 
             $user = User::create([
                 'name' => $dto->name,

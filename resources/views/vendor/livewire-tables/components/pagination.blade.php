@@ -1,47 +1,50 @@
-@aware(['isTailwind','isBootstrap','isBootstrap4', 'isBootstrap5', 'localisationPath'])
+@aware(['isTailwind', 'isBootstrap', 'isBootstrap4', 'isBootstrap5', 'localisationPath'])
 @props(['currentRows'])
 @includeWhen(
-    $this->hasConfigurableAreaFor('before-pagination'), 
-    $this->getConfigurableAreaFor('before-pagination'), 
-    $this->getParametersForConfigurableArea('before-pagination')
-)
+    $this->hasConfigurableAreaFor('before-pagination'),
+    $this->getConfigurableAreaFor('before-pagination'),
+    $this->getParametersForConfigurableArea('before-pagination'))
 
 <div {{ $this->getPaginationWrapperAttributesBag() }}>
     @if ($this->paginationVisibilityIsEnabled())
         @if ($isTailwind)
             <div class="mt-4 px-4 md:p-0 sm:flex justify-between items-center space-y-4 sm:space-y-0">
                 <div>
-                    @if ($this->paginationIsEnabled && $this->isPaginationMethod('standard') && $currentRows->lastPage() > 1 && $this->showPaginationDetails)
+                    @if (
+                        $this->paginationIsEnabled &&
+                            $this->isPaginationMethod('standard') &&
+                            $currentRows->lastPage() > 1 &&
+                            $this->showPaginationDetails)
                         <p class="paged-pagination-results text-sm text-gray-700 leading-5 dark:text-white">
-                                <span>{{ __($localisationPath.'Showing') }}</span>
-                                <span class="font-medium">{{ $currentRows->firstItem() }}</span>
-                                <span>{{ __($localisationPath.'to') }}</span>
-                                <span class="font-medium">{{ $currentRows->lastItem() }}</span>
-                                <span>{{ __($localisationPath.'of') }}</span>
-                                <span class="font-medium"><span x-text="paginationTotalItemCount"></span></span>
-                                <span>{{ __($localisationPath.'results') }}</span>
+                            <span>{{ __($localisationPath . 'Showing') }}</span>
+                            <span class="font-medium">{{ $currentRows->firstItem() }}</span>
+                            <span>{{ __($localisationPath . 'to') }}</span>
+                            <span class="font-medium">{{ $currentRows->lastItem() }}</span>
+                            <span>{{ __($localisationPath . 'of') }}</span>
+                            <span class="font-medium"><span x-text="paginationTotalItemCount"></span></span>
+                            <span>{{ __($localisationPath . 'results') }}</span>
                         </p>
                     @elseif ($this->paginationIsEnabled && $this->isPaginationMethod('simple') && $this->showPaginationDetails)
                         <p class="paged-pagination-results text-sm text-gray-700 leading-5 dark:text-white">
-                            <span>{{ __($localisationPath.'Showing') }}</span>
+                            <span>{{ __($localisationPath . 'Showing') }}</span>
                             <span class="font-medium">{{ $currentRows->firstItem() }}</span>
-                            <span>{{ __($localisationPath.'to') }}</span>
+                            <span>{{ __($localisationPath . 'to') }}</span>
                             <span class="font-medium">{{ $currentRows->lastItem() }}</span>
                         </p>
                     @elseif ($this->paginationIsEnabled && $this->isPaginationMethod('cursor'))
                     @else
-                        @if($this->showPaginationDetails)
+                        @if ($this->showPaginationDetails)
                             <p class="total-pagination-results text-sm text-gray-700 leading-5 dark:text-white">
-                                <span>{{ __($localisationPath.'Showing') }}</span>
+                                <span>{{ __($localisationPath . 'Showing') }}</span>
                                 <span class="font-medium">{{ $currentRows->count() }}</span>
-                                <span>{{ __($localisationPath.'results') }}</span>
+                                <span>{{ __($localisationPath . 'results') }}</span>
                             </p>
                         @endif
                     @endif
                 </div>
 
                 @if ($this->paginationIsEnabled)
-                    {{ $currentRows->links('livewire-tables::specific.tailwind.'.(!$this->isPaginationMethod('standard') ? 'simple-' : '').'pagination') }}
+                    {{ $currentRows->links('livewire-tables::specific.tailwind.' . (!$this->isPaginationMethod('standard') ? 'simple-' : '') . 'pagination') }}
                 @endif
             </div>
         @else
@@ -52,18 +55,18 @@
                     </div>
 
                     <div @class([
-                        "col-12 col-md-6 text-center text-muted",
-                        "text-md-right" => $isBootstrap4,
-                        "text-md-end" => $isBootstrap5,
-                        ])>
-                        @if($this->showPaginationDetails)
-                            <span>{{ __($localisationPath.'Showing') }}</span>
+                        'col-12 col-md-6 text-center text-muted',
+                        'text-md-right' => $isBootstrap4,
+                        'text-md-end' => $isBootstrap5,
+                    ])>
+                        @if ($this->showPaginationDetails)
+                            <span>{{ __('messages.showing') }}</span>
                             <strong>{{ $currentRows->count() ? $currentRows->firstItem() : 0 }}</strong>
-                            <span>{{ __($localisationPath.'to') }}</span>
+                            <span>{{ __('messages.to') }}</span>
                             <strong>{{ $currentRows->count() ? $currentRows->lastItem() : 0 }}</strong>
-                            <span>{{ __($localisationPath.'of') }}</span>
+                            <span>{{ __('messages.of') }}</span>
                             <strong><span x-text="paginationTotalItemCount"></span></strong>
-                            <span>{{ __($localisationPath.'results') }}</span>
+                            <span>{{ __('messages.results') }}</span>
                         @endif
                     </div>
                 </div>
@@ -74,14 +77,14 @@
                     </div>
 
                     <div @class([
-                        "col-12 col-md-6 text-center text-muted",
-                        "text-md-right" => $isBootstrap4,
-                        "text-md-end" => $isBootstrap5,
+                        'col-12 col-md-6 text-center text-muted',
+                        'text-md-right' => $isBootstrap4,
+                        'text-md-end' => $isBootstrap5,
                     ])>
-                        @if($this->showPaginationDetails)
-                            <span>{{ __($localisationPath.'Showing') }}</span>
+                        @if ($this->showPaginationDetails)
+                            <span>{{ __($localisationPath . 'Showing') }}</span>
                             <strong>{{ $currentRows->count() ? $currentRows->firstItem() : 0 }}</strong>
-                            <span>{{ __($localisationPath.'to') }}</span>
+                            <span>{{ __($localisationPath . 'to') }}</span>
                             <strong>{{ $currentRows->count() ? $currentRows->lastItem() : 0 }}</strong>
                         @endif
                     </div>
@@ -95,12 +98,13 @@
             @else
                 <div class="row mt-3">
                     <div class="col-12 text-muted">
-                        @if($this->showPaginationDetails)
-                            {{ __($localisationPath.'Showing') }}
+                        @if ($this->showPaginationDetails)
+                            {{ __('messages.showing') }}
                             <strong>{{ $currentRows->count() }}</strong>
-                            {{ __($localisationPath.'results') }}
+                            {{ __('messages.results') }}
                         @endif
                     </div>
+
                 </div>
             @endif
         @endif
@@ -108,7 +112,6 @@
 </div>
 
 @includeWhen(
-    $this->hasConfigurableAreaFor('after-pagination'), 
-    $this->getConfigurableAreaFor('after-pagination'), 
-    $this->getParametersForConfigurableArea('after-pagination')
-)
+    $this->hasConfigurableAreaFor('after-pagination'),
+    $this->getConfigurableAreaFor('after-pagination'),
+    $this->getParametersForConfigurableArea('after-pagination'))

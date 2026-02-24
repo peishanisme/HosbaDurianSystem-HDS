@@ -9,28 +9,32 @@ use App\Models\Agrochemical;
 use Livewire\Attributes\Title;
 use App\Traits\AuthorizesRoleOrPermission;
 
-#[Title('Agrochemicals Management')]
 class AgrochemicalIndexLivewire extends Component
 {
     use SweetAlert, AuthorizesRoleOrPermission;
     public Agrochemical $agrochemical;
+    
+    public function mount(): void
+    {
+        $this->authorizeRoleOrPermission(['view-fertilizer-pesticide']);
+    }
 
     #[On('delete-agrochemical')]
     public function deleteTree(Agrochemical $agrochemical)
     {
         $this->agrochemical = $agrochemical;
-        $this->alertConfirm('Are you sure you want to delete this agrochemical?', 'confirm-delete');
+        $this->alertConfirm(__('messages.are_you_sure_delete_agrochemical'), 'confirm-delete');
     }
 
     #[On('confirm-delete')]
     public function confirmDelete()
     {
         $this->agrochemical->delete();
-        $this->alertSuccess('Agrochemical deleted successfully.');
+        $this->alertSuccess(__('messages.agrochemical_deleted_successfully'));
     }
     
     public function render()
     {
-        return view('livewire.module.agrochemical-management.agrochemical-index-livewire');
+        return view('livewire.module.agrochemical-management.agrochemical-index-livewire')->title(__('messages.agrochemical_listing'));
     }
 }

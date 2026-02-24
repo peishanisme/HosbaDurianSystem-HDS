@@ -16,13 +16,15 @@ class AgrochemicalModalLivewire extends Component
 {
     use SweetAlert;
     public AgrochemicalForm $form;
-    public string $modalID = 'agrochemicalModalLivewire', $modalTitle = 'Agrochemical Inventory Details';
+    public string $modalID = 'agrochemicalModalLivewire', $modalTitle ;
     public array $typeOptions = [];
     public bool $isThumbnailValid = true;
 
     public function mount()
     {
         $this->typeOptions = AgrochemicalType::keyValue();
+        $this->modalTitle = __('messages.agrochemical_details');
+
     }
 
     #[On('reset-agrochemical')]
@@ -73,11 +75,11 @@ class AgrochemicalModalLivewire extends Component
         try {
 
             $this->form->create($validatedData);
-            $this->alertSuccess('Inventory has been created successfully.', $this->modalID);
+            $this->alertSuccess(__('messages.inventory_created_successfully'), $this->modalID);
             $this->resetInput();
         } catch (Exception $error) {
 
-            $this->alertError($error->getMessage(), $this->modalID);
+            $this->alertError(__('messages.inventoory_creation_failed'), $this->modalID);
         }
     }
 
@@ -92,11 +94,11 @@ class AgrochemicalModalLivewire extends Component
         try {
 
             $this->form->update($validatedData);
-            $this->alertSuccess('Inventory has been updated successfully.', $this->modalID);
+            $this->alertSuccess(__('messages.inventory_updated_successfully'), $this->modalID);
             $this->resetInput();
         } catch (Exception $error) {
 
-            $this->alertError($error->getMessage(), $this->modalID);
+            $this->alertError(__('messages.inventoory_updation_failed'), $this->modalID);
         }
     }
 

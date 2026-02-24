@@ -57,6 +57,7 @@ class PinataService
 
             Log::error('Pinata upload failed', ['response' => $response->body()]);
             return null;
+            
         } catch (\Throwable $e) {
             Log::error('Pinata upload exception', ['error' => $e->getMessage()]);
             return null;

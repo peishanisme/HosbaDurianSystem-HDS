@@ -21,7 +21,10 @@ class AgrochemicalApplicationRecordTable extends DataTableComponent
 
     public function configure(): void
     {
-        $this->setPrimaryKey('id');
+        $this->setPrimaryKey('id')
+            ->setSearchPlaceholder(__('messages.search_agrochemical_applications'))
+            ->setEmptyMessage(__('messages.no_results_found'))
+            ->setDefaultSort('applied_at', 'desc');
     }
 
     public function columns(): array
@@ -36,7 +39,7 @@ class AgrochemicalApplicationRecordTable extends DataTableComponent
             Column::make("Tree uuid", "tree_uuid")
                 ->sortable()
                 ->hideIf(true),
-            ViewComponentColumn::make('Tree Tag', 'tree.tree_tag')
+            ViewComponentColumn::make(__('messages.tree_tag'), 'tree.tree_tag')
                 ->component('components.table-primary-column')
                 ->attributes(fn($value, $row, Column $column) => [
                     'thumbnail' => $row->tree->thumbnail ?? 'default',
@@ -44,12 +47,12 @@ class AgrochemicalApplicationRecordTable extends DataTableComponent
                     'route' => route('tree.show', $row->tree->id),
                 ])->searchable()
                 ->sortable(),
-            Column::make("Species", "tree.species.name")
+            Column::make(__('messages.species'), "tree.species.name")
                 ->sortable(),
-            Column::make("Applied at", "applied_at")
+            Column::make(__('messages.applied_at'), "applied_at")
                 ->sortable(),
-            Column::make("Description", "description"),
-            Column::make("Created at", "created_at")
+            Column::make(__('messages.description'), "description"),
+            Column::make(__('messages.created_at'), "created_at")
                 ->sortable(),
             // Column::make("Updated at", "updated_at")
             //     ->sortable(),

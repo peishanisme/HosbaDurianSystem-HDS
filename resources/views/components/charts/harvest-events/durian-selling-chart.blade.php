@@ -1,6 +1,6 @@
 <div class="card pb-10">
     <div class="card-header">
-        <h3 class="card-title">Fruit Selling Status</h3>
+        <h3 class="card-title">{{ __('messages.fruit_selling_status') }}</h3>
     </div>
     <div wire:ignore class="card-body p-5" id="fruit-selling-chart" style="width: 95%;"></div>
 </div>
@@ -18,7 +18,7 @@
                     category: "",
                     from: 0,
                     to: unsold,
-                    name: "Unsold (" + selling.unsold + " pcs)",
+                    name: "{{ __('messages.unsold') }}" + " (" + selling.unsold + " pcs)",
                     columnSettings: {
                         fill: am5.color(0xffd100)
                     }
@@ -27,7 +27,7 @@
                     category: "",
                     from: unsold,
                     to: unsold + sold,
-                    name: "Sold (" + selling.sold + " pcs)",
+                    name: "{{ __('messages.sold') }}" + " (" + selling.sold + " pcs)",
                     columnSettings: {
                         fill: am5.color(0x0ca948)
                     }

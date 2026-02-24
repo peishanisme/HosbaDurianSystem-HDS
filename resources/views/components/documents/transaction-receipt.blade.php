@@ -1,32 +1,164 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Receipt</title>
+    <title>Invoice</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header img { max-width: 150px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #000; padding: 8px; text-align: center; }
-        th { background-color: #f2f2f2; }
-        .text-end { text-align: right; }
-        .total { font-weight: bold; font-size: 1.1em; }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            padding: 20px;
+            color: #000;
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .company-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .invoice-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
+        }
+
+        .row {
+            width: 100%;
+            margin-top: 10px;
+            display: table;
+        }
+
+        .col {
+            display: table-cell;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        .meta-table,
+        .meta-table td {
+            border: none;
+            padding: 2px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 6px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .text-end {
+            text-align: right;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 11px;
+        }
+
+        .signature {
+            margin-top: 40px;
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .meta-table td {
+            text-align: left;
+        }
+
+        .meta-table td:first-child {
+            width: 110px;
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="header">
-        <img src="{{ public_path('assets/media/logos/system-logo-v2.png') }}" alt="Company Logo">
-        <h2>{{ $companyName }}</h2>
-        <p>{{ $companyAddress }}</p>
+    <!-- Company Header -->
+    <div class="header text-center">
+        <div class="company-name">{{ $companyName }}</div> <span>1380608-D</span>
+        <div>{{ $companyAddress }}</div>
     </div>
 
-    <p><strong>Receipt Ref:</strong> {{ $summary['reference_id'] }}</p>
-    <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($summary['date'])->format('d/m/Y') }}</p>
-    <p><strong>Buyer:</strong> {{ $summary['buyer'] }}</p>
-    <p><strong>Payment Method:</strong> {{ ucfirst($summary['payment_method']) }}</p>
-    <p><strong>Remark:</strong> {{ $summary['remark'] ?? '-' }}</p>
+    <!-- Invoice Title -->
+    <div class="invoice-title">Invoice</div>
+
+    <!-- Billing & Delivery -->
+    <div class="row">
+        <div class="col">
+            <span>Billing Address</span><br>
+            <strong>{{ $summary['buyer'] }}</strong><br>
+            {{ $summary['buyer_reference_id'] }}<br>
+            {{ $summary['buyer_address'] ?? '-' }}<br>
+            {{ $summary['buyer_phone'] ?? '' }}<br>
+            {{ $summary['buyer_email'] ?? '' }}
+        </div>
+
+        <div class="col">
+            <span>Delivery Address</span><br>
+            <strong>{{ $summary['buyer'] }}</strong><br>
+            {{ $summary['buyer_reference_id'] }}<br>
+            {{ $summary['buyer_address'] ?? '-' }}<br>
+            {{ $summary['buyer_phone'] ?? '' }}<br>
+            {{ $summary['buyer_email'] ?? '' }}
+        </div>
+    </div>
+
+    <!-- Invoice Meta -->
+    <div class="row">
+        <div class="col">
+            <table class="meta-table">
+                <tr>
+                    <td><strong>Invoice No</strong></td>
+                    <td>: {{ $summary['reference_id'] }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Date</strong></td>
+                    <td>: {{ \Carbon\Carbon::parse($summary['date'])->format('d/m/Y') }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Currency</strong></td>
+                    <td>: RM</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col">
+            <table class="meta-table">
+                <tr>
+                    <td><strong>Payment Method</strong></td>
+                    <td>: {{ ucfirst($summary['payment_method']) }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Remark</strong></td>
+                    <td>: {{ $summary['remark'] ?? '-' }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
     <table>
         <thead>
@@ -55,19 +187,40 @@
 
         <tfoot>
             <tr>
-                <td colspan="5" class="text-end">Subtotal:</td>
+                <td colspan="5" class="text-end">Subtotal</td>
                 <td>{{ number_format($summary['subtotal'], 2) }}</td>
             </tr>
             <tr>
-                <td colspan="5" class="text-end">Discount:</td>
+                <td colspan="5" class="text-end">Discount</td>
                 <td>{{ number_format($summary['discount'], 2) }}</td>
             </tr>
             <tr class="total">
-                <td colspan="5" class="text-end">Final Amount:</td>
+                <td colspan="5" class="text-end">Total Payable</td>
                 <td>{{ number_format($summary['total'], 2) }}</td>
             </tr>
         </tfoot>
     </table>
 
+    <!-- Footer -->
+    <div class="footer">
+        <br><br>
+        Notes:
+        <ol>
+            <li>All cheques should be crossed and made payable to {{ $companyName }}</li>
+            <li>Bank Details: Public Bank (A/C No.: 3211920300)</li>
+            <li>Goods sold are neither returnable nor refundable</li>
+        </ol>
+        <div class="text-end total">
+            Total Payable: RM {{ number_format($summary['total'], 2) }}
+        </div>
+
+    </div>
+
+    <div class="signature fs-10 text-end">
+        Authorised Signature<br><br>
+        {{ $companyName }} (202001024288 (1380608-D))
+    </div>
+
 </body>
+
 </html>

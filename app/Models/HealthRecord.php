@@ -5,8 +5,6 @@ namespace App\Models;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
 
@@ -17,6 +15,16 @@ class HealthRecord extends Model
     protected $keyType = 'string';
 
     protected $fillable = ['tree_uuid','disease_id', 'status', 'recorded_at', 'treatment', 'thumbnail'];
+
+    // public function getActivitylogOptions(): LogOptions
+    // {
+    //     return LogOptions::defaults()
+    //         ->logFillable()
+    //         ->logOnlyDirty()
+    //         ->useLogName('health_record')
+    //         ->setDescriptionForEvent(fn(string $eventName) => "A tree health record has been $eventName.")
+    //         ->dontSubmitEmptyLogs();
+    // }
 
     protected static function boot()
     {
@@ -37,4 +45,6 @@ class HealthRecord extends Model
     {
         return $this->belongsTo(Tree::class, 'tree_uuid', 'uuid'); 
     }
+
+    
 }

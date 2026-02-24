@@ -18,13 +18,13 @@ class UserListingTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setSearchPlaceholder('Search User')
-            ->setEmptyMessage('No results found')
+            ->setSearchPlaceholder(__('messages.search_users'))
+            ->setEmptyMessage(__('messages.no_results_found'))
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'livewire.components.modal-button',
                     [
-                        'label' => 'Create User',
+                        'label' => __('messages.create_user'),
                         'dispatch' => 'reset-user',
                         'target' => 'userModalLivewire',
                         'permission' => 'create-user',
@@ -36,15 +36,15 @@ class UserListingTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            'active' => SelectFilter::make('Status')
+            'active' => SelectFilter::make(__('messages.status'))
                 ->options([
-                    '' => 'Any',
-                    'yes' => 'Active',
-                    'no' => 'Inactive',
+                    '' => __('messages.any'),
+                    'yes' => __('messages.active'),
+                    'no' => __('messages.inactive'),
                 ])->filter(fn(Builder $query, $value) => $query->where('is_active', $value === 'yes')),
 
-            'role' => SelectFilter::make('Role')
-                ->options(['' => 'Any'] + Role::pluck('name', 'id')->toArray())
+            'role' => SelectFilter::make(__('messages.role'))
+                ->options(['' => __('messages.any')] + Role::pluck('name', 'id')->toArray())
                 ->filter(fn(Builder $query, $value) => $query->whereHas('roles', fn($query) => $query->where('id', $value))),
         ];
     }
@@ -55,32 +55,32 @@ class UserListingTable extends DataTableComponent
             Column::make("ID", "id")
                 ->hideIf(true),
 
-            Column::make("Name", "name")
+            Column::make(__('messages.name'), "name")
                 ->sortable()
                 ->searchable(),
 
-            Column::make("Email", "email")
+            Column::make(__('messages.email'), "email")
                 ->sortable(),
 
-            Column::make("Phone", "phone")
+            Column::make(__('messages.phone'), "phone")
                 ->sortable()
                 ->searchable(),
 
-            ArrayColumn::make('Roles')
+            ArrayColumn::make(__('messages.roles'))
                 ->data(fn($value, $row) => $row->roles)
                 ->outputFormat(fn($index, $value) => "<span class='badge badge-light-primary'>$value->name</span>"),
 
-            ViewComponentColumn::make('Status', 'is_active')
+            ViewComponentColumn::make(__('messages.status'), 'is_active')
                 ->component('table-badge')
                 ->attributes(fn($value, $row, Column $column) => [
                     'badge' => $row->is_active ?  'badge-light-success' : 'badge-light-danger',
-                    'label' => $row->is_active ? 'Active' : 'Inactive',
+                    'label' => $row->is_active ? __('messages.active') : __('messages.inactive'),
                 ]),
 
-            Column::make("Created at", "created_at")
+            Column::make(__('messages.created_at'), "created_at")
                 ->sortable(),
 
-            Column::make('Actions')
+            Column::make(__('messages.actions'))
                 ->label(fn($row, Column $column) => view('components.table-button', [
                     'modal' => 'userModalLivewire',
                     'disabled' => $row->roles->contains('name', 'Super-Admin'),

@@ -71,6 +71,12 @@ class PublicPortalLivewire extends Component
                 return $this->failVerification('record_not_found');
             }
 
+            Log::info('Comparing hashes', [
+                'fruitId' => $fruitId,
+                'recalculatedHash' => $recalculatedHash,
+                'onChainHash' => $onChainHash,
+            ]);
+
             // 4. Compare hashes
             if (
                 $this->normalizeHash($recalculatedHash) !==

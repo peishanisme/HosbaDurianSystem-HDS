@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\TrustProxies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -19,7 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Session\Middleware\StartSession::class,             
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,     
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        ]);
+            \App\Http\Middleware\TrustProxies::class,
+            ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -4,14 +4,16 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use App\Enums\BlockchainStatus;
+use Spatie\Activitylog\LogOptions;
 use App\Reports\Contracts\Reportable;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Transaction extends Model implements Reportable
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
     protected $fillable = [
         'uuid',
         'buyer_uuid',
@@ -28,9 +30,15 @@ class Transaction extends Model implements Reportable
         'is_cancelled',
     ];
 
-    // protected $casts = [
-    //     'blockchain_status' => BlockchainStatus::class,
-    // ];
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('transaction')
+            ->setDescriptionForEvent(fn(string $eventName) => "A transaction has been $eventName.")
+            ->dontSubmitEmptyLogs();
+    }
 
     protected static function boot()
     {
@@ -116,6 +124,10 @@ class Transaction extends Model implements Reportable
         //payment method
         return [
             'buyer' => $this->buyer ? $this->buyer->company_name : 'Walk-in Customer',
+            'buyer_address' => $this->buyer ? $this->buyer->address : '-',
+            'buyer_reference_id' => $this->buyer ? $this->buyer->reference_id : '-',
+            'buyer_phone' => $this->buyer ? $this->buyer->contact_number : '-',
+            'buyer_email' => $this->buyer ? $this->buyer->email : '-',
             'date' => $this->date,
             'reference_id' => $this->reference_id,
             'remark' => $this->remark ?? '',

@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AgrochemicalStockMovement extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
     
     protected $fillable = [
         'agrochemical_uuid',
@@ -18,6 +20,16 @@ class AgrochemicalStockMovement extends Model
         'description',
         'quantity',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('agrochemical_stock_movement')
+            ->setDescriptionForEvent(fn(string $eventName) => "An agrochemical stock movement has been $eventName.")
+            ->dontSubmitEmptyLogs();
+    }
 
      protected static function boot()
     {

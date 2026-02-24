@@ -42,22 +42,47 @@ class DashboardLivewire extends Component
             'trees.tree_tag as treeTag',
             'diseases.diseaseName',
             'health_records.status',
-            'health_records.updated_at'
+            'health_records.recorded_at'
         )
             ->join('trees', 'health_records.tree_uuid', '=', 'trees.uuid')
             ->join('diseases', 'health_records.disease_id', '=', 'diseases.id')
+
+            // Latest recorded_at per tree + disease
+            ->where('health_records.recorded_at', function ($sub) {
+                $sub->selectRaw('MAX(hr2.recorded_at)')
+                    ->from('health_records as hr2')
+                    ->whereColumn('hr2.tree_uuid', 'health_records.tree_uuid')
+                    ->whereColumn('hr2.disease_id', 'health_records.disease_id');
+            })
+
+            // Tie-breaker: latest created_at if recorded_at is the same
+            ->where('health_records.created_at', function ($sub) {
+                $sub->selectRaw('MAX(hr3.created_at)')
+                    ->from('health_records as hr3')
+                    ->whereColumn('hr3.tree_uuid', 'health_records.tree_uuid')
+                    ->whereColumn('hr3.disease_id', 'health_records.disease_id')
+                    ->whereColumn('hr3.recorded_at', 'health_records.recorded_at');
+            })
+
+            // Filter status
             ->whereIn('health_records.status', ['Severe', 'Medium'])
+
+            // Severity priority
             ->orderByRaw("
             CASE
                 WHEN health_records.status = 'Severe' THEN 0
                 WHEN health_records.status = 'Medium' THEN 1
                 ELSE 2
             END
-            ")
-            ->orderBy('health_records.updated_at', 'desc')
+        ")
+
+            // Latest records first (recorded_at then created_at)
+            ->orderBy('health_records.recorded_at', 'desc')
+            ->orderBy('health_records.created_at', 'desc')
+
             ->get();
 
-        return ($severeTrees);
+        return $severeTrees;
     }
 
     public function loadTotalTreeData()

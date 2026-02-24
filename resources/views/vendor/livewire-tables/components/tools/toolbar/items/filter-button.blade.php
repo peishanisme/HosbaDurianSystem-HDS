@@ -33,7 +33,7 @@
                 @endif
                 @if ($this->isFilterLayoutSlideDown()) x-on:click="filtersOpen = !filtersOpen" @endif
             >
-                {{ __($localisationPath.'Filters') }}
+                {{ __('messages.filter') }}
 
                 @if ($count = $this->getFilterBadgeCount())
                     <span @class([

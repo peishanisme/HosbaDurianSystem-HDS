@@ -15,7 +15,7 @@ class PermissionModalLivewire extends Component
     use AuthorizesRoleOrPermission, SweetAlert;
     protected $listeners = ['refreshComponent' => '$refresh'];
 
-    public string $modalID = 'permissionModalLivewire', $modalTitle = 'Permission Details';
+    public string $modalID = 'permissionModalLivewire', $modalTitle;
     public ?Role $role;
     public $permissions, $roleName;
     public array $selectedPermissions = [];
@@ -23,6 +23,8 @@ class PermissionModalLivewire extends Component
 
     public function mount(): void
     {
+        $this->modalTitle = __(key: 'messages.edit_permissions');
+
         $this->authorizeRoleOrPermission(['edit-permissions']);
 
         $this->permissions = Permission::all();
@@ -58,10 +60,10 @@ class PermissionModalLivewire extends Component
             $this->selectedPermissions = array_map('intval', $this->selectedPermissions);
             UpdatePermissionAction::handle($this->role, $this->selectedPermissions);
 
-            $this->alertSuccess('Permission has been updated successfully.', $this->modalID);
+            $this->alertSuccess(__('messages.permission_updated_successfully'), $this->modalID);
         } catch (\Exception $e) {
 
-            $this->alertError('Failed to update permissions: ' . $e->getMessage(), $this->modalID);
+            $this->alertError(__('messages.failed_to_update_permissions') . ': ' . $e->getMessage(), $this->modalID);
         }
     }
 

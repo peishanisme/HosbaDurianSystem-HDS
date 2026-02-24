@@ -15,13 +15,13 @@ class BuyerListingTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setSearchPlaceholder('Search Buyer')
-            ->setEmptyMessage('No results found')
+            ->setSearchPlaceholder(__('messages.search_buyers'))
+            ->setEmptyMessage(__('messages.no_results_found'))
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'livewire.components.modal-button',
                     [
-                        'label' => 'Create Buyer',
+                        'label' => __('messages.create_buyer'),
                         'dispatch' => 'reset-buyer',
                         'target' => 'buyerModalLivewire',
                         'permission' => 'create-buyer',
@@ -37,7 +37,7 @@ class BuyerListingTable extends DataTableComponent
                 ->sortable()
                 ->hideIf(true),
 
-            ViewComponentColumn::make('Company Name', 'company_name')
+            ViewComponentColumn::make(__('messages.company_name'), 'company_name')
                 ->component('components.table-primary-column')
                 ->attributes(fn($value, $row, Column $column) => [
                     'avatar' => $value,
@@ -45,13 +45,13 @@ class BuyerListingTable extends DataTableComponent
                     'route' => route('sales.buyers.show', $row->id),
                 ])->searchable()
                 ->sortable(),
-            Column::make("Reference ID", "reference_id")
+            Column::make(__('messages.reference_id'), "reference_id")
                 ->sortable()
                 ->searchable(),
-            Column::make("Contact name", "contact_name")
+            Column::make(__('messages.contact_name'), "contact_name")
                 ->sortable()
                 ->searchable(),
-            Column::make("Contact number", "contact_number")
+            Column::make(__('messages.contact_number'), "contact_number")
                 ->sortable(),
             // Column::make("Total Sales (RM)")
             //     ->label(fn($row, Column $column) => number_format(
@@ -66,18 +66,18 @@ class BuyerListingTable extends DataTableComponent
             //             'deposit'
             //         )->orderBy('transactions_sum_deposit', $direction)
             //     ),
-            Column::make("Created at", "created_at")
+            Column::make(__('messages.created_at'), "created_at")
                 ->sortable(),
-            Column::make('Actions')
+            Column::make(__('messages.actions'))
                 ->label(fn($row, Column $column) => view('components.table-com-button', [
                     'modal'     => 'buyerModalLivewire',
                     'dispatch1' => 'edit-buyer',
-                    'label1'    => 'Edit',
+                    'label1'    => __('messages.edit'),
                     'dataField' => 'buyer',
                     'data'      =>  $row->id,
                     'icon2'     => 'bi bi-trash3',
                     'dispatch2' => 'delete-buyer',
-                    'label2'    => 'Delete',
+                    'label2'    => __('messages.delete'),
                     'permission1' => 'edit-buyer',
                     'permission2' => 'delete-buyer',
                 ]))->html()

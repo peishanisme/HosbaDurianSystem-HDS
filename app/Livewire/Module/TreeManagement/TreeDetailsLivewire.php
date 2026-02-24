@@ -8,7 +8,6 @@ use Livewire\Component;
 use App\Models\HealthRecord;
 use Livewire\Attributes\Title;
 
-#[Title('Tree Overview')]
 class TreeDetailsLivewire extends Component
 {
     public Tree $tree;
@@ -76,6 +75,6 @@ class TreeDetailsLivewire extends Component
             'harvestGradeData' => $this->loadHarvestGradeData(),
             'treeDiseaseData' => $this->loadTreeDiseaseData(),
             'totalHarvestData' => $this->loadTotalHarvestData(),
-        ]);
+        ])->title(__('messages.tree_overview'));
     }
 }

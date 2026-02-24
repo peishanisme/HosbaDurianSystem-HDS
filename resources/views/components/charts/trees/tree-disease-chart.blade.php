@@ -1,7 +1,7 @@
 {{-- tree disease chart --}}
 <div class="card pb-10" style="min-height: 605px;">
     <div class="card-header">
-        <h3 class="card-title">Tree Disease</h3>
+        <h3 class="card-title">{{ __('messages.tree_diseases') }}</h3>
     </div>
     @php
         $treeDiseaseData = $this->loadTreeDiseaseData();
@@ -96,7 +96,7 @@
 
             var exporting = am5plugins_exporting.Exporting.new(root, {
                 menu: am5plugins_exporting.ExportingMenu.new(root, {}),
-                filePrefix: "{{ __('messages.tree_disease') }}"
+                filePrefix: "{{ __('messages.tree_diseases') }}"
             });
 
             series.appear(1000);

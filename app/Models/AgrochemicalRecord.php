@@ -3,14 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
 use App\Reports\Contracts\Reportable;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AgrochemicalRecord extends Model implements Reportable
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $table = 'tree_agrochemicals';
 
@@ -20,6 +22,16 @@ class AgrochemicalRecord extends Model implements Reportable
         'applied_at',
         'description',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('agrochemical_record')
+            ->setDescriptionForEvent(fn(string $eventName) => "An agrochemical record has been $eventName.")
+            ->dontSubmitEmptyLogs();
+    }
 
     /**
      * Automatically generate UUID on create.

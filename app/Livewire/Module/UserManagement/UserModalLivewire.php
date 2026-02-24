@@ -9,7 +9,6 @@ use App\Traits\SweetAlert;
 use Livewire\Attributes\On;
 use App\Livewire\Forms\UserForm;
 use Spatie\Permission\Models\Role;
-use App\Actions\FormatPhoneNumberAction;
 
 class UserModalLivewire extends Component
 {
@@ -17,15 +16,17 @@ class UserModalLivewire extends Component
     protected $listeners = ['refreshComponent' => '$refresh'];
 
     public UserForm $form;
-    public string $modalID = 'userModalLivewire', $modalTitle = 'User Details';
+    public string $modalID = 'userModalLivewire', $modalTitle ;
     public array $roleOptions = [];
 
     public function mount(): void
     {
+        $this->modalTitle = __('messages.user_details');
         $this->roleOptions = Role::whereNotIn('name', ['Super-Admin'])
             ->pluck('name', 'id')
             ->toArray();
     }
+    
 
     #[On('reset-user')]
     public function resetInput()
@@ -48,10 +49,10 @@ class UserModalLivewire extends Component
         try {
 
             $this->form->create($validatedData);
-            $this->alertSuccess('User has been created successfully.', $this->modalID);
+            $this->alertSuccess(__('messages.user_created_successfully'), $this->modalID);
         } catch (Exception $error) {
 
-            $this->alertError($error->getMessage(), $this->modalID);
+            $this->alertError(__('messages.user_creation_failed'), $this->modalID);
         }
     }
 
@@ -62,10 +63,10 @@ class UserModalLivewire extends Component
         try {
 
             $this->form->update($validatedData);
-            $this->alertSuccess('User has been updated successfully.', $this->modalID);
+            $this->alertSuccess(__('messages.user_updated_successfully'), $this->modalID);
         } catch (Exception $error) {
 
-            $this->alertError($error->getMessage(), $this->modalID);
+            $this->alertError(__('messages.user_updation_failed'), $this->modalID);
         }
     }
 

@@ -16,7 +16,12 @@ class BuyerModalLivewire extends Component
 
     public Buyer $buyer;
     public BuyerForm $form;
-    public string $modalID = 'buyerModalLivewire', $modalTitle = 'Buyer Details';
+    public string $modalID = 'buyerModalLivewire', $modalTitle;
+
+    public function mount(): void
+    {
+        $this->modalTitle =  __('messages.buyer_details');
+    }
 
     #[On('reset-buyer')]
     public function resetInput()
@@ -39,10 +44,10 @@ class BuyerModalLivewire extends Component
         try {
 
             $this->form->create($validatedData);
-            $this->alertSuccess('Buyer has been created successfully.', $this->modalID);
+            $this->alertSuccess(__('messages.buyer_created_successfully'), $this->modalID);
         } catch (Exception $error) {
 
-            $this->alertError($error->getMessage(), $this->modalID);
+            $this->alertError(__('messages.buyer_creation_failed'), $this->modalID);
         }
     }
 
@@ -53,10 +58,10 @@ class BuyerModalLivewire extends Component
         try {
 
             $this->form->update($validatedData);
-            $this->alertSuccess('Buyer has been updated successfully.', $this->modalID);
+            $this->alertSuccess(__('messages.buyer_updated_successfully'), $this->modalID);
         } catch (Exception $error) {
 
-            $this->alertError($error->getMessage(), $this->modalID);
+            $this->alertError(__('messages.buyer_updation_failed'), $this->modalID);
         }
     }
 

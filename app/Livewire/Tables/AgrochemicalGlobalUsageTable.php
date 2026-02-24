@@ -21,17 +21,17 @@ class AgrochemicalGlobalUsageTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setSearchPlaceholder('Search Stock')
-            ->setEmptyMessage('No results found')
+            ->setSearchPlaceholder(__('messages.search_agrochemical_usages'))
+            ->setEmptyMessage(__('messages.no_results_found'))
             ->setDefaultSort('created_at', 'desc')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'livewire.components.modal-button',
                     [
-                        'label' => 'Generate Report',
+                        'label' => __('messages.generate_report'),
                         'dispatch' => 'reset-generator',
                         'target' => 'generateReportModalLivewire',
-                        // 'permission' => 'create-buyer',
+                        'permission' => 'export-reports',
                     ]
                 ]
             ]);
@@ -40,8 +40,8 @@ class AgrochemicalGlobalUsageTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            'type' => SelectFilter::make('Type')
-                ->options(['' => 'Any'] + AgrochemicalType::keyValue())
+            'type' => SelectFilter::make(__('messages.type'))
+                ->options(['' => __('messages.any')] + AgrochemicalType::keyValue())
                 ->filter(fn(Builder $query, $value) => $query->where('agrochemical.type', $value)),
         ];
     }
@@ -55,27 +55,38 @@ class AgrochemicalGlobalUsageTable extends DataTableComponent
             Column::make("Agrochemical uuid", "agrochemical_uuid")
                 ->sortable()
                 ->hideIf(true),
-            Column::make("Agrochemical", "agrochemical.name")
-                ->sortable()
-                ->searchable(),
+             ViewComponentColumn::make(__('messages.agrochemical_name'), 'agrochemical.name')
+                ->component('components.table-primary-column')
+                ->attributes(fn($value, $row, Column $column) => [
+                    'thumbnail' => $row->agrochemical->thumbnail ?? 'default',
+                    'title' => $value,
+                    'route' => route('agrochemical.show', $row->agrochemical->id),
+                ])->searchable()
+                ->sortable(),
             Column::make("Tree uuid", "tree_uuid")
                 ->sortable()
                 ->hideIf(true),
-            Column::make("Tree", "tree.tree_tag")
-                ->sortable()
-                ->searchable(),
-            ViewComponentColumn::make('Type', 'agrochemical.type')
+            ViewComponentColumn::make(__('messages.tree_tag'), 'tree.tree_tag')
+                ->component('components.table-primary-column')
+                ->attributes(fn($value, $row, Column $column) => [
+                    'thumbnail' => $row->tree->thumbnail ?? 'default',
+                    'title' => $value,
+                    'route' => route('tree.show', $row->id),
+                ])->searchable()
+                ->sortable(),
+
+            ViewComponentColumn::make(__('messages.type'), 'agrochemical.type')
                 ->component('table-badge')
                 ->attributes(fn($value, $row, Column $column) => [
                     'badge' => $value === 'pesticide' ?  'badge-light-info' : 'badge-light-primary',
                     'label' => ucfirst($value),
                 ]),
-            Column::make("Applied at", "applied_at")
+            Column::make(__('messages.applied_at'), "applied_at")
                 ->sortable(),
-            Column::make("Description", "description"),
-            Column::make("Created at", "created_at")
+            Column::make(__('messages.description'), "description"),
+            Column::make(__('messages.created_at'), "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__('messages.updated_at'), "updated_at")
                 ->sortable()
                 ->hideIf(true),
         ];

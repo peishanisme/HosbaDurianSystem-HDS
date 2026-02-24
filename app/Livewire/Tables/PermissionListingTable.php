@@ -20,14 +20,15 @@ class PermissionListingTable extends DataTableComponent
     {
         $this->setPrimaryKey('id')
         ->setDefaultSort('created_at', 'desc')
-        ->setEmptyMessage('No results found');
+        ->setSearchPlaceholder(__('messages.search_permission'))
+        ->setEmptyMessage(__('messages.no_results_found'));
     }
 
     public function filters(): array
     {
         return [
-            'role' => SelectFilter::make('Role')
-                ->options(['' => 'Any'] + Role::pluck('name','id')->toArray())
+            'role' => SelectFilter::make(__('messages.role'))
+                ->options(['' => __('messages.any')] + Role::pluck('name','id')->toArray())
                 ->filter(fn(Builder $query, $value) => $query->whereHas('roles', fn($query) => $query->where('id', $value))),
         ];
     }
@@ -38,16 +39,16 @@ class PermissionListingTable extends DataTableComponent
             Column::make("Id", "id")
                 ->hideIf(true),
 
-            Column::make("Name", "name")
+            Column::make(__('messages.name'), "name")
                 ->searchable()
                 ->sortable(),
 
-            ArrayColumn::make('Roles')
+            ArrayColumn::make(__('messages.roles'))
                 ->data(fn($value, $row) => $row->roles)
                 ->outputFormat(fn($index, $value) => "<span class='badge badge-light-primary mt-3'>$value->name</span>")
                 ->sortable(),
 
-            Column::make("Created At", "created_at")
+            Column::make(__('messages.created_at'), "created_at")
                 ->sortable(),
 
         ];

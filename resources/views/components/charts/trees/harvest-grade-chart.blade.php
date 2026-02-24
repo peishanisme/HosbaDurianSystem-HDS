@@ -1,7 +1,7 @@
 {{-- harvest grade chart --}}
 <div class="card pb-10" style="min-height: 605px;">
     <div class="card-header">
-        <h3 class="card-title">Harvest Grade</h3>
+        <h3 class="card-title">{{ __('messages.harvest_grade') }}</h3>
     </div>
     @php
         $harvestGradeData = $this->loadHarvestGradeData();

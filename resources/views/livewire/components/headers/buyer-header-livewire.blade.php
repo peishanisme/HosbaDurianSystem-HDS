@@ -50,7 +50,7 @@
                                 <div class="d-flex align-items-center">
                                     <div class="fs-2 fw-bold" data-kt-countup="true" data-kt-countup-value="{{ $buyer->getTotalTransactionsAttribute() }}">0</div>
                                 </div>
-                                <div class="fw-semibold fs-6 text-gray-500">Total Transactions</div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.total_transactions') }}</div>
                             </div>
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
@@ -58,7 +58,7 @@
                                     <div class="fs-2 fw-bold" data-kt-countup="true" data-kt-countup-value="{{ $buyer->getTotalSpentAttribute() }}"
                                         data-kt-countup-prefix="RM">0</div>
                                 </div>
-                                <div class="fw-semibold fs-6 text-gray-500">Total Amount</div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.total_amount') }}</div>
                             </div>
 
                         </div>
@@ -68,9 +68,9 @@
         </div>
        
         <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold" wire:ignore>
-            <x-show-navbar-navitem title="Overview" route="{{ route('sales.buyers.show', $buyer->id) }}"
+            <x-show-navbar-navitem title="{{ __('messages.overview') }}" route="{{ route('sales.buyers.show', $buyer->id) }}"
                 :active="request()->routeIs('sales.buyers.show')" />
-            <x-show-navbar-navitem title="Transactions" route="{{ route('sales.buyers.transaction', $buyer->id) }}" :active="request()->routeIs('sales.buyers.transaction')"/>
+            <x-show-navbar-navitem title="{{ __('messages.transactions') }}" route="{{ route('sales.buyers.transaction', $buyer->id) }}" :active="request()->routeIs('sales.buyers.transaction')"/>
         </ul>
 
     </div>

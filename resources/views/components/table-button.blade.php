@@ -1,6 +1,6 @@
 @props([
     'icon' => 'bi-pencil-square', 
-    'label' => 'Edit',
+    'label' => __('messages.edit'),
     'modal' => null,
     'dispatch',
     'data',

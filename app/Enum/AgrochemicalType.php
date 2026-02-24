@@ -13,11 +13,7 @@ enum AgrochemicalType: string
      */
     public function label(): string
     {
-        return match ($this) {
-            self::FERTILIZER => 'Fertilizer',
-            self::PESTICIDE => 'Pesticide',
-            self::OTHER => 'Other',
-        };
+        return __('messages.agrochemical_type.' . $this->value);
     }
 
     public static function keyValue(): array

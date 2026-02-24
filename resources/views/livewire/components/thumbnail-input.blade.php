@@ -4,8 +4,7 @@
         style="width: 12rem; height: 12rem;">
         @if ($thumbnail)
             {{-- Image Preview --}}
-            <img src="{{ is_string($thumbnail) ? app(\App\Services\MediaService::class)->get($thumbnail) : $thumbnail->temporaryUrl() }}"
-                alt="Thumbnail Preview" class="w-100 h-100 object-fit-cover">
+            <img src="{{ $this->thumbnailPreviewUrl }}" class="w-100 h-100 object-fit-cover">
 
             {{-- Delete Icon --}}
 
@@ -33,7 +32,7 @@
     <input type="file" accept="image/*" wire:model="thumbnail" class="d-none" id="thumbnailInput">
 
     {{-- Allowed file types --}}
-    <small class="text-muted d-block mt-2">Allowed file types: png, jpg, jpeg.</small>
+    <small class="text-muted d-block mt-2">{{ __('messages.allowed_file_types') }}: png, jpg, jpeg.</small>
 
     {{-- Validation Error --}}
     @if ($thumbnailError)

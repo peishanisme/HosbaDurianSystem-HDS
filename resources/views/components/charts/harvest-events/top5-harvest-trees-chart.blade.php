@@ -1,6 +1,6 @@
 <div class="card pb-10">
     <div class="card-header">
-        <h3 class="card-title">Top 10 Harvest Trees</h3>
+        <h3 class="card-title">{{ __('messages.top_10_harvest_trees') }}</h3>
     </div>
     <div wire:ignore class="card-body p-5" id="top10-harvest-trees-chart" style="width: 95%;"></div>
 </div>

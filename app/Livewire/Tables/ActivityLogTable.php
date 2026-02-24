@@ -18,8 +18,9 @@ class ActivityLogTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-        ->setEmptyMessage('No results found')
-        ->setDefaultSort('created_at', 'desc');
+            ->setSearchPlaceholder(__('messages.search_activity_logs'))
+            ->setEmptyMessage(__('messages.no_results_found'))
+            ->setDefaultSort('created_at', 'desc');
     }
 
 
@@ -27,29 +28,28 @@ class ActivityLogTable extends DataTableComponent
     {
         return [
             Column::make("Id", "id")
-            ->hideIf(true),
+                ->hideIf(true),
 
-            Column::make('Description', 'description')
+            Column::make(__('messages.description'), 'description')
                 ->searchable(),
 
-            Column::make('Subject', 'log_name')
+            Column::make(__('messages.subject'), 'log_name')
                 ->searchable()
                 ->sortable(),
 
-            ViewComponentColumn::make('Action By', 'causer_id')
-                ->component('components.table-primary-column')
-                ->attributes(fn($value, $row, Column $column) => [
-                    'title' => $row->causer_name,
-                ]),
+            Column::make(__('messages.action_by'), 'causer_id')
+                ->format(fn($value, $row, Column $column) => $row->causer_name)
+                ->searchable()
+                ->sortable(),
 
-            Column::make('Created At', 'created_at')
+            Column::make(__('messages.created_at'), 'created_at')
                 ->format(fn($value) => \Carbon\Carbon::parse($value)->diffForHumans())
                 ->sortable(),
 
-            ViewComponentColumn::make('Properties', 'properties')
+            ViewComponentColumn::make(__('messages.properties'), 'properties')
                 ->component('components.popovers')
                 ->attributes(fn($value, $row, Column $column) => [
-                    'button' => 'Properties',
+                    'button' => __('messages.properties'),
                     'content' => $value
                 ]),
         ];

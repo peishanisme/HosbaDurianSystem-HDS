@@ -4,13 +4,19 @@
         <div class="d-flex flex-wrap flex-sm-nowrap">
             <!--begin: Pic-->
             <div class="me-7 mb-4">
-                <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-                    <img class="object-fit-cover border"
-                        src="{{ $agrochemical->thumbnail ? app(\App\Services\MediaService::class)->get($agrochemical->thumbnail) : secure_asset('assets/media/placeholder/placeholder.svg') }}"
-                        alt="image" />
 
-                </div>
+                @if ($agrochemical->thumbnail)
+                    <x-image-preview :src="app(\App\Services\MediaService::class)->get($agrochemical->thumbnail)" alt="Agrochemical Image"
+                        modal-id="agrochemicalImagePreviewModal-{{ $agrochemical->id }}" />
+                @else
+                    <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
+                        <img class="object-fit-cover border"
+                            src="{{ app(\App\Services\MediaService::class)->get('logo/placeholder.svg') }}"
+                            alt="image" />
+                    </div>
+                @endif
             </div>
+
 
             <div class="flex-grow-1">
                 <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
@@ -37,7 +43,7 @@
                         <button class="btn btn-sm btn-light me-2" data-bs-toggle="modal"
                             data-bs-target="#agrochemicalStockMovementModalLivewire"
                             wire:click="$dispatch('reset-stock', { agrochemical: {{ $agrochemical->id }} })">
-                            <span class="indicator-label">Update Stock</span>
+                            <span class="indicator-label">{{ __('messages.update_stock') }}</span>
                         </button>
 
                         <div class="me-3">
@@ -57,7 +63,7 @@
                                     <div class="fs-2 fw-bold">{{ $agrochemical->getRemainingStock() }}
                                     </div>
                                 </div>
-                                <div class="fw-semibold fs-6 text-gray-500">Remaining Quantity</div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.remaining_quantity') }}</div>
                             </div>
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
@@ -65,14 +71,14 @@
                                     <div class="fs-2 fw-bold">{{ number_format($agrochemical->price, 2, '.', '') }}
                                     </div>
                                 </div>
-                                <div class="fw-semibold fs-6 text-gray-500">Price Per Unit</div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.price_per_unit') }}</div>
                             </div>
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
                                     <div class="fs-2 fw-bold">{{ $agrochemical->getLatestPurchaseDate() }}</div>
                                 </div>
-                                <div class="fw-semibold fs-6 text-gray-500">Latest Purchase Date</div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.latest_purchase_date') }}</div>
                             </div>
 
                         </div>
@@ -82,11 +88,11 @@
         </div>
 
         <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold" wire:ignore>
-            <x-show-navbar-navitem title="Overview" route="{{ route('agrochemical.show', $agrochemical->id) }}"
+            <x-show-navbar-navitem title="{{ __('messages.overview') }}" route="{{ route('agrochemical.show', $agrochemical->id) }}"
                 :active="request()->routeIs('agrochemical.show')" />
-            <x-show-navbar-navitem title="Purchase History"
+            <x-show-navbar-navitem title="{{ __('messages.purchase_history') }}"
                 route="{{ route('agrochemical.purchase-history', $agrochemical->id) }}" :active="request()->routeIs('agrochemical.purchase-history')" />
-            <x-show-navbar-navitem title="Application Records"
+            <x-show-navbar-navitem title="{{ __('messages.application_records') }}"
                 route="{{ route('agrochemical.application-record', $agrochemical->id) }}" :active="request()->routeIs('agrochemical.application-record')" />
         </ul>
 

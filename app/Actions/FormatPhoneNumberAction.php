@@ -2,13 +2,6 @@
 
 namespace App\Actions;
 
-use App\DataTransferObject\UserDTO;
-use App\DataTransferObjects\AdminDTO;
-use Illuminate\Support\Facades\DB;
-use App\Models\Admin;
-use App\Models\User;
-use Spatie\Permission\Models\Role;
-
 class FormatPhoneNumberAction
 {
     public static function handle($phone): String

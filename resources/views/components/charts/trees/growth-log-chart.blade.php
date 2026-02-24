@@ -1,7 +1,7 @@
 {{-- growth log chart --}}
 <div class="card pb-10">
     <div class="card-header">
-        <h3 class="card-title">Growth Log Chart</h3>
+        <h3 class="card-title">{{ __('messages.growth_logs') }}</h3>
     </div>
     <div class="card-body p-5" id="growth-log-chart"></div>
 </div>
@@ -55,7 +55,7 @@
             // Add X-Axis Label
             xAxis.children.push(
                 am5.Label.new(root, {
-                    text: "Date",
+                    text: "{{ __('messages.date') }}",
                     fontSize: 14,
                     paddingTop: 10,
                     centerX: am5.p50
@@ -73,7 +73,7 @@
             yAxis.children.moveValue(
                 am5.Label.new(root, {
                     rotation: -90,
-                    text: "Measurement (m)",
+                    text: "{{ __('messages.measurement') }} (m)",
                     fontSize: 14,
                     centerY: am5.p50,
                     y: am5.p50
@@ -92,7 +92,7 @@
                     valueYField: "height",
                     valueXField: "date",
                     tooltip: am5.Tooltip.new(root, {
-                        labelText: "Height: {height}m"
+                        labelText: "{{ __('messages.height') }}: {height}m"
                     })
                 })
             );
@@ -118,13 +118,13 @@
             // ================================
             var seriesDiameter = chart.series.push(
                 am5xy.LineSeries.new(root, {
-                    name: "Diameter",
+                    name: "{{ __('messages.diameter') }}",
                     xAxis: xAxis,
                     yAxis: yAxis,
                     valueYField: "diameter",
                     valueXField: "date",
                     tooltip: am5.Tooltip.new(root, {
-                        labelText: "Diameter: {diameter}m"
+                        labelText: "{{ __('messages.diameter') }}: {diameter}m"
                     })
                 })
             );

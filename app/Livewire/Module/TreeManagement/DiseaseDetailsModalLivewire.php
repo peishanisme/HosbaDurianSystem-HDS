@@ -14,6 +14,7 @@ class DiseaseDetailsModalLivewire extends Component
     public $sortField = 'status';
     public $sortDirection = 'asc';
     public $trees = [];
+    public $noTree = false;
 
     protected $listeners = ['view-disease' => 'loadDisease'];
 
@@ -40,44 +41,58 @@ class DiseaseDetailsModalLivewire extends Component
         $this->loadTrees();
     }
 
-    private function loadTrees()
+    public function loadTrees()
     {
-        if ($this->disease) {
-            $query = $this->disease->trees();
-
-            // ✅ Apply status filter
-            if (!empty($this->statusFilter) && in_array($this->statusFilter, ['Severe', 'Medium', 'Recovered'])) {
-                $query->wherePivot('status', '=', $this->statusFilter);
-            }
-
-            // ✅ Custom order for status (Severe → Medium → Recovered)
-            if ($this->sortField === 'status') {
-                $query->orderByRaw("
-                CASE health_records.status
-                    WHEN 'Severe' THEN 1
-                    WHEN 'Medium' THEN 2
-                    WHEN 'Recovered' THEN 3
-                    ELSE 4
-                END {$this->sortDirection}
-            ");
-            } else {
-                // Normal sorting for other pivot fields
-                $allowedSortFields = ['recorded_at', 'treatment'];
-                if (in_array($this->sortField, $allowedSortFields)) {
-                    $query->orderBy("health_records.{$this->sortField}", $this->sortDirection);
-                }
-            }
-
-            $this->trees = $query->get();
-        } else {
+        if (!$this->disease) {
             $this->trees = collect();
+            return;
         }
-    }
 
+        $query = $this->disease->trees()
+            ->wherePivot('recorded_at', function ($sub) {
+                $sub->selectRaw('MAX(hr2.recorded_at)')
+                    ->from('health_records as hr2')
+                    ->whereColumn('hr2.tree_uuid', 'health_records.tree_uuid')
+                    ->whereColumn('hr2.disease_id', 'health_records.disease_id');
+            })
+            ->wherePivot('created_at', function ($sub) {
+                $sub->selectRaw('MAX(hr3.created_at)')
+                    ->from('health_records as hr3')
+                    ->whereColumn('hr3.tree_uuid', 'health_records.tree_uuid')
+                    ->whereColumn('hr3.disease_id', 'health_records.disease_id')
+                    ->whereColumn('hr3.recorded_at', 'health_records.recorded_at');
+            });
+
+        // Status filter
+        if (!empty($this->statusFilter) && in_array($this->statusFilter, ['Severe', 'Medium', 'Recovered'])) {
+            $query->wherePivot('status', $this->statusFilter);
+        }
+
+        // Sorting
+        if ($this->sortField === 'status') {
+            $query->orderByRaw("
+            CASE health_records.status
+                WHEN 'Severe' THEN 1
+                WHEN 'Medium' THEN 2
+                WHEN 'Recovered' THEN 3
+                ELSE 4
+            END {$this->sortDirection}
+        ");
+        } else {
+            $allowedSortFields = ['recorded_at', 'treatment', 'created_at'];
+            if (in_array($this->sortField, $allowedSortFields)) {
+                $query->orderBy("health_records.{$this->sortField}", $this->sortDirection);
+            }
+        }
+
+        $this->trees = $query->get();
+        $this->noTree = $this->trees->isEmpty();
+    }
 
     public function resetInput()
     {
         $this->disease = null;
+        $this->noTree = false;
         $this->trees = collect();
     }
 

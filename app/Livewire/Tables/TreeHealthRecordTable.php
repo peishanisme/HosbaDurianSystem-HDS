@@ -24,18 +24,20 @@ class TreeHealthRecordTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
+            ->setEmptyMessage(__('messages.no_results_found'))
+            ->setSearchPlaceholder(__('messages.search_health_records'))
             ->setDefaultSort('recorded_at', 'desc');
     }
 
     public function filters(): array
     {
         return [
-            SelectFilter::make('Status')
+            SelectFilter::make(__('messages.status'))
                 ->options([
-                    '' => 'All',
-                    'Severe' => 'Severe',
-                    'Medium' => 'Medium',
-                    'Recovered' => 'Recovered',
+                    '' => __('messages.any'),
+                    'Severe' => __('messages.severe'),
+                    'Medium' => __('messages.medium'),
+                    'Recovered' => __('messages.recovered'),
                 ])
                 ->filter(function (Builder $builder, string $value) {
                     if ($value !== '') {
@@ -60,28 +62,28 @@ class TreeHealthRecordTable extends DataTableComponent
             Column::make("Thumbnail", "thumbnail")
                 ->sortable()
                 ->hideIf(true),
-            ViewComponentColumn::make('Disease', 'disease.diseaseName')
+            ViewComponentColumn::make(__('messages.disease_name'), 'disease.diseaseName')
                 ->component('components.table-primary-column')
                 ->attributes(fn($value, $row, Column $column) => [
                     'thumbnail' => $row->thumbnail ?? 'default',
                     'title' => $value,
                 ])->searchable()
                 ->sortable(),
-            Column::make("Status", "status")
+            Column::make(__('messages.status'), "status")
                 ->format(fn($value) => match ($value) {
-                    'Severe' => '<span class="badge badge-light-danger">Severe</span>',
-                    'Medium' => '<span class="badge badge-light-warning">Medium</span>',
-                    'Recovered' => '<span class="badge badge-light-success">Recovered</span>',
+                    'Severe' => '<span class="badge badge-light-danger">'.__('messages.severe').'</span>',
+                    'Medium' => '<span class="badge badge-light-warning">'.__('messages.medium').'</span>',
+                    'Recovered' => '<span class="badge badge-light-success">'.__('messages.recovered').'</span>',
                     default => '-',
                 })
                 ->html()
                 ->sortable(),
-            Column::make("Treatment", "treatment")
+            Column::make(__('messages.treatment'), "treatment")
                 ->format(fn($value) => $value ?? '-'),
-            Column::make("Recorded At", "recorded_at")
+            Column::make(__('messages.recorded_at'), "recorded_at")
                 ->format(fn($value) => $value ? date('d M Y', strtotime($value)) : '-')
                 ->sortable(),
-            Column::make("Updated At", "updated_at")
+            Column::make(__('messages.updated_at'), "updated_at")
                 ->format(fn($value) => date('d M Y, h:i A', strtotime($value)))
                 ->sortable(),
         ];

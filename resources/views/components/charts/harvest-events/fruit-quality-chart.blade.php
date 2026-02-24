@@ -1,6 +1,6 @@
 <div class="card pb-10 h-100">
     <div class="card-header">
-        <h3 class="card-title">Fruit Quality</h3>
+        <h3 class="card-title">{{ __('messages.fruit_quality') }}</h3>
     </div>
     <div wire:ignore class="card-body p-5" id="fruit-quality-chart" style="width: 100%; "></div>
 </div>
@@ -33,6 +33,7 @@
 
             var chart = root.container.children.push(am5percent.PieChart.new(root, {
                 layout: root.verticalLayout,
+                radius: am5.percent(60)
             }));
 
             var series = chart.series.push(am5percent.PieSeries.new(root, {
