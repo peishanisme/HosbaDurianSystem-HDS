@@ -11,26 +11,32 @@ class TreeDTO
 
     public function __construct(
         public int $species_id,
-        public string $planted_at,
+        public ?string $planted_at = null,
         public TemporaryUploadedFile|string|null $thumbnail,
         public ?float $latitude,
         public ?float $longitude,
-        public float $height,
-        public float $diameter,
-        public int $flowering_period,
+        public ?float $height = null,
+        public ?float $diameter = null,
+        public ?int $flowering_period = null,
+        public ?string $area = null,
+        public ?int $terrace = null,
+        public ?int $water_valve = null,
     ) {}
 
     public static function fromArray(array $data): self
     {
         return new self(
             species_id: $data['species_id'],
-            planted_at: $data['planted_at'],
+            planted_at: $data['planted_at'] ?? null,
             thumbnail: $data['thumbnail'] ?? null, 
             latitude: $data['latitude'] ?? null,
             longitude: $data['longitude'] ?? null,
-            height: $data['height'],
-            diameter: $data['diameter'],
-            flowering_period: $data['flowering_period'],
+            height: $data['height'] ?? null,
+            diameter: $data['diameter'] ?? null,
+            flowering_period: $data['flowering_period'] ?? null,
+            area: $data['area'] ?? null,
+            terrace: $data['terrace'] ?? null,
+            water_valve: $data['water_valve'] ?? null,
         );
     }
 
@@ -45,6 +51,9 @@ class TreeDTO
             'longitude',
             'height',
             'diameter',
+            'area',
+            'terrace',
+            'water_valve',
         ]));
     }
 }

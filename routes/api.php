@@ -42,6 +42,15 @@ Route::middleware('auth:sanctum')->delete('/trees/{id}', [TreeController::class,
 Route::middleware('auth:sanctum')->get('/trees/uuid/{uuid}', [TreeController::class, 'showByUuid']);
 Route::middleware('auth:sanctum')->put('/trees/location/{uuid}', [TreeController::class, 'updateTreeLocation']);
 Route::middleware('auth:sanctum')->get('/trees/{uuid}/flowering-period', [TreeController::class, 'getFloweringPeriod']);
+Route::middleware('auth:sanctum')->post('/trees/{id}/labels', [TreeController::class, 'attachLabel']);
+Route::middleware('auth:sanctum')->get('/trees/{id}/labels', [TreeController::class, 'getLabels']);
+Route::middleware('auth:sanctum')->delete('/trees/{treeId}/labels/{labelId}', [TreeController::class, 'removeTreeLabel']);
+Route::middleware('auth:sanctum')->get('/labels', [TreeController::class, 'getAllLabels']);
+Route::middleware('auth:sanctum')->get('/labels/{labelId}/trees', [TreeController::class, 'getTreesByLabel']);
+Route::middleware('auth:sanctum')->get('/trees/{id}/flowering-status', [TreeController::class, 'getFloweringStatus']);
+Route::middleware('auth:sanctum')->post('/trees/{id}/harvest-records', [TreeController::class, 'createHarvestRecord']);
+Route::middleware('auth:sanctum')->get('/trees/{id}/harvest-records', [TreeController::class, 'getHarvestRecords']);
+Route::middleware('auth:sanctum')->post('/trees/{id}/observations', [TreeController::class, 'createObservation']);
 
 // Disease Controller
 Route::middleware('auth:sanctum')->post('/diseases', [DiseaseController::class, 'store']);

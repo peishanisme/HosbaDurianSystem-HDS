@@ -23,12 +23,17 @@ class CreateTreeAction
                 'latitude'          => $dto->latitude,
                 'longitude'         => $dto->longitude,
                 'flowering_period'  => $dto->flowering_period,
+                'area'              => $dto->area,
+                'terrace'           => $dto->terrace,
+                'water_valve'       => $dto->water_valve,
             ]);
 
-            $tree->growthLogs()->create([
-                'height'   => $dto->height,
-                'diameter' => $dto->diameter,
-            ]);
+            if ($dto->height !== null || $dto->diameter !== null) {
+                $tree->growthLogs()->create([
+                    'height'   => $dto->height,
+                    'diameter' => $dto->diameter,
+                ]);
+            }
 
             return $tree;
         });
