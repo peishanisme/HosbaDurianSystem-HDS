@@ -1,61 +1,120 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🌱 Blockchain & GIS-Powered Durian Farm Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A **cross-platform smart agriculture system** designed to digitalize durian farm operations using **Blockchain**, **GIS**, and **QR-based traceability**.  
+This project enables secure, transparent, and data-driven management of durian farms — from tree-level records to fruit sales verification.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📌 Project Overview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Traditional durian farming often relies on **manual record-keeping**, leading to:
+- Poor traceability
+- Delayed operational updates
+- Data inconsistency
+- Limited analytics for decision-making
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+This system solves those problems by providing:
+- **Mobile app** for farm workers (on-site data collection)
+- **Web dashboard** for farm managers
+- **Blockchain-backed traceability** for fruits and transactions
+- **Public QR portal** for consumer transparency
+- **GIS-based tree location tracking**
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🚀 Key Features
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 🌳 Farm & Tree Management
+- Tree registration (species, age, condition)
+- Tree health and growth logs
+- GIS-based tree location visualization
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🍈 Harvest & Post-Harvest Management
+- Harvest event management
+- Fruit quality grading
 
-## Laravel Sponsors
+### 🔗 Blockchain Traceability
+- Fruit metadata stored off-chain (IPFS)
+- Hash verification stored on-chain (Polygon)
+- Blockchain-backed sales transaction records
+- End-to-end metadata integrity verification
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 📊 Analytics & Reporting
+- Farm performance dashboards
+- Harvest yield analysis
+- Exportable PDF & Excel reports
 
-### Premium Partners
+### 🧪 Agrochemical Management
+- Inventory tracking
+- Usage and application logs
+- Purchase history tracking
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+### 🛒 Sales & Buyer Management
+- Buyer profiles
+- Multi-step sales transaction flow
+- Receipt generation
+- Transaction cancellation & verification
 
-## Contributing
+### 🌍 Public Consumer Portal
+- QR-based fruit traceability
+- View fruit origin & details
+- Submit consumer feedback
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 🧩 System Architecture
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **Frontend (Web)**: Laravel + Livewire
+- **Backend**: Laravel + Blockchain API Server
+- **Blockchain**: Polygon (Testnet)
+- **Storage**:
+  - Database: Supabase
+  - Off-chain data: IPFS
+- **Deployment**: Microsoft Azure
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 👥 Target Users
 
-## License
+### 👷 Farm Workers (Mobile App)
+- Record tree health & farm activities
+- Apply agrochemicals
+- Register harvested fruits
+- Scan & generate QR codes
+- Work offline with later sync
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 🧑‍🌾 Farm Managers (Web App)
+- Monitor farm operations
+- Manage users & roles
+- Track harvests and sales
+- View analytics dashboards
+- Generate operational reports
+
+### 🧍 Consumers (Public Portal)
+- Scan fruit QR codes
+- Verify origin and authenticity
+- View fruit details
+- Submit feedback
+
+---
+
+## 🛠️ Technologies Used
+
+- **Laravel**
+- **Livewire**
+- **Polygon Blockchain**
+- **IPFS (Pinata)**
+- **Supabase**
+- **GIS Mapping**
+- **QR Code Technology**
+- **Microsoft Azure**
+
+---
+
+
+## 🙏 Acknowledgements
+
+Special thanks to:
+- **Dr. Chiam Yin Kia** – Project Supervisor  
+- **Hosba Durian Farm Sdn. Bhd.** – Industry collaboration  
+
