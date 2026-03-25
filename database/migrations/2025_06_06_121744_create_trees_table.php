@@ -17,11 +17,11 @@ return new class extends Migration
             $table->string('tree_tag')->unique();
             $table->foreignId('species_id')
                 ->constrained('species');
-            $table->date('planted_at');
+            $table->date('planted_at')->nullable();
             $table->string('thumbnail')->nullable();
             $table->decimal('latitude', 9, 6)->nullable();  
             $table->decimal('longitude', 9, 6)->nullable();
-            $table->integer('flowering_period')->default(0);
+            $table->integer('flowering_period')->default(0)->nullable();
             $table->timestamps();
         });
     }
