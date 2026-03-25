@@ -17,7 +17,7 @@ class AuthController extends Controller
         // Only allow users with role id 1 (super admin) or 3 (worker)
         $roleIds = $user->roles()->pluck('id')->toArray();
 
-        if (!in_array(3, $roleIds, true)) {
+        if (!in_array(1, $roleIds, true) && !in_array(3, $roleIds, true)) {
             return response()->json([
                 'message' => 'You do not have permission to access this application.'
             ], 403);

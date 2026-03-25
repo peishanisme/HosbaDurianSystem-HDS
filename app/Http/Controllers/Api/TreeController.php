@@ -199,6 +199,38 @@ class TreeController extends Controller
         ]);
     }
 
+    /**
+     * Search trees for the frontend search bar.
+     * Query param: `q` (string). Returns paginated trees matching `tree_tag`, `uuid`, `area`, or species name.
+     */
+    public function search(Request $request)
+    {
+        $q = trim((string) $request->get('q', ''));
+        $perPage = (int) $request->get('per_page', 20);
+
+        if ($q === '') {
+            return response()->json([
+                'success' => true,
+                'data' => [],
+            ]);
+        }
+
+        $query = Tree::with('species', 'labels')
+            ->where(function ($query) use ($q) {
+                $query->where('tree_tag', 'like', "%{$q}%");
+            })
+            ->orWhereHas('species', function ($qst) use ($q) {
+                $qst->where('name', 'like', "%{$q}%");
+            });
+
+        $trees = $query->orderBy('created_at', 'desc')->paginate($perPage);
+
+        return response()->json([
+            'success' => true,
+            'data' => $trees,
+        ]);
+    }
+
     public function show($id)
     {
         $tree = Tree::with('species')

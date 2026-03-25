@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\SpeciesController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\Api\AgrochemicalController;
 use App\Http\Controllers\Api\TreeGrowthLogController;
+use App\Http\Controllers\Api\HarvestController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // General
@@ -36,6 +37,7 @@ Route::middleware('auth:sanctum')->post('/check-old-password', [ForgotPasswordCo
 // Tree Controller
 Route::middleware('auth:sanctum')->post('/trees', [TreeController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/trees', [TreeController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/trees/search', [TreeController::class, 'search']);
 Route::middleware('auth:sanctum')->get('/trees/{id}', [TreeController::class, 'show']);
 Route::middleware('auth:sanctum')->put('/trees/{id}', [TreeController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('/trees/{id}', [TreeController::class, 'destroy']);
@@ -51,6 +53,11 @@ Route::middleware('auth:sanctum')->get('/trees/{id}/flowering-status', [TreeCont
 Route::middleware('auth:sanctum')->post('/trees/{id}/harvest-records', [TreeController::class, 'createHarvestRecord']);
 Route::middleware('auth:sanctum')->get('/trees/{id}/harvest-records', [TreeController::class, 'getHarvestRecords']);
 Route::middleware('auth:sanctum')->post('/trees/{id}/observations', [TreeController::class, 'createObservation']);
+Route::middleware('auth:sanctum')->get('/harvests/summary', [HarvestController::class, 'summary']);
+Route::middleware('auth:sanctum')->get('/harvests/summary/day', [HarvestController::class, 'daySummary']);
+Route::middleware('auth:sanctum')->get('/harvests/summary/week', [HarvestController::class, 'weekSummary']);
+Route::middleware('auth:sanctum')->get('/harvests/summary/season', [HarvestController::class, 'seasonSummary']);
+Route::middleware('auth:sanctum')->get('/harvests/details', [HarvestController::class, 'details']);
 
 // Disease Controller
 Route::middleware('auth:sanctum')->post('/diseases', [DiseaseController::class, 'store']);
