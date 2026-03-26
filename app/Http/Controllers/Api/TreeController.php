@@ -710,6 +710,78 @@ class TreeController extends Controller
         }
     }
 
+    /**
+     * Update an existing harvest record for a tree.
+     * URL: PUT /trees/{id}/harvest-records/{harvestUuid}
+     */
+    public function updateHarvestRecord(Request $request, $id, $harvestUuid)
+    {
+        $tree = Tree::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'harvest_date' => 'nullable|date',
+            'num_of_fruits' => 'nullable|integer',
+            'weight' => 'nullable|numeric',
+            'spoilt' => 'nullable|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        try {
+            $record = HarvestRecord::where('harvest_uuid', $harvestUuid)
+                ->where('tree_uuid', $tree->uuid)
+                ->firstOrFail();
+
+            $record->update([
+                'harvest_date' => $request->has('harvest_date') ? $request->harvest_date : $record->harvest_date,
+                'num_of_fruits' => $request->has('num_of_fruits') ? $request->num_of_fruits : $record->num_of_fruits,
+                'weight' => $request->has('weight') ? $request->weight : $record->weight,
+                'spoilt' => $request->has('spoilt') ? $request->spoilt : $record->spoilt,
+            ]);
+
+            return response()->json([
+                'message' => 'Harvest record updated',
+                'data' => $record,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to update harvest record',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Delete a harvest record for a tree.
+     * URL: DELETE /trees/{id}/harvest-records/{harvestUuid}
+     */
+    public function deleteHarvestRecord($id, $harvestUuid)
+    {
+        $tree = Tree::findOrFail($id);
+
+        try {
+            $record = HarvestRecord::where('harvest_uuid', $harvestUuid)
+                ->where('tree_uuid', $tree->uuid)
+                ->firstOrFail();
+
+            $record->delete();
+
+            return response()->json([
+                'message' => 'Harvest record deleted'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete harvest record',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function getHarvestRecords(Request $request, $id)
     {
         $tree = Tree::findOrFail($id);
