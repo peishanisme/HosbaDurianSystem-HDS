@@ -184,9 +184,9 @@ class TreeController extends Controller
             });
         }
 
-        // Sort by field (default: created_at)
-        $sortBy = $request->get('sort_by', 'created_at');
-        $sortOrder = $request->get('sort_order', 'desc');
+        // Sort by field (default: tree_tag ascending)
+        $sortBy = $request->get('sort_by', 'tree_tag');
+        $sortOrder = $request->get('sort_order', 'asc');
         $query->orderBy($sortBy, $sortOrder);
 
         // Pagination
