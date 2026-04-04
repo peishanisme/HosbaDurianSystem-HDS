@@ -19,7 +19,7 @@ class HarvestRecord extends Model
     ];
 
     protected $casts = [
-        'harvest_date' => 'date',
+        'harvest_date' => 'date:Y-m-d', 
         'spoilt' => 'boolean',
         'weight' => 'decimal:2',
     ];
@@ -27,12 +27,9 @@ class HarvestRecord extends Model
     protected static function boot()
     {
         parent::boot();
-
-        static::creating(function ($model) {
-            if (empty($model->harvest_uuid)) {
-                $model->harvest_uuid = (string) Str::uuid();
-            }
-        });
+        // Do not auto-generate `harvest_uuid` here. `harvest_uuid` is
+        // a reference to `harvest_events.uuid` and should be provided
+        // by callers or created by the HarvestEvent creation process.
     }
 
     public function tree(): BelongsTo

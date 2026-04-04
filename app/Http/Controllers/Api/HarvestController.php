@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\HarvestRecord;
+use App\Models\HarvestEvent;
 use Carbon\Carbon;
 
 class HarvestController extends Controller
@@ -59,7 +60,22 @@ class HarvestController extends Controller
 	 */
 	public function daySummary(Request $request)
 	{
-		$date = $request->input('date') ?? now()->toDateString();
+		// Require client to provide a date (YYYY-MM-DD)
+		if (! $request->has('date')) {
+			return response()->json([
+				'success' => false,
+				'message' => 'Please provide a date (YYYY-MM-DD) as the "date" query parameter.'
+			], 422);
+		}
+
+		try {
+			$date = Carbon::parse($request->input('date'))->toDateString();
+		} catch (\Exception $e) {
+			return response()->json([
+				'success' => false,
+				'message' => 'Invalid date format. Use YYYY-MM-DD.'
+			], 422);
+		}
 
 		$totals = HarvestRecord::selectRaw(<<<SQL
 			SUM(CASE WHEN spoilt THEN weight ELSE 0 END) as spoilt_weight,
@@ -102,10 +118,26 @@ class HarvestController extends Controller
 	 */
 	public function weekSummary(Request $request)
 	{
-		$date = $request->input('date') ?? now()->toDateString();
-		$dt = Carbon::parse($date);
-		$from = $dt->startOfWeek()->toDateString();
-		$to = $dt->endOfWeek()->toDateString();
+		// Require client to provide a date range via `from` and `to` (YYYY-MM-DD)
+		$from = $request->input('from');
+		$to = $request->input('to');
+
+		if (! $from || ! $to) {
+			return response()->json([
+				'success' => false,
+				'message' => 'Please provide both from and to dates (YYYY-MM-DD).'
+			], 422);
+		}
+
+		try {
+			$from = Carbon::parse($from)->toDateString();
+			$to = Carbon::parse($to)->toDateString();
+		} catch (\Exception $e) {
+			return response()->json([
+				'success' => false,
+				'message' => 'Invalid date format. Use YYYY-MM-DD.'
+			], 422);
+		}
 
 		$totals = HarvestRecord::selectRaw(<<<SQL
 			SUM(CASE WHEN spoilt THEN weight ELSE 0 END) as spoilt_weight,
@@ -133,16 +165,19 @@ class HarvestController extends Controller
 	 */
 	public function seasonSummary(Request $request)
 	{
-		$from = $request->input('from');
-		$to = $request->input('to');
+		// Use the currently active harvest event
+		$event = HarvestEvent::where('active', true)
+			->orderBy('start_date', 'desc')
+			->first();
 
-		if (! $from || ! $to) {
-			$min = HarvestRecord::min('harvest_date');
-			$max = HarvestRecord::max('harvest_date');
-			$from = $from ?? $min;
-			$to = $to ?? $max;
+		if (! $event) {
+			return response()->json([
+				'success' => false,
+				'message' => 'No active harvest event found.'
+			], 404);
 		}
 
+		// Totals for the active harvest_uuid
 		$totals = HarvestRecord::selectRaw(<<<SQL
 			SUM(CASE WHEN spoilt THEN weight ELSE 0 END) as spoilt_weight,
 			SUM(CASE WHEN NOT spoilt THEN weight ELSE 0 END) as not_spoilt_weight,
@@ -150,17 +185,31 @@ class HarvestController extends Controller
 			SUM(CASE WHEN NOT spoilt THEN num_of_fruits ELSE 0 END) as not_spoilt_fruits
 		SQL
 		)
-			->whereBetween('harvest_date', [$from, $to])
+			->where('harvest_uuid', $event->uuid)
 			->first();
 
 		return response()->json([
 			'success' => true,
 			'data' => [
-				'from' => $from,
-				'to' => $to,
+				'harvest_event' => $event,
 				'totals' => $totals,
 			],
 		]);
+	}
+
+		/**
+		 * Return all active harvest events (where `active` = true).
+		 */
+		public function activeEvents(Request $request)
+		{
+			$events = HarvestEvent::where('active', true)
+				->orderBy('start_date', 'desc')
+				->get();
+
+			return response()->json([
+				'success' => true,
+				'data' => $events,
+			]);
 	}
 
 	/**

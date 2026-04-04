@@ -60,6 +60,7 @@ Route::middleware('auth:sanctum')->get('/harvests/summary/day', [HarvestControll
 Route::middleware('auth:sanctum')->get('/harvests/summary/week', [HarvestController::class, 'weekSummary']);
 Route::middleware('auth:sanctum')->get('/harvests/summary/season', [HarvestController::class, 'seasonSummary']);
 Route::middleware('auth:sanctum')->get('/harvests/details', [HarvestController::class, 'details']);
+Route::middleware('auth:sanctum')->get('/harvests/active', [HarvestController::class, 'activeEvents']);
 
 // Disease Controller
 Route::middleware('auth:sanctum')->post('/diseases', [DiseaseController::class, 'store']);

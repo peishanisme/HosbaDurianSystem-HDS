@@ -11,6 +11,7 @@ use App\Models\TreeObservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Models\TreeGrowthLog;
 use App\Actions\TreeManagement\UpdateTreeAction;
 use App\DataTransferObject\TreeDTO;
@@ -184,9 +185,9 @@ class TreeController extends Controller
             });
         }
 
-        // Sort by field (default: created_at)
-        $sortBy = $request->get('sort_by', 'created_at');
-        $sortOrder = $request->get('sort_order', 'desc');
+        // Sort by field (default: tree_tag ascending)
+        $sortBy = $request->get('sort_by', 'id');
+        $sortOrder = $request->get('sort_order', 'asc');
         $query->orderBy($sortBy, $sortOrder);
 
         // Pagination
@@ -659,6 +660,9 @@ class TreeController extends Controller
     {
         $tree = Tree::findOrFail($id);
 
+        // Log incoming payload for debugging (checks what's sent from frontend)
+        Log::debug('createHarvestRecord payload', ['tree_id' => $id, 'payload' => $request->all()]);
+
         $validator = Validator::make($request->all(), [
             'harvest_uuid' => 'nullable|uuid',
             'harvest_date' => 'nullable|date',
@@ -676,24 +680,14 @@ class TreeController extends Controller
 
         DB::beginTransaction();
         try {
-            $harvestUuid = $request->harvest_uuid ?? null;
-
-            if ($harvestUuid && HarvestRecord::where('harvest_uuid', $harvestUuid)->exists()) {
-                $existing = HarvestRecord::where('harvest_uuid', $harvestUuid)->first();
-                return response()->json([
-                    'message' => 'Harvest record already exists',
-                    'data' => $existing,
-                ], 200);
-            }
-
-            $record = HarvestRecord::create([
-                'harvest_uuid' => $harvestUuid,
-                'tree_uuid' => $tree->uuid,
-                'harvest_date' => $request->harvest_date ?? null,
-                'num_of_fruits' => $request->num_of_fruits ?? 0,
-                'weight' => $request->weight ?? null,
-                'spoilt' => $request->spoilt ?? false,
-            ]);
+           $record = HarvestRecord::create([
+            'harvest_uuid' => $request->harvest_uuid ?? null,
+            'tree_uuid' => $tree->uuid,
+            'harvest_date' => $request->harvest_date ?? null,
+            'num_of_fruits' => $request->num_of_fruits ?? 0,
+            'weight' => $request->weight ?? null,
+            'spoilt' => $request->spoilt ?? false,
+        ]);
 
             DB::commit();
 
