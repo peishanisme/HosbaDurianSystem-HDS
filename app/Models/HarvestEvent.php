@@ -24,6 +24,13 @@ class HarvestEvent extends Model implements Reportable
         'start_date',
         'end_date',
         'description',
+        'active',
+    ];
+
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'active' => 'boolean',
     ];
 
     public function getActivitylogOptions(): LogOptions
