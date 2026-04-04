@@ -165,15 +165,19 @@ class HarvestController extends Controller
 	 */
 	public function seasonSummary(Request $request)
 	{
-		$from = $request->input('from');
-		$to = $request->input('to');
+		// Use the currently active harvest event
+		$event = HarvestEvent::where('active', true)
+			->orderBy('start_date', 'desc')
+			->first();
 
-		if (! $from || ! $to) {
-			$min = HarvestRecord::min('harvest_date');
-			$max = HarvestRecord::max('harvest_date');
-			$from = $from ?? $min;
-			$to = $to ?? $max;
+		if (! $event) {
+			return response()->json([
+				'success' => false,
+				'message' => 'No active harvest event found.'
+			], 404);
 		}
+
+		// Totals for the active harvest_uuid
 		$totals = HarvestRecord::selectRaw(<<<SQL
 			SUM(CASE WHEN spoilt THEN weight ELSE 0 END) as spoilt_weight,
 			SUM(CASE WHEN NOT spoilt THEN weight ELSE 0 END) as not_spoilt_weight,
@@ -181,14 +185,13 @@ class HarvestController extends Controller
 			SUM(CASE WHEN NOT spoilt THEN num_of_fruits ELSE 0 END) as not_spoilt_fruits
 		SQL
 		)
-			->whereBetween('harvest_date', [$from, $to])
+			->where('harvest_uuid', $event->uuid)
 			->first();
 
 		return response()->json([
 			'success' => true,
 			'data' => [
-				'from' => $from,
-				'to' => $to,
+				'harvest_event' => $event,
 				'totals' => $totals,
 			],
 		]);
