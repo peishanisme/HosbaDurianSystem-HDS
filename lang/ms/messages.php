@@ -2,7 +2,7 @@
 
 return [
 
-    // general
+// general
 'species' => 'Spesies',
 'tree' => 'Pokok',
 'agrochemical' => 'Agrokimia',
@@ -103,6 +103,10 @@ return [
 'planted_at' => 'Tarikh Ditanam',
 
 // tree modal
+'create_tree' => 'Cipta Pokok',
+'area' => 'Kawasan',
+'terrace' => 'Teres',
+'water_valve' => 'Katup Air',
 'thumbnail' => 'Imej Kecil',
 'initial_height' => 'Ketinggian Awal',
 'initial_diameter' => 'Diameter Awal',

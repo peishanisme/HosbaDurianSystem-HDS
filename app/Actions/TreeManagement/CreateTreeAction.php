@@ -14,12 +14,12 @@ class CreateTreeAction
     {
         return DB::transaction(function () use ($dto): Tree {
 
-            $thumbnailPath = (new SaveMediaToStorageAction(app(MediaService::class)))->handle($dto, 'trees');
+            // $thumbnailPath = (new SaveMediaToStorageAction(app(MediaService::class)))->handle($dto, 'trees');
 
             $tree = Tree::create([
                 'species_id'        => $dto->species_id,
                 'planted_at'        => $dto->planted_at,
-                'thumbnail'         => $thumbnailPath,
+                // 'thumbnail'         => $thumbnailPath,
                 'latitude'          => $dto->latitude,
                 'longitude'         => $dto->longitude,
                 'flowering_period'  => $dto->flowering_period,

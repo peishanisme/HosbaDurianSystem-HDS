@@ -15,7 +15,7 @@ class TreeListingTable extends DataTableComponent
     {
         return Tree::query()
             ->with(['species', 'latestGrowthLog'])
-            ->orderBy('trees.created_at', 'desc'); 
+            ->orderBy('trees.created_at', 'desc');
     }
 
 
@@ -23,7 +23,18 @@ class TreeListingTable extends DataTableComponent
     {
         $this->setPrimaryKey('id')
             ->setSearchPlaceholder(__('messages.search_trees'))
-            ->setEmptyMessage(__('messages.no_results_found'));
+            ->setEmptyMessage(__('messages.no_results_found'))
+            ->setConfigurableAreas([
+                'toolbar-right-end' => [
+                    'livewire.components.modal-button',
+                    [
+                        'label' => __('messages.create_tree'),
+                        'dispatch' => 'reset-tree',
+                        'target' => 'treeModalLivewire',
+                        'permission' => 'create-tree',
+                    ]
+                ]
+            ]);
     }
 
     public function filters(): array
@@ -47,7 +58,7 @@ class TreeListingTable extends DataTableComponent
             ViewComponentColumn::make(__('messages.tree_tag'), 'tree_tag')
                 ->component('components.table-primary-column')
                 ->attributes(fn($value, $row, Column $column) => [
-                    'thumbnail' => $row->thumbnail ?? 'default',
+                    'avatar' => strtoupper(substr(trim($value), -4)),
                     'title' => $value,
                     'route' => route('tree.show', $row->id),
                 ])->searchable()
@@ -61,6 +72,12 @@ class TreeListingTable extends DataTableComponent
                 ]),
 
             Column::make(__('messages.planted_at'), "planted_at")
+                ->sortable(),
+
+            Column::make(__('messages.area'), "area")
+                ->sortable(),
+
+            Column::make(__('messages.terrace'), "terrace")
                 ->sortable(),
 
             Column::make(__('messages.actions'))

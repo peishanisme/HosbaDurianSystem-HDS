@@ -32,12 +32,6 @@
                         <!--begin::Info-->
                         <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
                             <span class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
-                                <i class="ki-duotone ki-profile-circle fs-4 me-1">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                    <span class="path3"></span>
-                                </i>{{ $tree->uuid }}</span>
-                            <span class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
                                 <i class="ki-duotone ki-tree fs-4 me-1">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
@@ -126,7 +120,7 @@
                     <div class="d-flex flex-column flex-grow-1 pe-8">
                         <div class="d-flex flex-wrap">
 
-                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                            {{-- <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
                                     <div class="fs-2 fw-bold">{{ $tree->latestGrowthLog->height ?? '-' }} m</div>
                                 </div>
@@ -138,6 +132,27 @@
                                     <div class="fs-2 fw-bold">{{ $tree->latestGrowthLog->diameter ?? '-' }} m</div>
                                 </div>
                                 <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.diameter') }}</div>
+                            </div> --}}
+
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-2 fw-bold">{{ $tree->area }} </div>
+                                </div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.area') }}</div>
+                            </div>
+
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-2 fw-bold">{{ $tree->terrace }} </div>
+                                </div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.terrace') }}</div>
+                            </div>
+
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-2 fw-bold">{{ $tree->water_valve }} </div>
+                                </div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.water_valve') }}</div>
                             </div>
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">

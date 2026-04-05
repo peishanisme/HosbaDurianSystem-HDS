@@ -103,7 +103,11 @@ return [
     'planted_at' => 'Planted At',
 
     // tree modal
+    'create_tree' => 'Create Tree',
     'thumbnail' => 'Thumbnail',
+    'area' => 'Area',
+    'terrace' => 'Terrace',
+    'water_valve' => 'Water Valve',
     'initial_height' => 'Initial Height',
     'initial_diameter' => 'Initial Diameter',
     'initial_flowering_period' => 'Initial Flowering Period',

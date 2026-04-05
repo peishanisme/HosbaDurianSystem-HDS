@@ -102,6 +102,10 @@ return [
     'planted_at' => '种植日期',
 
     //tree modal
+    'create_tree' => '创建树木',
+    'area' => '区域',
+    'terrace' => '梯田',
+    'water_valve' => '水阀',
     'thumbnail' => '图片',
     'initial_height' => '初始高度',
     'initial_diameter' => '初始直径',

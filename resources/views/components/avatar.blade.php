@@ -19,14 +19,14 @@
     $colorStyle = $styles[$index];
 
     // Get first capital letter
-    $initial = strtoupper(substr(trim($name), 0, 1));
+    $initial = strtoupper(substr(trim($name), 0, 4));
 
     // Combine the classes
     $classes = implode(' ', $colorStyle);
 @endphp
 
 <div class="symbol">
-    <div class="symbol-label fw-semibold {{ $classes }}" style="width: {{ $size }}; height: {{ $size }}; font-size: calc({{ $size }} / 3);">
+    <div class="symbol-label fw-semibold {{ $classes }}" style="width: {{ $size }}; height: {{ $size }}; font-size: calc({{ $size }} / 4);">
         {{ $initial }}
     </div>
 </div>
