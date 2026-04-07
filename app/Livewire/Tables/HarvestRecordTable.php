@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Livewire\Tables;
+
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+use App\Models\HarvestEvent;
+use App\Models\HarvestRecord;
+use Illuminate\Database\Eloquent\Builder;
+use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
+
+class HarvestRecordTable extends DataTableComponent
+{
+    public ?HarvestEvent $harvestEvent = null;
+    public function builder(): Builder
+    {
+        return HarvestRecord::query()
+            ->where('harvest_uuid', $this->harvestEvent->uuid)
+            ->with('tree');
+    }
+
+    public function configure(): void
+    {
+        $this->setPrimaryKey('id');
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::make("Id", "id")
+                ->sortable()
+                ->hideIf(true),
+            Column::make("Harvest uuid", "harvest_uuid")
+                ->sortable()
+                ->hideIf(true),
+            Column::make("Tree tag", "tree.tree_tag")
+                ->sortable()
+                ->searchable(),
+            Column::make("Harvest date", "harvest_date")
+                ->format(fn($value) => $value->format('Y-m-d'))
+                ->sortable(),
+            Column::make("Num of fruits", "num_of_fruits")
+                ->sortable(),
+            Column::make("Weight", "weight")
+                ->format(fn($value) => $value ? $value . ' kg' : '-')
+                ->sortable(),
+            ViewComponentColumn::make(__('messages.spoilt'), 'spoilt')
+                ->component('table-badge')
+                ->attributes(fn($value, $row, Column $column) => [
+                    'badge' => $row->spoilt ?  'badge-light-danger' : 'badge-light-success',
+                    'label' => $row->spoilt ? __('messages.spoilt') : __('messages.not_spoilt'),
+                ]),
+            Column::make("Created at", "created_at")
+                ->sortable()
+                ->hideIf(true),
+            Column::make("Updated at", "updated_at")
+                ->sortable()
+                ->hideIf(true),
+        ];
+    }
+}

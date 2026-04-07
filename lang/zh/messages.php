@@ -188,6 +188,9 @@ return [
         'Available' => '可售',
         'Sold' => '已售出',
     ],
+    'spoilt' => '已损坏',
+    'not_spoilt' => '未损坏',
+
 
     //disease listing
     'search_diseases' => '搜索病害',

@@ -185,6 +185,8 @@ return [
 'harvested_date' => 'Tarikh Dituai',
 'sold' => 'Dijual',
 'available' => 'Tersedia',
+'spoilt' => 'Rosak',
+'not_spoilt' => 'Tiada Rosak',
 
 'selling_status' => [
     'Available' => 'Tersedia',

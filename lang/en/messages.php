@@ -285,6 +285,8 @@ return [
     'total_fruit' => 'Total Fruit',
     'no_fruits_for_this_tree' => 'No fruits for this tree.',
     'no_trees_found' => 'No trees found.',
+    'spoilt' => 'Spoilt',
+    'not_spoilt' => 'Not Spoilt',
 
     // buyer index
     'search_buyers' => 'Search Buyers',
