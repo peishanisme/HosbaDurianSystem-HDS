@@ -33,6 +33,9 @@ class HarvestRecordTable extends DataTableComponent
             Column::make("Harvest uuid", "harvest_uuid")
                 ->sortable()
                 ->hideIf(true),
+            Column::make("Tree uuid", "tree_uuid")
+                ->sortable()
+                ->hideIf(true),
             Column::make("Tree tag", "tree.tree_tag")
                 ->sortable()
                 ->searchable(),
@@ -56,6 +59,16 @@ class HarvestRecordTable extends DataTableComponent
             Column::make("Updated at", "updated_at")
                 ->sortable()
                 ->hideIf(true),
+            Column::make(__('messages.actions'))
+                ->label(fn($row, Column $column) => view('components.table-button', [
+                    'icon' => 'bi-qr-code',
+                    'modal' => 'harvestQrCodeModalLivewire',
+                    'label' => __('messages.print_qr_code'),
+                    'dispatch' => 'load-qr-code',
+                    'dataField' => 'harvestRecord',
+                    'data' => $row->id,
+                ]))->html()
+                ->excludeFromColumnSelect(),
         ];
     }
 }

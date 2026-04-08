@@ -5,4 +5,6 @@
 
     <livewire:components.generate-report-modal model="App\Models\HarvestEvent" :harvestEvent="$harvestEvent"/>
 
+    <livewire:module.post-harvest.harvest-qr-code-modal-livewire />
+
 </div>
