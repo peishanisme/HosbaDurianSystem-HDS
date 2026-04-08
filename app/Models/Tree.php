@@ -45,10 +45,23 @@ class Tree extends Model
         });
 
         static::updating(function ($model) {
-            if ($model->isDirty('species_id')) {
-                $model->tree_tag = static::generateTreeTag($model->species_id, $model->id);
+        if ($model->isDirty('species_id')) {
+
+            // Get current sequence number
+            if (preg_match('/-(\d+)$/', $model->tree_tag, $matches)) {
+                $sequence = $matches[1];
+            } else {
+                $sequence = '0000';
             }
-        });
+
+            // Get new species code
+            $species = Species::findOrFail($model->species_id);
+            $speciesCode = $species->code;
+
+            // Build new tag with same sequence
+            $model->tree_tag = $speciesCode . '-' . $sequence;
+        }
+    });
     }
 
     public static function generateTreeTag($speciesId, $excludeId = null): string
