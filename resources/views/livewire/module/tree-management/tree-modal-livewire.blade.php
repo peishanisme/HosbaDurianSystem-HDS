@@ -20,7 +20,7 @@
     </div>
 
     <div class="fv-row mb-8">
-        <x-input-label for="planted_at" class="required mb-2" :value="__('messages.planted_at')" />
+        <x-input-label for="planted_at" class="mb-2" :value="__('messages.planted_at')" />
         <x-input-text id="planted_at" type="date" placeholder="Planted_at" wire:model="form.planted_at" />
         <x-input-error :messages="$errors->get('form.planted_at')" />
     </div>

@@ -11,36 +11,47 @@ class HarvestQrCodeModalLivewire extends Component
 {
     protected $listeners = ['refreshComponent' => '$refresh'];
     public string $modalID = 'harvestQrCodeModalLivewire';
-    public string $modalTitle = 'Harvest QR Code';
-    public ?HarvestRecord $harvestRecord = null;
+    public string $modalTitle = 'Fruit QR Codes';
     public ?Tree $tree = null;
     public int $quantity = 1;
 
-    public function increment()
-    {
-        $this->quantity++;
-    }
+    // public function increment()
+    // {
+    //     $this->quantity++;
+    // }
 
-    public function decrement()
-    {
-        if ($this->quantity > 1) {
-            $this->quantity--;
-        }
-    }
+    // public function decrement()
+    // {
+    //     if ($this->quantity > 1) {
+    //         $this->quantity--;
+    //     }
+    // }
 
     #[On('load-qr-code')]
-    public function loadQrCode(HarvestRecord $harvestRecord)
+    public function loadQrCode(Tree $tree)
     {
-        $this->harvestRecord = $harvestRecord;
-        $this->tree = Tree::where('uuid', $harvestRecord->tree_uuid)->first();
-        $this->quantity = $harvestRecord->num_of_fruits;
+        $this->tree = $tree;
+        $this->quantity = 1;
     }
 
     public function resetInput(): void
     {
-        $this->harvestRecord = null;
         $this->tree = null;
         $this->quantity = 1;
+    }
+
+    public function generatePdf()
+    {
+        if (!$this->tree) {
+            return;
+        }
+
+        $this->dispatch(
+            'print-fruit-labels',
+            treeUrl: route('public.portal', $this->tree->uuid),
+            treeTag: $this->tree->tree_tag,
+            quantity: $this->quantity,
+        );
     }
 
     public function render()

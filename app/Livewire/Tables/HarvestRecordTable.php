@@ -59,16 +59,16 @@ class HarvestRecordTable extends DataTableComponent
             Column::make("Updated at", "updated_at")
                 ->sortable()
                 ->hideIf(true),
-            Column::make(__('messages.actions'))
-                ->label(fn($row, Column $column) => view('components.table-button', [
-                    'icon' => 'bi-qr-code',
-                    'modal' => 'harvestQrCodeModalLivewire',
-                    'label' => __('messages.print_qr_code'),
-                    'dispatch' => 'load-qr-code',
-                    'dataField' => 'harvestRecord',
-                    'data' => $row->id,
-                ]))->html()
-                ->excludeFromColumnSelect(),
+            // Column::make(__('messages.actions'))
+            //     ->label(fn($row, Column $column) => view('components.table-button', [
+            //         'icon' => 'bi-qr-code',
+            //         'modal' => 'harvestQrCodeModalLivewire',
+            //         'label' => __('messages.print_qr_code'),
+            //         'dispatch' => 'load-qr-code',
+            //         'dataField' => 'harvestRecord',
+            //         'data' => $row->id,
+            //     ]))->html()
+            //     ->excludeFromColumnSelect(),
         ];
     }
 }

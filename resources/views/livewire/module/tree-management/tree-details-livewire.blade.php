@@ -21,6 +21,10 @@
             <x-charts.trees.total-harvest-fruit-chart :totalHarvestData="$totalHarvestData" />
         </div>
     </div>
+
+    {{-- fruit qr modal --}}
+    <livewire:module.post-harvest.harvest-qr-code-modal-livewire /> 
+
 </div>
 
 @push('styles')

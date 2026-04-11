@@ -118,7 +118,7 @@ return [
 'tree_details' => 'Butiran Pokok',
 
 // tree details header
-'show_qr_code' => 'Papar Kod QR',
+'show_tree_qr_code' => 'Papar Kod QR Pokok',
 'tree_qr_code' => 'Kod QR Pokok',
 'download' => 'Muat Turun',
 'print' => 'Cetak',

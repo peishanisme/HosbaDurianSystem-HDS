@@ -21,7 +21,7 @@
         style=" border-radius: 8px;">
         <div>
             <h2 class="card-title mb-1">{{ __('messages.current_weather') }}</h2>
-            <p class="text-white mb-5">Hosba Durian Farm, Kedah</p>
+            <p class="text-white mb-5">Hosba Durian Farm, Napoh Kedah</p>
 
             <h1 class="fw-bold mb-0" style="font-size: 35px;">
                 {{ $weather['temperature_2m'] ?? '--' }}°C

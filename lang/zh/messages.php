@@ -117,7 +117,7 @@ return [
     'tree_details' => '树木详情',
 
     //tree details header
-    'show_qr_code' => '显示二维码',
+    'show_tree_qr_code' => '显示树二维码',
     'tree_qr_code' => '树木二维码',
     'download' => '下载',
     'print' => '打印',

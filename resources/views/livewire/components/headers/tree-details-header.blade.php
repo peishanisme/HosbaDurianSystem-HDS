@@ -37,11 +37,7 @@
                                     <span class="path2"></span>
                                     <span class="path3"></span>
                                 </i>{{ $tree->species->name }}</span>
-                            <span class="d-flex align-items-center text-gray-500 text-hover-primary mb-2">
-                                <i class="ki-duotone ki-time fs-4 me-1">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>{{ $tree->planted_at }}</span>
+
                         </div>
                         <!--end::Info-->
                     </div>
@@ -51,7 +47,7 @@
                         <a href="#" class="btn btn-sm btn-light me-2" data-bs-toggle="modal"
                             data-bs-target="#qrModal">
                             <i class="ki-duotone ki-check fs-3 d-none"></i>
-                            <span class="indicator-label">{{ __('messages.show_qr_code') }}</span>
+                            <span class="indicator-label">{{ __('messages.show_tree_qr_code') }}</span>
                         </a>
 
                         {{-- tree qr modal --}}
@@ -84,6 +80,15 @@
 
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="me-3">
+                            <button type="button" class="btn btn-sm btn-light-info d-flex align-items-center gap-2"
+                                data-bs-toggle="modal" data-bs-target="#harvestQrCodeModalLivewire"
+                                wire:click="$dispatch('load-qr-code', { tree: {{ $tree->id }} })">
+                                <i class="bi-qr-code"></i>
+                                Print Fruit QR
+                            </button>
                         </div>
 
                         <div class="me-3">
@@ -174,7 +179,8 @@
             <x-show-navbar-navitem title="{{ __('messages.growth_logs') }}" :route="route('tree.growth-log', $tree->id)" :active="request()->routeIs('tree.growth-log')" />
             {{-- <x-show-navbar-navitem title="Status History" /> --}}
             <x-show-navbar-navitem title="{{ __('messages.health_records') }}" :route="route('tree.health-record', $tree->id)" :active="request()->routeIs('tree.health-record')" />
-            <x-show-navbar-navitem title="{{ __('messages.agrochemical_usages') }}" :route="route('tree.agrochemical-usage', $tree->id)" :active="request()->routeIs('tree.agrochemical-usage')" />
+            <x-show-navbar-navitem title="{{ __('messages.agrochemical_usages') }}" :route="route('tree.agrochemical-usage', $tree->id)"
+                :active="request()->routeIs('tree.agrochemical-usage')" />
             <x-show-navbar-navitem title="{{ __('messages.harvests') }}" :route="route('tree.harvest-record', $tree->id)" :active="request()->routeIs('tree.harvest-record')" />
             {{-- <x-show-navbar-navitem title="Media" /> --}}
         </ul>

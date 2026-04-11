@@ -23,14 +23,14 @@ class TreeForm extends Form
     {
         return [
             'species_id'        => ['required', 'exists:species,id'],
-            'planted_at'        => ['required', 'date', 'before_or_equal:today'],
+            'planted_at'        => ['nullable', 'date', 'before_or_equal:today'],
             'thumbnail'         => ['nullable'], 
             'height'            => ['required', 'numeric', 'min:0'],
             'diameter'          => ['required', 'numeric', 'min:0'],
-            'flowering_period'  => ['required', 'numeric', 'min:1'],
+            'flowering_period'  => ['required', 'numeric'],
             'area'              => ['required', 'string', 'max:255'],
-            'terrace'           => ['required', 'integer', 'min:1'],
-            'water_valve'       => ['nullable', 'integer', 'min:1'],
+            'terrace'           => ['required', 'integer'],
+            'water_valve'       => ['nullable', 'integer'],
         ];
     }
 

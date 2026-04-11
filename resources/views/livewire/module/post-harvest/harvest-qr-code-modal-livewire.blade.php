@@ -3,12 +3,12 @@
     <div class="d-flex justify-content-center">
         <div class="text-center">
             @if (!$tree)
-                <div class="spinner-border" role="status">
+                <div class="spinner-border mb-4" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
             @else
                 <div class="qr-code-container mb-5">
-                    {!! QrCode::size(200)->generate($tree->uuid) !!}
+                    {!! QrCode::size(150)->generate(route('public.portal', $tree->uuid)) !!}
                 </div>
 
                 <div class="fs-4 fw-bold mb-2">{{ $tree->tree_tag }}</div>
@@ -16,30 +16,29 @@
                 <div class="d-flex justify-content-center align-items-center gap-3 mb-4">
                     <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
 
-                        <!-- Decrease -->
+                        {{-- <!-- Decrease -->
                         <button wire:click="decrement" class="btn btn-light">
                             <i class="ki-duotone ki-minus fs-2"></i>
-                        </button>
+                        </button> --}}
 
                         <!-- Input -->
-                        <input wire:model="quantity" min="1" class="form-control text-center"
+                        <input type="number" wire:model="quantity" min="1" class="form-control text-center"
                             style="width: 70px;" />
 
-                        <!-- Increase -->
+                        {{-- <!-- Increase -->
                         <button wire:click="increment" class="btn btn-light">
                             <i class="ki-duotone ki-plus fs-2"></i>
-                        </button>
+                        </button> --}}
 
                     </div>
                 </div>
-
-                <x-button wire:click="generatePdf" class="btn btn-primary mb-4">
-                    {{ __('Print QR Codes') }}
-                </x-button>
             @endif
         </div>
 
         @slot('footer')
+            <x-button wire:click="generatePdf" class="btn btn-primary me-3">
+                {{ __('Print QR Codes') }}
+            </x-button>
             <x-button type="button" class="btn btn-secondary"
                 data-bs-dismiss="modal">{{ __('messages.cancel') }}</x-button>
         @endslot
