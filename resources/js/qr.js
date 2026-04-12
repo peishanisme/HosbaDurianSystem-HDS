@@ -45,26 +45,6 @@ window.printQR = function (title) {
     }, 300);
 };
 
-window.addEventListener('print-fruit-labels', (event) => {
-    const data = event.detail;
-
-    window.printFruitLabels(
-        data.treeUrl,
-        data.treeTag,
-        data.quantity
-    );
-});
-
-window.addEventListener('print-fruit-labels', (event) => {
-    const data = event.detail;
-
-    window.printFruitLabels(
-        data.treeUrl,
-        data.treeTag,
-        data.quantity
-    );
-});
-
 window.printFruitLabels = function (treeUrl, treeTag, quantity) {
     const iframe = document.createElement('iframe');
 

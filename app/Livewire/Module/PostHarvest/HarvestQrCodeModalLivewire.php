@@ -14,6 +14,8 @@ class HarvestQrCodeModalLivewire extends Component
     public string $modalTitle = 'Fruit QR Codes';
     public ?Tree $tree = null;
     public int $quantity = 1;
+    public string $treeUrl = '';
+    public string $treeTag = '';
 
     // public function increment()
     // {
@@ -32,27 +34,31 @@ class HarvestQrCodeModalLivewire extends Component
     {
         $this->tree = $tree;
         $this->quantity = 1;
+        $this->treeUrl = route('public.portal', $this->tree->uuid);
+        $this->treeTag = $this->tree->tree_tag;
     }
 
     public function resetInput(): void
     {
         $this->tree = null;
         $this->quantity = 1;
+        $this->treeUrl = '';
+        $this->treeTag = '';
     }
 
-    public function generatePdf()
-    {
-        if (!$this->tree) {
-            return;
-        }
+    // public function generatePdf()
+    // {
+    //     if (!$this->tree) {
+    //         return;
+    //     }
 
-        $this->dispatch(
-            'print-fruit-labels',
-            treeUrl: route('public.portal', $this->tree->uuid),
-            treeTag: $this->tree->tree_tag,
-            quantity: $this->quantity,
-        );
-    }
+    //     $this->dispatch(
+    //         'print-fruit-labels',
+    //         treeUrl: route('public.portal', $this->tree->uuid),
+    //         treeTag: $this->tree->tree_tag,
+    //         quantity: $this->quantity,
+    //     );
+    // }
 
     public function render()
     {

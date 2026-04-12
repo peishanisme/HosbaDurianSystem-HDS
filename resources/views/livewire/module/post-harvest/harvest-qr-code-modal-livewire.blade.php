@@ -22,7 +22,7 @@
                         </button> --}}
 
                         <!-- Input -->
-                        <input type="number" wire:model="quantity" min="1" class="form-control text-center"
+                        <input type="number" wire:model.live="quantity" min="1" class="form-control text-center"
                             style="width: 70px;" />
 
                         {{-- <!-- Increase -->
@@ -36,9 +36,17 @@
         </div>
 
         @slot('footer')
-            <x-button wire:click="generatePdf" class="btn btn-primary me-3">
-                {{ __('Print QR Codes') }}
-            </x-button>
+            <div class="wire:ignore">
+                <button type="button" class="btn btn-primary"
+                    onclick="printFruitLabels(
+    '{{ $treeUrl }}',
+    '{{ $treeTag }}',
+    {{ $quantity }}
+)">
+                    Print QR Codes
+                </button>
+            </div>
+
             <x-button type="button" class="btn btn-secondary"
                 data-bs-dismiss="modal">{{ __('messages.cancel') }}</x-button>
         @endslot
