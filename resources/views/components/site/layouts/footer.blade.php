@@ -8,11 +8,11 @@
             </h3>
 
             <p class="hunter-green mb-4 max-w-xs">
-                Providing the finest durian products with full traceability from farm to table,
-                ensuring your peace of mind.
+                Providing the finest durian experience with carefully selected fruits, delivering rich flavor and
+                exceptional quality in every bite.
             </p>
 
-            <div class="flex justify-center space-x-4">
+            {{-- <div class="flex justify-center space-x-4">
                 <a class="hunter-green hover:text-accent transition-colors" href="#">
                     <i class="fab fa-facebook"></i>
                 </a>
@@ -22,7 +22,7 @@
                 <a class="hunter-green hover:text-accent transition-colors" href="#">
                     <i class="fab fa-twitter"></i>
                 </a>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Column 2 -->
@@ -34,18 +34,20 @@
                         Home
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a class="hunter-green hover:pakistan-green transition-colors" href="#" data-target="product-details">
                         Product Details
                     </a>
-                </li>
+                </li> --}}
                 <li>
-                    <a class="hunter-green hover:pakistan-green transition-colors" href="#" data-target="feedback-section">
+                    <a class="hunter-green hover:pakistan-green transition-colors" href="#"
+                        data-target="feedback-section">
                         Feedback
                     </a>
                 </li>
                 <li>
-                    <a class="hunter-green hover:pakistan-green transition-colors" href="#" data-target="about-us">
+                    <a class="hunter-green hover:pakistan-green transition-colors" href="#"
+                        data-target="about-us">
                         About Us
                     </a>
                 </li>
@@ -77,6 +79,6 @@
 
     <!-- Footer bottom -->
     <div class="mt-10 pt-6 border-t border-primary-200 text-center hunter-green text-sm">
-        <p>© 2025 Hosba Durian Sdn Bhd. All rights reserved.</p>
+        <p>© {{ date('Y') }} Hosba Durian Sdn Bhd. All rights reserved.</p>
     </div>
 </div>

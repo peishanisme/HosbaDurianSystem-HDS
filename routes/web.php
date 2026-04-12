@@ -116,7 +116,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/welcome', 'welcome')->name('welcome');
 });
 
-Route::get('/product-details/{fruit:uuid}', PublicPortalLivewire::class)->name('public.portal');
+Route::get('/product-details/{tree:uuid}', PublicPortalLivewire::class)->name('public.portal');
 
 
 

@@ -14,7 +14,7 @@
             </div>
             <h1
                 class="text-[clamp(2.5rem,6vw,4rem)] font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-4 relative z-10 ">
-                {{ $ipfsMetadata['species'] ?? $fruit->tree->species->name }}
+                {{ $tree->species->name }}
             </h1>
             <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-48 h-6 bg-accent/30 rounded-full -z-10"
                 style="clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);"></div>
@@ -33,7 +33,7 @@
     </section>
 
     <!-- product details -->
-    <section id="product-details" class="mb-12 max-w-3xl mx-auto">
+    {{-- <section id="product-details" class="mb-12 max-w-3xl mx-auto">
         <div class="bg-white rounded-3xl shadow-lg p-6 md:p-8 card-hover border-2 border-secondary/20 relative overflow-hidden bg-opacity-90 backdrop-blur-sm"
             style="box-shadow: 0 4px 20px rgba(106, 153, 78, 0.1); border-style: dotted;">
             <div class="flex flex-col md:flex-row items-center justify-between mb-6">
@@ -51,103 +51,24 @@
                     ];
                 @endphp
 
-                @if ($isVerified)
-                    <span class="mt-3 md:mt-0 inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700">
-                        ✅ Verified Product
-                    </span>
-                @else
-                    <span
-                        class="mt-3 mt-md-0 inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 relative group">
-                        ⚠️ Verification Failed
-
-                        <i class="fas fa-info-circle ml-2 cursor-pointer"></i>
-
-                        <div
-                            class="absolute left-1/2 top-full mt-2 w-72 -translate-x-1/2
-                   bg-gray-800 text-white text-xs rounded-lg px-4 py-3
-                   opacity-0 group-hover:opacity-100 transition z-50">
-                            <p class="font-semibold mb-1">Why this may happen:</p>
-                            <ul class="list-disc list-inside space-y-1">
-                                <li>{{ $verificationMessages[$verificationReasonCode] ?? 'Unable to verify this product.' }}
-                                </li>
-                                <li>Please contact us for more information.</li>
-                            </ul>
-                        </div>
-                    </span>
-                @endif
-
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="flex items-start">
-                    <div class="bg-secondary/20 p-3 rounded-full mr-4">
-                        <i class="fas fa-barcode hunter-green"> </i>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold text-gray-700">Fruit Tag</h3>
-                        <p class="text-gray-600">{{ $ipfsMetadata['id'] ?? $fruit->fruit_tag }}</p>
-                    </div>
-                </div>
                 <div class="flex items-start">
                     <div class="bg-secondary/20 p-3 rounded-full mr-4">
                         <i class="fas fa-tree hunter-green"> </i>
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-700">Tree Tag</h3>
-                        <p class="text-gray-600">{{ $ipfsMetadata['tree_origin'] ?? $fruit->tree->tree_tag }}</p>
+                        <p class="text-gray-600">{{ $tree->tree_tag }}</p>
                     </div>
                 </div>
-                <div class="flex items-start">
-                    <div class="bg-secondary/20 p-3 rounded-full mr-4">
-                        <i class="fas fa-calendar-alt hunter-green"> </i>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold text-gray-700">Harvest Date</h3>
-                        <p class="text-gray-600">{{ $ipfsMetadata['date'] ?? $fruit->harvested_at }}</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <div class="bg-secondary/20 p-3 rounded-full mr-4">
-                        <i class="fas fa-weight hunter-green"> </i>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold text-gray-700">Weight</h3>
-                        <p class="text-gray-600">{{ $ipfsMetadata['weight'] ?? $fruit->weight . ' kg' }}</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <div class="bg-secondary/20 p-3 rounded-full mr-4">
-                        <i class="fas fa-star hunter-green"> </i>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold text-gray-700">Grade</h3>
-                        <p class="text-gray-600">{{ $ipfsMetadata['grade'] ?? $fruit->grade }}</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <div class="bg-secondary/20 p-3 rounded-full mr-4">
-                        <i class="fas fa-link hunter-green"> </i>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold text-gray-700">Blockchain Record ID</h3>
-                        <p class="text-gray-600 break-all">
-                            {{ $fruit->tx_hash ?? '-' }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-6 pt-6 border-t border-gray-100">
-                <a class="hunter-green hover:text-dark flex items-center font-medium transition-colors"
-                    href="https://amoy.polygonscan.com/tx/{{ $fruit->tx_hash }}" target="_blank">
-                    <span> View Full Blockchain Traceability Record </span>
-                    <i class="fas fa-arrow-right ml-2"> </i>
-                </a>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!-- [MODULE] k6l_感谢信息区域 -->
-    <section
+    {{-- <section
         class="mb-12 max-w-3xl mx-auto bg-secondary/10 rounded-3xl p-4 md:p-8 border-2 border-secondary/20 shadow-md"
         style="border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; border-style: dashed;">
         <div
@@ -162,10 +83,10 @@
                 </p>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!-- [MODULE] m7n_反馈区域 -->
-    <section id="feedback-section" class="max-w-3xl mx-auto">
+    <section id="feedback-section" class="max-w-3xl mx-auto ">
         <div class="bg-white rounded-3xl shadow-md p-6 md:p-8 card-hover border-2 border-accent/30 relative overflow-hidden"
             style="border-radius: 25px; border-style: dotted;">
             <h2 class="text-2xl font-bold hunter-green mb-6 flex items-center">

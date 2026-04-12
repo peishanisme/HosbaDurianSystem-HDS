@@ -9,7 +9,7 @@ class FruitFeedback extends Model
 {
     protected $fillable = [
         'uuid',
-        'fruit_uuid',
+        'tree_uuid',
         'feedback',
     ];
 
