@@ -101,6 +101,7 @@ return [
     'search_trees' => 'Search Trees',
     'tree_tag' => 'Tree Tag',
     'planted_at' => 'Planted At',
+    'label' => 'Label',
 
     // tree modal
     'create_tree' => 'Create Tree',

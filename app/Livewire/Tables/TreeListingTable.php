@@ -2,20 +2,20 @@
 
 namespace App\Livewire\Tables;
 
+use App\Models\Label;
 use App\Models\Tree;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class TreeListingTable extends DataTableComponent
 {
     public function builder(): Builder
     {
         return Tree::query()
-            ->with(['species', 'latestGrowthLog'])
-            ->orderBy('trees.created_at', 'desc');
+            ->with(['species', 'latestGrowthLog', 'latestLabel']);
     }
 
 
@@ -24,6 +24,7 @@ class TreeListingTable extends DataTableComponent
         $this->setPrimaryKey('id')
             ->setSearchPlaceholder(__('messages.search_trees'))
             ->setEmptyMessage(__('messages.no_results_found'))
+            ->setDefaultSort('id', 'desc')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'livewire.components.modal-button',
@@ -42,7 +43,21 @@ class TreeListingTable extends DataTableComponent
         return [
             'species' => SelectFilter::make(__('messages.species'))
                 ->options(['' => __('messages.any')] + Tree::with('species')->get()->pluck('species.name', 'species.id')->toArray())
-                ->filter(fn(Builder $query, $value) => $query->whereHas('species', fn($query) => $query->where('id', $value))),
+                ->filter(
+                    fn(Builder $query, $value) =>
+                    $query->whereHas('species', fn($q) => $q->where('id', $value))
+                ),
+
+            'label' => SelectFilter::make('Label')
+                ->options(['' => 'Any'] + Label::pluck('name', 'id')->toArray())
+                ->filter(
+                    fn(Builder $query, $value) =>
+                    $query->whereHas(
+                        'latestLabel.label',
+                        fn($q) =>
+                        $q->where('id', $value)
+                    )
+                ),
         ];
     }
 
@@ -71,8 +86,12 @@ class TreeListingTable extends DataTableComponent
                     'label' => $value,
                 ]),
 
-            Column::make(__('messages.planted_at'), "planted_at")
-                ->sortable(),
+            ViewComponentColumn::make(__('messages.label'), 'latestLabel.label.name')
+                ->component('tree-label-badge')
+                ->attributes(fn($value, $row, Column $column) => [
+                    'color' => $row->latestLabel ? $row->latestLabel->label->color : 'gray',
+                    'label' => $value,
+                ]),
 
             Column::make(__('messages.area'), "area")
                 ->sortable(),

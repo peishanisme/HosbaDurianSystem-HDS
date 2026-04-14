@@ -22,7 +22,7 @@
                         </button> --}}
 
                         <!-- Input -->
-                        <input type="number" wire:model.live="quantity" min="1" class="form-control text-center"
+                        <input type="number" wire:model.live.debounce.300ms="quantity" min="1" class="form-control text-center"
                             style="width: 70px;" />
 
                         {{-- <!-- Increase -->

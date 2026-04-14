@@ -101,6 +101,7 @@ return [
 'search_trees' => 'Cari Pokok',
 'tree_tag' => 'Tag Pokok',
 'planted_at' => 'Tarikh Ditanam',
+'label' => 'Label',
 
 // tree modal
 'create_tree' => 'Cipta Pokok',

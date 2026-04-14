@@ -100,6 +100,7 @@ return [
     'search_trees' => '搜索树木',
     'tree_tag' => '树标签',
     'planted_at' => '种植日期',
+    'label' => '标签',
 
     //tree modal
     'create_tree' => '创建树木',
