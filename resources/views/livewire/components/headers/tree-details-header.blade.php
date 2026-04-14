@@ -24,9 +24,12 @@
                     <!--begin::User-->
                     <div class="d-flex flex-column">
                         <!--begin::Name-->
-                        <div class="d-flex align-items-center mb-2">
+                        <div class="d-flex align-items-center mb-2 gap-4">
                             <span class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{ $tree->tree_tag }}
                             </span>
+
+                            <x-tree-label-badge :label="$tree->latestLabel->label->name" :color="$tree->latestLabel->label->color" class="ms-2" />
+
                         </div>
 
                         <!--begin::Info-->

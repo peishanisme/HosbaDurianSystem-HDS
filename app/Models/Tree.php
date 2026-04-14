@@ -122,11 +122,6 @@ class Tree extends Model
         return $this->hasOne(TreeGrowthLog::class, 'tree_uuid', 'uuid')->latestOfMany();
     }
 
-    public function latestLabel(): HasOne
-    {
-        return $this->hasOne(TreeLabel::class, 'tree_id', 'id')->latestOfMany();
-    }
-
     public function diseases(): BelongsToMany
     {
         return $this->belongsToMany(Disease::class, 'health_records', 'tree_uuid', 'disease_id', 'uuid', 'id')
@@ -138,6 +133,11 @@ class Tree extends Model
     {
         return $this->belongsToMany(Label::class, 'tree_label', 'tree_id', 'label_id')
             ->withTimestamps();
+    }
+    
+    public function latestLabel(): HasOne
+    {
+        return $this->hasOne(TreeLabel::class, 'tree_id', 'id')->latestOfMany();
     }
 
     public function healthRecords(): HasMany
@@ -175,12 +175,5 @@ class Tree extends Model
             ->count('harvest_uuid');
 
         return $this->flowering_period + $harvestCount;
-    }
-
-    public function getLatestLabelNameAttribute()
-    {
-        return $this->labels()
-            ->latest('tree_label.created_at')
-            ->value('name');
     }
 }
