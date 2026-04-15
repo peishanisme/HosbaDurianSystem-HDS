@@ -119,7 +119,6 @@ return [
     'tree_details' => 'Tree Details',
 
     // tree details header
-    'show_tree_qr_code' => 'Show Tree QR',
     'tree_qr_code' => 'Tree QR Code',
     'download' => 'Download',
     'print' => 'Print',

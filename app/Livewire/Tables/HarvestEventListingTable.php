@@ -49,8 +49,10 @@ class HarvestEventListingTable extends DataTableComponent
             Column::make(__('messages.description'), "description")
                 ->sortable(),
             Column::make(__('messages.start_date'), "start_date")
+                ->format(fn($value) => $value ? \Carbon\Carbon::parse($value)->format('Y-m-d') : '-')
                 ->sortable(),
             Column::make(__('messages.end_date'), "end_date")
+                ->format(fn($value) => $value ? \Carbon\Carbon::parse($value)->format('Y-m-d') : '-')
                 ->sortable(),
             Column::make(__('messages.created_at'), "created_at")
                 ->sortable(),

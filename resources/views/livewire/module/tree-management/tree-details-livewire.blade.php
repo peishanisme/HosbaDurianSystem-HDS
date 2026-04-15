@@ -6,13 +6,13 @@
             <x-charts.trees.growth-log-chart :growthLogData="$growthLogData" />
         </div>
 
-        <div class="col-md-6 mb-10">
+        {{-- <div class="col-md-6 mb-10">
             <x-charts.trees.harvest-grade-chart :harvestGradeData="$harvestGradeData" />
-        </div>
+        </div> --}}
     </div>
 
     <!-- Other charts -->
-    <div class="row mb-10">
+    {{-- <div class="row mb-10">
         <div class="col-md-6">
             <x-charts.trees.tree-disease-chart :treeDiseaseData="$treeDiseaseData" />
         </div>
@@ -20,7 +20,7 @@
         <div class="col-md-6">
             <x-charts.trees.total-harvest-fruit-chart :totalHarvestData="$totalHarvestData" />
         </div>
-    </div>
+    </div> --}}
 
     {{-- fruit qr modal --}}
     <livewire:module.post-harvest.harvest-qr-code-modal-livewire /> 

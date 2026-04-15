@@ -4,17 +4,7 @@
         <div class="d-flex flex-wrap flex-sm-nowrap">
 
             <div class="me-7 mb-4">
-                @if ($tree->thumbnail)
-                    <x-image-preview :src="app(\App\Services\MediaService::class)->get($tree->thumbnail)" alt="Tree Image"
-                        modal-id="treeImagePreviewModal-{{ $tree->id }}" />
-                @else
-                    <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-                        <img class="object-fit-cover border"
-                            src="{{ app(\App\Services\MediaService::class)->get('logo/placeholder.svg') }}"
-                            alt="image" />
-                    </div>
-                @endif
-
+                <x-avatar :name="strtoupper(substr(trim($tree->tree_tag), -4))" size="120px" />
             </div>
 
             <!--begin::Info-->
@@ -47,10 +37,10 @@
                     <!--end::User-->
                     <!--begin::Actions-->
                     <div class="d-flex my-4">
-                        <a href="#" class="btn btn-sm btn-light me-2" data-bs-toggle="modal"
+                        <a href="#" class="btn btn-sm btn-light-success me-2" data-bs-toggle="modal"
                             data-bs-target="#qrModal">
-                            <i class="ki-duotone ki-check fs-3 d-none"></i>
-                            <span class="indicator-label">{{ __('messages.show_tree_qr_code') }}</span>
+                            <i class="bi bi-tree"></i> <span
+                                class="indicator-label">{{ __('messages.tree_qr_code') }}</span>
                         </a>
 
                         {{-- tree qr modal --}}
@@ -90,7 +80,7 @@
                                 data-bs-toggle="modal" data-bs-target="#harvestQrCodeModalLivewire"
                                 wire:click="$dispatch('load-qr-code', { tree: {{ $tree->id }} })">
                                 <i class="bi-qr-code"></i>
-                                Print Fruit QR
+                                <span class="indicator-label">{{ __('messages.fruit_qr_code') }}</span>
                             </button>
                         </div>
 

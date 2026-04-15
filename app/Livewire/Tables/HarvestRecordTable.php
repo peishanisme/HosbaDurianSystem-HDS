@@ -36,9 +36,13 @@ class HarvestRecordTable extends DataTableComponent
             Column::make("Tree uuid", "tree_uuid")
                 ->sortable()
                 ->hideIf(true),
-            Column::make("Tree tag", "tree.tree_tag")
-                ->sortable()
-                ->searchable(),
+            ViewComponentColumn::make(__('messages.tree_tag'), 'tree.tree_tag')
+                ->component('components.table-primary-column')
+                ->attributes(fn($value, $row, Column $column) => [
+                    'title' => $value,
+                    'route' => route('tree.show', $row->tree->id),
+                ])->searchable()
+                ->sortable(),
             Column::make("Harvest date", "harvest_date")
                 ->format(fn($value) => $value->format('Y-m-d'))
                 ->sortable(),

@@ -34,7 +34,6 @@ class TreeDiseaseListingTable extends DataTableComponent
                     fn($query, $direction) =>
                     $query->withCount('trees', fn($q) => $q->distinct('tree_uuid'))->orderBy('trees_count', $direction)
                 ),
-           
             Column::make(__('messages.remarks'), "remarks"),
             Column::make(__('messages.actions'))
                 ->label(fn($row, Column $column) => view('components.table-button', [

@@ -17,6 +17,7 @@ class HarvestEventForm extends Form
     public function rules(): array
     {
         return [
+            'event_name' => ['string', 'max:255'],
             'start_date' => ['required', 'date', 'before_or_equal:today'],
             'end_date' => [
                 'nullable',

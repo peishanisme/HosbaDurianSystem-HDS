@@ -41,6 +41,7 @@ class HarvestEventOverviewLivewire extends Component
     {
         try {
             $this->harvestEvent->end_date = now()->toDateString();
+            $this->harvestEvent->active = false;
             $this->harvestEvent->save();
             $this->alertSuccess(__('messages.harvest_event_closed_successfully'));
         } catch (\Exception $e) {
@@ -60,6 +61,7 @@ class HarvestEventOverviewLivewire extends Component
     {
         try {
             $this->harvestEvent->end_date = null;
+            $this->harvestEvent->active = true;
             $this->harvestEvent->save();
             $this->alertSuccess(__('messages.harvest_event_reopened_successfully'));
         } catch (\Exception $e) {

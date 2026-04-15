@@ -15,14 +15,14 @@
                             </span> --}}
                         </div>
 
-                        <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
+                        {{-- <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
                             <span class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
                                 <i class="ki-duotone ki-profile-circle fs-4 me-1">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                     <span class="path3"></span>
                                 </i>{{ $harvestEvent->uuid }}</span>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="d-flex my-4">
