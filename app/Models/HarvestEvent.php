@@ -71,15 +71,15 @@ class HarvestEvent extends Model implements Reportable
             Tree::chunk(100, function ($trees) use ($model) {
                 foreach ($trees as $tree) {
                     // Ensure a HarvestRecord exists for this tree + event
-                    HarvestRecord::firstOrCreate([
-                        'harvest_uuid' => $model->uuid,
-                        'tree_uuid' => $tree->uuid,
-                    ], [
-                        'harvest_date' => $model->start_date ?? now()->toDateString(),
-                        'num_of_fruits' => 0,
-                        'weight' => null,
-                        'spoilt' => false,
-                    ]);
+                    // HarvestRecord::firstOrCreate([
+                    //     'harvest_uuid' => $model->uuid,
+                    //     'tree_uuid' => $tree->uuid,
+                    // ], [
+                    //     'harvest_date' => $model->start_date ?? now()->toDateString(),
+                    //     'num_of_fruits' => 0,
+                    //     'weight' => null,
+                    //     'spoilt' => false,
+                    // ]);
 
                     // Create a default observation 'X' if missing
                     TreeObservation::firstOrCreate([
@@ -110,6 +110,11 @@ class HarvestEvent extends Model implements Reportable
         )->distinct();
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
+    }
+
     public static function reportQuery(array $filters): Builder
     {
         $reportType = $filters['reportType'] ?? 'record';
@@ -121,16 +126,16 @@ class HarvestEvent extends Model implements Reportable
         };
     }
 
-    protected static function fruitRecordQuery(array $filters): Builder
-    {
-        return \App\Models\Fruit::query()
-            ->select('fruits.*')
-            ->join('harvest_events', 'harvest_events.uuid', '=', 'fruits.harvest_uuid')
-            ->with(['tree', 'tree.species', 'harvestEvent'])
-            ->where('fruits.harvest_uuid', $filters['harvest_uuid'] ?? null)
-            ->orderBy('harvested_at', 'asc')
-            ->orderBy('fruit_tag', 'asc');;
-    }
+    // protected static function fruitRecordQuery(array $filters): Builder
+    // {
+    //     return \App\Models\Fruit::query()
+    //         ->select('fruits.*')
+    //         ->join('harvest_events', 'harvest_events.uuid', '=', 'fruits.harvest_uuid')
+    //         ->with(['tree', 'tree.species', 'harvestEvent'])
+    //         ->where('fruits.harvest_uuid', $filters['harvest_uuid'] ?? null)
+    //         ->orderBy('harvested_at', 'asc')
+    //         ->orderBy('fruit_tag', 'asc');;
+    // }
 
     protected static function treeSummaryQuery(array $filters): Builder
     {

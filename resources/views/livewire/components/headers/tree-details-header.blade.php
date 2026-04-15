@@ -19,6 +19,16 @@
                             </span>
 
                             <x-tree-label-badge :label="$tree->latestLabel->label->name" :color="$tree->latestLabel->label->color" class="ms-2" />
+                            @php
+                                match ($tree->active_flowering_status) {
+                                    'A' => 'badge-light-danger',
+                                    'B' => 'badge-light-warning',
+                                    'C' => 'badge-light-primary',
+                                    'D' => 'badge-light-info',
+                                    default => 'badge-light-secondary',
+                                };
+                            @endphp
+                            <x-table-badge :label="$tree->active_flowering_status ?? 'X'" badge="{{ $tree->active_flowering_status }}" class="ms-2" />
 
                         </div>
 

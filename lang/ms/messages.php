@@ -102,6 +102,7 @@ return [
 'tree_tag' => 'Tag Pokok',
 'planted_at' => 'Tarikh Ditanam',
 'label' => 'Label',
+'flowering_status' => 'Status Pembungaan',
 
 // tree modal
 'create_tree' => 'Cipta Pokok',

@@ -102,6 +102,7 @@ return [
     'tree_tag' => 'Tree Tag',
     'planted_at' => 'Planted At',
     'label' => 'Label',
+    'flowering_status' => 'Flowering Status',
 
     // tree modal
     'create_tree' => 'Create Tree',

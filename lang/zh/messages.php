@@ -101,6 +101,7 @@ return [
     'tree_tag' => '树标签',
     'planted_at' => '种植日期',
     'label' => '标签',
+    'flowering_status' => '开花状态',
 
     //tree modal
     'create_tree' => '创建树木',

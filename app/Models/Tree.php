@@ -134,7 +134,7 @@ class Tree extends Model
         return $this->belongsToMany(Label::class, 'tree_label', 'tree_id', 'label_id')
             ->withTimestamps();
     }
-    
+
     public function latestLabel(): HasOne
     {
         return $this->hasOne(TreeLabel::class, 'tree_id', 'id')->latestOfMany();
@@ -158,6 +158,17 @@ class Tree extends Model
     public function observations(): HasMany
     {
         return $this->hasMany(TreeObservation::class, 'tree_uuid', 'uuid');
+    }
+
+    public function activeObservation(): HasOne
+    {
+        return $this->hasOne(TreeObservation::class, 'tree_uuid', 'uuid')
+            ->whereHas('harvestEvent', fn($q) => $q->active());
+    }
+
+    public function getActiveFloweringStatusAttribute()
+    {
+        return $this->activeObservation?->flowering_status;
     }
 
     public function fruitCountInHarvest($harvestUuid)

@@ -15,7 +15,7 @@ class TreeListingTable extends DataTableComponent
     public function builder(): Builder
     {
         return Tree::query()
-            ->with(['species', 'latestGrowthLog', 'latestLabel']);
+            ->with(['species', 'latestGrowthLog', 'latestLabel','activeObservation']);
     }
 
 
@@ -48,14 +48,32 @@ class TreeListingTable extends DataTableComponent
                     $query->whereHas('species', fn($q) => $q->where('id', $value))
                 ),
 
-            'label' => SelectFilter::make('Label')
-                ->options(['' => 'Any'] + Label::pluck('name', 'id')->toArray())
+            'label' => SelectFilter::make(__('messages.label'))
+                ->options(['' => __('messages.any')] + Label::pluck('name', 'id')->toArray())
                 ->filter(
                     fn(Builder $query, $value) =>
                     $query->whereHas(
                         'latestLabel.label',
                         fn($q) =>
                         $q->where('id', $value)
+                    )
+                ),
+
+            'flowering_status' => SelectFilter::make(__('messages.flowering_status'))
+                ->options([
+                    '' => __('messages.any'),
+                    'A' => 'A',
+                    'B' => 'B',
+                    'C' => 'C',
+                    'D' => 'D',
+                    'X' => 'X',
+                ])
+                ->filter(
+                    fn(Builder $query, $value) =>
+                    $query->whereHas(
+                        'activeObservation',
+                        fn($q) =>
+                        $q->where('flowering_status', $value)
                     )
                 ),
         ];
@@ -73,7 +91,7 @@ class TreeListingTable extends DataTableComponent
             ViewComponentColumn::make(__('messages.tree_tag'), 'tree_tag')
                 ->component('components.table-primary-column')
                 ->attributes(fn($value, $row, Column $column) => [
-                    'avatar' => strtoupper(substr(trim($value), -4)),
+                    // 'avatar' => strtoupper(substr(trim($value), -4)),
                     'title' => $value,
                     'route' => route('tree.show', $row->id),
                 ])->searchable()
@@ -91,6 +109,20 @@ class TreeListingTable extends DataTableComponent
                 ->attributes(fn($value, $row, Column $column) => [
                     'color' => $row->latestLabel ? $row->latestLabel->label->color : 'gray',
                     'label' => $value,
+                ]),
+
+            ViewComponentColumn::make(__('messages.flowering_status'), 'activeObservation.flowering_status')
+                ->component('table-badge')
+                ->sortable()
+                ->attributes(fn($value, $row, Column $column) => [
+                    'badge' => match ($value) {
+                        'A' => 'badge-light-danger',
+                        'B' => 'badge-light-warning',
+                        'C' => 'badge-light-primary',
+                        'D' => 'badge-light-info',
+                        default => 'badge-light-secondary',
+                    },
+                    'label' => $value ?? 'X',
                 ]),
 
             Column::make(__('messages.area'), "area")
