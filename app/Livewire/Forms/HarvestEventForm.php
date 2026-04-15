@@ -36,7 +36,7 @@ class HarvestEventForm extends Form
     {
         $this->harvestEvent = $harvestEvent;
         $this->event_name = $harvestEvent->event_name;
-        $this->start_date = $harvestEvent->start_date;
+        $this->start_date = $harvestEvent->start_date?->toDateString();
         $this->end_date = $harvestEvent->end_date;
         $this->description = $harvestEvent->description;
     }
