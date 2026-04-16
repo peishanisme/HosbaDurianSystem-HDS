@@ -7,6 +7,7 @@ use App\Models\Fruit;
 use App\Models\HarvestEvent;
 use App\Models\HarvestRecord;
 use App\Models\Tree;
+use App\Models\TreeObservation;
 use App\Traits\AuthorizesRoleOrPermission;
 use App\Traits\SweetAlert;
 use Illuminate\Support\Facades\DB;
@@ -158,7 +159,7 @@ class HarvestEventOverviewLivewire extends Component
             ->join('species', 'trees.species_id', '=', 'species.id')
             ->where('harvest_records.harvest_uuid', $this->harvestEvent->uuid)
             ->groupBy('species.name')
-            ->orderByDesc('total_pieces') 
+            ->orderByDesc('total_pieces')
             ->get()
             ->map(function ($item) {
                 return [
@@ -171,10 +172,40 @@ class HarvestEventOverviewLivewire extends Component
         return $speciesData;
     }
 
+    public function loadTreeObservationsData()
+    {
+        $weights = [
+            'A' => 30,
+            'B' => 20,
+            'C' => 15,
+            'D' => 5,
+            'X' => 0,
+        ];
+
+        $statuses = collect(['A', 'B', 'C', 'D', 'X']);
+
+        $raw = TreeObservation::where('harvest_uuid', $this->harvestEvent->uuid)
+            ->select('flowering_status', DB::raw('COUNT(*) as count'))
+            ->groupBy('flowering_status')
+            ->pluck('count', 'flowering_status');
+
+        return $statuses->map(function ($status) use ($raw, $weights) {
+            $count = $raw[$status] ?? 0;
+            $multiplier = $weights[$status] ?? 0;
+
+            return [
+                'status' => $status,
+                'count' => $count,
+                'estimated' => $count * $multiplier,
+            ];
+        })->values();
+    }
+
     public function render()
     {
         $trees = Tree::orderBy('tree_tag')->get();
         return view('livewire.module.post-harvest.harvest-event-overview-livewire', compact('trees'), [
+            'treeObservationsData' => $this->loadTreeObservationsData(),
             'top10HarvestTreesData' => $this->loadTop10HarvestTreesData(),
             'harvestSpeciesData' => $this->loadHarvestSpeciesData(),
         ])->title(__('messages.harvest_event_overview'));

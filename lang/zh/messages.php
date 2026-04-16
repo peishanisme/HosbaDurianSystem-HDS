@@ -287,7 +287,9 @@ return [
     'no_fruits_for_this_tree' => '该树暂无水果。',
     'no_trees_found' => '未找到树木。',
     'tree_observations' => '树木观察',
-    
+    'flowering_trees' => '开花树木',
+    'estimated_fruits' => '预计水果',
+
     //buyer index
     'search_buyers' => '搜索买家',
     'are_you_sure_you_want_to_delete_this_buyer' => '您确定要删除此买家吗？',

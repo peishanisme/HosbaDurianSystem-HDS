@@ -291,6 +291,9 @@ return [
 'no_fruits_for_this_tree' => 'Tiada buah untuk pokok ini.',
 'no_trees_found' => 'Tiada pokok dijumpai.',
 'tree_observations' => 'Pemerhatian Pokok',
+'flowering_trees' => 'Pokok Berbunga',
+'estimated_fruits' => 'Buah yang Dijangka'
+
 
 // buyer index
 'search_buyers' => 'Cari Pembeli',

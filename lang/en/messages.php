@@ -139,6 +139,9 @@ return [
     'harvest_grade' => 'Harvest Grade',
     'tree_diseases' => 'Tree Diseases',
     'total_harvest_in_each_event' => 'Total Harvest in Each Event',
+    'flowering_trees' => 'Flowering Trees',
+    'estimated_fruits' => 'Estimated Fruits',
+
 
     // tree growth log
     'tree_growth_logs' => 'Tree Growth Logs',

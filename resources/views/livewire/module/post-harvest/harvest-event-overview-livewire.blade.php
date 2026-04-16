@@ -1,6 +1,11 @@
 <div id="kt_app_content_container" class="container-fluid">
     <livewire:components.headers.harvest-event-header :harvestEvent="$harvestEvent" />
 
+
+    <div class="mb-15">
+        <x-charts.harvest-events.tree-observations-chart :treeObservationsData="$treeObservationsData" />
+    </div>
+
     <div class="mb-15">
         <x-charts.harvest-events.harvest-species-chart :harvestSpeciesData="$harvestSpeciesData" />
     </div>
