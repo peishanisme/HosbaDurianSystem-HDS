@@ -288,6 +288,7 @@ return [
     'no_trees_found' => 'No trees found.',
     'spoilt' => 'Spoilt',
     'not_spoilt' => 'Not Spoilt',
+    'tree_observations' => 'Tree Observations',
 
     // buyer index
     'search_buyers' => 'Search Buyers',

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class TreeListingTable extends DataTableComponent
@@ -15,7 +16,7 @@ class TreeListingTable extends DataTableComponent
     public function builder(): Builder
     {
         return Tree::query()
-            ->with(['species', 'latestGrowthLog', 'latestLabel','activeObservation']);
+            ->with(['species', 'latestGrowthLog', 'latestLabel', 'activeObservation']);
     }
 
 
@@ -41,6 +42,18 @@ class TreeListingTable extends DataTableComponent
     public function filters(): array
     {
         return [
+            // 'planted_from' => DateFilter::make(__('messages.planted_from'))
+            //     ->filter(
+            //         fn(Builder $query, $value) =>
+            //         $query->whereDate('planted_at', '>=', $value)
+            //     ),
+
+            // 'planted_to' => DateFilter::make(__('messages.planted_to'))
+            //     ->filter(
+            //         fn(Builder $query, $value) =>
+            //         $query->whereDate('planted_at', '<=', $value)
+            //     ),
+
             'species' => SelectFilter::make(__('messages.species'))
                 ->options(['' => __('messages.any')] + Tree::with('species')->get()->pluck('species.name', 'species.id')->toArray())
                 ->filter(
@@ -75,6 +88,36 @@ class TreeListingTable extends DataTableComponent
                         fn($q) =>
                         $q->where('flowering_status', $value)
                     )
+                ),
+
+            'flowering_period' => SelectFilter::make(__('messages.flowering_period'))
+                ->options([
+                    '' => __('messages.any')
+                ] + Tree::distinct()->pluck('flowering_period', 'flowering_period')->sort()->toArray())
+                ->filter(
+                    fn(Builder $query, $value) =>
+                    $query->where('flowering_period', $value)
+                ),
+
+            'area' => SelectFilter::make(__('messages.area'))
+                ->options(['' => __('messages.any')] + Tree::distinct()->pluck('area', 'area')->sort()->toArray())
+                ->filter(
+                    fn(Builder $query, $value) =>
+                    $query->where('area', $value)
+                ),
+
+            'terrace' => SelectFilter::make(__('messages.terrace'))
+                ->options(['' => __('messages.any')] + Tree::distinct()->pluck('terrace', 'terrace')->sort()->toArray())
+                ->filter(
+                    fn(Builder $query, $value) =>
+                    $query->where('terrace', $value)
+                ),
+
+            'water_valve' => SelectFilter::make(__('messages.water_valve'))
+                ->options(['' => __('messages.any')] + Tree::distinct()->pluck('water_valve', 'water_valve')->sort()->toArray())
+                ->filter(
+                    fn(Builder $query, $value) =>
+                    $query->where('water_valve', $value)
                 ),
         ];
     }
@@ -125,10 +168,16 @@ class TreeListingTable extends DataTableComponent
                     'label' => $value ?? 'X',
                 ]),
 
+            Column::make(__('messages.flowering_period'), "flowering_period")
+                ->sortable(),
+
             Column::make(__('messages.area'), "area")
                 ->sortable(),
 
             Column::make(__('messages.terrace'), "terrace")
+                ->sortable(),
+
+            Column::make(__('messages.water_valve'), "water_valve")
                 ->sortable(),
 
             Column::make(__('messages.actions'))

@@ -290,6 +290,8 @@ return [
 'total_fruit' => 'Jumlah Buah',
 'no_fruits_for_this_tree' => 'Tiada buah untuk pokok ini.',
 'no_trees_found' => 'Tiada pokok dijumpai.',
+'tree_observations' => 'Pemerhatian Pokok',
+
 // buyer index
 'search_buyers' => 'Cari Pembeli',
 'are_you_sure_you_want_to_delete_this_buyer' => 'Adakah anda pasti mahu memadam pembeli ini?',

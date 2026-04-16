@@ -1,35 +1,37 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
-use App\Livewire\Module\DashboardLivewire;
-use App\Livewire\Module\PublicPortalLivewire;
-use App\Livewire\Module\TreeManagement\TreeIndexLivewire;
-use App\Livewire\Module\UserManagement\RoleIndexLivewire;
-use App\Livewire\Module\UserManagement\UserIndexLivewire;
-use App\Livewire\Module\TreeManagement\TreeDetailsLivewire;
-use App\Livewire\Module\UserManagement\UserProfileLivewire;
-use App\Livewire\Module\TreeManagement\DiseaseIndexLivewire;
-use App\Livewire\Module\TreeManagement\SpeciesIndexLivewire;
-use App\Livewire\Module\TreeManagement\TreeGrowthLogLivewire;
-use App\Livewire\Module\PostHarvest\HarvestEventIndexLivewire;
-use App\Livewire\Module\UserManagement\PermissionIndexLivewire;
-use App\Livewire\Module\SalesAndTransactions\BuyerIndexLivewire;
-use App\Livewire\Module\TreeManagement\TreeHealthRecordLivewire;
-use App\Livewire\Module\UserManagement\ActivityLogIndexLivewire;
-use App\Livewire\Module\PostHarvest\HarvestEventOverviewLivewire;
-use App\Livewire\Module\TreeManagement\TreeHarvestRecordLivewire;
-use App\Livewire\Module\SalesAndTransactions\BuyerOverviewLivewire;
-use App\Livewire\Module\TreeManagement\TreeAgrochemicalUsageLivewire;
-use App\Livewire\Module\SalesAndTransactions\BuyerTransactionLivewire;
-use App\Livewire\Module\SalesAndTransactions\TransactionIndexLivewire;
-use App\Livewire\Module\PostHarvest\HarvestEventHarvestSummaryLivewire;
-use App\Livewire\Module\SalesAndTransactions\CreateTransactionLivewire;
-use App\Livewire\Module\AgrochemicalManagement\AgrochemicalIndexLivewire;
-use App\Livewire\Module\AgrochemicalManagement\AgrochemicalOverviewLivewire;
-use App\Livewire\Module\AgrochemicalManagement\AgrochemicalGlobalUsageLivewire;
-use App\Livewire\Module\AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire;
-use App\Livewire\Module\AgrochemicalManagement\AgrochemicalApplicationRecordLivewire;
+use Illuminate\Support\Facades\Route;
+use App\Livewire\Module\{
+    DashboardLivewire,
+    PublicPortalLivewire,
+    AgrochemicalManagement\AgrochemicalApplicationRecordLivewire,
+    AgrochemicalManagement\AgrochemicalGlobalUsageLivewire,
+    AgrochemicalManagement\AgrochemicalIndexLivewire,
+    AgrochemicalManagement\AgrochemicalOverviewLivewire,
+    AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire,
+    PostHarvest\HarvestEventHarvestSummaryLivewire,
+    PostHarvest\HarvestEventIndexLivewire,
+    PostHarvest\HarvestEventOverviewLivewire,
+    SalesAndTransactions\BuyerIndexLivewire,
+    SalesAndTransactions\BuyerTransactionLivewire,
+    SalesAndTransactions\CreateTransactionLivewire,
+    SalesAndTransactions\TransactionIndexLivewire,
+    SalesAndTransactions\BuyerOverviewLivewire,
+    TreeManagement\DiseaseIndexLivewire,
+    TreeManagement\SpeciesIndexLivewire,
+    TreeManagement\TreeAgrochemicalUsageLivewire,
+    TreeManagement\TreeDetailsLivewire,
+    TreeManagement\TreeGrowthLogLivewire,
+    TreeManagement\TreeHarvestRecordLivewire,
+    TreeManagement\TreeIndexLivewire,
+    TreeManagement\TreeHealthRecordLivewire,
+    UserManagement\ActivityLogIndexLivewire,
+    UserManagement\PermissionIndexLivewire,
+    UserManagement\RoleIndexLivewire,
+    UserManagement\UserIndexLivewire,
+    UserManagement\UserProfileLivewire
+};
 
 // routes/web.php
 Route::get('/lang/{locale}', function ($locale) {

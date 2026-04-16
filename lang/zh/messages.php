@@ -286,6 +286,7 @@ return [
     'total_fruit' => '水果总数',
     'no_fruits_for_this_tree' => '该树暂无水果。',
     'no_trees_found' => '未找到树木。',
+    'tree_observations' => '树木观察',
     
     //buyer index
     'search_buyers' => '搜索买家',
