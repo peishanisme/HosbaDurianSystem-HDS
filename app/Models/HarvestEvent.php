@@ -115,6 +115,29 @@ class HarvestEvent extends Model implements Reportable
         return $query->where('active', true);
     }
 
+    public function harvestRecords()
+    {
+        return $this->hasMany(HarvestRecord::class, 'harvest_uuid', 'uuid');
+    }
+
+    public function totalFruits()
+    {
+        return $this->harvestRecords()->sum('num_of_fruits');
+    }
+
+    public function totalFruitsForTree($treeUuid)
+    {
+        return $this->harvestRecords()
+            ->where('tree_uuid', $treeUuid)
+            ->sum('num_of_fruits');
+    }
+
+    public function harvestRecordsForTree($treeUuid)
+    {
+        return $this->harvestRecords()
+            ->where('tree_uuid', $treeUuid);
+    }
+
     public static function reportQuery(array $filters): Builder
     {
         $reportType = $filters['reportType'] ?? 'record';

@@ -292,6 +292,11 @@ return [
     'spoilt' => 'Spoilt',
     'not_spoilt' => 'Not Spoilt',
     'tree_observations' => 'Tree Observations',
+    'num_of_fruits' => 'Number of Fruits',
+    'spoilt_status' => [
+        'Spoilt' => 'Spoilt',
+        'Not Spoilt' => 'Not Spoilt',
+    ],
 
     // buyer index
     'search_buyers' => 'Search Buyers',

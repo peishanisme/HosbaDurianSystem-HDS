@@ -289,6 +289,11 @@ return [
     'tree_observations' => '树木观察',
     'flowering_trees' => '开花树木',
     'estimated_fruits' => '预计水果',
+    'num_of_fruits' => '水果数量',
+    'spoilt_status' => [
+        'Spoilt' => '已损坏',
+        'Not Spoilt' => '未损坏',
+    ],
 
     //buyer index
     'search_buyers' => '搜索买家',
