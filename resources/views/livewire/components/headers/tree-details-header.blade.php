@@ -18,7 +18,10 @@
                             <span class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{ $tree->tree_tag }}
                             </span>
 
-                            <x-tree-label-badge :label="$tree->latestLabel->label->name" :color="$tree->latestLabel->label->color" class="ms-2" />
+                            @foreach ($tree->labels as $label)
+                                <x-tree-label-badge :label="$label->name" :color="$label->color" class="ms-2" />
+                            @endforeach
+
                             @php
                                 match ($tree->active_flowering_status) {
                                     'A' => 'badge-light-danger',
@@ -28,7 +31,8 @@
                                     default => 'badge-light-secondary',
                                 };
                             @endphp
-                            <x-table-badge :label="$tree->active_flowering_status ?? 'X'" badge="{{ $tree->active_flowering_status }}" class="ms-2" />
+                            <x-table-badge :label="$tree->active_flowering_status ?? 'X'" badge="{{ $tree->active_flowering_status }}"
+                                class="ms-2" />
 
                         </div>
 
@@ -41,6 +45,11 @@
                                     <span class="path3"></span>
                                 </i>{{ $tree->species->name }}</span>
 
+                            <span class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
+                                <i class="ki-duotone ki-calendar">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>{{ $tree->planted ? $tree->planted_at->format('Y-m-d') : 'N/A' }}</span>
                         </div>
                         <!--end::Info-->
                     </div>

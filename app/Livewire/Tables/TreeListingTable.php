@@ -7,6 +7,7 @@ use App\Models\Tree;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\ArrayColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
@@ -16,7 +17,8 @@ class TreeListingTable extends DataTableComponent
     public function builder(): Builder
     {
         return Tree::query()
-            ->with(['species', 'latestGrowthLog', 'latestLabel', 'activeObservation']);
+            ->select('trees.*')
+            ->with(['species', 'latestGrowthLog', 'latestLabel', 'activeObservation', 'labels']);
     }
 
 
@@ -25,7 +27,7 @@ class TreeListingTable extends DataTableComponent
         $this->setPrimaryKey('id')
             ->setSearchPlaceholder(__('messages.search_trees'))
             ->setEmptyMessage(__('messages.no_results_found'))
-            ->setDefaultSort('id', 'desc')
+            ->setDefaultSort('id', 'asc')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
                     'livewire.components.modal-button',
@@ -42,17 +44,17 @@ class TreeListingTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            // 'planted_from' => DateFilter::make(__('messages.planted_from'))
-            //     ->filter(
-            //         fn(Builder $query, $value) =>
-            //         $query->whereDate('planted_at', '>=', $value)
-            //     ),
+            'planted_from' => DateFilter::make('Planted From')
+                ->filter(
+                    fn(Builder $query, $value) =>
+                    $query->whereDate('planted_at', '>=', $value)
+                ),
 
-            // 'planted_to' => DateFilter::make(__('messages.planted_to'))
-            //     ->filter(
-            //         fn(Builder $query, $value) =>
-            //         $query->whereDate('planted_at', '<=', $value)
-            //     ),
+            'planted_to' => DateFilter::make('Planted To')
+                ->filter(
+                    fn(Builder $query, $value) =>
+                    $query->whereDate('planted_at', '<=', $value)
+                ),
 
             'species' => SelectFilter::make(__('messages.species'))
                 ->options(['' => __('messages.any')] + Tree::with('species')->get()->pluck('species.name', 'species.id')->toArray())
@@ -66,9 +68,8 @@ class TreeListingTable extends DataTableComponent
                 ->filter(
                     fn(Builder $query, $value) =>
                     $query->whereHas(
-                        'latestLabel.label',
-                        fn($q) =>
-                        $q->where('id', $value)
+                        'labels',
+                        fn($q) => $q->where('label_id', $value)
                     )
                 ),
 
@@ -126,6 +127,7 @@ class TreeListingTable extends DataTableComponent
     {
         return [
             Column::make("ID", "id")
+                ->sortable()
                 ->hideIf(true),
 
             Column::make("Thumbnail", "thumbnail")
@@ -147,12 +149,10 @@ class TreeListingTable extends DataTableComponent
                     'label' => $value,
                 ]),
 
-            ViewComponentColumn::make(__('messages.label'), 'latestLabel.label.name')
-                ->component('tree-label-badge')
-                ->attributes(fn($value, $row, Column $column) => [
-                    'color' => $row->latestLabel ? $row->latestLabel->label->color : 'gray',
-                    'label' => $value,
-                ]),
+            ArrayColumn::make(__('messages.label'))
+                ->data(fn($value, $row) => $row->labels)
+                ->outputFormat(fn($index, $value) => "<span class='badge badge-light' style='background-color: $value->color; color: #fff; margin-top: 0.5rem;'>$value->name</span>")
+                ->html(),
 
             ViewComponentColumn::make(__('messages.flowering_status'), 'activeObservation.flowering_status')
                 ->component('table-badge')
