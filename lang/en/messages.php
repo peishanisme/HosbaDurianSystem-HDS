@@ -105,6 +105,7 @@ return [
     'flowering_status' => 'Flowering Status',
 
     // tree modal
+    'manage_labels' => 'Manage Labels',
     'create_tree' => 'Create Tree',
     'thumbnail' => 'Thumbnail',
     'area' => 'Area',
@@ -118,6 +119,12 @@ return [
     'tree_creation_failed' => 'Tree creation failed',
     'tree_updation_failed' => 'Tree update failed',
     'tree_details' => 'Tree Details',
+
+    //tree label modal
+    'update_labels' => 'Update Labels',
+    'search_tree_tag' => 'Search tree tag',
+    'select_label' => 'Select label',
+    'no_labels_found' => 'No labels found',
 
     // tree details header
     'tree_qr_code' => 'Tree QR Code',

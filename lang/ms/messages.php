@@ -105,6 +105,7 @@ return [
     'flowering_status' => 'Status Pembungaan',
 
     // tree modal
+    'manage_labels' => 'Urus Label',
     'create_tree' => 'Cipta Pokok',
     'area' => 'Kawasan',
     'terrace' => 'Teres',

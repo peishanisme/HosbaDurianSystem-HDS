@@ -104,6 +104,7 @@ return [
     'flowering_status' => '开花状态',
 
     //tree modal
+    'manage_labels' => '管理标签',
     'create_tree' => '创建树木',
     'area' => '区域',
     'terrace' => '梯田',

@@ -30,12 +30,15 @@ class TreeListingTable extends DataTableComponent
             ->setDefaultSort('id', 'asc')
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
-                    'livewire.components.modal-button',
+                    'components.table-com-button2',
                     [
-                        'label' => __('messages.create_tree'),
-                        'dispatch' => 'reset-tree',
-                        'target' => 'treeModalLivewire',
-                        'permission' => 'create-tree',
+                        'label2' => __('messages.create_tree'),
+                        'dispatch2' => 'reset-tree',
+                        'modal2' => 'treeModalLivewire',
+                        'permission2' => 'create-tree',
+                        'label1' => __('messages.manage_labels'),
+                        'dispatch1' => 'reset-labels',
+                        'modal1' => 'treeLabelModalLivewire',
                     ]
                 ]
             ]);

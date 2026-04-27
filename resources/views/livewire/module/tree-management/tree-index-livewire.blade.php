@@ -4,4 +4,5 @@
     </div>
 
     <livewire:module.tree-management.tree-modal-livewire />
+    <livewire:module.tree-management.tree-label-modal-livewire />
 </div>

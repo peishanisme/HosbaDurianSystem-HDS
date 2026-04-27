@@ -18,9 +18,53 @@
                             <span class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{ $tree->tree_tag }}
                             </span>
 
-                            @foreach ($tree->labels as $label)
-                                <x-tree-label-badge :label="$label->name" :color="$label->color" class="ms-2" />
-                            @endforeach
+                            <div id="tree_label_drawer_toggle" class="tree-label" style="cursor: pointer;">
+                                @foreach ($tree->labels as $label)
+                                    <x-tree-label-badge :label="$label->name" :color="$label->color" class="ms-2" />
+                                @endforeach
+                            </div>
+
+                            {{-- tree labels drawer --}}
+                            <div id="kt_tree_label_drawer" wire:ignore.self class="bg-white d-flex flex-column"
+                                data-kt-drawer="true" data-kt-drawer-activate="true"
+                                data-kt-drawer-toggle="#tree_label_drawer_toggle"
+                                data-kt-drawer-close="#kt_tree_label_drawer_close" data-kt-drawer-width="400px">
+
+                                <div class="p-5 border-bottom d-flex justify-content-between align-items-center">
+                                    <h4 class="mb-0">Tree Labels</h4>
+                                    <button id="kt_tree_label_drawer_close" class="btn btn-sm btn-light">✕</button>
+                                </div>
+
+                                <div class="p-5 flex-grow-1 overflow-auto">
+
+                                    @foreach ($labelOptions as $label)
+                                        <div class="form-check mb-8">
+                                            <input class="form-check-input" type="checkbox" value="{{ $label->id }}"
+                                                wire:model="selectedLabels" id="label_{{ $label->id }}">
+
+                                            <label class="form-check-label" for="label_{{ $label->id }}">
+                                                <span class="badge"
+                                                    style="background-color: {{ $label->color ?? '#ccc' }}; color: #fff; font-size: 14px;">
+                                                    {{ $label->name }}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    @endforeach
+
+                                </div>
+
+                                <div class="p-5 border-top d-flex justify-content-end gap-4">
+                                    <button class="btn btn-light-danger w-100" data-kt-drawer-dismiss="true">
+                                        Cancel
+                                    </button>
+
+                                    <button wire:click="saveLabels" class="btn btn-primary w-100">
+                                        Save
+                                    </button>
+                                </div>
+
+                            </div>
+                            {{-- end of tree labels drawer --}}
 
                             @php
                                 match ($tree->active_flowering_status) {
@@ -69,7 +113,8 @@
                                 <div class="modal-content">
 
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="qrModalLabel">{{ __('messages.tree_qr_code') }}</h5>
+                                        <h5 class="modal-title" id="qrModalLabel">{{ __('messages.tree_qr_code') }}
+                                        </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -108,49 +153,11 @@
                                 data="{{ $tree->id }}" />
                             <livewire:module.tree-management.tree-modal-livewire />
                         </div>
-
-                        <!--begin::Menu-->
-                        {{-- <div class="me-0">
-                            <button class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
-                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                <i class="ki-solid ki-dots-horizontal fs-2x"></i>
-                            </button>
-                            <!--begin::Menu 3-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
-                                data-kt-menu="true">
-                                <!--begin::Heading-->
-                                <div class="menu-item px-3">
-                                    <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">Payments
-                                    </div>
-                                </div>
-                                <!--end::Heading-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Delete Tree</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
                 <div class="d-flex flex-wrap flex-stack">
                     <div class="d-flex flex-column flex-grow-1 pe-8">
                         <div class="d-flex flex-wrap">
-
-                            {{-- <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="fs-2 fw-bold">{{ $tree->latestGrowthLog->height ?? '-' }} m</div>
-                                </div>
-                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.height') }}</div>
-                            </div>
-
-                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="fs-2 fw-bold">{{ $tree->latestGrowthLog->diameter ?? '-' }} m</div>
-                                </div>
-                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.diameter') }}</div>
-                            </div> --}}
-
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
                                     <div class="fs-2 fw-bold">{{ $tree->area }} </div>
@@ -176,7 +183,8 @@
                                 <div class="d-flex align-items-center">
                                     <div class="fs-2 fw-bold">{{ $tree->getFloweringPeriod() }}</div>
                                 </div>
-                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.flowering_period') }}</div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.flowering_period') }}
+                                </div>
                             </div>
 
                         </div>
@@ -184,18 +192,33 @@
                 </div>
             </div>
         </div>
-        <!--end::Details-->
+
         <!--begin::Navs-->
         <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold" wire:ignore>
             <x-show-navbar-navitem title="{{ __('messages.overview') }}" :route="route('tree.show', $tree->id)" :active="request()->routeIs('tree.show')" />
             <x-show-navbar-navitem title="{{ __('messages.growth_logs') }}" :route="route('tree.growth-log', $tree->id)" :active="request()->routeIs('tree.growth-log')" />
-            {{-- <x-show-navbar-navitem title="Status History" /> --}}
             <x-show-navbar-navitem title="{{ __('messages.health_records') }}" :route="route('tree.health-record', $tree->id)" :active="request()->routeIs('tree.health-record')" />
             <x-show-navbar-navitem title="{{ __('messages.agrochemical_usages') }}" :route="route('tree.agrochemical-usage', $tree->id)"
                 :active="request()->routeIs('tree.agrochemical-usage')" />
             <x-show-navbar-navitem title="{{ __('messages.harvests') }}" :route="route('tree.harvest-record', $tree->id)" :active="request()->routeIs('tree.harvest-record')" />
-            {{-- <x-show-navbar-navitem title="Media" /> --}}
+
         </ul>
         <!--begin::Navs-->
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        window.addEventListener('closeDrawer', () => {
+            const drawerEl = document.querySelector("#kt_tree_label_drawer");
+
+            let drawer = KTDrawer.getInstance(drawerEl);
+
+            if (!drawer) {
+                drawer = new KTDrawer(drawerEl);
+            }
+
+            drawer.hide();
+        });
+    </script>
+@endpush
