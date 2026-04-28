@@ -6,6 +6,7 @@ use App\Models\Label;
 use App\Models\Tree;
 use App\Traits\SweetAlert;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -20,9 +21,9 @@ class TreeLabelModalLivewire extends Component
     public $trees, $selectedTrees;
     public $labelTreeMap = [];
     public string $search = '';
-    public $showCreateLabel = false;
+    public $showCreateLabel = false, $showEditLabel = false, $showEditButton = false;
     public $newLabelName = '';
-    public $newLabelColor = '#0d6efd'; // default color
+    public $newLabelColor = '#0d6efd';
 
     public function mount()
     {
@@ -40,8 +41,10 @@ class TreeLabelModalLivewire extends Component
     {
         if ($value) {
             $this->selectedTrees = $this->labelTreeMap[$value] ?? [];
+            $this->showEditButton = true;
         } else {
             $this->selectedTrees = [];
+            $this->showEditButton = false;
         }
     }
 
@@ -50,7 +53,7 @@ class TreeLabelModalLivewire extends Component
         $this->resetPage();
     }
 
-     public function resetInput(): void
+    public function resetInput(): void
     {
         $this->reset('search', 'selectedLabel', 'selectedTrees');
     }
@@ -77,6 +80,62 @@ class TreeLabelModalLivewire extends Component
         $this->toastSuccess('Label created successfully');
         // reset form
         $this->reset(['newLabelName', 'newLabelColor', 'showCreateLabel']);
+    }
+
+    public function updatedShowEditLabel($value)
+    {
+        if ($value && $this->selectedLabel) {
+            $label = Label::find($this->selectedLabel);
+
+            if ($label) {
+                $this->newLabelName = $label->name;
+                $this->newLabelColor = $label->color;
+            }
+        }
+    }
+
+    public function editLabel()
+    {
+        $this->validate([
+            'newLabelName' => 'required|string|max:255',
+            'newLabelColor' => 'required|string',
+        ]);
+
+        Label::where('id', $this->selectedLabel)->update([
+            'name' => $this->newLabelName,
+            'label' => $this->newLabelName,
+            'color' => $this->newLabelColor,
+        ]);
+
+        $this->labelsOptions = Label::all();
+
+        $this->toastSuccess('Label updated successfully');
+
+        $this->reset(['showEditLabel']);
+    }
+
+    public function confirmDeleteLabel()
+    {
+        $this->alertConfirm('Are you sure you want to delete this label? This action cannot be undone.', 'delete-label');
+    }
+
+    #[On('delete-label')]
+    public function deleteLabel()
+    {
+        if (!$this->selectedLabel) return;
+
+        // remove pivot first (important)
+        DB::table('tree_label')
+            ->where('label_id', $this->selectedLabel)
+            ->delete();
+
+        Label::where('id', $this->selectedLabel)->delete();
+
+        $this->labelsOptions = Label::all();
+
+        $this->reset(['selectedLabel', 'showEditLabel','selectedTrees']);
+
+        $this->toastSuccess('Label deleted successfully');
     }
 
     public function getFilteredTreesProperty()
