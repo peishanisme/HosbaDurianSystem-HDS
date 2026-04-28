@@ -4,7 +4,7 @@
         <div class="d-flex flex-wrap flex-sm-nowrap">
 
             <div class="me-7 mb-4">
-                <x-avatar :name="strtoupper(substr(trim($tree->tree_tag), -4))" size="120px" />
+                {!! QrCode::size(120)->generate($treeUrl) !!}
             </div>
 
             <!--begin::Info-->
@@ -100,11 +100,11 @@
                     <!--end::User-->
                     <!--begin::Actions-->
                     <div class="d-flex my-4">
-                        <a href="#" class="btn btn-sm btn-light-success me-2" data-bs-toggle="modal"
+                        {{-- <a href="#" class="btn btn-sm btn-light-success me-2" data-bs-toggle="modal"
                             data-bs-target="#qrModal">
                             <i class="bi bi-tree"></i> <span
                                 class="indicator-label">{{ __('messages.tree_qr_code') }}</span>
-                        </a>
+                        </a> --}}
 
                         {{-- tree qr modal --}}
                         <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel"
@@ -144,7 +144,7 @@
                                 data-bs-toggle="modal" data-bs-target="#harvestQrCodeModalLivewire"
                                 wire:click="$dispatch('load-qr-code', { tree: {{ $tree->id }} })">
                                 <i class="bi-qr-code"></i>
-                                <span class="indicator-label">{{ __('messages.fruit_qr_code') }}</span>
+                                <span class="indicator-label">{{ __('messages.qr_code') }}</span>
                             </button>
                         </div>
 
