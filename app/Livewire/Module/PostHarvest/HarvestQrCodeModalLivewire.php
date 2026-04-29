@@ -46,14 +46,14 @@ class HarvestQrCodeModalLivewire extends Component
         $this->treeTag = '';
     }
 
-     public function printQr()
+    public function printQr()
     {
-        $this->dispatch(
-            'print-fruit-labels',
-            treeUrl: $this->treeUrl,
-            treeTag: $this->treeTag,
-            quantity: $this->quantity,
-        );
+        $url = route('print.qr', [
+            'tree' => $this->tree->id,
+            'qty' => $this->quantity
+        ]);
+
+        $this->dispatch('print-qr-url', url: $url);
     }
 
     public function render()

@@ -33,7 +33,7 @@ use App\Livewire\Module\{
     UserManagement\UserProfileLivewire
 };
 
-// routes/web.php
+//translation route
 Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'zh', 'ms'])) {
         session(['locale' => $locale]);
@@ -42,12 +42,15 @@ Route::get('/lang/{locale}', function ($locale) {
     return redirect(request('redirect', '/'));
 })->name('lang.switch');
 
+//download report as pdf
 Route::get('/reports/export', [ReportController::class, 'export'])
     ->name('report.export');
 
 Route::get('/receipt/print/{transaction:uuid}', [ReportController::class, 'printReceipt'])->name('receipt.print');
 
-
+Route::get('/print/qr/{tree}', [ReportController::class, 'printFruitLabels'])
+    ->name('print.qr');
+//web route
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardLivewire::class)->name('dashboard');
 
@@ -118,6 +121,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/welcome', 'welcome')->name('welcome');
 });
 
+//public portal
 Route::get('/product-details/{tree:uuid}', PublicPortalLivewire::class)->name('public.portal');
 
 

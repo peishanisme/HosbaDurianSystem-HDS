@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Models\Tree;
+use App\Reports\Exporters\ExcelExporter;
+use App\Reports\Exporters\PdfExporter;
+use App\Reports\Exporters\ReceiptPdfExporter;
+use App\Services\ReportService;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
-use App\Services\ReportService;
-use App\Reports\Exporters\PdfExporter;
-use App\Reports\Exporters\ExcelExporter;
-use App\Reports\Exporters\ReceiptPdfExporter;
 
 class ReportController extends Controller
 {
@@ -46,5 +47,13 @@ class ReportController extends Controller
     public function printReceipt(Transaction $transaction)
     {
        return app(ReceiptPdfExporter::class)->export($transaction);
+    }
+
+    public function printFruitLabels(Tree $tree,Request $request)
+    {
+        $qty = $request->get('qty', 1);
+        $url = route('public.portal', $tree->uuid);
+
+        return view('components.documents.fruit-label', compact('tree', 'qty', 'url'));
     }
 }
