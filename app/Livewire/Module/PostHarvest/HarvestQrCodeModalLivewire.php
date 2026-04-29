@@ -46,19 +46,15 @@ class HarvestQrCodeModalLivewire extends Component
         $this->treeTag = '';
     }
 
-    // public function generatePdf()
-    // {
-    //     if (!$this->tree) {
-    //         return;
-    //     }
-
-    //     $this->dispatch(
-    //         'print-fruit-labels',
-    //         treeUrl: route('public.portal', $this->tree->uuid),
-    //         treeTag: $this->tree->tree_tag,
-    //         quantity: $this->quantity,
-    //     );
-    // }
+     public function printQr()
+    {
+        $this->dispatch(
+            'print-fruit-labels',
+            treeUrl: $this->treeUrl,
+            treeTag: $this->treeTag,
+            quantity: $this->quantity,
+        );
+    }
 
     public function render()
     {

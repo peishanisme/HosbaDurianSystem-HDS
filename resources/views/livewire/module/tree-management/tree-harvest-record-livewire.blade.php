@@ -69,7 +69,9 @@
                                                 <tbody>
                                                     @forelse ($harvest->harvestRecordsForTree($tree->uuid)->get() as $harvestRecord)
                                                         <tr>
-                                                            <td class="ps-4 small">{{ $harvestRecord->harvest_date ? \Carbon\Carbon::parse($harvestRecord->harvest_date)->format('d M Y') : '-' }}</td>
+                                                            <td class="ps-4 small">
+                                                                {{ $harvestRecord->harvest_date ? \Carbon\Carbon::parse($harvestRecord->harvest_date)->format('d M Y') : '-' }}
+                                                            </td>
                                                             <td class="small">
                                                                 {{ $harvestRecord->num_of_fruits ?? '-' }}
                                                             </td>
@@ -84,7 +86,8 @@
                                                                     $gradeClassMap = [
                                                                         'Spoilt' =>
                                                                             'badge bg-danger-subtle text-danger',
-                                                                        'Not Spoilt' => 'badge bg-success-subtle text-success',
+                                                                        'Not Spoilt' =>
+                                                                            'badge bg-success-subtle text-success',
                                                                     ];
                                                                     $badgeClass =
                                                                         $gradeClassMap[$status] ??
@@ -121,6 +124,8 @@
             </div>
         </div>
     </div>
+
+    <livewire:module.post-harvest.harvest-qr-code-modal-livewire />
 
 </div>
 
