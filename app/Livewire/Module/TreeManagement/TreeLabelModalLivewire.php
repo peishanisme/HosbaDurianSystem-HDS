@@ -21,9 +21,8 @@ class TreeLabelModalLivewire extends Component
     public $trees, $selectedTrees;
     public $labelTreeMap = [];
     public string $search = '';
-    public $showCreateLabel = false, $showEditLabel = false, $showEditButton = false;
-    public $newLabelName = '';
-    public $newLabelColor = '#0d6efd';
+    public bool $showCreateLabel = false, $showEditLabel = false, $showEditButton = false;
+    public string $newLabelName = '', $newLabelColor = '#0d6efd';
 
     public function mount()
     {
@@ -53,6 +52,34 @@ class TreeLabelModalLivewire extends Component
         $this->resetPage();
     }
 
+    public function toggleCreateLabel()
+    {
+        $this->showCreateLabel = ! $this->showCreateLabel;
+
+        if ($this->showCreateLabel) {
+            $this->showEditLabel = false;
+            $this->reset(['newLabelName', 'newLabelColor']);
+        }
+    }
+
+    public function toggleEditLabel()
+    {
+        if (!$this->selectedLabel) {
+            $this->toastError('Please select a label first');
+            return;
+        }
+
+        $this->showEditLabel = ! $this->showEditLabel;
+
+        if ($this->showEditLabel) {
+            $this->showCreateLabel = false;
+
+            $label = Label::find($this->selectedLabel);
+            $this->newLabelName = $label->name ?? '';
+            $this->newLabelColor = $label->color ?? '#0d6efd';
+        }
+    }
+
     public function resetInput(): void
     {
         $this->reset('search', 'selectedLabel', 'selectedTrees');
@@ -80,18 +107,6 @@ class TreeLabelModalLivewire extends Component
         $this->toastSuccess('Label created successfully');
         // reset form
         $this->reset(['newLabelName', 'newLabelColor', 'showCreateLabel']);
-    }
-
-    public function updatedShowEditLabel($value)
-    {
-        if ($value && $this->selectedLabel) {
-            $label = Label::find($this->selectedLabel);
-
-            if ($label) {
-                $this->newLabelName = $label->name;
-                $this->newLabelColor = $label->color;
-            }
-        }
     }
 
     public function editLabel()
@@ -133,7 +148,7 @@ class TreeLabelModalLivewire extends Component
 
         $this->labelsOptions = Label::all();
 
-        $this->reset(['selectedLabel', 'showEditLabel','selectedTrees']);
+        $this->reset(['selectedLabel', 'showEditLabel', 'selectedTrees']);
 
         $this->toastSuccess('Label deleted successfully');
     }

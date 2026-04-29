@@ -16,12 +16,12 @@
 
                 <!-- + Button -->
                 @if ($showEditButton)
-                    <button type="button" class="btn btn-light-success" wire:click="$toggle('showEditLabel')">
+                    <button type="button" class="btn btn-light-success" wire:click="toggleEditLabel">
                         <i class="bi bi-pencil-square"></i>
                     </button>
                 @endif
 
-                <button type="button" class="btn btn-light-primary" wire:click="$toggle('showCreateLabel')">
+                <button type="button" class="btn btn-light-primary" wire:click="toggleCreateLabel">
                     +
                 </button>
             </div>
@@ -121,14 +121,14 @@
                         <!-- Right actions -->
                         <div class="d-flex gap-2">
 
-                            <button class="btn btn-sm btn-light" wire:click="$set('showEditLabel', false)">
-                                Cancel
-                            </button>
-
                             <button class="btn btn-sm btn-primary" wire:click="editLabel">
                                 <span>
                                     Update
                                 </span>
+                            </button>
+                            
+                            <button class="btn btn-sm btn-light" wire:click="$set('showEditLabel', false)">
+                                Cancel
                             </button>
 
                         </div>
