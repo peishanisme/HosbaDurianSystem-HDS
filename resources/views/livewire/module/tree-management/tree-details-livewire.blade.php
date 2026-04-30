@@ -1,4 +1,5 @@
 <div id="kt_app_content_container" class="container-fluid">
+
     <livewire:components.headers.tree-details-header :tree="$tree" />
 
     <div class="row">
@@ -23,7 +24,7 @@
     </div> --}}
 
     {{-- fruit qr modal --}}
-    <livewire:module.post-harvest.harvest-qr-code-modal-livewire /> 
+    <livewire:module.post-harvest.harvest-qr-code-modal-livewire />
 
 </div>
 
