@@ -196,6 +196,10 @@ return [
         'Sold' => 'Dijual',
     ],
 
+    //tree feedback
+    'tree_feedbacks' => 'Maklum Balas Pokok',
+    'feedbacks' => 'Maklum Balas',
+
     // disease listing
     'search_diseases' => 'Cari Penyakit',
     'symptoms' => 'Gejala',

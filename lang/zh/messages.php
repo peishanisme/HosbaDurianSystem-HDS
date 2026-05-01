@@ -194,6 +194,9 @@ return [
     'spoilt' => '已损坏',
     'not_spoilt' => '未损坏',
 
+    //tree feedback
+    'tree_feedbacks' => '树木反馈',
+    'feedbacks' => '反馈',
 
     //disease listing
     'search_diseases' => '搜索病害',

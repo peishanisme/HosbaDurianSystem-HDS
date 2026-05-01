@@ -1,5 +1,6 @@
 <div>
-    <a href="{{ route('tree.trees.index') }}" class="d-flex gap-2 mb-2 align-items-center text-gray-600 text-hover-primary">
+    <a href="{{ route('tree.trees.index') }}"
+        class="d-flex gap-2 mb-2 align-items-center text-gray-600 text-hover-primary">
         <i class="ki-duotone ki-double-left fs-3">
             <span class="path1"></span>
             <span class="path2"></span>
@@ -216,6 +217,7 @@
                 <x-show-navbar-navitem title="{{ __('messages.agrochemical_usages') }}" :route="route('tree.agrochemical-usage', $tree->id)"
                     :active="request()->routeIs('tree.agrochemical-usage')" />
                 <x-show-navbar-navitem title="{{ __('messages.harvests') }}" :route="route('tree.harvest-record', $tree->id)" :active="request()->routeIs('tree.harvest-record')" />
+                <x-show-navbar-navitem title="{{ __('messages.feedbacks') }}" :route="route('tree.feedback', $tree->id)" :active="request()->routeIs('tree.feedback')" />
 
             </ul>
             <!--begin::Navs-->
@@ -223,8 +225,24 @@
     </div>
 </div>
 
+@push('styles')
+    <style>
+        #kt_tree_label_drawer {
+            visibility: hidden;
+        }
+    </style>
+@endpush
 
 @push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const drawerEl = document.querySelector("#kt_tree_label_drawer");
+
+            if (drawerEl) {
+                drawerEl.style.visibility = "visible";
+            }
+        });
+    </script>
     <script>
         window.addEventListener('closeDrawer', () => {
             const drawerEl = document.querySelector("#kt_tree_label_drawer");

@@ -149,7 +149,6 @@ return [
     'flowering_trees' => 'Flowering Trees',
     'estimated_fruits' => 'Estimated Fruits',
 
-
     // tree growth log
     'tree_growth_logs' => 'Tree Growth Logs',
 
@@ -201,6 +200,10 @@ return [
         'Available' => 'Available',
         'Sold' => 'Sold',
     ],
+
+    //tree feedback
+    'tree_feedbacks' => 'Tree Feedbacks',
+    'feedbacks' => 'Feedbacks',
 
     // disease listing
     'search_diseases' => 'Search Diseases',
