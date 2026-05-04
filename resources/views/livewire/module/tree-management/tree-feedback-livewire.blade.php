@@ -6,13 +6,29 @@
             No feedback available for this tree.
         </span>
     @else
-        <div class="row" wire:ignore>
+        <div class="d-flex justify-content-end mb-3">
+            <button wire:click="sortByDate" class="btn btn-sm btn-light d-flex align-items-center gap-1 {{ $sortDirection === 'desc' ? 'active' : '' }}">
+
+                <span>Sort by Date</span>
+
+                <!-- Arrow -->
+                @if ($sortDirection === 'asc')
+                    <i class="bi bi-arrow-up"></i>
+                @else
+                    <i class="bi bi-arrow-down"></i>
+                @endif
+
+            </button>
+        </div>
+        
+        <div class="row align-items-stretch">
             @foreach ($feedbacks as $feedback)
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div x-data="{ expanded: false, isOverflowing: false }" x-init="$nextTick(() => {
                         const el = $refs.content;
                         isOverflowing = el.scrollHeight > el.clientHeight;
-                    })" class="card h-100 shadow-sm">
+                    })"
+                        class="card shadow-sm h-100 d-flex flex-column feedback-card">
                         <div class="card-body">
 
                             <h6 class="card-title">
@@ -25,7 +41,8 @@
                             </p>
 
                             <!-- Toggle (ONLY if overflowing) -->
-                            <button x-show="isOverflowing" @click="expanded = !expanded" class="btn btn-link p-0">
+                            <button x-show="isOverflowing" @click="expanded = !expanded"
+                                class="btn btn-link p-0 text-primary">
                                 <span x-text="expanded ? 'Show less' : 'Show more'"></span>
                             </button>
 
@@ -45,6 +62,11 @@
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
+        }
+
+        .feedback-card {
+            transition: max-height 0.3s ease;
+            min-height: 150px;
         }
     </style>
 @endpush
