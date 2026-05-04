@@ -7,7 +7,8 @@
         </span>
     @else
         <div class="d-flex justify-content-end mb-3">
-            <button wire:click="sortByDate" class="btn btn-sm btn-light d-flex align-items-center gap-1 {{ $sortDirection === 'desc' ? 'active' : '' }}">
+            <button wire:click="sortByDate"
+                class="btn btn-sm btn-light d-flex align-items-center gap-1 {{ $sortDirection === 'desc' ? 'active' : '' }}">
 
                 <span>Sort by Date</span>
 
@@ -20,14 +21,22 @@
 
             </button>
         </div>
-        
+
         <div class="row align-items-stretch">
             @foreach ($feedbacks as $feedback)
-                <div class="col-md-6 col-lg-4 mb-4">
+                <div class="col-md-6 col-lg-4 mb-4" wire:key="feedback-{{ $feedback->id }}">
                     <div x-data="{ expanded: false, isOverflowing: false }" x-init="$nextTick(() => {
-                        const el = $refs.content;
-                        isOverflowing = el.scrollHeight > el.clientHeight;
+                        setTimeout(() => {
+                            const el = $refs.content;
+                            isOverflowing = el.scrollHeight > el.clientHeight;
+                        }, 50);
                     })"
+                        x-effect="
+    const el = $refs.content;
+    if (el) {
+        isOverflowing = el.scrollHeight > el.clientHeight;
+    }
+"
                         class="card shadow-sm h-100 d-flex flex-column feedback-card">
                         <div class="card-body">
 
