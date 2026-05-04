@@ -13,12 +13,17 @@ class FruitFeedback extends Model
         'feedback',
     ];
 
-     protected static function boot()
+    protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($model) {
             $model->uuid = (string) Str::uuid();
         });
+    }
+
+    public function tree()
+    {
+        return $this->belongsTo(Tree::class, 'tree_uuid', 'uuid');
     }
 }

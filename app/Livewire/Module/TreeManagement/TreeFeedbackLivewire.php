@@ -8,6 +8,11 @@ use Livewire\Component;
 class TreeFeedbackLivewire extends Component
 {
     public Tree $tree;
+    public $feedbacks;
+
+    public function mount(){
+        $this->feedbacks = $this->tree->feedbacks()->orderBy('created_at', 'desc')->get();
+    }
     
     public function render()
     {

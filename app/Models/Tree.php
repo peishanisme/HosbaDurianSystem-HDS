@@ -166,6 +166,11 @@ class Tree extends Model
             ->whereHas('harvestEvent', fn($q) => $q->active());
     }
 
+    public function feedbacks(): HasMany
+    {
+        return $this->hasMany(FruitFeedback::class, 'tree_uuid', 'uuid');
+    }   
+
     public function getActiveFloweringStatusAttribute()
     {
         return $this->activeObservation?->flowering_status;
