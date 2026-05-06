@@ -190,11 +190,12 @@ return [
     'available' => 'Tersedia',
     'spoilt' => 'Rosak',
     'not_spoilt' => 'Tiada Rosak',
-
     'selling_status' => [
         'Available' => 'Tersedia',
         'Sold' => 'Dijual',
     ],
+    'total_weight' => 'Jumlah Berat',   
+    'total_spoilt' => 'Jumlah Rosak',
 
     //tree feedback
     'tree_feedbacks' => 'Maklum Balas Pokok',

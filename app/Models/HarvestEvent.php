@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\HarvestRecord;
+use App\Models\Tree;
+use App\Models\TreeObservation;
+use App\Reports\Contracts\Reportable;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
-use App\Reports\Contracts\Reportable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Tree;
-use App\Models\HarvestRecord;
-use App\Models\TreeObservation;
 
 class HarvestEvent extends Model implements Reportable
 {
@@ -102,12 +103,44 @@ class HarvestEvent extends Model implements Reportable
     {
         return $this->hasManyThrough(
             Tree::class,
-            Fruit::class,
+            HarvestRecord::class,
             'harvest_uuid',
             'uuid',
             'uuid',
             'tree_uuid'
         )->distinct();
+    }
+
+    public function treeHarvestSummary()
+    {
+        return $this->trees()
+            ->withSum(['harvestRecords as total_fruits' => function ($query) {
+                $query->where('harvest_uuid', $this->uuid);
+            }], 'num_of_fruits')
+
+            ->withSum(['harvestRecords as total_weight' => function ($query) {
+                $query->where('harvest_uuid', $this->uuid);
+            }], 'weight')
+
+            ->withSum(['harvestRecords as total_spoilt' => function ($query) {
+                $query->where('harvest_uuid', $this->uuid)
+                    ->where('spoilt', true);
+            }], 'num_of_fruits');
+    }
+
+    public function dailySummaryByTree($treeUuid)
+    {
+        return $this->harvestRecords()
+            ->where('tree_uuid', $treeUuid)
+            ->selectRaw('
+            harvest_date,
+            SUM(num_of_fruits) as total_fruits,
+            SUM(weight) as total_weight,
+            SUM(CASE WHEN spoilt = true THEN num_of_fruits ELSE 0 END) as total_spoilt
+        ')
+            ->groupBy('harvest_date')
+            ->orderBy('harvest_date')
+            ->get();
     }
 
     public function scopeActive($query)
@@ -136,6 +169,13 @@ class HarvestEvent extends Model implements Reportable
     {
         return $this->harvestRecords()
             ->where('tree_uuid', $treeUuid);
+    }
+
+    public function totalSpoiledFruits()
+    {
+        return $this->harvestRecords()
+            ->where('spoilt', true)
+            ->sum('num_of_fruits');
     }
 
     public static function reportQuery(array $filters): Builder

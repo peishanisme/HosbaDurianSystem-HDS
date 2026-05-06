@@ -77,6 +77,25 @@
                                 </div>
                                 <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.duration') }}</div>
                             </div>
+
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-2 fw-bold">
+                                       {{ $harvestEvent->totalFruits() - $harvestEvent->totalSpoiledFruits() }}
+                                    </div>
+                                </div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.not_spoilt') }}</div>
+                            </div>
+
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-2 fw-bold">
+                                       {{ $harvestEvent->totalSpoiledFruits() }}
+                                    </div>
+                                </div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.spoilt') }}</div>
+                            </div>
+
                         </div>
 
                     </div>

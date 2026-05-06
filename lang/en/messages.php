@@ -307,6 +307,7 @@ return [
         'Spoilt' => 'Spoilt',
         'Not Spoilt' => 'Not Spoilt',
     ],
+    'total_spoilt' => 'Total Spoilt',
 
     // buyer index
     'search_buyers' => 'Search Buyers',

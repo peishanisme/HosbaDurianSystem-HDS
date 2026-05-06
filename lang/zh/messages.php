@@ -193,6 +193,8 @@ return [
     ],
     'spoilt' => '已损坏',
     'not_spoilt' => '未损坏',
+    'total_weight' => '总重量',
+    'total_spoilt' => '总损坏',
 
     //tree feedback
     'tree_feedbacks' => '树木反馈',

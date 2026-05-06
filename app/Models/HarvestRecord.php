@@ -41,4 +41,5 @@ class HarvestRecord extends Model
     {
         return $this->hasMany(TreeObservation::class, 'harvest_uuid', 'harvest_uuid');
     }
+
 }

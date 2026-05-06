@@ -5,7 +5,6 @@ namespace App\Livewire\Module\TreeManagement;
 use App\Models\Tree;
 use Livewire\Component;
 use App\Models\HarvestEvent;
-use App\Models\FruitFeedback;
 use Illuminate\Support\Facades\DB;
 
 class TreeHarvestRecordLivewire extends Component
