@@ -72,7 +72,7 @@
                                                             <th>Total Spoilt</th>
                                                         </tr>
                                                     </thead>
-                    
+
                                                     @php
                                                         $daily = $this->harvestEvent->dailySummaryByTree($tree->uuid);
                                                     @endphp
@@ -92,9 +92,13 @@
                                                                         class="btn btn-sm btn-link p-0 me-2">
 
                                                                         <span
-                                                                            style="display:inline-block; transition: transform .2s;
-                        {{ in_array($dayKey, $expandedDays) ? 'transform: rotate(90deg);' : '' }}">
-                                                                            ▶
+                                                                            style="display:inline-block; transform .2s;
+                        {{ in_array($dayKey, $expandedDays) ? 'transform: rotate(90deg);' : '' }} ">
+                                                                            <i
+                                                                                class="ki-duotone ki-double-right-arrow fs-5">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                            </i>
                                                                         </span>
                                                                     </button>
 
@@ -109,9 +113,10 @@
                                                             <!-- 3RD LAYER (RECORDS) -->
                                                             @if (in_array($dayKey, $expandedDays))
                                                                 <tr wire:key="record-{{ $dayKey }}">
-                                                                    <td colspan="4" class="bg-light">
+                                                                    <td colspan="4" class="bg-white">
 
-                                                                        <div class="ps-4">
+                                                                        <div
+                                                                            class="ps-4 border-start border-3 border-primary ms-3 py-2">
 
                                                                             @php
                                                                                 $records = $this->getRecordsByDay(
@@ -120,37 +125,66 @@
                                                                                 );
                                                                             @endphp
 
-                                                                            <table class="table table-sm mb-0">
-                                                                                <thead>
-                                                                                    <tr class="small text-muted">
-                                                                                        <th>Fruits</th>
-                                                                                        <th>Weight</th>
-                                                                                        <th>Spoilt</th>
-                                                                                    </tr>
-                                                                                </thead>
-
-                                                                                <tbody>
-                                                                                    @foreach ($records as $record)
-                                                                                        <tr>
-                                                                                            <td>{{ $record->num_of_fruits }}
-                                                                                            </td>
-                                                                                            <td>{{ number_format($record->weight, 2) }}
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                @if ($record->spoilt)
-                                                                                                    <span
-                                                                                                        class="badge bg-danger">Yes</span>
-                                                                                                @else
-                                                                                                    <span
-                                                                                                        class="badge bg-success">No</span>
-                                                                                                @endif
-                                                                                            </td>
+                                                                            <div class="table-responsive">
+                                                                                <table
+                                                                                    class="table table-sm align-middle mb-0 nested-table">
+                                                                                    <thead>
+                                                                                        <tr class="small text-muted">
+                                                                                            <th style="width: 15%">
+                                                                                                Fruits</th>
+                                                                                            <th style="width: 15%">
+                                                                                                Weight</th>
+                                                                                            <th style="width: 15%">
+                                                                                                Spoilt</th>
+                                                                                            <th style="width: 30%">
+                                                                                                Created At</th>
+                                                                                            <th style="width: 25%">
+                                                                                                Actions</th>
                                                                                         </tr>
-                                                                                    @endforeach
-                                                                                </tbody>
-                                                                            </table>
+                                                                                    </thead>
 
-                                                                        </div>
+                                                                                    <tbody>
+                                                                                        @foreach ($records as $record)
+                                                                                            <tr>
+                                                                                                <td>{{ $record->num_of_fruits }}
+                                                                                                </td>
+                                                                                                <td>{{ number_format($record->weight, 2) }}
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    @if ($record->spoilt)
+                                                                                                        <span
+                                                                                                            class="badge badge-light-danger">Yes</span>
+                                                                                                    @else
+                                                                                                        <span
+                                                                                                            class="badge badge-light-success">No</span>
+                                                                                                    @endif
+                                                                                                </td>
+                                                                                                <td>{{ $record->getAttribute('created_at')?->format('Y-m-d h:i A') }}
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <div
+                                                                                                        class="d-flex gap-2 flex-wrap">
+                                                                                                        <x-table-com-button
+                                                                                                            label1="Edit"
+                                                                                                            modal="harvestEditModal"
+                                                                                                            dispatch1="openEditModal"
+                                                                                                            dataField="recordId"
+                                                                                                            icon2="bi bi-trash3"
+                                                                                                            dispatch2="confirmRecordDeletion"
+                                                                                                            label2="Delete"
+                                                                                                            :data="'\'' .
+                                                                                                                $record->uuid .
+                                                                                                                '\''" />
+
+                                                                                                    </div>
+
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        @endforeach
+                                                                                    </tbody>
+                                                                                </table>
+
+                                                                            </div>
 
                                                                     </td>
                                                                 </tr>
@@ -212,6 +246,40 @@
             max-height: 1000px;
             opacity: 1;
             transform: scaleY(1);
+        }
+
+        .expand-day-row {
+            background-color: #f8fbff;
+        }
+
+        .nested-record-card table {
+            margin-bottom: 0;
+        }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nested-table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .nested-table td,
+        .nested-table th {
+            vertical-align: middle;
+        }
+
+        .nested-table .btn {
+            white-space: nowrap;
         }
     </style>
 @endpush

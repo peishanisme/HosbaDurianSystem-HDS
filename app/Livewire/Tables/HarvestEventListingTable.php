@@ -3,14 +3,21 @@
 namespace App\Livewire\Tables;
 
 use App\Models\HarvestEvent;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ViewComponentColumn;
 
 class HarvestEventListingTable extends DataTableComponent
 {
-    protected $model = HarvestEvent::class;
-
+    public function builder(): Builder
+    {
+        return HarvestEvent::query()
+            ->withSum(
+                'harvestRecords as total_fruits',
+                'num_of_fruits'
+            );
+    }
     public function configure(): void
     {
         $this->setPrimaryKey('id')
@@ -54,6 +61,12 @@ class HarvestEventListingTable extends DataTableComponent
             Column::make(__('messages.end_date'), "end_date")
                 ->format(fn($value) => $value ? \Carbon\Carbon::parse($value)->format('Y-m-d') : '-')
                 ->sortable(),
+            Column::make(__('messages.total_fruits'))
+                ->label(fn($row) => $row->total_fruits ?? 0)
+                ->sortable(
+                    fn(Builder $query, string $direction) =>
+                    $query->orderBy('total_fruits', $direction)
+                ),
             Column::make(__('messages.created_at'), "created_at")
                 ->sortable(),
             Column::make(__('messages.actions'))

@@ -2,10 +2,9 @@
     <div class="card-header">
         <h3 class="card-title">{{ __('messages.harvest_species_overview') }}</h3>
     </div>
+
     <div wire:ignore class="card-body p-5" id="harvest-species-chart" style="width: 100%;"></div>
 </div>
-
-
 
 @push('scripts')
     <script>
@@ -18,6 +17,17 @@
             ]);
 
             root.container.set("layout", root.verticalLayout);
+            root.container.children.unshift(
+                am5.Label.new(root, {
+                    text: "{{ __('messages.harvest_species_overview') }} - {{ $harvestEventName }}",
+                    fontSize: 21,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    x: am5.percent(50),
+                    centerX: am5.percent(50),
+                    paddingBottom: 15
+                })
+            );
 
             // Create container to hold charts
             var chartContainer = root.container.children.push(am5.Container.new(root, {
@@ -35,7 +45,6 @@
 
                 })
             );
-
 
             var series = chart.series.push(
                 am5percent.PieSeries.new(root, {
@@ -63,6 +72,11 @@
             });
 
             series.labels.template.setAll({
+                textType: "circular"
+            });
+
+            series.labels.template.setAll({
+                text: "{category}: {value}",
                 textType: "circular"
             });
 
@@ -103,6 +117,11 @@
             });
 
             series2.labels.template.setAll({
+                textType: "circular"
+            });
+
+            series2.labels.template.setAll({
+                text: "{category}: {value}",
                 textType: "circular"
             });
 
@@ -176,7 +195,6 @@
             var piecesData = speciesData.map(item => ({
                 category: item.species,
                 value: item.total_pieces
-
             }));
 
             // Data for weight
@@ -235,7 +253,7 @@
 
             var exporting = am5plugins_exporting.Exporting.new(root, {
                 menu: am5plugins_exporting.ExportingMenu.new(root, {}),
-                filePrefix: "{{ __('messages.harvest_species') }}"
+                filePrefix: "{{ __('messages.harvest_species_overview') }}"
             });
 
         });

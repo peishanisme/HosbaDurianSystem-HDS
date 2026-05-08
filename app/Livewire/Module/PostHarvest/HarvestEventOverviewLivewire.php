@@ -70,65 +70,6 @@ class HarvestEventOverviewLivewire extends Component
         }
     }
 
-    public function save()
-    {
-
-        $this->validate([
-            'tree_id' => 'required',
-            'harvested_date' => 'required|date',
-            'grade' => 'required',
-            'weight' => 'required|numeric|min:0',
-        ]);
-
-        $tree = Tree::find($this->tree_id);
-
-        $fruitDTO = new FruitDTO(
-            harvest_uuid: $this->harvestEvent->uuid,
-            transaction_uuid: null,
-            harvested_at: $this->harvested_date,
-            is_spoiled: false,
-            tree_uuid: $tree->uuid ?? null,
-            weight: $this->weight,
-            grade: $this->grade
-        );
-
-        app('App\Actions\FruitManagement\CreateFruitAction')->handle($fruitDTO);
-
-        session()->flash('message', 'Harvest saved successfully!');
-
-        // Reset form after save
-        $this->reset(['tree_id', 'harvested_date', 'grade', 'weight']);
-    }
-
-    public function update()
-    {
-        $data = $this->validate([
-            'tree_id' => 'required',
-            'harvested_date' => 'required|date',
-            'grade' => 'required',
-            'weight' => 'required|numeric|min:0',
-        ]);
-
-        $tree = Tree::find($this->tree_id);
-
-        $fruitDTO = new FruitDTO(
-            harvest_uuid: $this->harvestEvent->uuid,
-            transaction_uuid: null,
-            harvested_at: $this->harvested_date,
-            is_spoiled: false,
-            tree_uuid: $tree->uuid ?? null,
-            weight: $this->weight,
-            grade: $this->grade
-        );
-
-        app('App\Actions\FruitManagement\UpdateFruitAction')->handle($fruitDTO, $this->fruit->uuid);
-
-        session()->flash('message', 'Fruit updated successfully!');
-
-        // Reset form after update
-        $this->reset(['tree_id', 'harvested_date', 'grade', 'weight']);
-    }
-
     public function loadTop10HarvestTreesData()
     {
         $topTrees = HarvestRecord::where('harvest_uuid', $this->harvestEvent->uuid)

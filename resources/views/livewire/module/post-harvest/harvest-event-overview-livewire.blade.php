@@ -7,7 +7,7 @@
     </div>
 
     <div class="mb-15">
-        <x-charts.harvest-events.harvest-species-chart :harvestSpeciesData="$harvestSpeciesData" />
+        <x-charts.harvest-events.harvest-species-chart :harvestSpeciesData="$harvestSpeciesData" harvestEventName="{{ $harvestEvent->event_name }}" />
     </div>
 
     <div class="mb-15">
