@@ -3,15 +3,20 @@
 namespace App\Livewire\Module\PostHarvest;
 
 use App\Models\HarvestEvent;
+use App\Models\HarvestRecord;
 use App\Traits\AuthorizesRoleOrPermission;
+use App\Traits\SweetAlert;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class HarvestEventHarvestSummaryLivewire extends Component
 {
-    use AuthorizesRoleOrPermission;
+    use AuthorizesRoleOrPermission, SweetAlert;
     public HarvestEvent $harvestEvent;
     public $expandedTrees = [];
     public $expandedDays = [];
+    public HarvestRecord $harvestRecord;
+    protected $listeners = ['refreshComponent' => '$refresh'];
 
     public function mount(): void
     {
@@ -54,6 +59,20 @@ class HarvestEventHarvestSummaryLivewire extends Component
             ->where('tree_uuid', $treeUuid)
             ->whereDate('harvest_date', $date)
             ->get();
+    }
+
+    #[On('deleteHarvestRecord')]
+    public function deleteHarvestRecord($harvestRecord)
+    {
+        $this->harvestRecord = $this->harvestEvent->harvestRecords()->findOrFail($harvestRecord);
+        $this->alertConfirm('Are you sure you want to delete this harvest record?', 'confirm-delete');
+    }
+
+    #[On('confirm-delete')]
+    public function confirmDelete()
+    {
+        $this->harvestRecord->delete();
+        $this->alertSuccess('Harvest record deleted successfully');
     }
 
     public function render()

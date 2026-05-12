@@ -167,14 +167,12 @@
                                                                                                         <x-table-com-button
                                                                                                             label1="Edit"
                                                                                                             modal="harvestEditModal"
-                                                                                                            dispatch1="openEditModal"
-                                                                                                            dataField="recordId"
+                                                                                                            dispatch1="edit-harvest-record"
+                                                                                                            dataField="harvestRecord"
                                                                                                             icon2="bi bi-trash3"
-                                                                                                            dispatch2="confirmRecordDeletion"
+                                                                                                            dispatch2="deleteHarvestRecord"
                                                                                                             label2="Delete"
-                                                                                                            :data="'\'' .
-                                                                                                                $record->uuid .
-                                                                                                                '\''" />
+                                                                                                            data="{{ $record->id }}" />
 
                                                                                                     </div>
 
@@ -185,7 +183,6 @@
                                                                                 </table>
 
                                                                             </div>
-
                                                                     </td>
                                                                 </tr>
                                                             @endif
@@ -221,10 +218,9 @@
         </div>
     </div>
 
-    <livewire:components.generate-report-modal model="App\Models\HarvestEvent" :harvestEvent="$harvestEvent" />
-
+    {{-- <livewire:components.generate-report-modal model="App\Models\HarvestEvent" :harvestEvent="$harvestEvent" /> --}}
+    <livewire:module.post-harvest.harvest-record-edit-modal-livewire />
     <livewire:module.post-harvest.harvest-qr-code-modal-livewire />
-
 </div>
 
 @push('styles')
