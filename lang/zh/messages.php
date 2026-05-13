@@ -426,16 +426,6 @@ return [
     'submit' => '提交',
     'please_wait' => '请稍候',
     'create_new_transaction' => '创建新交易',
-
-
-   
-
-    
-
-
-
-
-
-
-
+    'grade_breakdown' => '等级细分',
+    'record_by_grade' => '按等级记录',
 ];

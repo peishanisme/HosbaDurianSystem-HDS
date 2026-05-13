@@ -65,7 +65,7 @@
         </x-layouts.sidebar.menu-accordion>
 
         {{-- Sales & Transactions --}}
-        {{-- <x-layouts.sidebar.menu-accordion title="{{ __('messages.sales_and_transactions') }}"
+        <x-layouts.sidebar.menu-accordion title="{{ __('messages.sales_and_transactions') }}"
             icon="ki-duotone ki-dollar" @class([
                 'show active' => Route::is([
                     'sales.buyers.index',
@@ -74,12 +74,12 @@
                     'sales.transaction.index',
                 ]),
             ])>
-            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.buyer_listing') }}"
-                route="sales.buyers.index" />
+            {{-- <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.buyer_listing') }}"
+                route="sales.buyers.index" /> --}}
 
             <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.transaction_listing') }}"
                 route="sales.transaction.index" />
-        </x-layouts.sidebar.menu-accordion> --}}
+        </x-layouts.sidebar.menu-accordion>
 
         {{-- User Management --}}
         <x-layouts.sidebar.menu-accordion title="{{ __('messages.user_management') }}"

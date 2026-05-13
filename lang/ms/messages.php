@@ -433,5 +433,7 @@ return [
     'submit' => 'Hantar',
     'please_wait' => 'Sila tunggu',
     'create_new_transaction' => 'Cipta transaksi baharu',
+    'grade_breakdown' => 'Pecahan gred',
+    'record_by_grade' => 'Rekod mengikut gred',
 
 ];

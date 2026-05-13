@@ -433,5 +433,7 @@ return [
     'submit' => 'Submit',
     'please_wait' => 'Please wait',
     'create_new_transaction' => 'Create new transaction',
+    'grade_breakdown' => 'Grade breakdown',
+    'record_by_grade' => 'Record by grade',
 
 ];

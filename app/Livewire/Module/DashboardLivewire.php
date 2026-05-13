@@ -2,14 +2,15 @@
 
 namespace App\Livewire\Module;
 
-use App\Models\Tree;
-use App\Models\Fruit;
-use Livewire\Component;
-use App\Models\Transaction;
-use App\Models\HealthRecord;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\WeatherController;
+use App\Models\Fruit;
+use App\Models\HarvestRecord;
+use App\Models\HealthRecord;
+use App\Models\Transaction;
+use App\Models\Tree;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
 
 class DashboardLivewire extends Component
 {
@@ -104,14 +105,18 @@ class DashboardLivewire extends Component
 
     public function loadTotalHarvestData()
     {
-        $harvestData = Fruit::join('harvest_events', 'fruits.harvest_uuid', '=', 'harvest_events.uuid')
+        $harvestData = HarvestRecord::join('harvest_events', 'harvest_records.harvest_uuid', '=', 'harvest_events.uuid')
             ->select(
                 'harvest_events.uuid as harvest_uuid',
                 'harvest_events.event_name',
-                DB::raw('COUNT(fruits.id) as total_fruits'),
-                'harvest_events.created_at as harvested_at'
+                DB::raw('SUM(harvest_records.num_of_fruits) as total_fruits'),
+                'harvest_events.start_date as harvested_at'
             )
-            ->groupBy('harvest_events.uuid', 'harvest_events.event_name', 'harvest_events.created_at')
+            ->groupBy(
+                'harvest_events.uuid',
+                'harvest_events.event_name',
+                'harvest_events.start_date'
+            )
             ->orderBy('harvested_at', 'asc')
             ->get();
 
@@ -119,11 +124,11 @@ class DashboardLivewire extends Component
             return [
                 'event' => $item->event_name,
                 'total' => $item->total_fruits,
-                'harvested_at' => $item->harvestEvent->start_date,
+                'harvested_at' => $item->harvested_at,
             ];
         });
 
-        return ($chartData->toArray());
+        return $chartData->toArray();
     }
 
     public function loadTotalTransactionData()
