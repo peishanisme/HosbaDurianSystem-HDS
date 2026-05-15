@@ -20,11 +20,11 @@ Route::get('/reports/export', [ReportController::class, 'export'])
 
 Route::get('/receipt/print/{transaction:uuid}', [ReportController::class, 'printReceipt'])->name('receipt.print');
 
-Route::get('/print/qr/{tree}', [ReportController::class, 'printFruitLabels'])
-    ->name('print.qr');
 //web route
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardLivewire::class)->name('dashboard');
+    Route::get('/print/qr/{tree}', [ReportController::class, 'printFruitLabels'])
+        ->name('print.qr');
 
     Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
         Route::get('/all', UserIndexLivewire::class)->name('users.index');

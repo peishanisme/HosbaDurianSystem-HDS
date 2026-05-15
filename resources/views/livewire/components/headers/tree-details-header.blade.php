@@ -104,7 +104,7 @@
                                     <i class="ki-duotone ki-calendar">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
-                                    </i>{{ $tree->planted ? $tree->planted_at->format('Y-m-d') : 'N/A' }}</span>
+                                    </i>{{ $tree->planted_at ? $tree->planted_at->format('Y-m-d') : 'N/A' }}</span>
                             </div>
                             <!--end::Info-->
                         </div>
