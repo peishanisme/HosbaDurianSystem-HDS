@@ -117,6 +117,15 @@ class Transaction extends Model implements Reportable
         return collect($this->getFruitSummary())->sum('subtotal');
     }
 
+    public function getDailySummaryAttribute(): array
+    {
+        return [
+            'total_transactions' => self::whereDate('date', $this->date)->count(),
+            'total_amount' => self::whereDate('date', $this->date)->sum('total_amount'),
+            'total_weight' => self::whereDate('date', $this->date)->sum('total_weight'),
+        ];
+    }
+
     public function getSummaryAttribute(): array
     {
         //fruit summary

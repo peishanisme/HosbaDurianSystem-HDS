@@ -74,7 +74,6 @@ class TransactionListingTable extends DataTableComponent
                     'label'     => __('messages.view'),
                     'dataField' => 'transaction',
                     'data'      =>  $row->id,
-                    // 'permission' => 'view-disease',
                 ]))->html()
                 ->excludeFromColumnSelect(),
         ];
