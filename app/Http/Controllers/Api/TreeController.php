@@ -705,13 +705,11 @@ class TreeController extends Controller
     }
 
     /**
-     * Update an existing harvest record for a tree.
-     * URL: PUT /trees/{id}/harvest-records/{harvestUuid}
+     * Update an existing harvest record by ID.
+     * URL: PUT /harvest-records/{id}
      */
-    public function updateHarvestRecord(Request $request, $id, $harvestUuid)
+    public function updateHarvestRecord(Request $request, $id)
     {
-        $tree = Tree::findOrFail($id);
-
         $validator = Validator::make($request->all(), [
             'harvest_date' => 'nullable|date',
             'num_of_fruits' => 'nullable|integer',
@@ -727,9 +725,7 @@ class TreeController extends Controller
         }
 
         try {
-            $record = HarvestRecord::where('harvest_uuid', $harvestUuid)
-                ->where('tree_uuid', $tree->uuid)
-                ->firstOrFail();
+            $record = HarvestRecord::findOrFail($id);
 
             $record->update([
                 'harvest_date' => $request->has('harvest_date') ? $request->harvest_date : $record->harvest_date,
@@ -751,17 +747,13 @@ class TreeController extends Controller
     }
 
     /**
-     * Delete a harvest record for a tree.
-     * URL: DELETE /trees/{id}/harvest-records/{harvestUuid}
+     * Delete a harvest record by its ID.
+     * URL: DELETE /harvest-records/{id}
      */
-    public function deleteHarvestRecord($id, $harvestUuid)
+    public function deleteHarvestRecord($id)
     {
-        $tree = Tree::findOrFail($id);
-
         try {
-            $record = HarvestRecord::where('harvest_uuid', $harvestUuid)
-                ->where('tree_uuid', $tree->uuid)
-                ->firstOrFail();
+            $record = HarvestRecord::findOrFail($id);
 
             $record->delete();
 

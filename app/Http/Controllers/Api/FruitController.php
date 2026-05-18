@@ -25,7 +25,7 @@ class FruitController extends Controller
             'harvest_uuid' => 'required|exists:harvest_events,uuid',
             'transaction_uuid' => 'nullable|string',
             'harvested_at' => 'nullable|date',
-            'weight' => 'required|numeric',
+            'weight' => 'nullable|numeric',
             'grade' => 'required|string|max:255',
             'is_spoiled' => 'nullable|boolean',
         ]);
