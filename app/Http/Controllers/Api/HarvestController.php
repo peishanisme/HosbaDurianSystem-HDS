@@ -7,10 +7,132 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\HarvestRecord;
 use App\Models\HarvestEvent;
+use App\Models\HarvestGrade;
+use App\DataTransferObject\HarvestGradeDTO;
+use App\Actions\PostHarvest\CreateHarvestGradeAction;
+use App\Actions\PostHarvest\UpdateHarvestGradeAction;
 use Carbon\Carbon;
 
 class HarvestController extends Controller
 {
+	public function store(Request $request)
+	{
+		$validated = $request->validate([
+			'harvest_uuid' => 'required|exists:harvest_events,uuid',
+			'date' => 'required|date',
+			'species_id' => 'nullable|exists:species,id',
+			'grade' => 'nullable|string|max:255',
+			'weight' => 'nullable|numeric',
+		]);
+
+		$dto = HarvestGradeDTO::fromArray($validated);
+		$harvestGrade = (new CreateHarvestGradeAction())->handle($dto);
+
+		return response()->json([
+			'success' => true,
+			'message' => 'Harvest grade created successfully.',
+			'data' => $harvestGrade,
+		], 201);
+	}
+
+	public function index()
+	{
+		$grades = HarvestGrade::with('harvestEvent')
+			->with('species')
+			->orderBy('date', 'desc')
+			->orderBy('id', 'desc')
+			->get();
+
+		return response()->json([
+			'success' => true,
+			'data' => $grades,
+		]);
+	}
+
+	public function show($id)
+	{
+		$grade = HarvestGrade::with(['harvestEvent', 'species'])->findOrFail($id);
+
+		return response()->json([
+			'success' => true,
+			'data' => $grade,
+		]);
+	}
+
+	public function update(Request $request, $id)
+	{
+		$validated = $request->validate([
+			'harvest_uuid' => 'required|exists:harvest_events,uuid',
+			'date' => 'required|date',
+			'species_id' => 'nullable|exists:species,id',
+			'grade' => 'nullable|string|max:255',
+			'weight' => 'nullable|numeric',
+		]);
+
+		$harvestGrade = HarvestGrade::findOrFail($id);
+		$dto = HarvestGradeDTO::fromArray(array_merge(['id' => $harvestGrade->id], $validated));
+		$harvestGrade = (new UpdateHarvestGradeAction())->handle($harvestGrade, $dto);
+
+		return response()->json([
+			'success' => true,
+			'message' => 'Harvest grade updated successfully.',
+			'data' => $harvestGrade,
+		]);
+	}
+
+	public function destroy($id)
+	{
+		$harvestGrade = HarvestGrade::findOrFail($id);
+		$harvestGrade->delete();
+
+		return response()->json([
+			'success' => true,
+			'message' => 'Harvest grade deleted successfully.',
+		]);
+	}
+
+	public function getByDate(Request $request)
+	{
+		// Accepts either `start` (required) and optional `end`, or legacy `date` parameter.
+		$start = $request->input('start') ?? $request->input('date');
+		$end = $request->input('end');
+
+		if (! $start) {
+			return response()->json([
+				'success' => false,
+				'message' => 'Please provide a start date (YYYY-MM-DD) as the "start" query parameter.'
+			], 422);
+		}
+
+		try {
+			$parsedStart = Carbon::parse($start)->toDateString();
+			$parsedEnd = $end ? Carbon::parse($end)->toDateString() : null;
+		} catch (\Exception $e) {
+			return response()->json([
+				'success' => false,
+				'message' => 'Invalid date format. Use YYYY-MM-DD for start/end.'
+			], 422);
+		}
+
+		$query = HarvestGrade::with(['harvestEvent', 'species'])
+			->orderBy('date', 'desc')
+			->orderBy('id', 'desc');
+
+		if ($parsedEnd) {
+			$query->whereBetween('date', [$parsedStart, $parsedEnd]);
+		} else {
+			$query->whereDate('date', $parsedStart);
+		}
+
+		$grades = $query->get();
+
+		return response()->json([
+			'success' => true,
+			'data' => $grades,
+			'count' => $grades->count(),
+		]);
+	}
+
 	/**
 	 * Return spoilt and not-spoilt totals for a date range.
 	 * Query params: from, to, date (single)

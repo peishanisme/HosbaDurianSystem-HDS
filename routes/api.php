@@ -52,8 +52,8 @@ Route::middleware('auth:sanctum')->get('/labels/{labelId}/trees', [TreeControlle
 Route::middleware('auth:sanctum')->get('/trees/{id}/flowering-status', [TreeController::class, 'getFloweringStatus']);
 Route::middleware('auth:sanctum')->post('/trees/{id}/harvest-records', [TreeController::class, 'createHarvestRecord']);
 Route::middleware('auth:sanctum')->get('/trees/{id}/harvest-records', [TreeController::class, 'getHarvestRecords']);
-Route::middleware('auth:sanctum')->put('/trees/{id}/harvest-records/{harvestUuid}', [TreeController::class, 'updateHarvestRecord']);
-Route::middleware('auth:sanctum')->delete('/trees/{id}/harvest-records/{harvestUuid}', [TreeController::class, 'deleteHarvestRecord']);
+Route::middleware('auth:sanctum')->put('/harvest-records/{id}', [TreeController::class, 'updateHarvestRecord']);
+Route::middleware('auth:sanctum')->delete('/harvest-records/{id}', [TreeController::class, 'deleteHarvestRecord']);
 Route::middleware('auth:sanctum')->post('/trees/{id}/observations', [TreeController::class, 'createObservation']);
 Route::middleware('auth:sanctum')->get('/harvests/summary', [HarvestController::class, 'summary']);
 Route::middleware('auth:sanctum')->get('/harvests/summary/day', [HarvestController::class, 'daySummary']);
@@ -61,6 +61,12 @@ Route::middleware('auth:sanctum')->get('/harvests/summary/week', [HarvestControl
 Route::middleware('auth:sanctum')->get('/harvests/summary/season', [HarvestController::class, 'seasonSummary']);
 Route::middleware('auth:sanctum')->get('/harvests/details', [HarvestController::class, 'details']);
 Route::middleware('auth:sanctum')->get('/harvests/active', [HarvestController::class, 'activeEvents']);
+Route::middleware('auth:sanctum')->post('/harvest-grades', [HarvestController::class, 'store']);
+Route::middleware('auth:sanctum')->get('/harvest-grades', [HarvestController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/harvest-grades/{id}', [HarvestController::class, 'show']);
+Route::middleware('auth:sanctum')->put('/harvest-grades/{id}', [HarvestController::class, 'update']);
+Route::middleware('auth:sanctum')->delete('/harvest-grades/{id}', [HarvestController::class, 'destroy']);
+Route::middleware('auth:sanctum')->get('/harvest-grades/by-date/search', [HarvestController::class, 'getByDate']);
 
 // Disease Controller
 Route::middleware('auth:sanctum')->post('/diseases', [DiseaseController::class, 'store']);
