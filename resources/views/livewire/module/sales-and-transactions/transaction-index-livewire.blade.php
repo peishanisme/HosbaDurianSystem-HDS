@@ -3,6 +3,11 @@
         <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center">
             <h5 class="mb-0">Transactions by Date</h5>
 
+            <button type="button" class="btn btn-primary btn-sm py-3" wire:click="$dispatch('reset-transaction')"
+                data-bs-toggle="modal" data-bs-target="#transactionModalLivewire">
+                {{ __('messages.create_transaction') }}
+            </button>
+
             {{-- <div class="d-flex flex-wrap gap-2">
                 <!-- Search -->
                 <input wire:model.live="search" type="text" class="form-control form-control-sm"
@@ -108,8 +113,7 @@
                                                                         <x-table-com-button label1="Edit"
                                                                             modal="transactionModalLivewire"
                                                                             dispatch1="edit-transaction"
-                                                                            dataField="transaction"
-                                                                            icon2="bi bi-trash3"
+                                                                            dataField="transaction" icon2="bi bi-trash3"
                                                                             dispatch2="delete-transaction"
                                                                             label2="Delete"
                                                                             data="{{ $transaction->id }}" />
@@ -157,10 +161,10 @@
     </div>
 
     {{-- <livewire:tables.transaction-listing-table /> --}}
+    <livewire:module.sales-and-transactions.transaction-modal-livewire />
 
     <livewire:module.sales-and-transactions.transaction-details-modal-livewire />
 
     {{-- <livewire:components.generate-report-modal model="App\Models\Transaction" /> --}}
 
-    <livewire:module.sales-and-transactions.transaction-modal-livewire />
 </div>

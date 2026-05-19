@@ -133,7 +133,7 @@ class DashboardLivewire extends Component
 
     public function loadTotalTransactionData()
     {
-        return Transaction::selectRaw('DATE(date) as date, SUM(total_price) as total_price')
+        return Transaction::selectRaw('DATE(date) as date, SUM(total_amount) as total_price')
             ->groupBy('date')
             ->orderBy('date')
             ->get()
