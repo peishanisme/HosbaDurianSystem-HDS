@@ -11,6 +11,7 @@ use App\Models\TreeObservation;
 use App\Traits\AuthorizesRoleOrPermission;
 use App\Traits\SweetAlert;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -24,6 +25,9 @@ class HarvestEventOverviewLivewire extends Component
     public $grade;
     public $weight;
     public Fruit $fruit;
+    public ?string $fromDate = null;
+    public ?string $toDate = null;
+    public ?string $dateFilter = null;
 
     public function mount(): void
     {
@@ -70,7 +74,7 @@ class HarvestEventOverviewLivewire extends Component
         }
     }
 
-    public function loadTop10HarvestTreesData()
+    public function getTop10HarvestTreesDataProperty()
     {
         $topTrees = HarvestRecord::where('harvest_uuid', $this->harvestEvent->uuid)
             ->select('tree_uuid', DB::raw('SUM(num_of_fruits) as total_fruits'))
@@ -89,31 +93,75 @@ class HarvestEventOverviewLivewire extends Component
         return $chartData;
     }
 
-    public function loadHarvestSpeciesData()
+    public function getHarvestSpeciesDataProperty()
     {
-        $speciesData = HarvestRecord::select(
+        $query = HarvestRecord::select(
             'species.name as species',
             DB::raw('SUM(harvest_records.num_of_fruits) as total_pieces'),
             DB::raw('SUM(harvest_records.weight) as total_weight')
         )
             ->join('trees', 'harvest_records.tree_uuid', '=', 'trees.uuid')
             ->join('species', 'trees.species_id', '=', 'species.id')
-            ->where('harvest_records.harvest_uuid', $this->harvestEvent->uuid)
+            ->where('harvest_records.harvest_uuid', $this->harvestEvent->uuid);
+
+        $this->applyDateFilter($query);
+
+        return $query
             ->groupBy('species.name')
             ->orderByDesc('total_pieces')
             ->get()
-            ->map(function ($item) {
-                return [
-                    'species' => $item->species,
-                    'total_pieces' => (int) $item->total_pieces,
-                    'total_weight' => (float) $item->total_weight,
-                ];
-            });
-
-        return $speciesData;
+            ->map(fn($item) => [
+                'species' => $item->species,
+                'total_pieces' => (int) $item->total_pieces,
+                'total_weight' => (float) $item->total_weight,
+            ]);
     }
 
-    public function loadTreeObservationsData()
+    private function applyDateFilter($query)
+    {
+        if ($this->fromDate) {
+            $query->whereDate('harvest_records.harvest_date', '>=', $this->fromDate);
+        }
+
+        if ($this->toDate) {
+            $query->whereDate('harvest_records.harvest_date', '<=', $this->toDate);
+        }
+
+        return $query;
+    }
+
+    public function updatedDateFilter($value)
+    {
+        [$fromDate, $toDate] = array_pad(
+            explode(' to ', $value),
+            2,
+            null
+        );
+
+        $this->fromDate = $fromDate;
+        $this->toDate = $toDate;
+
+        $this->dispatch(
+            'refresh-harvest-species-chart',
+            data: $this->harvestSpeciesData
+        );
+    }
+
+    public function getShowClearButtonProperty()
+    {
+        return $this->fromDate || $this->toDate;
+    }
+
+    public function clearDateFilter()
+    {
+        $this->fromDate = null;
+        $this->toDate = null;
+        $this->dateFilter = null;
+
+        $this->dispatch('clear-date-picker');
+    }
+
+    public function getTreeObservationsDataProperty()
     {
         $weights = [
             'A' => 30,
@@ -145,10 +193,6 @@ class HarvestEventOverviewLivewire extends Component
     public function render()
     {
         $trees = Tree::orderBy('tree_tag')->get();
-        return view('livewire.module.post-harvest.harvest-event-overview-livewire', compact('trees'), [
-            'treeObservationsData' => $this->loadTreeObservationsData(),
-            'top10HarvestTreesData' => $this->loadTop10HarvestTreesData(),
-            'harvestSpeciesData' => $this->loadHarvestSpeciesData(),
-        ])->title(__('messages.harvest_event_overview'));
+        return view('livewire.module.post-harvest.harvest-event-overview-livewire', compact('trees'), [])->title(__('messages.harvest_event_overview'));
     }
 }

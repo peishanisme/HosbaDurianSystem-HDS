@@ -1,16 +1,18 @@
-<div class="card pb-10">
-    <div class="card-header">
-        <h3 class="card-title">{{ __('messages.harvest_species_overview') }}</h3>
-    </div>
-
-    <div wire:ignore class="card-body p-5" id="harvest-species-chart" style="width: 100%;"></div>
-</div>
+<div wire:ignore class="card-body p-5" id="harvest-species-chart" style="width: 100%;"></div>
 
 @push('scripts')
     <script>
-        am5.ready(function() {
+        let harvestSpeciesChartRoot = null;
 
-            var root = am5.Root.new("harvest-species-chart");
+        function initHarvestSpeciesChart(speciesData) {
+
+            if (harvestSpeciesChartRoot) {
+                harvestSpeciesChartRoot.dispose();
+            }
+
+            harvestSpeciesChartRoot = am5.Root.new("harvest-species-chart");
+
+            let root = harvestSpeciesChartRoot;
 
             root.setThemes([
                 am5themes_Animated.new(root)
@@ -189,8 +191,6 @@
                 }
             });
 
-            var speciesData = @json($harvestSpeciesData);
-
             // Data for pieces
             var piecesData = speciesData.map(item => ({
                 category: item.species,
@@ -254,6 +254,19 @@
             var exporting = am5plugins_exporting.Exporting.new(root, {
                 menu: am5plugins_exporting.ExportingMenu.new(root, {}),
                 filePrefix: "{{ __('messages.harvest_species_overview') }}"
+            });
+
+        }
+
+        const initialSpeciesData = @json($harvestSpeciesData);
+
+        document.addEventListener('livewire:init', () => {
+
+            initHarvestSpeciesChart(initialSpeciesData);
+
+            Livewire.on('refresh-harvest-species-chart', (event) => {
+
+                initHarvestSpeciesChart(event.data);
             });
 
         });
