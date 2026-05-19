@@ -4,6 +4,7 @@ namespace App\Livewire\Forms;
 
 use App\Actions\SalesAndTransactions\CreateTransactionAction;
 use App\Actions\SalesAndTransactions\UpdateTransactionAction;
+use App\Enum\TransactionGrade;
 use App\Models\Transaction;
 use Livewire\Form;
 
@@ -27,7 +28,7 @@ class TransactionForm extends Form
 
             $rules['grade_breakdown'] = ['required', 'array'];
 
-            $grades = ['AA', 'A', 'B', 'C'];
+            $grades = TransactionGrade::values();
 
             foreach ($grades as $grade) {
                 $rules["grade_breakdown.$grade.total_weight"] = [

@@ -52,7 +52,7 @@
                     </thead>
 
                     <tbody>
-                        @foreach (['AA', 'A', 'B', 'C'] as $grade)
+                        @foreach (App\Enum\TransactionGrade::values() as $grade)
                             <tr>
                                 <td>{{ $grade }}</td>
 

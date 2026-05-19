@@ -11,8 +11,10 @@ use Livewire\Component;
 class TransactionModalLivewire extends Component
 {
     use SweetAlert;
-    public TransactionForm $form;
+    protected $listeners = ['refreshComponent' => '$refresh'];
+
     public string $modalID = 'transactionModalLivewire', $modalTitle = 'Transaction Details';
+    public TransactionForm $form;
     public ?bool $recordByGrade = null;
 
     #[On('reset-transaction')]

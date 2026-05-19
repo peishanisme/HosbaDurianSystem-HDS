@@ -12,20 +12,81 @@ class TransactionIndexLivewire extends Component
 {
     use AuthorizesRoleOrPermission, SweetAlert;
     protected $listeners = ['refreshComponent' => '$refresh'];
-    public $transactions;
     public ?Transaction $transaction = null;
     public $expandedDates = [];
+    public ?string $fromDate = null;
+    public ?string $toDate = null;
+    public ?string $dateFilter = null;
+
     public function mount(): void
     {
         $this->authorizeRoleOrPermission(['view-sale']);
-        $this->transactions = Transaction::orderBy('date', 'desc')->get();
+    }
+
+    public function getTransactionsProperty()
+    {
+        return Transaction::query()
+
+            ->when($this->fromDate, function ($query) {
+                $query->whereDate('date', '>=', $this->fromDate);
+            })
+
+            ->when($this->toDate, function ($query) {
+                $query->whereDate('date', '<=', $this->toDate);
+            })
+
+            ->orderBy('date', 'desc')
+
+            ->get();
     }
 
     public function getTransactionByDateProperty()
     {
-        return $this->transactions->groupBy(function ($transaction) {
-            return $transaction->date;
-        });
+        return $this->transactions
+            ->groupBy('date');
+    }
+
+    public function getTotalTransactionsProperty()
+    {
+        return $this->transactions->count();
+    }
+
+    public function getTotalWeightProperty()
+    {
+        return $this->transactions
+            ->sum('total_weight');
+    }
+
+    public function getTotalAmountProperty()
+    {
+        return $this->transactions
+            ->sum('total_amount');
+    }
+
+    public function updatedDateFilter($value)
+    {
+        [$fromDate, $toDate] = array_pad(
+            explode(' to ', $value),
+            2,
+            null
+        );
+
+        $this->fromDate = $fromDate;
+        $this->toDate = $toDate;
+    }
+
+    public function getShowClearButtonProperty()
+    {
+        return $this->fromDate || $this->toDate;
+    }
+
+    public function clearDateFilter()
+    {
+        $this->fromDate = null;
+        $this->toDate = null;
+        $this->dateFilter = null;
+
+        $this->dispatch('clear-date-picker');
     }
 
     public function toggleExpand($date)

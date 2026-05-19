@@ -1,18 +1,69 @@
 <div>
     <div class="card shadow-sm rounded">
         <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center">
-            <h5 class="mb-0">Transactions by Date</h5>
+            <div class="flex-grow-1 mt-4">
+                <div class="d-flex flex-wrap flex-stack">
+                    <div class="d-flex flex-column flex-grow-1 pe-8">
+                        <div class="d-flex flex-wrap">
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-8 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-2 fw-bold">{{ $this->totalTransactions }} </div>
+                                </div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.total_transactions') }}
+                                </div>
+                            </div>
 
-            <button type="button" class="btn btn-primary btn-sm py-3" wire:click="$dispatch('reset-transaction')"
-                data-bs-toggle="modal" data-bs-target="#transactionModalLivewire">
-                {{ __('messages.create_transaction') }}
-            </button>
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-8 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-2 fw-bold">{{ $this->totalWeight }} kg </div>
+                                </div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.total_weight') }}</div>
+                            </div>
 
-            {{-- <div class="d-flex flex-wrap gap-2">
-                <!-- Search -->
-                <input wire:model.live="search" type="text" class="form-control form-control-sm"
-                    placeholder="{{ __('messages.search_transactions') }}" style="width: 220px;">
-            </div> --}}
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-8 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-2 fw-bold">RM {{ $this->totalAmount }} </div>
+                                </div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.total_amount') }}</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap gap-3 mb-5">
+                {{-- date filter --}}
+                <div class="mb-0">
+
+                    <div class="input-group border border-gray-300 rounded">
+
+                        <span class="input-group-text">
+                            <i class="ki-duotone ki-calendar fs-3">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                        </span>
+
+                        <input class="form-control form-control-solid" placeholder="Pick a date range"
+                            id="kt_datepicker_7" />
+
+                        @if ($this->showClearButton)
+                            <button class="btn btn-light" wire:click="clearDateFilter">
+                                Clear
+                            </button>
+                        @endif
+
+                    </div>
+
+                </div>
+
+                {{-- create transaction button --}}
+                <button type="button" class="btn btn-primary btn-sm py-3" wire:click="$dispatch('reset-transaction')"
+                    data-bs-toggle="modal" data-bs-target="#transactionModalLivewire">
+                    {{ __('messages.create_transaction') }}
+                </button>
+            </div>
+
         </div>
 
         <div class="card-body p-0">
@@ -168,3 +219,23 @@
     {{-- <livewire:components.generate-report-modal model="App\Models\Transaction" /> --}}
 
 </div>
+
+@push('scripts')
+    <script>
+        const datePicker = flatpickr("#kt_datepicker_7", {
+
+            mode: "range",
+            dateFormat: "Y-m-d",
+
+            onChange: function(selectedDates, dateStr) {
+
+                @this.set('dateFilter', dateStr);
+            }
+        });
+
+        window.addEventListener('clear-date-picker', () => {
+
+            datePicker.clear();
+        });
+    </script>
+@endpush

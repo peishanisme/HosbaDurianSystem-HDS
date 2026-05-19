@@ -2,6 +2,7 @@
 
 namespace App\Actions\SalesAndTransactions;
 
+use App\Enum\TransactionGrade;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +15,7 @@ class UpdateTransactionAction
 
                 $gradeBreakdown = [];
 
-                foreach (['AA', 'A', 'B', 'C'] as $grade) {
+                foreach (TransactionGrade::values() as $grade) {
 
                     $gradeBreakdown[$grade] = [
                         'total_weight' =>
