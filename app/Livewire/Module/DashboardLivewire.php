@@ -4,6 +4,7 @@ namespace App\Livewire\Module;
 
 use App\Http\Controllers\WeatherController;
 use App\Models\Fruit;
+use App\Models\HarvestGrade;
 use App\Models\HarvestRecord;
 use App\Models\HealthRecord;
 use App\Models\Transaction;
@@ -20,6 +21,7 @@ class DashboardLivewire extends Component
     public $totalTransactionData;
     public $topSellingSpecies;
     public $treeHealthRecords;
+    public $gradeDistributionData;
 
     public function mount()
     {
@@ -34,6 +36,7 @@ class DashboardLivewire extends Component
         $this->totalTransactionData = $this->loadTotalTransactionData();
         $this->topSellingSpecies = $this->loadTopSellingSpecies();
         $this->treeHealthRecords = $this->getTreeHealthRecords();
+        $this->gradeDistributionData = $this->loadGradeDistributionData();
     }
 
     public function getTreeHealthRecords()
@@ -154,6 +157,26 @@ class DashboardLivewire extends Component
             ->get();
 
         return $topSelling;
+    }
+
+    public function loadGradeDistributionData()
+    {
+        $grades = HarvestGrade::select(
+            DB::raw("COALESCE(grade, 'Ungraded') as grade"),
+            DB::raw('SUM(weight) as total_weight')
+        )
+            ->groupBy('grade')
+            ->orderByDesc('total_weight')
+            ->get();
+
+        $gradeDistributionData = $grades->map(function ($item) {
+            return [
+                'grade' => $item->grade,
+                'weight' => (float) $item->total_weight,
+            ];
+        })->toArray();
+
+        return $gradeDistributionData;
     }
 
     public function render()

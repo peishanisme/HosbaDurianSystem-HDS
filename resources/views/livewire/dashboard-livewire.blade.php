@@ -28,7 +28,7 @@
 
         <div class="col-md-6">
             <div>
-                <x-charts.dashboard.top-selling-species-chart :topSellingSpecies="$topSellingSpecies" />
+                <x-charts.dashboard.harvest-grade-chart :gradeDistributionData="$gradeDistributionData" />
             </div>
         </div>
     </div>
