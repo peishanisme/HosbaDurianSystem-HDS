@@ -16,7 +16,6 @@ class TransactionIndexLivewire extends Component
     public $expandedDates = [];
     public ?string $fromDate = null;
     public ?string $toDate = null;
-    public ?string $dateFilter = null;
 
     public function mount(): void
     {
@@ -63,30 +62,11 @@ class TransactionIndexLivewire extends Component
             ->sum('total_amount');
     }
 
-    public function updatedDateFilter($value)
+    #[On('date-range-updated')]
+    public function updateDateRange($fromDate, $toDate)
     {
-        [$fromDate, $toDate] = array_pad(
-            explode(' to ', $value),
-            2,
-            null
-        );
-
         $this->fromDate = $fromDate;
         $this->toDate = $toDate;
-    }
-
-    public function getShowClearButtonProperty()
-    {
-        return $this->fromDate || $this->toDate;
-    }
-
-    public function clearDateFilter()
-    {
-        $this->fromDate = null;
-        $this->toDate = null;
-        $this->dateFilter = null;
-
-        $this->dispatch('clear-date-picker');
     }
 
     public function toggleExpand($date)

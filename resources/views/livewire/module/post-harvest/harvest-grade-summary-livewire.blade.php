@@ -6,10 +6,7 @@
 
             <div class="d-flex flex-wrap gap-2">
                 {{-- DATE PICKER --}}
-                <!-- Search -->
-                {{-- <input wire:model.live="search" type="text" class="form-control form-control-sm"
-                    placeholder="{{ __('messages.search_trees') }}" style="width: 220px;"> --}}
-
+                <livewire:components.date-filter />
             </div>
         </div>
 
@@ -20,11 +17,10 @@
                         <tr class="text-muted small text-uppercase">
                             <th>{{ __('messages.date') }}</th>
                             <th>{{ __('messages.total_weight') }}</th>
-                            {{-- <th>{{ __('messages.total_spoilt') }}</th> --}}
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($this->harvestEvent->harvestGradeSummary() as $summary)
+                        @forelse ($this->harvestGradeSummary as $summary)
 
                             @php
                                 $dateKey = $summary->date;
@@ -73,7 +69,7 @@
 
                                                 <tbody>
 
-                                                    @foreach ($this->harvestEvent->harvestGradeDetails($summary->date) as $record)
+                                                    @foreach ($this->harvestGradeDetails($summary->date) as $record)
                                                         <tr wire:key="record-{{ $record->id }}">
 
                                                             <td>

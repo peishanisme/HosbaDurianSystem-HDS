@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Module\PostHarvest;
 
-use App\DataTransferObject\FruitDTO;
 use App\Models\Fruit;
 use App\Models\HarvestEvent;
 use App\Models\HarvestRecord;
@@ -11,7 +10,6 @@ use App\Models\TreeObservation;
 use App\Traits\AuthorizesRoleOrPermission;
 use App\Traits\SweetAlert;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -27,7 +25,6 @@ class HarvestEventOverviewLivewire extends Component
     public Fruit $fruit;
     public ?string $fromDate = null;
     public ?string $toDate = null;
-    public ?string $dateFilter = null;
 
     public function mount(): void
     {
@@ -130,14 +127,9 @@ class HarvestEventOverviewLivewire extends Component
         return $query;
     }
 
-    public function updatedDateFilter($value)
+    #[On('date-range-updated')]
+    public function updateDateRange($fromDate, $toDate)
     {
-        [$fromDate, $toDate] = array_pad(
-            explode(' to ', $value),
-            2,
-            null
-        );
-
         $this->fromDate = $fromDate;
         $this->toDate = $toDate;
 
@@ -145,20 +137,6 @@ class HarvestEventOverviewLivewire extends Component
             'refresh-harvest-species-chart',
             data: $this->harvestSpeciesData
         );
-    }
-
-    public function getShowClearButtonProperty()
-    {
-        return $this->fromDate || $this->toDate;
-    }
-
-    public function clearDateFilter()
-    {
-        $this->fromDate = null;
-        $this->toDate = null;
-        $this->dateFilter = null;
-
-        $this->dispatch('clear-date-picker');
     }
 
     public function getTreeObservationsDataProperty()

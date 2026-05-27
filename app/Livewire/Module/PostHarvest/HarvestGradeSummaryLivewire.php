@@ -13,10 +13,50 @@ use Livewire\Component;
 class HarvestGradeSummaryLivewire extends Component
 {
     use SweetAlert;
+    protected $listeners = ['refreshComponent' => '$refresh'];
+
     public HarvestEvent $harvestEvent;
     public array $expandedDates = [];
-    public HarvestGrade$harvestGrade;
-    protected $listeners = ['refreshComponent' => '$refresh'];
+    public HarvestGrade $harvestGrade;
+    public ?string $fromDate = null;
+    public ?string $toDate = null;
+
+    public function getHarvestGradeSummaryProperty()
+    {
+        $query = $this->harvestEvent
+            ->harvestGrades();
+
+        if ($this->fromDate) {
+            $query->whereDate('date', '>=', $this->fromDate);
+        }
+
+        if ($this->toDate) {
+            $query->whereDate('date', '<=', $this->toDate);
+        }
+
+        return $query
+            ->selectRaw('date, SUM(weight) as total_weight')
+            ->groupBy('date')
+            ->orderByDesc('date')
+            ->get();
+    }
+
+    public function harvestGradeDetails($date)
+    {
+        $query = $this->harvestEvent
+            ->harvestGrades()
+            ->whereDate('date', $date);
+
+        if ($this->fromDate) {
+            $query->whereDate('date', '>=', $this->fromDate);
+        }
+
+        if ($this->toDate) {
+            $query->whereDate('date', '<=', $this->toDate);
+        }
+
+        return $query->get();
+    }
 
     public function toggleDate($date)
     {
@@ -25,6 +65,13 @@ class HarvestGradeSummaryLivewire extends Component
         } else {
             $this->expandedDates[] = $date;
         }
+    }
+
+    #[On('date-range-updated')]
+    public function updateDateRange($fromDate, $toDate)
+    {
+        $this->fromDate = $fromDate;
+        $this->toDate = $toDate;
     }
 
     #[On('deleteHarvestGrade')]
@@ -40,7 +87,7 @@ class HarvestGradeSummaryLivewire extends Component
         $this->harvestGrade->delete();
         $this->alertSuccess('Harvest grade record deleted successfully');
     }
-    
+
     public function render()
     {
         return view('livewire.module.post-harvest.harvest-grade-summary-livewire');
