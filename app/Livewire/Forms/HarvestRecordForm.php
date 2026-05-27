@@ -17,7 +17,7 @@ class HarvestRecordForm extends Form
     #[Validate('required')]
     public string $harvest_date = '';
 
-    #[Validate('required', 'numeric', 'min:0')]
+    #[Validate('nullable', 'numeric', 'min:0')]
     public float $weight = 0;
 
     #[Validate('nullable', 'numeric', 'min:0')]

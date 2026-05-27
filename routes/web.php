@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ReportController;
 use App\Livewire\Module\{ DashboardLivewire, PublicPortalLivewire, AgrochemicalManagement\AgrochemicalApplicationRecordLivewire, AgrochemicalManagement\AgrochemicalGlobalUsageLivewire, AgrochemicalManagement\AgrochemicalIndexLivewire, AgrochemicalManagement\AgrochemicalOverviewLivewire, AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire, PostHarvest\HarvestEventHarvestSummaryLivewire, PostHarvest\HarvestEventIndexLivewire, PostHarvest\HarvestEventOverviewLivewire, SalesAndTransactions\BuyerIndexLivewire, SalesAndTransactions\BuyerTransactionLivewire, SalesAndTransactions\CreateTransactionLivewire, SalesAndTransactions\TransactionIndexLivewire, SalesAndTransactions\BuyerOverviewLivewire, TreeManagement\DiseaseIndexLivewire, TreeManagement\SpeciesIndexLivewire, TreeManagement\TreeAgrochemicalUsageLivewire, TreeManagement\TreeDetailsLivewire, TreeManagement\TreeGrowthLogLivewire, TreeManagement\TreeHarvestRecordLivewire, TreeManagement\TreeIndexLivewire, TreeManagement\TreeHealthRecordLivewire, UserManagement\ActivityLogIndexLivewire, UserManagement\PermissionIndexLivewire, UserManagement\RoleIndexLivewire, UserManagement\UserIndexLivewire, UserManagement\UserProfileLivewire };
+use App\Livewire\Module\PostHarvest\HarvestGradeSummaryLivewire;
 use App\Livewire\Module\TreeManagement\TreeFeedbackLivewire;
 use Illuminate\Support\Facades\Route;
 
@@ -69,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::group(['prefix' => 'details/{harvestEvent:id}'], fn() => [
             Route::get('overview', HarvestEventOverviewLivewire::class)->name('show'),
             Route::get('harvest-summary', HarvestEventHarvestSummaryLivewire::class)->name('harvest-summary'),
+            Route::get('harvest-grade', HarvestGradeSummaryLivewire::class)->name('harvest-grade'),
         ]);
     });
 

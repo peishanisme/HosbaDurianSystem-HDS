@@ -105,8 +105,10 @@
         <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold" wire:ignore>
             <x-show-navbar-navitem title="{{ __('messages.harvest_event_overview') }}"
                 route="{{ route('harvest.show', $harvestEvent->id) }}" :active="request()->routeIs('harvest.show')" />
-            <x-show-navbar-navitem title="{{ __('messages.harvest_summary') }}"
+            <x-show-navbar-navitem title="{{ __('messages.harvest_records') }}"
                 route="{{ route('harvest.harvest-summary', $harvestEvent->id) }}" :active="request()->routeIs('harvest.harvest-summary')" />
+            <x-show-navbar-navitem title="{{ __('messages.harvest_grades') }}"
+                route="{{ route('harvest.harvest-grade', $harvestEvent->id) }}" :active="request()->routeIs('harvest.harvest-grade')" />
         </ul>
     </div>
 </div>

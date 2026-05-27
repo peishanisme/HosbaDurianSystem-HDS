@@ -153,6 +153,11 @@ class HarvestEvent extends Model implements Reportable
         return $this->hasMany(HarvestRecord::class, 'harvest_uuid', 'uuid');
     }
 
+    public function harvestGrades()
+    {
+        return $this->hasMany(HarvestGrade::class, 'harvest_uuid', 'uuid');
+    }
+
     public function totalFruits()
     {
         return $this->harvestRecords()->sum('num_of_fruits');
@@ -232,6 +237,30 @@ class HarvestEvent extends Model implements Reportable
             SUM(fruits.weight) as total_weight
         ')
             ->groupBy('species.id', 'species.name');
+    }
+
+    public function harvestGradeSummary()
+    {
+        return HarvestGrade::query()
+            ->where('harvest_uuid', $this->uuid)
+            ->selectRaw('
+            date,
+            SUM(weight) as total_weight,
+            COUNT(*) as total_records
+        ')
+            ->groupBy('date')
+            ->orderByDesc('date')
+            ->get();
+    }
+
+    public function harvestGradeDetails($date)
+    {
+        return HarvestGrade::query()
+            ->with('species')
+            ->where('harvest_uuid', $this->uuid)
+            ->whereDate('date', $date)
+            ->orderBy('grade')
+            ->get();
     }
 
     public static function reportColumns(): array

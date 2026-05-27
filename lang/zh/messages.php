@@ -277,6 +277,8 @@ return [
     'error_occurred' => '发生错误：',
     'harvest_event_reopened_successfully' => '采收季节重新开启成功',
     'harvest_summary' => '采收总结',
+    'harvest_records' => '采收记录',
+    'harvest_grades' => '采收等级',
     'harvest_species_overview' => '采收品种概览',
     'pieces' => '颗',
     'total_weight' => '总重量',
