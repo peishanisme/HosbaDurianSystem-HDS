@@ -18,9 +18,6 @@ class HarvestRecordForm extends Form
     public string $harvest_date = '';
 
     #[Validate('nullable', 'numeric', 'min:0')]
-    public float $weight = 0;
-
-    #[Validate('nullable', 'numeric', 'min:0')]
     public int $num_of_fruits = 0;
 
     #[Validate('required')]
@@ -31,7 +28,6 @@ class HarvestRecordForm extends Form
         $this->harvest_uuid = $record->harvest_uuid;
         $this->tree_uuid = $record->tree_uuid;
         $this->harvest_date = $record->harvest_date->format('Y-m-d');
-        $this->weight = $record->weight ?? 0;
         $this->num_of_fruits = $record->num_of_fruits ?? 0;
         $this->spoilt = $record->spoilt;
     }
@@ -41,7 +37,6 @@ class HarvestRecordForm extends Form
         $record->update([
             'tree_uuid' => $this->tree_uuid,
             'harvest_date' => $this->harvest_date,
-            'weight' => $this->weight,
             'num_of_fruits' => $this->num_of_fruits,
             'spoilt' => $this->spoilt,
         ]);

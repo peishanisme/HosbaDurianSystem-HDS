@@ -20,7 +20,6 @@
                         <tr class="text-muted small text-uppercase">
                             <th>{{ __('messages.tree_tag') }}</th>
                             <th>{{ __('messages.total_fruits') }}</th>
-                            <th>{{ __('messages.total_weight') }}</th>
                             <th>{{ __('messages.total_spoilt') }}</th>
                         </tr>
                     </thead>
@@ -41,9 +40,6 @@
                                     {{ $tree->total_fruits ?? 0 }}
                                 </td>
                                 <td class="align-middle">
-                                    {{ $tree->total_weight ?? 0 }}
-                                </td>
-                                <td class="align-middle">
                                     {{ $tree->total_spoilt ?? 0 }}
                                 </td>
                             </tr>
@@ -60,7 +56,6 @@
                                                         <tr class="small text-uppercase text-muted">
                                                             <th>Date</th>
                                                             <th>Total Fruits</th>
-                                                            <th>Total Weight</th>
                                                             <th>Total Spoilt</th>
                                                         </tr>
                                                     </thead>
@@ -98,7 +93,6 @@
                                                                 </td>
 
                                                                 <td>{{ $day->total_fruits }}</td>
-                                                                <td>{{ number_format($day->total_weight, 2) }}</td>
                                                                 <td>{{ $day->total_spoilt }}</td>
                                                             </tr>
 
@@ -125,8 +119,6 @@
                                                                                             <th style="width: 15%">
                                                                                                 Fruits</th>
                                                                                             <th style="width: 15%">
-                                                                                                Weight</th>
-                                                                                            <th style="width: 15%">
                                                                                                 Spoilt</th>
                                                                                             <th style="width: 30%">
                                                                                                 Created At</th>
@@ -139,8 +131,6 @@
                                                                                         @foreach ($records as $record)
                                                                                             <tr>
                                                                                                 <td>{{ $record->num_of_fruits }}
-                                                                                                </td>
-                                                                                                <td>{{ number_format($record->weight, 2) }}
                                                                                                 </td>
                                                                                                 <td>
                                                                                                     @if ($record->spoilt)
