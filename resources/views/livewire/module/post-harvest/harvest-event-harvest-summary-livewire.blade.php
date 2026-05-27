@@ -3,21 +3,13 @@
 
     <div class="card shadow-sm rounded">
         <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center">
-            <h5 class="mb-0">Harvest Summary by Trees</h5>
+            <h5 class="mb-0">Harvest Summary by Trees ({{ $this->trees->count() }} Trees)</h5>
 
             <div class="d-flex flex-wrap gap-2">
                 <!-- Search -->
                 <input wire:model.live="search" type="text" class="form-control form-control-sm"
                     placeholder="{{ __('messages.search_trees') }}" style="width: 220px;">
 
-                <!-- Year Filter -->
-                {{-- <select wire:model.live="filterYear" class="form-select form-select-sm" style="width: 150px;">
-                    <option value="">{{ __('messages.any') }}</option>
-                    @foreach ($years as $year)
-                        <option>{{ $year->year }}</option>
-                    @endforeach
-
-                </select> --}}
             </div>
         </div>
 

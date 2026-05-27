@@ -15,6 +15,7 @@ class HarvestEventHarvestSummaryLivewire extends Component
     public HarvestEvent $harvestEvent;
     public $expandedTrees = [];
     public $expandedDays = [];
+    public string $search = '';
     public HarvestRecord $harvestRecord;
     protected $listeners = ['refreshComponent' => '$refresh'];
 
@@ -25,7 +26,13 @@ class HarvestEventHarvestSummaryLivewire extends Component
 
     public function getTreesProperty()
     {
-        return $this->harvestEvent->treeHarvestSummary()->get();
+        $query = $this->harvestEvent->treeHarvestSummary();
+
+        if (!empty($this->search)) {
+            $query->where('tree_tag', 'like', "%{$this->search}%");
+        }
+
+        return $query->get();
     }
 
     public function toggleExpand($treeUuid)
