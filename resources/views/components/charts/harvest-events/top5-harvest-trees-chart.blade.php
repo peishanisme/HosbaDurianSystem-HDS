@@ -31,12 +31,35 @@
             const root = am5.Root.new("top10-harvest-trees-chart");
 
             // 4. Themes
-            root.setThemes([
+           root.setThemes([
                 am5themes_Animated.new(root)
             ]);
 
-            // 5. Create chart
-            const chart = root.container.children.push(
+            // Main vertical container
+            let mainContainer = root.container.children.push(
+                am5.Container.new(root, {
+                    width: am5.percent(100),
+                    height: am5.percent(100),
+                    layout: root.verticalLayout
+                })
+            );
+
+            // Title
+            mainContainer.children.push(
+                am5.Label.new(root, {
+                    text: "{{ __('messages.top_10_harvest_trees') }} - {{ $harvestEventName }}",
+                    fontSize: 21,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    x: am5.percent(50),
+                    centerX: am5.percent(50),
+                    marginBottom: 20,
+                    paddingTop: 10
+                })
+            );
+
+            // Chart
+            let chart = mainContainer.children.push(
                 am5xy.XYChart.new(root, {
                     panX: false,
                     panY: false,

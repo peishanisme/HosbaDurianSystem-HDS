@@ -29,8 +29,31 @@
                 am5themes_Animated.new(root)
             ]);
 
+            // Main vertical container
+            let mainContainer = root.container.children.push(
+                am5.Container.new(root, {
+                    width: am5.percent(100),
+                    height: am5.percent(100),
+                    layout: root.verticalLayout
+                })
+            );
+
+            // Title
+            mainContainer.children.push(
+                am5.Label.new(root, {
+                    text: "Harvest Grade Distribution{{ isset($harvestEventName) && $harvestEventName ? ' - ' . $harvestEventName : '' }}",
+                    fontSize: 21,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    x: am5.percent(50),
+                    centerX: am5.percent(50),
+                    marginBottom: 20,
+                    paddingTop: 10
+                })
+            );
+
             // Chart
-            let chart = root.container.children.push(
+            let chart = mainContainer.children.push(
                 am5xy.XYChart.new(root, {
                     panX: false,
                     panY: false,

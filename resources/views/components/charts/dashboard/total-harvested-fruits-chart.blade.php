@@ -23,17 +23,38 @@
             // Set themes
             root.setThemes([am5themes_Animated.new(root)]);
 
-            // Create chart
-            var chart = root.container.children.push(
-                am5xy.XYChart.new(root, {
-                    panX: true,
-                    panY: true,
-                    wheelX: "panX",
-                    wheelY: "zoomX",
-                    pinchZoomX: true,
-                    paddingLeft: 0
+            // Main vertical container
+            let mainContainer = root.container.children.push(
+                am5.Container.new(root, {
+                    width: am5.percent(100),
+                    height: am5.percent(100),
+                    layout: root.verticalLayout
                 })
             );
+            // Title
+            mainContainer.children.push(
+                am5.Label.new(root, {
+                    text: "{{ __('messages.total_harvested_fruits') }}",
+                    fontSize: 21,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    x: am5.percent(50),
+                    centerX: am5.percent(50),
+                    marginBottom: 20,
+                    paddingTop: 10
+                })
+            );
+
+            // Create chart
+            var chart = mainContainer.children.push(
+                am5xy.XYChart.new(root, {
+                panX: true,
+                panY: true,
+                wheelX: "panX",
+                wheelY: "zoomX",
+                pinchZoomX: true,
+                paddingLeft: 0
+            }));
 
             // Add cursor
             var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
@@ -114,7 +135,7 @@
             );
 
             sbSeries.data.setAll(chartData);
-            
+
             var exporting = am5plugins_exporting.Exporting.new(root, {
                 menu: am5plugins_exporting.ExportingMenu.new(root, {}),
                 filePrefix: "{{ __('messages.top_selling_species') }}"

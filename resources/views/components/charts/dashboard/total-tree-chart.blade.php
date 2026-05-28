@@ -27,11 +27,36 @@
                 am5themes_Animated.new(root)
             ]);
 
-            var chart = root.container.children.push(am5percent.PieChart.new(root, {
-                layout: root.verticalLayout,
-                innerRadius: am5.percent(60)
+            // Main vertical container
+            let mainContainer = root.container.children.push(
+                am5.Container.new(root, {
+                    width: am5.percent(100),
+                    height: am5.percent(100),
+                    layout: root.verticalLayout
+                })
+            );
 
-            }));
+            // Title
+            mainContainer.children.push(
+                am5.Label.new(root, {
+                    text: "{{ __('messages.total_trees_by_species') }}",
+                    fontSize: 21,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    x: am5.percent(50),
+                    centerX: am5.percent(50),
+                    marginBottom: 20,
+                    paddingTop: 10
+                })
+            );
+
+            // Chart
+            let chart = mainContainer.children.push(
+                am5percent.PieChart.new(root, {
+                    layout: root.verticalLayout,
+                    innerRadius: am5.percent(60)
+                })
+            );
 
             var series = chart.series.push(am5percent.PieSeries.new(root, {
                 valueField: "value",
@@ -46,7 +71,7 @@
                 centerY: am5.percent(50),
                 text: "{{ __('messages.total_trees') }}: {valueSum}",
                 populateText: true,
-                fontSize: "1.3em"
+                fontSize: "1.0em"
             }));
 
             series.labels.template.setAll({

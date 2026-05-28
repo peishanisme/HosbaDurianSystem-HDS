@@ -15,44 +15,69 @@
                 am5themes_Animated.new(root)
             ]);
 
-            root.container.set("layout", root.verticalLayout);
+            // =============================
+            // MAIN CONTAINER
+            // =============================
+            let mainContainer = root.container.children.push(
+                am5.Container.new(root, {
+                    width: am5.percent(100),
+                    height: am5.percent(100),
+                    layout: root.verticalLayout
+                })
+            );
 
-            // Container
-            var chartContainer = root.container.children.push(am5.Container.new(root, {
-                layout: root.horizontalLayout,
-                width: am5.p100,
-                height: am5.p100
-            }));
+            // =============================
+            // TITLE
+            // =============================
+            mainContainer.children.push(
+                am5.Label.new(root, {
+                    text: "{{ __('messages.tree_observations') }} - {{ $harvestEventName }}",
+                    fontSize: 21,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    x: am5.percent(50),
+                    centerX: am5.percent(50),
+                    marginBottom: 20,
+                    paddingTop: 10
+                })
+            );
 
-            // -----------------------------
+            // =============================
+            // CHART ROW CONTAINER
+            // =============================
+            let chartContainer = mainContainer.children.push(
+                am5.Container.new(root, {
+                    width: am5.percent(100),
+                    height: am5.percent(100),
+                    layout: root.horizontalLayout
+                })
+            );
+
+            // =============================
             // DATA
-            // -----------------------------
+            // =============================
             var observationData = @json($treeObservationsData);
 
-            // Total flowering trees (exclude X)
             var totalFloweringTrees = observationData
                 .filter(item => item.status !== 'X')
                 .reduce((sum, item) => sum + item.count, 0);
 
-            // Total estimated fruits
             var totalEstimatedFruits = observationData
                 .reduce((sum, item) => sum + item.estimated, 0);
 
-            // Chart 1 data (tree count)
             var treeCountData = observationData.map(item => ({
                 category: item.status,
                 value: item.count
             }));
 
-            // Chart 2 data (estimated fruits)
             var estimatedData = observationData.map(item => ({
                 category: item.status,
                 value: item.estimated
             }));
 
-            // -----------------------------
-            // COLOR MAP
-            // -----------------------------
+            // =============================
+            // COLORS
+            // =============================
             const statusColors = {
                 A: am5.color(0xff4d4f),
                 B: am5.color(0xffa940),
@@ -61,18 +86,19 @@
                 X: am5.color(0xd9d9d9)
             };
 
-            // -----------------------------
-            // CHART 1 (Tree Count)
-            // -----------------------------
-            var chart = chartContainer.children.push(
+            // =============================
+            // PIE CHART 1
+            // =============================
+            var chart1 = chartContainer.children.push(
                 am5percent.PieChart.new(root, {
                     endAngle: 270,
-                    radius: am5.percent(60),
-                    innerRadius: am5.percent(60)
+                    radius: am5.percent(70),
+                    innerRadius: am5.percent(60),
+                    width: am5.percent(50)
                 })
             );
 
-            var series = chart.series.push(
+            var series1 = chart1.series.push(
                 am5percent.PieSeries.new(root, {
                     valueField: "value",
                     categoryField: "category",
@@ -81,40 +107,43 @@
                 })
             );
 
-            // Center label
-            series.children.push(am5.Label.new(root, {
-                centerX: am5.percent(50),
-                centerY: am5.percent(50),
-                text: "{{ __('messages.flowering_trees') }}\n" + totalFloweringTrees,
-                populateText: false,
-                fontSize: "1.2em"
-            }));
+            series1.children.push(
+                am5.Label.new(root, {
+                    centerX: am5.percent(50),
+                    centerY: am5.percent(50),
+                    text: "{{ __('messages.flowering_trees') }}\n" + totalFloweringTrees,
+                    textAlign: "center",
+                    populateText: false,
+                    fontSize: "1.2em"
+                })
+            );
 
-            // Styling
-            series.slices.template.setAll({
+            series1.slices.template.setAll({
                 cornerRadius: 8
             });
-            series.states.create("hidden", {
+
+            series1.states.create("hidden", {
                 endAngle: -90
             });
-            series.labels.template.setAll({
+
+            series1.labels.template.setAll({
                 text: "{category}: {value}",
                 textType: "circular"
             });
 
-            // Colors
-            series.slices.template.adapters.add("fill", (fill, target) => {
+            series1.slices.template.adapters.add("fill", (fill, target) => {
                 return statusColors[target.dataItem.dataContext.category] || fill;
             });
 
-            // -----------------------------
-            // CHART 2 (Estimated Fruits)
-            // -----------------------------
+            // =============================
+            // PIE CHART 2
+            // =============================
             var chart2 = chartContainer.children.push(
                 am5percent.PieChart.new(root, {
                     endAngle: 270,
-                    radius: am5.percent(60),
-                    innerRadius: am5.percent(60)
+                    radius: am5.percent(70),
+                    innerRadius: am5.percent(60),
+                    width: am5.percent(50)
                 })
             );
 
@@ -128,87 +157,98 @@
                 })
             );
 
-            // Center label
-            series2.children.push(am5.Label.new(root, {
-                centerX: am5.percent(50),
-                centerY: am5.percent(50),
-                text: "{{ __('messages.estimated_fruits') }}\n" + totalEstimatedFruits,
-                populateText: false,
-                fontSize: "1.2em"
-            }));
+            series2.children.push(
+                am5.Label.new(root, {
+                    centerX: am5.percent(50),
+                    centerY: am5.percent(50),
+                    text: "{{ __('messages.estimated_fruits') }}\n" + totalEstimatedFruits,
+                    textAlign: "center",
+                    populateText: false,
+                    fontSize: "1.2em"
+                })
+            );
 
-            // Styling
             series2.slices.template.setAll({
                 cornerRadius: 8
             });
+
             series2.states.create("hidden", {
                 endAngle: -90
             });
+
             series2.labels.template.setAll({
                 text: "{category}: {value}",
                 textType: "circular"
             });
 
-            // Colors
             series2.slices.template.adapters.add("fill", (fill, target) => {
                 return statusColors[target.dataItem.dataContext.category] || fill;
             });
 
-            // -----------------------------
-            // DATA SET
-            // -----------------------------
-            series.data.setAll(treeCountData);
+            // =============================
+            // SET DATA
+            // =============================
+            series1.data.setAll(treeCountData);
             series2.data.setAll(estimatedData);
 
-            // -----------------------------
-            // LINKED HOVER EFFECT
-            // -----------------------------
+            // =============================
+            // LINKED HOVER
+            // =============================
             function getSlice(dataItem, series) {
                 var otherSlice;
+
                 am5.array.each(series.dataItems, function(di) {
                     if (di.get("category") === dataItem.get("category")) {
                         otherSlice = di.get("slice");
                     }
                 });
+
                 return otherSlice;
             }
 
-            series.slices.template.events.on("pointerover", function(ev) {
+            series1.slices.template.events.on("pointerover", function(ev) {
                 var other = getSlice(ev.target.dataItem, series2);
                 if (other) other.hover();
             });
 
-            series.slices.template.events.on("pointerout", function(ev) {
+            series1.slices.template.events.on("pointerout", function(ev) {
                 var other = getSlice(ev.target.dataItem, series2);
                 if (other) other.unhover();
             });
 
             series2.slices.template.events.on("pointerover", function(ev) {
-                var other = getSlice(ev.target.dataItem, series);
+                var other = getSlice(ev.target.dataItem, series1);
                 if (other) other.hover();
             });
 
             series2.slices.template.events.on("pointerout", function(ev) {
-                var other = getSlice(ev.target.dataItem, series);
+                var other = getSlice(ev.target.dataItem, series1);
                 if (other) other.unhover();
             });
 
-            // -----------------------------
+            // =============================
             // LEGEND
-            // -----------------------------
-            var legend = root.container.children.push(am5.Legend.new(root, {
-                x: am5.percent(50),
-                centerX: am5.percent(50)
-            }));
+            // =============================
+            var legend = mainContainer.children.push(
+                am5.Legend.new(root, {
+                    x: am5.percent(50),
+                    centerX: am5.percent(50),
+                    marginTop: 15
+                })
+            );
 
-            legend.data.setAll(series.dataItems);
+            legend.data.setAll(series1.dataItems);
 
-            // -----------------------------
-            // ANIMATION + EXPORT
-            // -----------------------------
-            series.appear(1000, 100);
+            // =============================
+            // ANIMATION
+            // =============================
+            series1.appear(1000, 100);
+            series2.appear(1000, 100);
 
-            var exporting = am5plugins_exporting.Exporting.new(root, {
+            // =============================
+            // EXPORT
+            // =============================
+            am5plugins_exporting.Exporting.new(root, {
                 menu: am5plugins_exporting.ExportingMenu.new(root, {}),
                 filePrefix: "{{ __('messages.tree_observations') }}"
             });

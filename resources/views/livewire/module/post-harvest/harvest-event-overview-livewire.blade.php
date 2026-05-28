@@ -3,7 +3,7 @@
 
 
     <div class="mb-15">
-        <x-charts.harvest-events.tree-observations-chart :treeObservationsData="$this->treeObservationsData" />
+        <x-charts.harvest-events.tree-observations-chart :treeObservationsData="$this->treeObservationsData" :harvestEventName="$harvestEvent->event_name"/>
     </div>
 
     <div class="mb-15">
@@ -22,8 +22,12 @@
     </div>
 
     <div class="mb-15">
+        <x-charts.dashboard.harvest-grade-chart :gradeDistributionData="$this->gradeDistributionData" :harvestEventName="$harvestEvent->event_name"/>
+    </div>
+
+    <div class="mb-15">
         <div class="w-100 h-100">
-            <x-charts.harvest-events.top5-harvest-trees-chart :top10HarvestTreesData="$this->top10HarvestTreesData" />
+            <x-charts.harvest-events.top5-harvest-trees-chart :top10HarvestTreesData="$this->top10HarvestTreesData" :harvestEventName="$harvestEvent->event_name" />
         </div>
     </div>
 
@@ -40,5 +44,3 @@
         }
     </style>
 @endpush
-
-

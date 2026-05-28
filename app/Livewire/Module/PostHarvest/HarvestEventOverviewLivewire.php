@@ -4,6 +4,7 @@ namespace App\Livewire\Module\PostHarvest;
 
 use App\Models\Fruit;
 use App\Models\HarvestEvent;
+use App\Models\HarvestGrade;
 use App\Models\HarvestRecord;
 use App\Models\Tree;
 use App\Models\TreeObservation;
@@ -92,26 +93,52 @@ class HarvestEventOverviewLivewire extends Component
 
     public function getHarvestSpeciesDataProperty()
     {
-        $query = HarvestRecord::select(
+        // =========================
+        // Fruits aggregation
+        // =========================
+        $fruitQuery = HarvestRecord::select(
+            'species.id',
             'species.name as species',
-            DB::raw('SUM(harvest_records.num_of_fruits) as total_pieces'),
-            DB::raw('SUM(harvest_records.weight) as total_weight')
+            DB::raw('SUM(harvest_records.num_of_fruits) as total_pieces')
         )
             ->join('trees', 'harvest_records.tree_uuid', '=', 'trees.uuid')
             ->join('species', 'trees.species_id', '=', 'species.id')
             ->where('harvest_records.harvest_uuid', $this->harvestEvent->uuid);
 
-        $this->applyDateFilter($query);
+        $this->applyDateFilter($fruitQuery);
 
-        return $query
-            ->groupBy('species.name')
-            ->orderByDesc('total_pieces')
+        $fruitData = $fruitQuery
+            ->groupBy('species.id', 'species.name')
             ->get()
-            ->map(fn($item) => [
+            ->keyBy('id');
+
+        // =========================
+        // Weight aggregation
+        // =========================
+        $weightQuery = HarvestGrade::select(
+            'species.id',
+            DB::raw('SUM(harvest_grade.weight) as total_weight')
+        )
+            ->join('species', 'harvest_grade.species_id', '=', 'species.id')
+            ->where('harvest_grade.harvest_uuid', $this->harvestEvent->uuid)
+            ->whereNotNull('harvest_grade.species_id');
+
+        $this->applyDateFilter($weightQuery);
+
+        $weightData = $weightQuery
+            ->groupBy('species.id')
+            ->pluck('total_weight', 'id');
+
+        // =========================
+        // Merge result
+        // =========================
+        return $fruitData->map(function ($item) use ($weightData) {
+            return [
                 'species' => $item->species,
                 'total_pieces' => (int) $item->total_pieces,
-                'total_weight' => (float) $item->total_weight,
-            ]);
+                'total_weight' => (float) ($weightData[$item->id] ?? 0),
+            ];
+        })->sortByDesc('total_pieces')->values();
     }
 
     private function applyDateFilter($query)
@@ -166,6 +193,27 @@ class HarvestEventOverviewLivewire extends Component
                 'estimated' => $count * $multiplier,
             ];
         })->values();
+    }
+
+    public function getGradeDistributionDataProperty()
+    {
+        $grades = HarvestGrade::select(
+            DB::raw("COALESCE(grade, 'Ungraded') as grade"),
+            DB::raw('SUM(weight) as total_weight')
+        )
+            ->where('harvest_uuid', $this->harvestEvent->uuid)
+            ->groupBy('grade')
+            ->orderByDesc('total_weight')
+            ->get();
+
+        $gradeDistributionData = $grades->map(function ($item) {
+            return [
+                'grade' => $item->grade,
+                'weight' => (float) $item->total_weight,
+            ];
+        })->toArray();
+
+        return $gradeDistributionData;
     }
 
     public function render()
