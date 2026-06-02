@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Label;
+use App\Models\TreeLabel;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\{HasMany, BelongsTo, HasOne};
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\{HasMany, BelongsTo, HasOne};
-use App\Models\Label;
 
 class Tree extends Model
 {
@@ -45,23 +46,23 @@ class Tree extends Model
         });
 
         static::updating(function ($model) {
-        if ($model->isDirty('species_id')) {
+            if ($model->isDirty('species_id')) {
 
-            // Get current sequence number
-            if (preg_match('/-(\d+)$/', $model->tree_tag, $matches)) {
-                $sequence = $matches[1];
-            } else {
-                $sequence = '0000';
+                // Get current sequence number
+                if (preg_match('/-(\d+)$/', $model->tree_tag, $matches)) {
+                    $sequence = $matches[1];
+                } else {
+                    $sequence = '0000';
+                }
+
+                // Get new species code
+                $species = Species::findOrFail($model->species_id);
+                $speciesCode = $species->code;
+
+                // Build new tag with same sequence
+                $model->tree_tag = $speciesCode . '-' . $sequence;
             }
-
-            // Get new species code
-            $species = Species::findOrFail($model->species_id);
-            $speciesCode = $species->code;
-
-            // Build new tag with same sequence
-            $model->tree_tag = $speciesCode . '-' . $sequence;
-        }
-    });
+        });
     }
 
     public static function generateTreeTag($speciesId, $excludeId = null): string
@@ -134,6 +135,11 @@ class Tree extends Model
             ->withTimestamps();
     }
 
+    public function latestLabel(): HasOne
+    {
+        return $this->hasOne(TreeLabel::class, 'tree_id', 'id')->latestOfMany();
+    }
+
     public function healthRecords(): HasMany
     {
         return $this->hasMany(HealthRecord::class, 'tree_uuid', 'uuid');
@@ -152,6 +158,22 @@ class Tree extends Model
     public function observations(): HasMany
     {
         return $this->hasMany(TreeObservation::class, 'tree_uuid', 'uuid');
+    }
+
+    public function activeObservation(): HasOne
+    {
+        return $this->hasOne(TreeObservation::class, 'tree_uuid', 'uuid')
+            ->whereHas('harvestEvent', fn($q) => $q->active());
+    }
+
+    public function feedbacks(): HasMany
+    {
+        return $this->hasMany(FruitFeedback::class, 'tree_uuid', 'uuid');
+    }   
+
+    public function getActiveFloweringStatusAttribute()
+    {
+        return $this->activeObservation?->flowering_status;
     }
 
     public function fruitCountInHarvest($harvestUuid)

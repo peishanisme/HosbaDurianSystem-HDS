@@ -100,8 +100,15 @@ return [
     'search_trees' => '搜索树木',
     'tree_tag' => '树标签',
     'planted_at' => '种植日期',
+    'label' => '标签',
+    'flowering_status' => '开花状态',
 
     //tree modal
+    'manage_labels' => '管理标签',
+    'create_tree' => '创建树木',
+    'area' => '区域',
+    'terrace' => '梯田',
+    'water_valve' => '水阀',
     'thumbnail' => '图片',
     'initial_height' => '初始高度',
     'initial_diameter' => '初始直径',
@@ -113,7 +120,7 @@ return [
     'tree_details' => '树木详情',
 
     //tree details header
-    'show_qr_code' => '显示二维码',
+    'show_tree_qr_code' => '显示树二维码',
     'tree_qr_code' => '树木二维码',
     'download' => '下载',
     'print' => '打印',
@@ -184,6 +191,14 @@ return [
         'Available' => '可售',
         'Sold' => '已售出',
     ],
+    'spoilt' => '已损坏',
+    'not_spoilt' => '未损坏',
+    'total_weight' => '总重量',
+    'total_spoilt' => '总损坏',
+
+    //tree feedback
+    'tree_feedbacks' => '树木反馈',
+    'feedbacks' => '反馈',
 
     //disease listing
     'search_diseases' => '搜索病害',
@@ -262,6 +277,8 @@ return [
     'error_occurred' => '发生错误：',
     'harvest_event_reopened_successfully' => '采收季节重新开启成功',
     'harvest_summary' => '采收总结',
+    'harvest_records' => '采收记录',
+    'harvest_grades' => '采收等级',
     'harvest_species_overview' => '采收品种概览',
     'pieces' => '颗',
     'total_weight' => '总重量',
@@ -277,7 +294,15 @@ return [
     'total_fruit' => '水果总数',
     'no_fruits_for_this_tree' => '该树暂无水果。',
     'no_trees_found' => '未找到树木。',
-    
+    'tree_observations' => '树木观察',
+    'flowering_trees' => '开花树木',
+    'estimated_fruits' => '预计水果',
+    'num_of_fruits' => '水果数量',
+    'spoilt_status' => [
+        'Spoilt' => '已损坏',
+        'Not Spoilt' => '未损坏',
+    ],
+
     //buyer index
     'search_buyers' => '搜索买家',
     'are_you_sure_you_want_to_delete_this_buyer' => '您确定要删除此买家吗？',
@@ -403,16 +428,6 @@ return [
     'submit' => '提交',
     'please_wait' => '请稍候',
     'create_new_transaction' => '创建新交易',
-
-
-   
-
-    
-
-
-
-
-
-
-
+    'grade_breakdown' => '等级细分',
+    'record_by_grade' => '按等级记录',
 ];

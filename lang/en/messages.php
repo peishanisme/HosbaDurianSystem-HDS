@@ -101,9 +101,16 @@ return [
     'search_trees' => 'Search Trees',
     'tree_tag' => 'Tree Tag',
     'planted_at' => 'Planted At',
+    'label' => 'Label',
+    'flowering_status' => 'Flowering Status',
 
     // tree modal
+    'manage_labels' => 'Manage Labels',
+    'create_tree' => 'Create Tree',
     'thumbnail' => 'Thumbnail',
+    'area' => 'Area',
+    'terrace' => 'Terrace',
+    'water_valve' => 'Water Valve',
     'initial_height' => 'Initial Height',
     'initial_diameter' => 'Initial Diameter',
     'initial_flowering_period' => 'Initial Flowering Period',
@@ -113,8 +120,13 @@ return [
     'tree_updation_failed' => 'Tree update failed',
     'tree_details' => 'Tree Details',
 
+    //tree label modal
+    'update_labels' => 'Update Labels',
+    'search_tree_tag' => 'Search tree tag',
+    'select_label' => 'Select label',
+    'no_labels_found' => 'No labels found',
+
     // tree details header
-    'show_qr_code' => 'Show QR Code',
     'tree_qr_code' => 'Tree QR Code',
     'download' => 'Download',
     'print' => 'Print',
@@ -134,6 +146,8 @@ return [
     'harvest_grade' => 'Harvest Grade',
     'tree_diseases' => 'Tree Diseases',
     'total_harvest_in_each_event' => 'Total Harvest in Each Event',
+    'flowering_trees' => 'Flowering Trees',
+    'estimated_fruits' => 'Estimated Fruits',
 
     // tree growth log
     'tree_growth_logs' => 'Tree Growth Logs',
@@ -186,6 +200,10 @@ return [
         'Available' => 'Available',
         'Sold' => 'Sold',
     ],
+
+    //tree feedback
+    'tree_feedbacks' => 'Tree Feedbacks',
+    'feedbacks' => 'Feedbacks',
 
     // disease listing
     'search_diseases' => 'Search Diseases',
@@ -266,6 +284,8 @@ return [
     'error_occurred' => 'An error occurred:',
     'harvest_event_reopened_successfully' => 'Harvest event reopened successfully',
     'harvest_summary' => 'Harvest Summary',
+    'harvest_records' => 'Harvest Records',
+    'harvest_grades' => 'Harvest Grades',
     'harvest_species_overview' => 'Harvest Species Overview',
     'pieces' => 'Pieces',
     'total_weight' => 'Total Weight',
@@ -273,7 +293,7 @@ return [
     'top_10_harvest_trees' => 'Top 10 Harvest Trees',
     'fruit_selling_status' => 'Fruit Selling Status',
     'unsold' => 'Unsold',
-    'harvest_event_harvest_summary' => 'Harvest Event Summary',
+    'harvest_event_harvest_summary' => 'Harvest Record Summary',
     'tree_harvest_summary' => 'Tree Harvest Summary',
     'search_by_tree_tag_or_species' => 'Search by Tree Tag or Species',
     'all_species' => 'All Species',
@@ -281,6 +301,15 @@ return [
     'total_fruit' => 'Total Fruit',
     'no_fruits_for_this_tree' => 'No fruits for this tree.',
     'no_trees_found' => 'No trees found.',
+    'spoilt' => 'Spoilt',
+    'not_spoilt' => 'Not Spoilt',
+    'tree_observations' => 'Tree Observations',
+    'num_of_fruits' => 'Number of Fruits',
+    'spoilt_status' => [
+        'Spoilt' => 'Spoilt',
+        'Not Spoilt' => 'Not Spoilt',
+    ],
+    'total_spoilt' => 'Total Spoilt',
 
     // buyer index
     'search_buyers' => 'Search Buyers',
@@ -406,5 +435,7 @@ return [
     'submit' => 'Submit',
     'please_wait' => 'Please wait',
     'create_new_transaction' => 'Create new transaction',
+    'grade_breakdown' => 'Grade breakdown',
+    'record_by_grade' => 'Record by grade',
 
 ];

@@ -2,51 +2,55 @@
 
 namespace App\Actions\SalesAndTransactions;
 
-use App\Jobs\SyncTransactionToBlockchainJob;
+use App\Enum\TransactionGrade;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
-use App\Services\BlockchainService;
+
 class CreateTransactionAction
 {
-    protected BlockchainService $blockchain;
-
-    public function __construct(BlockchainService $blockchain)
+    public function handle(array $validatedData): Transaction
     {
-        $this->blockchain = $blockchain;
-    }
+        return DB::transaction(function () use ($validatedData) {
 
-    public function handle(array $validatedData, array $scannedFruits, array $summary): Transaction
-    {
-        return DB::transaction(function () use ($validatedData, $scannedFruits, $summary) {
+            $gradeBreakdown = null;
 
-            // --------------------
-            // 1. Create transaction
-            // --------------------
-            $transaction = Transaction::create($validatedData);
+            $totalAmount = $validatedData['total_amount'] ?? 0;
+            $totalWeight = $validatedData['total_weight'] ?? 0;
 
-            // --------------------
-            // 2. Update fruits
-            // --------------------
-            foreach ($scannedFruits as $fruitData) {
-                $fruit = \App\Models\Fruit::where('uuid', $fruitData['uuid'])->first();
+            if ($validatedData['recordByGrade']) {
 
-                if ($fruit) {
-                    $speciesName = $fruit->tree->species->name ?? null;
-                    $grade = $fruit->grade ?? null;
+                $gradeBreakdown = [];
 
-                    if ($speciesName && $grade) {
-                        $key = $speciesName . '-' . $grade;
-                        $pricePerKg = $summary[$key]['price_per_kg'] ?? 0;
+                foreach (TransactionGrade::values() as $grade) {
 
-                        $fruit->update([
-                            'transaction_uuid' => $transaction->uuid,
-                            'price_per_kg' => $pricePerKg,
-                        ]);
-                    }
+                    $gradeBreakdown[$grade] = [
+                        'total_weight' =>
+                            (float) (
+                                $validatedData['grade_breakdown'][$grade]['total_weight']
+                                ?? 0
+                            ),
+
+                        'total_amount' =>
+                            (float) (
+                                $validatedData['grade_breakdown'][$grade]['total_amount']
+                                ?? 0
+                            ),
+                    ];
                 }
+
+                $totalAmount = collect($gradeBreakdown)
+                    ->sum('total_amount');
+
+                $totalWeight = collect($gradeBreakdown)
+                    ->sum('total_weight');
             }
 
-            return $transaction;
+            return Transaction::create([
+                'date' => $validatedData['date'],
+                'total_amount' => $totalAmount,
+                'total_weight' => $totalWeight,
+                'grade_breakdown' => $gradeBreakdown,
+            ]);
         });
     }
 }

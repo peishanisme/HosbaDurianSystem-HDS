@@ -19,38 +19,47 @@
         am5.ready(function() {
 
             // 1. Load Livewire data
-            const rawData = @json($top5HarvestTreesData ?? []);
+            const rawData = @json($top10HarvestTreesData ?? []);
 
-            // 2. Convert to chart-friendly format
-            // Each object: {tree: "Tree 1", A: 5, B: 2, C: 1, D: 0}
+            // 2. Convert format
             const chartData = rawData.map(item => ({
                 tree: item.tree,
-                AA: Number(item.AA || 0),
-                A: Number(item.A || 0),
-                B: Number(item.B || 0),
-                C: Number(item.C || 0),
-                D: Number(item.D || 0),
+                total: Number(item.total || 0),
             }));
-
-            const grades = ['AA', 'A', 'B', 'C', 'D'];
-            const colors = [
-                am5.color(0x315E26),
-                am5.color(0x7A9F79),
-                am5.color(0x97CF8A),
-                am5.color(0xB1DD9A),
-                am5.color(0xD4E6B3)
-            ];
 
             // 3. Create root
             const root = am5.Root.new("top10-harvest-trees-chart");
 
             // 4. Themes
-            root.setThemes([
+           root.setThemes([
                 am5themes_Animated.new(root)
             ]);
 
-            // 5. Create chart
-            const chart = root.container.children.push(
+            // Main vertical container
+            let mainContainer = root.container.children.push(
+                am5.Container.new(root, {
+                    width: am5.percent(100),
+                    height: am5.percent(100),
+                    layout: root.verticalLayout
+                })
+            );
+
+            // Title
+            mainContainer.children.push(
+                am5.Label.new(root, {
+                    text: "{{ __('messages.top_10_harvest_trees') }} - {{ $harvestEventName }}",
+                    fontSize: 21,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    x: am5.percent(50),
+                    centerX: am5.percent(50),
+                    marginBottom: 20,
+                    paddingTop: 10
+                })
+            );
+
+            // Chart
+            let chart = mainContainer.children.push(
                 am5xy.XYChart.new(root, {
                     panX: false,
                     panY: false,
@@ -60,85 +69,66 @@
                 })
             );
 
-            // 6. Add cursor
+            // 6. Cursor
             const cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
             cursor.lineX.set("visible", false);
             cursor.lineY.set("visible", false);
 
-            // 7. Y-axis (category = tree)
-            const yRenderer = am5xy.AxisRendererY.new(root, {});
+            // 7. Y-axis (trees)
             const yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
                 categoryField: "tree",
-                renderer: yRenderer,
-                tooltip: am5.Tooltip.new(root, {})
+                renderer: am5xy.AxisRendererY.new(root, {})
             }));
-            yRenderer.grid.template.setAll({
-                location: 1
-            });
             yAxis.data.setAll(chartData);
 
-            // 8. X-axis (value)
+            // 8. X-axis (total fruits)
             const xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {
                 min: 0,
                 renderer: am5xy.AxisRendererX.new(root, {})
             }));
 
-            // 9. Legend
-            const legend = chart.children.push(am5.Legend.new(root, {
-                centerX: am5.percent(50),
-                x: am5.percent(50),
-                marginTop: 15,
-                marginBottom: 15
-            }));
-
-            // 10. Function to create stacked series per grade
-            function makeSeries(grade, color) {
-                const series = chart.series.push(
-                    am5xy.ColumnSeries.new(root, {
-                        name: "Grade " + grade,
-                        stacked: true,
-                        xAxis: xAxis,
-                        yAxis: yAxis,
-                        valueXField: grade,
-                        categoryYField: "tree",
-                        fill: color,
-                        stroke: color,
-                        tooltip: am5.Tooltip.new(root, {
-                            labelText: "{name} - {categoryY}: {valueX}"
-                        })
+            // 9. Create single series
+            const series = chart.series.push(
+                am5xy.ColumnSeries.new(root, {
+                    name: "Total Fruits",
+                    xAxis: xAxis,
+                    yAxis: yAxis,
+                    valueXField: "total",
+                    categoryYField: "tree",
+                    tooltip: am5.Tooltip.new(root, {
+                        labelText: "{categoryY}: {valueX}"
                     })
-                );
+                })
+            );
 
-                // Add bullet to show value
-                series.bullets.push(function() {
-                    return am5.Bullet.new(root, {
-                        sprite: am5.Label.new(root, {
-                            text: "{valueX}",
-                            fill: root.interfaceColors.get("alternativeText"),
-                            centerY: am5.p50,
-                            centerX: am5.p50,
-                            populateText: true
-                        })
-                    });
-                });
-
-                series.data.setAll(chartData);
-
-                // Add series to legend
-                legend.data.push(series);
-            }
-
-            // 11. Create series for each grade
-            grades.forEach((grade, index) => {
-                makeSeries(grade, colors[index]);
+            // Optional: color
+            series.columns.template.setAll({
+                fill: am5.color(0x7A9F79),
+                stroke: am5.color(0x7A9F79)
             });
 
+            // Add value labels
+            series.bullets.push(function() {
+                return am5.Bullet.new(root, {
+                    sprite: am5.Label.new(root, {
+                        text: "{valueX}",
+                        fill: root.interfaceColors.get("alternativeText"),
+                        centerY: am5.p50,
+                        centerX: am5.p50,
+                        populateText: true
+                    })
+                });
+            });
+
+            series.data.setAll(chartData);
+
+            // 10. Export
             var exporting = am5plugins_exporting.Exporting.new(root, {
                 menu: am5plugins_exporting.ExportingMenu.new(root, {}),
-                filePrefix: "{{ __('messages.top_selling_trees') }}"
+                filePrefix: "{{ __('messages.top_10_harvest_trees') }}"
             });
 
-            // 12. Animate chart
+            // 11. Animate
             chart.appear(1000, 100);
 
         });

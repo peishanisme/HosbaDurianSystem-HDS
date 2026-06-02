@@ -4,9 +4,10 @@
     'label1' => 'Edit',
     'label2' => null,
     'modal' => null,
+    'modal2' => null,
     'dispatch1' => null,
     'dispatch2' => null,
-    'data',
+    'data' ,
     'dataField',
     'disabled1' => false,
     'disabled2' => false,
@@ -27,6 +28,7 @@
     @can($permission2)
     <button type="button" class="btn btn-sm btn-light-primary d-flex align-items-center gap-2"
         @if ($disabled2) disabled @endif
+        @if($modal2) data-bs-toggle="modal" data-bs-target="#{{ $modal2 }}" @endif
         wire:click="$dispatch('{{ $dispatch2 }}', { {{ $dataField }}: {{ $data }} })">
         <i class="{{ $icon2 }}"></i>
         {{ $label2 }}

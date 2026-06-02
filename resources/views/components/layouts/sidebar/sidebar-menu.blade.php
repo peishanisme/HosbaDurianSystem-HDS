@@ -74,8 +74,8 @@
                     'sales.transaction.index',
                 ]),
             ])>
-            <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.buyer_listing') }}"
-                route="sales.buyers.index" />
+            {{-- <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.buyer_listing') }}"
+                route="sales.buyers.index" /> --}}
 
             <x-layouts.sidebar.menu-sub-accordion title="{{ __('messages.transaction_listing') }}"
                 route="sales.transaction.index" />

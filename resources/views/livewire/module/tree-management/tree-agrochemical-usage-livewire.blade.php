@@ -2,4 +2,7 @@
     <livewire:components.headers.tree-details-header :tree="$tree" />
 
     <livewire:tables.tree-agrochemical-usage-table :tree="$tree" />
+
+    <livewire:module.post-harvest.harvest-qr-code-modal-livewire />
+
 </div>

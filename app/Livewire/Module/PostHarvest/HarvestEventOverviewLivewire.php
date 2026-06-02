@@ -2,16 +2,17 @@
 
 namespace App\Livewire\Module\PostHarvest;
 
-use App\Models\Tree;
 use App\Models\Fruit;
-use Livewire\Component;
-use App\Traits\SweetAlert;
-use Livewire\Attributes\On;
 use App\Models\HarvestEvent;
-use Livewire\Attributes\Title;
-use Illuminate\Support\Facades\DB;
-use App\DataTransferObject\FruitDTO;
+use App\Models\HarvestGrade;
+use App\Models\HarvestRecord;
+use App\Models\Tree;
+use App\Models\TreeObservation;
 use App\Traits\AuthorizesRoleOrPermission;
+use App\Traits\SweetAlert;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class HarvestEventOverviewLivewire extends Component
 {
@@ -23,7 +24,9 @@ class HarvestEventOverviewLivewire extends Component
     public $grade;
     public $weight;
     public Fruit $fruit;
-    
+    public ?string $fromDate = null;
+    public ?string $toDate = null;
+
     public function mount(): void
     {
         $this->authorizeRoleOrPermission(['view-harvest-event']);
@@ -41,6 +44,7 @@ class HarvestEventOverviewLivewire extends Component
     {
         try {
             $this->harvestEvent->end_date = now()->toDateString();
+            $this->harvestEvent->active = false;
             $this->harvestEvent->save();
             $this->alertSuccess(__('messages.harvest_event_closed_successfully'));
         } catch (\Exception $e) {
@@ -60,6 +64,7 @@ class HarvestEventOverviewLivewire extends Component
     {
         try {
             $this->harvestEvent->end_date = null;
+            $this->harvestEvent->active = true;
             $this->harvestEvent->save();
             $this->alertSuccess(__('messages.harvest_event_reopened_successfully'));
         } catch (\Exception $e) {
@@ -67,169 +72,159 @@ class HarvestEventOverviewLivewire extends Component
         }
     }
 
-    public function save()
+    public function getTop10HarvestTreesDataProperty()
     {
-
-        $this->validate([
-            'tree_id' => 'required',
-            'harvested_date' => 'required|date',
-            'grade' => 'required',
-            'weight' => 'required|numeric|min:0',
-        ]);
-
-        $tree = Tree::find($this->tree_id);
-
-        $fruitDTO = new FruitDTO(
-            harvest_uuid: $this->harvestEvent->uuid,
-            transaction_uuid: null,
-            harvested_at: $this->harvested_date,
-            is_spoiled: false,
-            tree_uuid: $tree->uuid ?? null,
-            weight: $this->weight,
-            grade: $this->grade
-        );
-
-        app('App\Actions\FruitManagement\CreateFruitAction')->handle($fruitDTO);
-
-        session()->flash('message', 'Harvest saved successfully!');
-
-        // Reset form after save
-        $this->reset(['tree_id', 'harvested_date', 'grade', 'weight']);
-    }
-
-    public function update()
-    {
-        $data = $this->validate([
-            'tree_id' => 'required',
-            'harvested_date' => 'required|date',
-            'grade' => 'required',
-            'weight' => 'required|numeric|min:0',
-        ]);
-
-        $tree = Tree::find($this->tree_id);
-
-        $fruitDTO = new FruitDTO(
-            harvest_uuid: $this->harvestEvent->uuid,
-            transaction_uuid: null,
-            harvested_at: $this->harvested_date,
-            is_spoiled: false,
-            tree_uuid: $tree->uuid ?? null,
-            weight: $this->weight,
-            grade: $this->grade
-        );
-
-        app('App\Actions\FruitManagement\UpdateFruitAction')->handle($fruitDTO, $this->fruit->uuid);
-
-        session()->flash('message', 'Fruit updated successfully!');
-
-        // Reset form after update
-        $this->reset(['tree_id', 'harvested_date', 'grade', 'weight']);
-    }
-
-    public function loadTop5HarvestTreesData()
-    {
-        $topTrees = Fruit::select('tree_uuid', 'grade')
-            ->where('harvest_uuid', $this->harvestEvent->uuid)
-            ->get()
+        $topTrees = HarvestRecord::where('harvest_uuid', $this->harvestEvent->uuid)
+            ->select('tree_uuid', DB::raw('SUM(num_of_fruits) as total_fruits'))
             ->groupBy('tree_uuid')
-            ->map(function ($fruits) {
-                return $fruits->groupBy('grade')->map->count();
-            })
-            ->sortByDesc(fn($grades) => array_sum($grades->toArray()))
-            ->take(10);
+            ->orderByDesc('total_fruits')
+            ->take(10)
+            ->get();
 
-        $chartData = $topTrees->map(function ($grades, $treeUuid) {
+        $chartData = $topTrees->map(function ($item) {
             return [
-                'tree' => Tree::where('uuid', $treeUuid)->value('tree_tag'),
-                'AA' => $grades->get('AA', 0),
-                'A' => $grades->get('A', 0),
-                'B' => $grades->get('B', 0),
-                'C' => $grades->get('C', 0),
-                'D' => $grades->get('D', 0),
-                'total' => array_sum($grades->toArray()),
+                'tree' => Tree::where('uuid', $item->tree_uuid)->value('tree_tag'),
+                'total' => (int) $item->total_fruits,
+            ];
+        });
+
+        return $chartData;
+    }
+
+    public function getHarvestSpeciesDataProperty()
+    {
+        // =========================
+        // Fruits aggregation
+        // =========================
+        $fruitQuery = HarvestRecord::select(
+            'species.id',
+            'species.name as species',
+            DB::raw('SUM(harvest_records.num_of_fruits) as total_pieces')
+        )
+            ->join('trees', 'harvest_records.tree_uuid', '=', 'trees.uuid')
+            ->join('species', 'trees.species_id', '=', 'species.id')
+            ->where('harvest_records.harvest_uuid', $this->harvestEvent->uuid);
+
+        $this->applyDateFilter(
+            $fruitQuery,
+            'harvest_records.harvest_date'
+        );
+
+        $fruitData = $fruitQuery
+            ->groupBy('species.id', 'species.name')
+            ->get()
+            ->keyBy('id');
+
+        // =========================
+        // Weight aggregation
+        // =========================
+        $weightQuery = HarvestGrade::select(
+            'species.id',
+            DB::raw('SUM(harvest_grade.weight) as total_weight')
+        )
+            ->join('species', 'harvest_grade.species_id', '=', 'species.id')
+            ->where('harvest_grade.harvest_uuid', $this->harvestEvent->uuid)
+            ->whereNotNull('harvest_grade.species_id');
+
+        $this->applyDateFilter(
+            $weightQuery,
+            'harvest_grade.date'
+        );
+
+        $weightData = $weightQuery
+            ->groupBy('species.id')
+            ->pluck('total_weight', 'id');
+
+        // =========================
+        // Merge result
+        // =========================
+        return $fruitData->map(function ($item) use ($weightData) {
+            return [
+                'species' => $item->species,
+                'total_pieces' => (int) $item->total_pieces,
+                'total_weight' => (float) ($weightData[$item->id] ?? 0),
+            ];
+        })->sortByDesc('total_pieces')->values();
+    }
+
+    private function applyDateFilter($query, $column)
+    {
+        if ($this->fromDate) {
+            $query->whereDate($column, '>=', $this->fromDate);
+        }
+
+        if ($this->toDate) {
+            $query->whereDate($column, '<=', $this->toDate);
+        }
+
+        return $query;
+    }
+
+    #[On('date-range-updated')]
+    public function updateDateRange($fromDate, $toDate)
+    {
+        $this->fromDate = $fromDate;
+        $this->toDate = $toDate;
+
+        $this->dispatch(
+            'refresh-harvest-species-chart',
+            data: $this->harvestSpeciesData
+        );
+    }
+
+    public function getTreeObservationsDataProperty()
+    {
+        $weights = [
+            'A' => 30,
+            'B' => 20,
+            'C' => 15,
+            'D' => 5,
+            'X' => 0,
+        ];
+
+        $statuses = collect(['A', 'B', 'C', 'D', 'X']);
+
+        $raw = TreeObservation::where('harvest_uuid', $this->harvestEvent->uuid)
+            ->select('flowering_status', DB::raw('COUNT(*) as count'))
+            ->groupBy('flowering_status')
+            ->pluck('count', 'flowering_status');
+
+        return $statuses->map(function ($status) use ($raw, $weights) {
+            $count = $raw[$status] ?? 0;
+            $multiplier = $weights[$status] ?? 0;
+
+            return [
+                'status' => $status,
+                'count' => $count,
+                'estimated' => $count * $multiplier,
             ];
         })->values();
-
-        return ($chartData);
     }
 
-    public function loadHarvestSpeciesData()
+    public function getGradeDistributionDataProperty()
     {
-        $speciesData = Fruit::select(
-            'species.name as species',
-            DB::raw('COUNT(*) as total_pieces'),
-            DB::raw('SUM(fruits.weight) as total_weight')
+        $grades = HarvestGrade::select(
+            DB::raw("COALESCE(grade, 'Ungraded') as grade"),
+            DB::raw('SUM(weight) as total_weight')
         )
-            ->join('trees', 'fruits.tree_uuid', '=', 'trees.uuid')
-            ->join('species', 'trees.species_id', '=', 'species.id')
-            ->where('fruits.harvest_uuid', $this->harvestEvent->uuid)
-            ->groupBy('species.name')
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'species' => $item->species,
-                    'total_pieces' => (int)$item->total_pieces,
-                    'total_weight' => (float)$item->total_weight,
-                ];
-            });
-
-        return $speciesData;
-    }
-
-    public function loadFruitQualityData()
-    {
-        $counts = Fruit::where('harvest_uuid', $this->harvestEvent->uuid)
-            ->select('grade', DB::raw('COUNT(*) as count'))
+            ->where('harvest_uuid', $this->harvestEvent->uuid)
             ->groupBy('grade')
-            ->pluck('count', 'grade')
-            ->toArray();
+            ->orderByDesc('total_weight')
+            ->get();
 
-        $orderedGrades = ['AA', 'A', 'B', 'C', 'D'];
-
-        $fruitQualityData = [];
-        foreach ($orderedGrades as $grade) {
-            $fruitQualityData[$grade] = $counts[$grade] ?? 0;
-        }
-
-        return $fruitQualityData;
-    }
-
-    public function loadSellingStatusData()
-    {
-        $total = Fruit::where('harvest_uuid', $this->harvestEvent->uuid)->count();
-
-        $sold = Fruit::where('harvest_uuid', $this->harvestEvent->uuid)
-            ->whereNotNull('transaction_uuid')
-            ->count();
-
-        $unsold = $total - $sold;
-
-        // avoid division by zero
-        if ($total == 0) {
+        $gradeDistributionData = $grades->map(function ($item) {
             return [
-                'sold' => 0,
-                'unsold' => 0,
-                'sold_percentage' => 0,
-                'unsold_percentage' => 0,
+                'grade' => $item->grade,
+                'weight' => (float) $item->total_weight,
             ];
-        }
+        })->toArray();
 
-        return [
-            'sold' => $sold,
-            'unsold' => $unsold,
-            'sold_percentage' => round(($sold / $total) * 100, 2),
-            'unsold_percentage' => round(($unsold / $total) * 100, 2),
-        ];
+        return $gradeDistributionData;
     }
 
     public function render()
     {
         $trees = Tree::orderBy('tree_tag')->get();
-        return view('livewire.module.post-harvest.harvest-event-overview-livewire', compact('trees'), [
-            'top5HarvestTreesData' => $this->loadTop5HarvestTreesData(),
-            'harvestSpeciesData' => $this->loadHarvestSpeciesData(),
-            'fruitQualityData' => $this->loadFruitQualityData(),
-            'sellingStatusData' => $this->loadSellingStatusData(),
-        ])->title(__('messages.harvest_event_overview'));
+        return view('livewire.module.post-harvest.harvest-event-overview-livewire', compact('trees'), [])->title(__('messages.harvest_event_overview'));
     }
 }

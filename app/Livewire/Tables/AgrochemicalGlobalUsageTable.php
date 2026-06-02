@@ -43,6 +43,9 @@ class AgrochemicalGlobalUsageTable extends DataTableComponent
             'type' => SelectFilter::make(__('messages.type'))
                 ->options(['' => __('messages.any')] + AgrochemicalType::keyValue())
                 ->filter(fn(Builder $query, $value) => $query->where('agrochemical.type', $value)),
+            'agrochemical' => SelectFilter::make(__('messages.agrochemical'))
+                ->options(['' => __('messages.any')] + \App\Models\Agrochemical::pluck('name', 'id')->toArray())
+                ->filter(fn(Builder $query, $value) => $query->where('agrochemical_id', $value)),
         ];
     }
 

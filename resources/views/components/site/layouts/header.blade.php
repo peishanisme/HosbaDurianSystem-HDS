@@ -6,8 +6,8 @@
     <nav class="hidden md:flex space-x-6">
         <nav class="hidden md:flex space-x-6">
             <a href="#" class="moss-green hover:text-primary transition-colors" data-target="home">Home</a>
-            <a href="#" class="moss-green hover:text-primary transition-colors" data-target="product-details">Product
-                Details</a>
+            {{-- <a href="#" class="moss-green hover:text-primary transition-colors" data-target="product-details">Product
+                Details</a> --}}
             <a href="#" class="moss-green hover:text-primary transition-colors"
                 data-target="feedback-section">Feedback</a>
             <a href="#" class="moss-green hover:text-primary transition-colors" data-target="about-us">About

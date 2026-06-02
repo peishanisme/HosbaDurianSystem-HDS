@@ -24,8 +24,9 @@ class TreeObservation extends Model
         return $this->belongsTo(Tree::class, 'tree_uuid', 'uuid');
     }
 
-    public function harvestRecord(): BelongsTo
+    public function harvestEvent(): BelongsTo
     {
-        return $this->belongsTo(HarvestRecord::class, 'harvest_uuid', 'harvest_uuid');
+        return $this->belongsTo(HarvestEvent::class, 'harvest_uuid', 'uuid');
     }
+
 }

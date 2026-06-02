@@ -9,16 +9,21 @@ class FruitFeedback extends Model
 {
     protected $fillable = [
         'uuid',
-        'fruit_uuid',
+        'tree_uuid',
         'feedback',
     ];
 
-     protected static function boot()
+    protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($model) {
             $model->uuid = (string) Str::uuid();
         });
+    }
+
+    public function tree()
+    {
+        return $this->belongsTo(Tree::class, 'tree_uuid', 'uuid');
     }
 }

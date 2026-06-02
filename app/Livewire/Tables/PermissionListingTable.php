@@ -16,6 +16,7 @@ class PermissionListingTable extends DataTableComponent
         return Permission::query()
             ->with('roles');
     }
+    
     public function configure(): void
     {
         $this->setPrimaryKey('id')

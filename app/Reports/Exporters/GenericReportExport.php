@@ -5,7 +5,6 @@ namespace App\Reports\Exporters;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
@@ -21,7 +20,6 @@ class GenericReportExport implements FromCollection, WithHeadings, WithStyles
         $this->columns = $columns;
         $this->data = $data;
 
-        // 👇 calculate once
         $this->totalAmount = $data->sum('total_price');
     }
 
@@ -38,7 +36,6 @@ class GenericReportExport implements FromCollection, WithHeadings, WithStyles
                 ->toArray();
         });
 
-        // 👇 append total row ONLY if applicable
         if ($this->totalAmount > 0) {
             $totalRow = array_fill(0, count($this->columns), '');
 

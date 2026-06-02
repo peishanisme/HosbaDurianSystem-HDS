@@ -15,14 +15,14 @@
                             </span> --}}
                         </div>
 
-                        <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
+                        {{-- <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
                             <span class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
                                 <i class="ki-duotone ki-profile-circle fs-4 me-1">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                     <span class="path3"></span>
                                 </i>{{ $harvestEvent->uuid }}</span>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="d-flex my-4">
@@ -49,14 +49,17 @@
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="fs-2 fw-bold">{{ $harvestEvent->start_date }}</div>
+                                    <div class="fs-2 fw-bold">
+                                        {{ \Carbon\Carbon::parse($harvestEvent->start_date)->format('d M Y') }}</div>
                                 </div>
                                 <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.start_date') }}</div>
                             </div>
 
                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="fs-2 fw-bold">{{ $harvestEvent->end_date ?? '-' }}</div>
+                                    <div class="fs-2 fw-bold">
+                                        {{ $harvestEvent->end_date ? \Carbon\Carbon::parse($harvestEvent->end_date)->format('d M Y') : '-' }}
+                                    </div>
                                 </div>
                                 <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.end_date') }}</div>
                             </div>
@@ -74,6 +77,25 @@
                                 </div>
                                 <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.duration') }}</div>
                             </div>
+
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-2 fw-bold">
+                                       {{ $harvestEvent->totalFruits() - $harvestEvent->totalSpoiledFruits() }}
+                                    </div>
+                                </div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.not_spoilt') }}</div>
+                            </div>
+
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-2 fw-bold">
+                                       {{ $harvestEvent->totalSpoiledFruits() }}
+                                    </div>
+                                </div>
+                                <div class="fw-semibold fs-6 text-gray-500">{{ __('messages.spoilt') }}</div>
+                            </div>
+
                         </div>
 
                     </div>
@@ -81,10 +103,12 @@
             </div>
         </div>
         <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold" wire:ignore>
-            <x-show-navbar-navitem title="{{ __('messages.harvest_event_overview') }}" route="{{ route('harvest.show', $harvestEvent->id) }}"
-                :active="request()->routeIs('harvest.show')" />
-            <x-show-navbar-navitem title="{{ __('messages.harvest_summary') }}"
+            <x-show-navbar-navitem title="{{ __('messages.harvest_event_overview') }}"
+                route="{{ route('harvest.show', $harvestEvent->id) }}" :active="request()->routeIs('harvest.show')" />
+            <x-show-navbar-navitem title="{{ __('messages.harvest_records') }}"
                 route="{{ route('harvest.harvest-summary', $harvestEvent->id) }}" :active="request()->routeIs('harvest.harvest-summary')" />
+            <x-show-navbar-navitem title="{{ __('messages.harvest_grades') }}"
+                route="{{ route('harvest.harvest-grade', $harvestEvent->id) }}" :active="request()->routeIs('harvest.harvest-grade')" />
         </ul>
     </div>
 </div>

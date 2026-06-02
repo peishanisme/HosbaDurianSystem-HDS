@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\HarvestRecord;
+use App\Models\Tree;
+use App\Models\TreeObservation;
+use App\Reports\Contracts\Reportable;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
-use App\Reports\Contracts\Reportable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Tree;
-use App\Models\HarvestRecord;
-use App\Models\TreeObservation;
 
 class HarvestEvent extends Model implements Reportable
 {
@@ -71,15 +72,15 @@ class HarvestEvent extends Model implements Reportable
             Tree::chunk(100, function ($trees) use ($model) {
                 foreach ($trees as $tree) {
                     // Ensure a HarvestRecord exists for this tree + event
-                    HarvestRecord::firstOrCreate([
-                        'harvest_uuid' => $model->uuid,
-                        'tree_uuid' => $tree->uuid,
-                    ], [
-                        'harvest_date' => $model->start_date ?? now()->toDateString(),
-                        'num_of_fruits' => 0,
-                        'weight' => null,
-                        'spoilt' => false,
-                    ]);
+                    // HarvestRecord::firstOrCreate([
+                    //     'harvest_uuid' => $model->uuid,
+                    //     'tree_uuid' => $tree->uuid,
+                    // ], [
+                    //     'harvest_date' => $model->start_date ?? now()->toDateString(),
+                    //     'num_of_fruits' => 0,
+                    //     'weight' => null,
+                    //     'spoilt' => false,
+                    // ]);
 
                     // Create a default observation 'X' if missing
                     TreeObservation::firstOrCreate([
@@ -102,12 +103,84 @@ class HarvestEvent extends Model implements Reportable
     {
         return $this->hasManyThrough(
             Tree::class,
-            Fruit::class,
+            HarvestRecord::class,
             'harvest_uuid',
             'uuid',
             'uuid',
             'tree_uuid'
         )->distinct();
+    }
+
+    public function treeHarvestSummary()
+    {
+        return $this->trees()
+            ->withSum(['harvestRecords as total_fruits' => function ($query) {
+                $query->where('harvest_uuid', $this->uuid);
+            }], 'num_of_fruits')
+
+            ->withSum(['harvestRecords as total_weight' => function ($query) {
+                $query->where('harvest_uuid', $this->uuid);
+            }], 'weight')
+
+            ->withSum(['harvestRecords as total_spoilt' => function ($query) {
+                $query->where('harvest_uuid', $this->uuid)
+                    ->where('spoilt', true);
+            }], 'num_of_fruits');
+    }
+
+    public function dailySummaryByTree($treeUuid)
+    {
+        return $this->harvestRecords()
+            ->where('tree_uuid', $treeUuid)
+            ->selectRaw('
+            harvest_date,
+            SUM(num_of_fruits) as total_fruits,
+            SUM(weight) as total_weight,
+            SUM(CASE WHEN spoilt = true THEN num_of_fruits ELSE 0 END) as total_spoilt
+        ')
+            ->groupBy('harvest_date')
+            ->orderBy('harvest_date')
+            ->get();
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
+    }
+
+    public function harvestRecords()
+    {
+        return $this->hasMany(HarvestRecord::class, 'harvest_uuid', 'uuid');
+    }
+
+    public function harvestGrades()
+    {
+        return $this->hasMany(HarvestGrade::class, 'harvest_uuid', 'uuid');
+    }
+
+    public function totalFruits()
+    {
+        return $this->harvestRecords()->sum('num_of_fruits');
+    }
+
+    public function totalFruitsForTree($treeUuid)
+    {
+        return $this->harvestRecords()
+            ->where('tree_uuid', $treeUuid)
+            ->sum('num_of_fruits');
+    }
+
+    public function harvestRecordsForTree($treeUuid)
+    {
+        return $this->harvestRecords()
+            ->where('tree_uuid', $treeUuid);
+    }
+
+    public function totalSpoiledFruits()
+    {
+        return $this->harvestRecords()
+            ->where('spoilt', true)
+            ->sum('num_of_fruits');
     }
 
     public static function reportQuery(array $filters): Builder
@@ -121,16 +194,16 @@ class HarvestEvent extends Model implements Reportable
         };
     }
 
-    protected static function fruitRecordQuery(array $filters): Builder
-    {
-        return \App\Models\Fruit::query()
-            ->select('fruits.*')
-            ->join('harvest_events', 'harvest_events.uuid', '=', 'fruits.harvest_uuid')
-            ->with(['tree', 'tree.species', 'harvestEvent'])
-            ->where('fruits.harvest_uuid', $filters['harvest_uuid'] ?? null)
-            ->orderBy('harvested_at', 'asc')
-            ->orderBy('fruit_tag', 'asc');;
-    }
+    // protected static function fruitRecordQuery(array $filters): Builder
+    // {
+    //     return \App\Models\Fruit::query()
+    //         ->select('fruits.*')
+    //         ->join('harvest_events', 'harvest_events.uuid', '=', 'fruits.harvest_uuid')
+    //         ->with(['tree', 'tree.species', 'harvestEvent'])
+    //         ->where('fruits.harvest_uuid', $filters['harvest_uuid'] ?? null)
+    //         ->orderBy('harvested_at', 'asc')
+    //         ->orderBy('fruit_tag', 'asc');;
+    // }
 
     protected static function treeSummaryQuery(array $filters): Builder
     {
@@ -164,6 +237,30 @@ class HarvestEvent extends Model implements Reportable
             SUM(fruits.weight) as total_weight
         ')
             ->groupBy('species.id', 'species.name');
+    }
+
+    public function harvestGradeSummary()
+    {
+        return HarvestGrade::query()
+            ->where('harvest_uuid', $this->uuid)
+            ->selectRaw('
+            date,
+            SUM(weight) as total_weight,
+            COUNT(*) as total_records
+        ')
+            ->groupBy('date')
+            ->orderByDesc('date')
+            ->get();
+    }
+
+    public function harvestGradeDetails($date)
+    {
+        return HarvestGrade::query()
+            ->with('species')
+            ->where('harvest_uuid', $this->uuid)
+            ->whereDate('date', $date)
+            ->orderBy('grade')
+            ->get();
     }
 
     public static function reportColumns(): array

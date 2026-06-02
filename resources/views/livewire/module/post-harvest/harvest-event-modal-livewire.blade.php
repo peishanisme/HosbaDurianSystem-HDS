@@ -18,14 +18,13 @@
                 <div class="fv-row mb-8">
                     <x-input-label for="name" class="required mb-2" :value="__('messages.event_name')" />
                     <x-input-text id="event_name" placeholder="{{ __('messages.event_name') }}"
-                        wire:model="form.event_name" disabled />
+                        wire:model="form.event_name"  />
                 </div>
             @endif
 
             <div class="fv-row mb-8">
                 <x-input-label for="name" class="required mb-2" :value="__('messages.start_date')" />
-                <x-input-text id="start_date" placeholder="{{ __('messages.start_date') }}" wire:model="form.start_date"
-                    type="date" />
+                <x-input-text id="start_date" placeholder="{{ __('messages.start_date') }}" wire:model="form.start_date" type="date"/>
                 <x-input-error :messages="$errors->get('form.start_date')" />
             </div>
 

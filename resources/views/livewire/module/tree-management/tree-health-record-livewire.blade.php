@@ -2,4 +2,7 @@
     <livewire:components.headers.tree-details-header :tree="$tree" />
 
     <livewire:tables.tree-health-record-table :tree="$tree" />
+
+    <livewire:module.post-harvest.harvest-qr-code-modal-livewire />
+
 </div>

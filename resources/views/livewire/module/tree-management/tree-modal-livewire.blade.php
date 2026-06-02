@@ -1,9 +1,10 @@
 <x-modal-component :id="$modalID" :title="$modalTitle">
 
-    <div class="fv-row mb-8">
+    {{-- thumbnail --}}
+    {{-- <div class="fv-row mb-8">
         <x-input-label for="thumbnail" class="mb-2" :value="__('messages.thumbnail')" />
         <livewire:components.thumbnail-input />
-    </div>
+    </div> --}}
 
     @if ($form->tree)
         <div class="fv-row mb-8">
@@ -19,9 +20,31 @@
     </div>
 
     <div class="fv-row mb-8">
-        <x-input-label for="planted_at" class="required mb-2" :value="__('messages.planted_at')" />
+        <x-input-label for="planted_at" class="mb-2" :value="__('messages.planted_at')" />
         <x-input-text id="planted_at" type="date" placeholder="Planted_at" wire:model="form.planted_at" />
         <x-input-error :messages="$errors->get('form.planted_at')" />
+    </div>
+
+    <div class="fv-row mb-8">
+        <div class="d-flex w-100 gap-5">
+            <div class="flex-fill">
+                <x-input-label for="area" class="required mb-4" :value="__('messages.area')" />
+                <x-input-text id="area"  placeholder="Area" wire:model="form.area" />
+            </div>
+
+            <div class="flex-fill">
+                <x-input-label for="terrace" class="required mb-4" :value="__('messages.terrace')" />
+                <x-input-text id="terrace" type="number" placeholder="Terrace" wire:model="form.terrace" />
+            </div>
+
+             <div class="flex-fill">
+                <x-input-label for="water_valve" class="mb-4" :value="__('messages.water_valve')" />
+                <x-input-text id="water_valve" type="number" placeholder="Water Valve" wire:model="form.water_valve" />
+            </div>
+        </div>
+        <x-input-error :messages="$errors->get('form.area')" />
+        <x-input-error :messages="$errors->get('form.terrace')" />
+        <x-input-error :messages="$errors->get('form.water_valve')" />
     </div>
 
     <div class="fv-row mb-8">

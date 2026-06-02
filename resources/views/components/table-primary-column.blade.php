@@ -41,7 +41,7 @@
 
     @if ($avatar != null)
         <div class="me-3">
-            <x-avatar :name="$avatar" size="40px" />
+            <x-avatar :name="$avatar" size="45px" />
         </div>
     @endif
 

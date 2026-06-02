@@ -35,18 +35,13 @@ class TransactionListingTable extends DataTableComponent
             ->setEmptyMessage(__('messages.no_results_found'))
             ->setConfigurableAreas([
                 'toolbar-right-end' => [
-                    'components.table-com-button2',
+                    'livewire.components.modal-button',
                     [
-                        'label1' => __('messages.create_transaction'),
-                        'dispatch1' => 'reset-transaction',
-                        'permission1' => 'create-sale',
-                        'redirectUrl' => 'sales.transaction.create',
-                        'label2' => __('messages.generate_report'),
-                        'dispatch2' => 'reset-generator',
-                        'target2' => 'generateReportModalLivewire',
-                        'permission2' => 'export-reports',
+                        'label' =>  __('messages.create_transaction'),
+                        'dispatch' => 'reset-transaction',
+                        'target' => 'transactionModalLivewire',
                     ]
-                ]
+                ],
             ]);
     }
 
@@ -59,23 +54,9 @@ class TransactionListingTable extends DataTableComponent
             Column::make("Uuid", "uuid")
                 ->sortable()
                 ->hideIf(true),
-            Column::make(__('messages.reference_id'), "reference_id")
-                ->sortable()
-                ->searchable(),
-            Column::make("Buyer uuid", "buyer_uuid")
-                ->sortable()
-                ->hideIf(true),
-            Column::make(__('messages.company_name'), "buyer.company_name")
-                ->sortable()
-                ->searchable()
-                ->hideIf($this->buyer !== null),
-            Column::make(__('messages.reference_id'), "buyer.reference_id")
-                ->sortable()
-                ->searchable()
-                ->hideIf($this->buyer !== null),
             Column::make(__('messages.date'), "date")
                 ->sortable(),
-            Column::make(__('messages.total_price'), "total_price")
+            Column::make(__('messages.total_amount'), "total_amount")
                 ->sortable(),
             ViewComponentColumn::make(__('messages.status'), 'is_cancelled')
                 ->component('table-badge')
@@ -93,7 +74,6 @@ class TransactionListingTable extends DataTableComponent
                     'label'     => __('messages.view'),
                     'dataField' => 'transaction',
                     'data'      =>  $row->id,
-                    // 'permission' => 'view-disease',
                 ]))->html()
                 ->excludeFromColumnSelect(),
         ];

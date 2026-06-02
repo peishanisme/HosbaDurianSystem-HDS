@@ -2,14 +2,16 @@
 
 namespace App\Livewire\Module;
 
-use App\Models\Tree;
-use App\Models\Fruit;
-use Livewire\Component;
-use App\Models\Transaction;
-use App\Models\HealthRecord;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\WeatherController;
+use App\Models\Fruit;
+use App\Models\HarvestGrade;
+use App\Models\HarvestRecord;
+use App\Models\HealthRecord;
+use App\Models\Transaction;
+use App\Models\Tree;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
 
 class DashboardLivewire extends Component
 {
@@ -19,6 +21,7 @@ class DashboardLivewire extends Component
     public $totalTransactionData;
     public $topSellingSpecies;
     public $treeHealthRecords;
+    public $gradeDistributionData;
 
     public function mount()
     {
@@ -33,6 +36,7 @@ class DashboardLivewire extends Component
         $this->totalTransactionData = $this->loadTotalTransactionData();
         $this->topSellingSpecies = $this->loadTopSellingSpecies();
         $this->treeHealthRecords = $this->getTreeHealthRecords();
+        $this->gradeDistributionData = $this->loadGradeDistributionData();
     }
 
     public function getTreeHealthRecords()
@@ -104,14 +108,18 @@ class DashboardLivewire extends Component
 
     public function loadTotalHarvestData()
     {
-        $harvestData = Fruit::join('harvest_events', 'fruits.harvest_uuid', '=', 'harvest_events.uuid')
+        $harvestData = HarvestRecord::join('harvest_events', 'harvest_records.harvest_uuid', '=', 'harvest_events.uuid')
             ->select(
                 'harvest_events.uuid as harvest_uuid',
                 'harvest_events.event_name',
-                DB::raw('COUNT(fruits.id) as total_fruits'),
-                'harvest_events.created_at as harvested_at'
+                DB::raw('SUM(harvest_records.num_of_fruits) as total_fruits'),
+                'harvest_events.start_date as harvested_at'
             )
-            ->groupBy('harvest_events.uuid', 'harvest_events.event_name', 'harvest_events.created_at')
+            ->groupBy(
+                'harvest_events.uuid',
+                'harvest_events.event_name',
+                'harvest_events.start_date'
+            )
             ->orderBy('harvested_at', 'asc')
             ->get();
 
@@ -119,16 +127,16 @@ class DashboardLivewire extends Component
             return [
                 'event' => $item->event_name,
                 'total' => $item->total_fruits,
-                'harvested_at' => $item->harvestEvent->start_date,
+                'harvested_at' => $item->harvested_at,
             ];
         });
 
-        return ($chartData->toArray());
+        return $chartData->toArray();
     }
 
     public function loadTotalTransactionData()
     {
-        return Transaction::selectRaw('DATE(date) as date, SUM(total_price) as total_price')
+        return Transaction::selectRaw('DATE(date) as date, SUM(total_amount) as total_price')
             ->groupBy('date')
             ->orderBy('date')
             ->get()
@@ -149,6 +157,26 @@ class DashboardLivewire extends Component
             ->get();
 
         return $topSelling;
+    }
+
+    public function loadGradeDistributionData()
+    {
+        $grades = HarvestGrade::select(
+            DB::raw("COALESCE(grade, 'Ungraded') as grade"),
+            DB::raw('SUM(weight) as total_weight')
+        )
+            ->groupBy('grade')
+            ->orderByDesc('total_weight')
+            ->get();
+
+        $gradeDistributionData = $grades->map(function ($item) {
+            return [
+                'grade' => $item->grade,
+                'weight' => (float) $item->total_weight,
+            ];
+        })->toArray();
+
+        return $gradeDistributionData;
     }
 
     public function render()

@@ -5,8 +5,6 @@ namespace App\Livewire\Module\TreeManagement;
 use App\Models\Disease;
 use App\Models\Tree;
 use Livewire\Component;
-use App\Models\HealthRecord;
-use Livewire\Attributes\Title;
 
 class TreeDetailsLivewire extends Component
 {

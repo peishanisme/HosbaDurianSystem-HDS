@@ -16,18 +16,20 @@ class Transaction extends Model implements Reportable
     use SoftDeletes, LogsActivity;
     protected $fillable = [
         'uuid',
-        'buyer_uuid',
         'date',
         'discount',
-        'total_price',
-        'blockchain_tx_hash',
-        'blockchain_status',
-        'synced_at',
+        'total_amount',
         'reference_id',
         'payment_method',
         'remark',
         'price_per_kg',
         'is_cancelled',
+        'grade_breakdown',
+        'total_weight',
+    ];
+
+    protected $casts = [
+        'grade_breakdown' => 'array',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -113,6 +115,15 @@ class Transaction extends Model implements Reportable
     public function getSubtotalAttribute(): float
     {
         return collect($this->getFruitSummary())->sum('subtotal');
+    }
+
+    public function getDailySummaryAttribute(): array
+    {
+        return [
+            'total_transactions' => self::whereDate('date', $this->date)->count(),
+            'total_amount' => self::whereDate('date', $this->date)->sum('total_amount'),
+            'total_weight' => self::whereDate('date', $this->date)->sum('total_weight'),
+        ];
     }
 
     public function getSummaryAttribute(): array

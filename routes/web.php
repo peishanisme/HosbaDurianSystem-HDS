@@ -1,37 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
-use App\Livewire\Module\DashboardLivewire;
-use App\Livewire\Module\PublicPortalLivewire;
-use App\Livewire\Module\TreeManagement\TreeIndexLivewire;
-use App\Livewire\Module\UserManagement\RoleIndexLivewire;
-use App\Livewire\Module\UserManagement\UserIndexLivewire;
-use App\Livewire\Module\TreeManagement\TreeDetailsLivewire;
-use App\Livewire\Module\UserManagement\UserProfileLivewire;
-use App\Livewire\Module\TreeManagement\DiseaseIndexLivewire;
-use App\Livewire\Module\TreeManagement\SpeciesIndexLivewire;
-use App\Livewire\Module\TreeManagement\TreeGrowthLogLivewire;
-use App\Livewire\Module\PostHarvest\HarvestEventIndexLivewire;
-use App\Livewire\Module\UserManagement\PermissionIndexLivewire;
-use App\Livewire\Module\SalesAndTransactions\BuyerIndexLivewire;
-use App\Livewire\Module\TreeManagement\TreeHealthRecordLivewire;
-use App\Livewire\Module\UserManagement\ActivityLogIndexLivewire;
-use App\Livewire\Module\PostHarvest\HarvestEventOverviewLivewire;
-use App\Livewire\Module\TreeManagement\TreeHarvestRecordLivewire;
-use App\Livewire\Module\SalesAndTransactions\BuyerOverviewLivewire;
-use App\Livewire\Module\TreeManagement\TreeAgrochemicalUsageLivewire;
-use App\Livewire\Module\SalesAndTransactions\BuyerTransactionLivewire;
-use App\Livewire\Module\SalesAndTransactions\TransactionIndexLivewire;
-use App\Livewire\Module\PostHarvest\HarvestEventHarvestSummaryLivewire;
-use App\Livewire\Module\SalesAndTransactions\CreateTransactionLivewire;
-use App\Livewire\Module\AgrochemicalManagement\AgrochemicalIndexLivewire;
-use App\Livewire\Module\AgrochemicalManagement\AgrochemicalOverviewLivewire;
-use App\Livewire\Module\AgrochemicalManagement\AgrochemicalGlobalUsageLivewire;
-use App\Livewire\Module\AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire;
-use App\Livewire\Module\AgrochemicalManagement\AgrochemicalApplicationRecordLivewire;
+use App\Livewire\Module\{ DashboardLivewire, PublicPortalLivewire, AgrochemicalManagement\AgrochemicalApplicationRecordLivewire, AgrochemicalManagement\AgrochemicalGlobalUsageLivewire, AgrochemicalManagement\AgrochemicalIndexLivewire, AgrochemicalManagement\AgrochemicalOverviewLivewire, AgrochemicalManagement\AgrochemicalPurchaseHistoryLivewire, PostHarvest\HarvestEventHarvestSummaryLivewire, PostHarvest\HarvestEventIndexLivewire, PostHarvest\HarvestEventOverviewLivewire, SalesAndTransactions\BuyerIndexLivewire, SalesAndTransactions\BuyerTransactionLivewire, SalesAndTransactions\CreateTransactionLivewire, SalesAndTransactions\TransactionIndexLivewire, SalesAndTransactions\BuyerOverviewLivewire, TreeManagement\DiseaseIndexLivewire, TreeManagement\SpeciesIndexLivewire, TreeManagement\TreeAgrochemicalUsageLivewire, TreeManagement\TreeDetailsLivewire, TreeManagement\TreeGrowthLogLivewire, TreeManagement\TreeHarvestRecordLivewire, TreeManagement\TreeIndexLivewire, TreeManagement\TreeHealthRecordLivewire, UserManagement\ActivityLogIndexLivewire, UserManagement\PermissionIndexLivewire, UserManagement\RoleIndexLivewire, UserManagement\UserIndexLivewire, UserManagement\UserProfileLivewire };
+use App\Livewire\Module\PostHarvest\HarvestGradeSummaryLivewire;
+use App\Livewire\Module\TreeManagement\TreeFeedbackLivewire;
+use Illuminate\Support\Facades\Route;
 
-// routes/web.php
+//translation route
 Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'zh', 'ms'])) {
         session(['locale' => $locale]);
@@ -40,14 +15,17 @@ Route::get('/lang/{locale}', function ($locale) {
     return redirect(request('redirect', '/'));
 })->name('lang.switch');
 
+//download report as pdf
 Route::get('/reports/export', [ReportController::class, 'export'])
     ->name('report.export');
 
 Route::get('/receipt/print/{transaction:uuid}', [ReportController::class, 'printReceipt'])->name('receipt.print');
 
-
+//web route
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardLivewire::class)->name('dashboard');
+    Route::get('/print/qr/{tree}', [ReportController::class, 'printFruitLabels'])
+        ->name('print.qr');
 
     Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
         Route::get('/all', UserIndexLivewire::class)->name('users.index');
@@ -73,6 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('health-record', TreeHealthRecordLivewire::class)->name('health-record'),
             Route::get('harvest-record', TreeHarvestRecordLivewire::class)->name('harvest-record'),
             Route::get('agrochemical-usage', TreeAgrochemicalUsageLivewire::class)->name('agrochemical-usage'),
+            Route::get('feedback', TreeFeedbackLivewire::class)->name('feedback'),
         ]);
     });
 
@@ -91,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::group(['prefix' => 'details/{harvestEvent:id}'], fn() => [
             Route::get('overview', HarvestEventOverviewLivewire::class)->name('show'),
             Route::get('harvest-summary', HarvestEventHarvestSummaryLivewire::class)->name('harvest-summary'),
+            Route::get('harvest-grade', HarvestGradeSummaryLivewire::class)->name('harvest-grade'),
         ]);
     });
 
@@ -116,7 +96,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/welcome', 'welcome')->name('welcome');
 });
 
-Route::get('/product-details/{fruit:uuid}', PublicPortalLivewire::class)->name('public.portal');
+//public portal
+Route::get('/product-details/{tree:uuid}', PublicPortalLivewire::class)->name('public.portal');
 
 
 

@@ -3,6 +3,7 @@
     <ul x-cloak {{ $attributes
             ->merge($this->getFilterPopoverAttributes)
             ->merge(['role' => 'menu'])
+            ->style([("max-height: 500px; overflow-y: auto;")])
             ->class([
                 'w-100 ' => $this->getFilterPopoverAttributes['default-width'] ?? true,
                 'dropdown-menu mt-md-5' => $this->isBootstrap4,

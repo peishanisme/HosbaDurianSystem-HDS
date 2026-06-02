@@ -77,9 +77,10 @@ class TreeModalLivewire extends Component
             $this->form->create($validatedData);
             $this->alertSuccess(__('messages.tree_created_successfully'), $this->modalID);
             $this->resetInput();
+
         } catch (Exception $error) {
 
-            $this->alertError(__('messages.tree_creation_failed'), $this->modalID);
+            $this->alertError($error->getMessage(), $this->modalID);
         }
     }
 
