@@ -105,7 +105,10 @@ class HarvestEventOverviewLivewire extends Component
             ->join('species', 'trees.species_id', '=', 'species.id')
             ->where('harvest_records.harvest_uuid', $this->harvestEvent->uuid);
 
-        $this->applyDateFilter($fruitQuery);
+        $this->applyDateFilter(
+            $fruitQuery,
+            'harvest_records.harvest_date'
+        );
 
         $fruitData = $fruitQuery
             ->groupBy('species.id', 'species.name')
@@ -123,7 +126,10 @@ class HarvestEventOverviewLivewire extends Component
             ->where('harvest_grade.harvest_uuid', $this->harvestEvent->uuid)
             ->whereNotNull('harvest_grade.species_id');
 
-        $this->applyDateFilter($weightQuery);
+        $this->applyDateFilter(
+            $weightQuery,
+            'harvest_grade.date'
+        );
 
         $weightData = $weightQuery
             ->groupBy('species.id')
@@ -141,14 +147,14 @@ class HarvestEventOverviewLivewire extends Component
         })->sortByDesc('total_pieces')->values();
     }
 
-    private function applyDateFilter($query)
+    private function applyDateFilter($query, $column)
     {
         if ($this->fromDate) {
-            $query->whereDate('harvest_records.harvest_date', '>=', $this->fromDate);
+            $query->whereDate($column, '>=', $this->fromDate);
         }
 
         if ($this->toDate) {
-            $query->whereDate('harvest_records.harvest_date', '<=', $this->toDate);
+            $query->whereDate($column, '<=', $this->toDate);
         }
 
         return $query;
